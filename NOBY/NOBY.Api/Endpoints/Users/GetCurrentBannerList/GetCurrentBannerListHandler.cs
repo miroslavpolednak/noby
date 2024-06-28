@@ -3,11 +3,11 @@
 namespace NOBY.Api.Endpoints.Users.GetCurrentBannerList;
 
 internal sealed class GetCurrentBannerListHandler(FeBannersService _feBanners)
-    : IRequestHandler<GetCurrentBannerListRequest, GetCurrentBannerListResponse>
+    : IRequestHandler<GetCurrentBannerListRequest, UsersGetCurrentBannerListResponse>
 {
-    public Task<GetCurrentBannerListResponse> Handle(GetCurrentBannerListRequest request, CancellationToken cancellationToken)
+    public Task<UsersGetCurrentBannerListResponse> Handle(GetCurrentBannerListRequest request, CancellationToken cancellationToken)
     {
-        var list = new GetCurrentBannerListResponse
+        var list = new UsersGetCurrentBannerListResponse
         {
             Banners = _feBanners.GetBanners()
         };

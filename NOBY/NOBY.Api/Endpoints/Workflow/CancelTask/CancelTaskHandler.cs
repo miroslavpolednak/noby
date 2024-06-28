@@ -5,10 +5,13 @@ using NOBY.Services.WorkflowTask;
 
 namespace NOBY.Api.Endpoints.Workflow.CancelTask;
 
-internal sealed class CancelTaskHandler
-    : IRequestHandler<CancelTaskRequest>
+internal sealed class CancelTaskHandler(
+    ICaseServiceClient _caseService, 
+    ICurrentUserAccessor _currentUserAccessor, 
+    ISalesArrangementServiceClient _salesArrangementService)
+        : IRequestHandler<WorkflowCancelTaskRequest>
 {
-    public async Task Handle(CancelTaskRequest request, CancellationToken cancellationToken)
+    public async Task Handle(WorkflowCancelTaskRequest request, CancellationToken cancellationToken)
     {
         // jen check jestli case existuje
         await _caseService.ValidateCaseId(request.CaseId, true, cancellationToken);
@@ -59,23 +62,10 @@ internal sealed class CancelTaskHandler
     }
 
     // povolene typy tasku
-    private static int[] _allowedTypeIds = 
+    private static readonly int[] _allowedTypeIds = 
         [
             (int)WorkflowTaskTypes.PriceException,
             (int)WorkflowTaskTypes.Consultation,
             (int)WorkflowTaskTypes.RetentionRefixation
         ];
-
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IWorkflowTaskService _workflowTaskService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-
-    public CancelTaskHandler(ICaseServiceClient caseService, IWorkflowTaskService workflowTaskService, ICurrentUserAccessor currentUserAccessor, ISalesArrangementServiceClient salesArrangementService)
-    {
-        _caseService = caseService;
-        _workflowTaskService = workflowTaskService;
-        _currentUserAccessor = currentUserAccessor;
-        _salesArrangementService = salesArrangementService;
-    }
 }

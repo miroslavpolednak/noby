@@ -2,18 +2,11 @@
 
 namespace NOBY.Api.Endpoints.CustomerObligation.DeleteObligation;
 
-internal sealed class DeleteObligationHandler
+internal sealed class DeleteObligationHandler(ICustomerOnSAServiceClient _customerService)
     : IRequestHandler<DeleteObligationRequest>
 {
     public async Task Handle(DeleteObligationRequest request, CancellationToken cancellationToken)
     {
         await _customerService.DeleteObligation(request.ObligationId, cancellationToken);
-    }
-
-    private readonly ICustomerOnSAServiceClient _customerService;
-    
-    public DeleteObligationHandler(ICustomerOnSAServiceClient customerService)
-    {
-        _customerService = customerService;
     }
 }

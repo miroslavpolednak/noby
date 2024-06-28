@@ -37,7 +37,7 @@ public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatu
         return new()
         {
             DocumentOnSAId = docOnSaStatusData.DocumentOnSAId,
-            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+            SignatureState = DocumentOnSaMetadataManagerOld.GetSignatureState(new()
             {
                 IsValid = docOnSaStatusData.IsValid,
                 DocumentOnSAId = docOnSaStatusData.DocumentOnSAId,

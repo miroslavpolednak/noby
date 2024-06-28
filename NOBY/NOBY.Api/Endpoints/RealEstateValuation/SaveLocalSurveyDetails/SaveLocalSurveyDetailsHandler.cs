@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.SaveLocalSurveyDetails;
 
-internal sealed class SaveLocalSurveyDetailsHandler
-    : IRequestHandler<SaveLocalSurveyDetailsRequest>
+internal sealed class SaveLocalSurveyDetailsHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+    : IRequestHandler<RealEstateValuationSaveLocalSurveyDetailsRequest>
 {
-    public async Task Handle(SaveLocalSurveyDetailsRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RealEstateValuationSaveLocalSurveyDetailsRequest request, CancellationToken cancellationToken)
     {
         var revDetail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
@@ -47,12 +47,5 @@ internal sealed class SaveLocalSurveyDetailsHandler
         };
 
         await _realEstateValuationService.UpdateRealEstateValuationDetail(dsRequest, cancellationToken);
-    }
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public SaveLocalSurveyDetailsHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
     }
 }

@@ -5,6 +5,6 @@ internal sealed record GetDeedOfOwnershipDocumentContentRequest(
     int? DeedOfOwnershipNumber,
     long? DeedOfOwnershipId,
     int? DeedOfOwnershipDocumentId)
-    : IRequest<GetDeedOfOwnershipDocumentContentResponse>
+    : IRequest<DeedOfOwnershipGetDeedOfOwnershipDocumentContentResponse>
 {
 }

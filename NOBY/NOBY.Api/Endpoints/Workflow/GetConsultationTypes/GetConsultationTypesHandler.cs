@@ -6,9 +6,9 @@ namespace NOBY.Api.Endpoints.Workflow.GetConsultationTypes;
 internal sealed class GetConsultationTypesHandler(
     ICaseServiceClient _caseService, 
     ICodebookServiceClient _codebookService)
-        : IRequestHandler<GetConsultationTypesRequest, List<GetConsultationTypesResponseItem>>
+        : IRequestHandler<GetConsultationTypesRequest, List<WorkflowGetConsultationTypesResponseItem>>
 {
-    public async Task<List<GetConsultationTypesResponseItem>> Handle(GetConsultationTypesRequest request, CancellationToken cancellationToken)
+    public async Task<List<WorkflowGetConsultationTypesResponseItem>> Handle(GetConsultationTypesRequest request, CancellationToken cancellationToken)
     {
         var processesList = (await _caseService.GetProcessList(request.CaseId, cancellationToken))
             .Where(t => t.ProcessId == request.ProcessId)
@@ -18,10 +18,10 @@ internal sealed class GetConsultationTypesHandler(
 
         return matrix
             .Where(t => t.IsValidFor.Any(x => processesList.Any(p => x.ProcessPhaseId == p.ProcessPhaseId && x.ProcessTypeId == p.ProcessTypeId)))
-            .Select(t => new GetConsultationTypesResponseItem
+            .Select(t => new WorkflowGetConsultationTypesResponseItem
             {
                 TaskSubtypeId = t.TaskSubtypeId,
-                taskSubtypeName = t.TaskSubtypeName
+                TaskSubtypeName = t.TaskSubtypeName
             }).ToList();
     }
 }

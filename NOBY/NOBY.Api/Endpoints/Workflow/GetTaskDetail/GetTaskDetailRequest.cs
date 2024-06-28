@@ -1,13 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
-public class GetTaskDetailRequest : IRequest<GetTaskDetailResponse>
+internal sealed record GetTaskDetailRequest(long CaseId, long TaskId)
+    : IRequest<WorkflowGetTaskDetailResponse>
 {
-    public long CaseId { get; }
-    public long TaskId { get; }
-
-    public GetTaskDetailRequest(long caseId, long taskId)
-    {
-        CaseId = caseId;
-        TaskId = taskId;
-    }
 }

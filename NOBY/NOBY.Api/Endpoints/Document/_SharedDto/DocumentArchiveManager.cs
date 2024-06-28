@@ -19,13 +19,13 @@ internal sealed class DocumentArchiveManager
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
-    private readonly IDocumentHelperService _documentHelperService;
+    private readonly IDocumentHelperServiceOld _documentHelperService;
     private readonly IUserServiceClient _userService;
 
     public DocumentArchiveManager(IDocumentArchiveServiceClient documentArchiveService,
                                   ICodebookServiceClient codebookService,
                                   ICisEnvironmentConfiguration environmentConfiguration,
-                                  IDocumentHelperService documentHelperService,
+                                  IDocumentHelperServiceOld documentHelperService,
                                   IUserServiceClient userService)
     {
         _documentArchiveService = documentArchiveService;

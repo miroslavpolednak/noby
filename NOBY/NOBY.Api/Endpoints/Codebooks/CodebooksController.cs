@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
+using Microsoft.Extensions.Azure;
 using NOBY.Infrastructure.Swagger;
 
 namespace NOBY.Api.Endpoints.Codebooks;
@@ -115,8 +116,8 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// <returns>Kolekce vyzadanych ciselniku.</returns>
     [HttpGet("get-all")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(List<GetAll.GetAllResponseItem>), StatusCodes.Status200OK)]
-    public async Task<List<GetAll.GetAllResponseItem>> GetAll([FromQuery(Name = "q")] string codebookTypes, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<CodebooksGetAllResponseItem>), StatusCodes.Status200OK)]
+    public async Task<List<CodebooksGetAllResponseItem>> GetAll([FromQuery(Name = "q")] string codebookTypes, CancellationToken cancellationToken)
         => await _mediator.Send(new GetAll.GetAllRequest(codebookTypes), cancellationToken);
 
     /// <summary>
@@ -124,10 +125,10 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// </summary>
     [HttpGet("supported")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(List<CodebookMap.SupportedCodebook>), StatusCodes.Status200OK)]
-    public List<CodebookMap.SupportedCodebook> GetSupported([FromServices] CodebookMap.ICodebookMap codebookMap)
+    [ProducesResponseType(typeof(List<CodebooksSupportedCodebook>), StatusCodes.Status200OK)]
+    public List<CodebooksSupportedCodebook> GetSupported([FromServices] CodebookMap.ICodebookMap codebookMap)
     {
-        return codebookMap.Select(m => new CodebookMap.SupportedCodebook
+        return codebookMap.Select(m => new CodebooksSupportedCodebook
         {
             Name = m.Code,
             Type = m.ReturnType.Name
@@ -140,8 +141,8 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// <param name="productTypeId">ID typu produktu, pro který se mají vrátit druhy úvěru.</param>
     [HttpGet("product-loan-kinds")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(List<GenericCodebookResponse.Types.GenericCodebookItem>), StatusCodes.Status200OK)]
-    public async Task<List<GenericCodebookResponse.Types.GenericCodebookItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<ShareTypesGenericCodebookItem>), StatusCodes.Status200OK)]
+    public async Task<List<ShareTypesGenericCodebookItem>?> GetProductLoanKinds([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var loanKindsIds = (await svc.ProductTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == productTypeId && t.IsValid.GetValueOrDefault())?
@@ -151,6 +152,17 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
 
         return (await svc.LoanKinds(cancellationToken))
             .Where(t => loanKindsIds.Contains(t.Id))
+            .Select(t => new ShareTypesGenericCodebookItem
+            {
+                Id = t.Id,
+                Code = t.Code,
+                Description = t.Description,
+                IsDefault = t.IsDefault,
+                IsValid = t.IsValid,
+                Name = t.Name,
+                Order = t.Order,
+                MandantId = t.MandantId
+            })
             .ToList();
     }
 
@@ -160,7 +172,7 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     [HttpPost("banking-days")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
-    public async Task<List<DateOnly>> GetNonBankingDays([FromBody] Dto.GetNonBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+    public async Task<List<DateOnly>> GetNonBankingDays([FromBody] CodebooksGetNonBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.GetNonBankingDays(request.DateFrom, request.DateTo, cancellationToken)).ToList();
 
     /// <summary>
@@ -172,10 +184,19 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// <param name="productTypeId">ID typu produktu</param>
     [HttpGet("fixed-rate-periods")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>), StatusCodes.Status200OK)]
-    public async Task<List<FixedRatePeriodsResponse.Types.FixedRatePeriodItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+    [ProducesResponseType(typeof(List<CodebooksFixedRatePeriodItem>), StatusCodes.Status200OK)]
+    public async Task<List<CodebooksFixedRatePeriodItem>?> GetFixedRatePeriods([FromQuery] int productTypeId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.FixedRatePeriods(cancellationToken))
             .Where(t => t.ProductTypeId == productTypeId && t.IsNewProduct)
+            .Select(t => new CodebooksFixedRatePeriodItem
+            {
+                FixedRatePeriod = t.FixedRatePeriod,
+                InterestRateAlgorithm = t.InterestRateAlgorithm,
+                IsNewProduct = t.IsNewProduct,
+                IsValid = t.IsValid,
+                MandantId = t.MandantId,
+                ProductTypeId = productTypeId,
+            })
             .ToList();
 
     /// <summary>
@@ -187,13 +208,13 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(Dto.Developer), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CodebooksDeveloper), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C719D03C-9DF1-4ffc-AFAC-ED79AB01CC34")]
-    public async Task<Dto.Developer> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+    public async Task<CodebooksDeveloper> GetDeveloper([FromRoute] int developerId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
         var developer = await svc.GetDeveloper(developerId, cancellationToken);
-        return new Dto.Developer
+        return new CodebooksDeveloper
         {
             Name = developer.Name,
             Cin = developer.Cin,
@@ -216,11 +237,25 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// <param name="developerId">ID developera</param>
     [HttpGet("developer/{developerId:int}/developer-project/{developerProjectId:int}")]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(GetDeveloperProjectResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CodebooksGetDeveloperProjectResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=9429D814-AAFA-42df-8782-DFF85B96CFDB")]
-    public async Task<GetDeveloperProjectResponse> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
+    public async Task<CodebooksGetDeveloperProjectResponse> GetDeveloperProject([FromRoute] int developerId, [FromRoute] int developerProjectId, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
     {
-        return await svc.GetDeveloperProject(developerId, developerProjectId, cancellationToken);
+        var result = await svc.GetDeveloperProject(developerId, developerProjectId, cancellationToken);
+
+        return new CodebooksGetDeveloperProjectResponse
+        {
+            Id = result.Id,
+            IsValid = result.IsValid,
+            MassEvaluation = result.MassEvaluation,
+            MassEvaluationText = result.MassEvaluationText,
+            Name = result.Name,
+            Place = result.Place,
+            Recommandation = result.Recommandation,
+            WarningForKb = result.WarningForKb,
+            WarningForMp = result.WarningForMp,
+            Web = result.Web
+        };
     }
 }

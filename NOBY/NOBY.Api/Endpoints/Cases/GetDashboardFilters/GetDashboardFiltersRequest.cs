@@ -1,6 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetTotalsByStates;
+﻿namespace NOBY.Api.Endpoints.Cases.GetDashboardFilters;
 
 internal sealed class GetDashboardFiltersRequest
-    : IRequest<List<GetDashboardFiltersResponse>>
+    : IRequest<List<CasesGetDashboardFiltersResponseItem>>
 {
 }

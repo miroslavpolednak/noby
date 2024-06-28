@@ -54,7 +54,6 @@ internal static class NobySwagger
 
             x.SchemaFilter<NewLineReplacementFilter>();
             x.SchemaFilter<SwaggerOneOfSchemaFilter>();
-            x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
 
             x.OperationFilter<NewLineReplacementFilter>();
@@ -64,29 +63,6 @@ internal static class NobySwagger
         });
 
         return builder;
-    }
-
-    private sealed class CodebookGetAllSchemaFilter : ISchemaFilter
-    {
-        private readonly List<Type> _getAllResponsePossibleTypes;
-
-        public CodebookGetAllSchemaFilter(CodebookMap codebookMap)
-        {
-            _getAllResponsePossibleTypes = codebookMap.GroupBy(c => c.ReturnType, c => c.ReturnType).Select(c => c.First()).ToList();
-        }
-
-        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-        {
-            if (context.Type != typeof(Endpoints.Codebooks.GetAll.GetAllResponseItem))
-                return;
-
-            var codebookCollectionProperty = schema.Properties[nameof(Endpoints.Codebooks.GetAll.GetAllResponseItem.Codebook).ToLowerInvariant()];
-
-            foreach (var type in _getAllResponsePossibleTypes)
-            {
-                codebookCollectionProperty.Items.OneOf.Add(context.SchemaGenerator.GenerateSchema(type, context.SchemaRepository));
-            }
-        }
     }
 
     private sealed class EnumValuesDescriptionSchemaFilter : ISchemaFilter

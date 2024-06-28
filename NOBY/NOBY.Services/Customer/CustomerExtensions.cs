@@ -74,4 +74,16 @@ public static class CustomerExtensions
             ValidTo = document.ValidTo,
             Number = document.Number
         };
+
+    public static ApiContracts.SharedTypesIdentificationDocumentFull ToFeApi(this DomainServices.CustomerService.Contracts.IdentificationDocument document)
+        => new()
+        {
+            IssuingCountryId = document.IssuingCountryId ?? 0,
+            IdentificationDocumentTypeId = document.IdentificationDocumentTypeId,
+            IssuedBy = document.IssuedBy,
+            IssuedOn = document.IssuedOn,
+            RegisterPlace = document.RegisterPlace,
+            ValidTo = document.ValidTo,
+            Number = document.Number
+        };
 }

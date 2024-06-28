@@ -5,13 +5,19 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Services.WorkflowTask;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-
 namespace NOBY.Api.Endpoints.Workflow.UpdateTaskDetail;
 
-internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetailRequest>
+internal sealed class UpdateTaskDetailHandler(
+    ICodebookServiceClient _codebookService,
+    ICurrentUserAccessor _currentUserAccessor,
+    Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive,
+    ICaseServiceClient _caseService,
+    SharedComponents.Storage.ITempStorage _tempFileManager,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ILogger<UpdateTaskDetailHandler> _logger)
+        : IRequestHandler<WorkflowUpdateTaskDetailRequest>
 {
-    public async Task Handle(UpdateTaskDetailRequest request, CancellationToken cancellationToken)
+    public async Task Handle(WorkflowUpdateTaskDetailRequest request, CancellationToken cancellationToken)
     {
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
@@ -58,7 +64,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
     /// <summary>
     /// update RC2 atributu na retenci
     /// </summary>
-    private async Task updateRetentionRefixationSalesArrangementParameters(UpdateTaskDetailRequest request, long processId, CancellationToken cancellationToken)
+    private async Task updateRetentionRefixationSalesArrangementParameters(WorkflowUpdateTaskDetailRequest request, long processId, CancellationToken cancellationToken)
     {
         // najit retencni SA
         var saList = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken);
@@ -93,7 +99,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         }
     }
 
-    private int? setCompletitionType(int taskTypeId, UpdateTaskDetailRequest request)
+    private int? setCompletitionType(int taskTypeId, WorkflowUpdateTaskDetailRequest request)
     {
         int? completionTypeId = null;
 
@@ -121,7 +127,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
         return completionTypeId;
     }
 
-    private static List<Services.UploadDocumentToArchive.DocumentMetadata>? getAttachments(GetTaskDetailResponse taskDetail, UpdateTaskDetailRequest request)
+    private static List<Services.UploadDocumentToArchive.DocumentMetadata>? getAttachments(GetTaskDetailResponse taskDetail, WorkflowUpdateTaskDetailRequest request)
     {
         return request
             .Attachments?
@@ -135,7 +141,7 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             .ToList();
     }
 
-    private async Task<List<string>?> getDocumentIds(GetTaskDetailResponse taskDetail, UpdateTaskDetailRequest request, Case caseDetail, List<Services.UploadDocumentToArchive.DocumentMetadata>? attachments, CancellationToken cancellationToken)
+    private async Task<List<string>?> getDocumentIds(GetTaskDetailResponse taskDetail, WorkflowUpdateTaskDetailRequest request, Case caseDetail, List<Services.UploadDocumentToArchive.DocumentMetadata>? attachments, CancellationToken cancellationToken)
     {
         if (attachments?.Any() ?? false)
         {
@@ -187,33 +193,4 @@ internal sealed class UpdateTaskDetailHandler : IRequestHandler<UpdateTaskDetail
             (int)WorkflowTaskTypes.Signing,
             (int)WorkflowTaskTypes.RetentionRefixation
         ];
-
-    private readonly ILogger<UpdateTaskDetailHandler> _logger;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IWorkflowTaskService _workflowTask;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICaseServiceClient _caseService;
-    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
-    
-    public UpdateTaskDetailHandler(
-        ICodebookServiceClient codebookService,
-        ICurrentUserAccessor currentUserAccessor,
-        Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive,
-        ICaseServiceClient caseService,
-        SharedComponents.Storage.ITempStorage tempFileManager,
-        ISalesArrangementServiceClient salesArrangementService,
-        IWorkflowTaskService workflowTask,
-        ILogger<UpdateTaskDetailHandler> logger)
-    {
-        _codebookService = codebookService;
-        _currentUserAccessor = currentUserAccessor;
-        _uploadDocumentToArchive = uploadDocumentToArchive;
-        _caseService = caseService;
-        _tempFileManager = tempFileManager;
-        _salesArrangementService = salesArrangementService;
-        _workflowTask = workflowTask;
-        _logger = logger;
-    }
 }

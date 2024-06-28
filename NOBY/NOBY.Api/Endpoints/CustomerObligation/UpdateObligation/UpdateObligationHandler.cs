@@ -3,10 +3,10 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerObligation.UpdateObligation;
 
-internal sealed class UpdateObligationHandler
-    : IRequestHandler<UpdateObligationRequest>
+internal sealed class UpdateObligationHandler(ICustomerOnSAServiceClient _customerService)
+    : IRequestHandler<CustomerObligationUpdateObligationRequest>
 {
-    public async Task Handle(UpdateObligationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(CustomerObligationUpdateObligationRequest request, CancellationToken cancellationToken)
     {
         var obligationInstance = await _customerService.GetObligation(request.ObligationId, cancellationToken);
 
@@ -20,30 +20,10 @@ internal sealed class UpdateObligationHandler
             ObligationTypeId = request.ObligationTypeId,
             LoanPrincipalAmount = request.LoanPrincipalAmount,
             AmountConsolidated = request.AmountConsolidated,
+            Creditor = request.Creditor?.ToDomainServiceRequest(),
+            Correction = request.Correction?.ToDomainServiceRequest()
         };
-        if (request.Creditor is not null)
-            model.Creditor = new _HO.ObligationCreditor
-            {
-                CreditorId = request.Creditor.CreditorId ?? "",
-                IsExternal = request.Creditor.IsExternal,
-                Name = request.Creditor.Name ?? ""
-            };
-        if (request.Correction is not null)
-            model.Correction = new _HO.ObligationCorrection
-            {
-                CorrectionTypeId = request.Correction.CorrectionTypeId,
-                CreditCardLimitCorrection = request.Correction.CreditCardLimitCorrection,
-                InstallmentAmountCorrection = request.Correction.InstallmentAmountCorrection,
-                LoanPrincipalAmountCorrection = request.Correction.LoanPrincipalAmountCorrection
-            };
 
         await _customerService.UpdateObligation(model, cancellationToken);
-    }
-
-    private readonly ICustomerOnSAServiceClient _customerService;
-    
-    public UpdateObligationHandler(ICustomerOnSAServiceClient customerService)
-    {
-        _customerService = customerService;
     }
 }

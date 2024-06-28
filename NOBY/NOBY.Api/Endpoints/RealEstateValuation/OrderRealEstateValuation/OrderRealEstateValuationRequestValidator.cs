@@ -4,7 +4,7 @@ using FluentValidation;
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
 internal sealed class OrderRealEstateValuationRequestValidator
-    : AbstractValidator<OrderRealEstateValuationRequest>
+    : AbstractValidator<RealEstateValuationOrderRealEstateValuationRequest>
 {
     public OrderRealEstateValuationRequestValidator(ICodebookServiceClient codebookService)
     {

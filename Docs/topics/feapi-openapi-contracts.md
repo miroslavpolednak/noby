@@ -94,7 +94,7 @@ Následně je možné enum používat v ostatních schématech:
 }
 ```
 
-##Další témata
+## Další témata
 
 ### Dědičnost
 OpenApi podporuje dědičnost pomocí tagu "**allOf**". 
@@ -118,3 +118,11 @@ Následně objekt, který dědí z base modelu:
 	"additionalProperties": false
 }
 ```
+
+# DEV dokumentace
+Kontrakty a partial třídy pro FE API jsou generovány z OpenApi specifikace a jsou umístěny v projektu **NOBY.ApiContracts** v souboru **Contracts.cs**.
+Kontrakty jsou vygenerovány pomocí nástroje *NSwag*, nastavení pro NSwag je uloženo v souboru **settings.nswag** v projektu *NOBY.ApiContracts*.
+
+Projekt **NOBY.ApiContracts** dále obsahuje rozšíření (partial classes) pro třídy vygenerované *NSwagem*.
+Zejména se jedná o Mediatr requesty u kterých je potřeba implementovat rozhraní `IRequest`, případně metodu `InfuseId`.
+Partial třídy requestů jsou umístěny v adresáři **PartialRequests**.

@@ -1,13 +1,11 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-
 namespace NOBY.Api.Endpoints.RealEstateValuation.AddDeedOfOwnershipDocument;
 
-internal sealed class AddDeedOfOwnershipDocumentHandler
-    : IRequestHandler<AddDeedOfOwnershipDocumentRequest, int>
+internal sealed class AddDeedOfOwnershipDocumentHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+        : IRequestHandler<RealEstateValuationAddDeedOfOwnershipDocumentRequest, int>
 {
-    public async Task<int> Handle(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(RealEstateValuationAddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
         var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
         if (revInstance.PossibleValuationTypeId?.Any() ?? false)
@@ -37,12 +35,5 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
         }
 
         return await _realEstateValuationService.AddDeedOfOwnershipDocument(dsRequest, cancellationToken);
-    }
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public AddDeedOfOwnershipDocumentHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
     }
 }

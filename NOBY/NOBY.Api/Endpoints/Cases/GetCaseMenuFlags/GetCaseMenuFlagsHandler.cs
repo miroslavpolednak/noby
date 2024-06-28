@@ -12,7 +12,7 @@ internal sealed class GetCaseMenuFlagsHandler(
     ICaseServiceClient _caseService,
     IProductServiceClient _productService,
     IDocumentArchiveServiceClient _documentArchiveServiceClient,
-    IDocumentHelperService _documentHelper)
+    IDocumentHelperServiceOld _documentHelper)
         : IRequestHandler<GetCaseMenuFlagsRequest, CasesGetCaseMenuFlagsResponse>
 {
     public async Task<CasesGetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)

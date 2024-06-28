@@ -8,28 +8,14 @@ using RealEstateValuationDetail = DomainServices.RealEstateValuationService.Cont
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationTypes;
 
-internal sealed class GetRealEstateValuationTypesHandler
-    : IRequestHandler<GetRealEstateValuationTypesRequest, List<int>>
+internal sealed class GetRealEstateValuationTypesHandler(
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    IProductServiceClient _productService,
+    IRealEstateValuationServiceClient _realEstateValuationService)
+        : IRequestHandler<GetRealEstateValuationTypesRequest, List<int>>
 {
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly IProductServiceClient _productService;
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public GetRealEstateValuationTypesHandler(ICaseServiceClient caseService,
-                                              ISalesArrangementServiceClient salesArrangementService,
-                                              IOfferServiceClient offerService,
-                                              IProductServiceClient productService,
-                                              IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _productService = productService;
-        _realEstateValuationService = realEstateValuationService;
-    }
-
     public async Task<List<int>> Handle(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken)
     {
         var detail = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
@@ -81,7 +67,7 @@ internal sealed class GetRealEstateValuationTypesHandler
         if (!detail.RealEstateSubtypeId.HasValue)
             throw new NobyValidationException(90032);
 
-        var variant = RealEstateVariantHelper.GetRealEstateVariant(detail.RealEstateTypeId);
+        var variant = RealEstateValuationHelpers.GetRealEstateVariant(detail.RealEstateTypeId);
 
         switch (variant)
         {

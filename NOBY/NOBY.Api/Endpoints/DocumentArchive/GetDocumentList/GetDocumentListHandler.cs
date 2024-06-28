@@ -9,12 +9,12 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
 {
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDocumentHelperService _documentHelper;
+    private readonly IDocumentHelperServiceOld _documentHelper;
 
     public GetDocumentListHandler(
             IDocumentArchiveServiceClient client,
             ICurrentUserAccessor currentUserAccessor,
-            IDocumentHelperService documentHelper)
+            IDocumentHelperServiceOld documentHelper)
     {
         _client = client;
         _currentUserAccessor = currentUserAccessor;

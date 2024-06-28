@@ -121,12 +121,12 @@ internal sealed class RealEstateValuationServiceClient(Contracts.v1.RealEstateVa
         }, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateValuationTypeByRealEstateValuation(int realEstateValuationId, RealEstateValuationValuationTypes valuationTypeId, CancellationToken cancellationToken = default)
+    public async Task UpdateValuationTypeByRealEstateValuation(int realEstateValuationId, int valuationTypeId, CancellationToken cancellationToken = default)
     {
         await _service.UpdateValuationTypeByRealEstateValuationAsync(new()
         {
             RealEstateValuationId = realEstateValuationId,
-            ValuationTypeId = (int)valuationTypeId
+            ValuationTypeId = valuationTypeId
         }, cancellationToken: cancellationToken);
     }
 

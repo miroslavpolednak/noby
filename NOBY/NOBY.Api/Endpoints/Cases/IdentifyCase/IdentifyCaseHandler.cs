@@ -10,7 +10,6 @@ using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using SharedTypes.GrpcTypes;
 using System.Text.RegularExpressions;
-using PaymentAccount = NOBY.Api.Endpoints.Cases.IdentifyCase.Dto.PaymentAccount;
 
 namespace NOBY.Api.Endpoints.Cases.IdentifyCase;
 
@@ -24,22 +23,22 @@ internal sealed partial class IdentifyCaseHandler(
     IDocumentOnSAServiceClient _documentOnSAService,
     ISalesArrangementServiceClient _salesArrangementService,
     ICodebookServiceClient _codebookService) 
-    : IRequestHandler<IdentifyCaseRequest, IdentifyCaseResponse>
+    : IRequestHandler<CasesIdentifyCaseRequest, CasesIdentifyCaseResponse>
 {
-    public async Task<IdentifyCaseResponse> Handle(IdentifyCaseRequest request, CancellationToken cancellationToken)
+    public async Task<CasesIdentifyCaseResponse> Handle(CasesIdentifyCaseRequest request, CancellationToken cancellationToken)
     {
         return request.Criterion switch
         {
-            Criterion.FormId => await handleByFormId(request.FormId!.Trim(), cancellationToken),
-            Criterion.PaymentAccount => await handleByPaymentAccount(request.Account!, cancellationToken),
-            Criterion.CaseId => await handleByCaseId(request.CaseId!.Value, cancellationToken),
-            Criterion.ContractNumber => await handleByContractNumber(request.ContractNumber!.Trim(), cancellationToken),
-            Criterion.CustomerIdentity => await handleByCustomerIdentity(request.CustomerIdentity, cancellationToken),
+            CasesIdentifyCaseRequestCriterion.FormId => await handleByFormId(request.FormId!.Trim(), cancellationToken),
+            CasesIdentifyCaseRequestCriterion.PaymentAccount => await handleByPaymentAccount(request.Account!, cancellationToken),
+            CasesIdentifyCaseRequestCriterion.CaseId => await handleByCaseId(request.CaseId!.Value, cancellationToken),
+            CasesIdentifyCaseRequestCriterion.ContractNumber => await handleByContractNumber(request.ContractNumber!.Trim(), cancellationToken),
+            CasesIdentifyCaseRequestCriterion.CustomerIdentity => await handleByCustomerIdentity(request.CustomerIdentity!, cancellationToken),
             _ => throw new NobyValidationException("Criterion unknown")
         };
     }
 
-    private async Task<IdentifyCaseResponse> handleByCustomerIdentity(Identity? identity, CancellationToken cancellationToken)
+    private async Task<CasesIdentifyCaseResponse> handleByCustomerIdentity(Identity? identity, CancellationToken cancellationToken)
     {
         var result = await _productServiceClient.SearchProducts(identity, cancellationToken);
         List<long> idsToRemove = [];
@@ -65,34 +64,38 @@ internal sealed partial class IdentifyCaseHandler(
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
         var caseStates = await _codebookService.CaseStates(cancellationToken);
 
-        IdentifyCaseResponse response = new() { Cases = new(result.Count - idsToRemove.Count) };
+        CasesIdentifyCaseResponse response = new() { Cases = new(result.Count - idsToRemove.Count) };
 
         foreach (var product in result.Where(t => !idsToRemove.Contains(t.CaseId)))
         {
             var caseInstance = await _caseServiceClient.GetCaseDetail(product.CaseId, cancellationToken);
 
-            response.Cases.Add(new Dto.IdentifyCaseResponseItem
+            response.Cases.Add(new CasesIdentifyCaseResponseItem
             {
                 CaseId = product.CaseId,
                 ContractRelationshipTypeId = product.ContractRelationshipTypeId,
                 ContractNumber = caseInstance.Data.ContractNumber,
-                State = (CaseStates)caseInstance.State,
+                State = (EnumCaseStates)caseInstance.State,
                 TargetAmount = caseInstance.Data.TargetAmount,
                 StateName = caseStates.First(x => x.Id == caseInstance.State).Name,
                 ProductName = productTypes.First(x => x.Id == caseInstance.Data.ProductTypeId).Name,
                 CaseOwnerName = caseInstance.CaseOwner.UserName,
                 CreatedOn = caseInstance.Created.DateTime,
                 StateUpdatedOn = caseInstance.StateUpdatedOn,
-                Customer = new Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemCustomer
+                Customer = new()
                 {
                     FirstName = caseInstance.Customer.FirstNameNaturalPerson,
                     LastName = caseInstance.Customer.Name,
                     DateOfBirth = caseInstance.Customer.DateOfBirthNaturalPerson,
-                    Identity = new SharedTypes.Types.CustomerIdentity(caseInstance.Customer.Identity.IdentityId, (int)caseInstance.Customer.Identity.IdentityScheme)
+                    Identity = new SharedTypesCustomerIdentity
+                    {
+                        Scheme = (SharedTypesCustomerIdentityScheme)caseInstance.Customer.Identity.IdentityScheme,
+                        Id = caseInstance.Customer.Identity.IdentityId
+                    }
                 },
                 ActiveTasks = caseInstance.Tasks?
                     .GroupBy(t => t.TaskTypeId)
-                    .Select(t => new Dto.IdentifyCaseResponseItem.IdentifyCaseResponseItemTask
+                    .Select(t => new CasesIdentifyCaseResponseItemTask
                     {
                         CategoryId = t.Key,
                         TaskCount = t.Count()
@@ -104,7 +107,7 @@ internal sealed partial class IdentifyCaseHandler(
         return response;
     }
 
-    private async Task<IdentifyCaseResponse> handleByFormId(string formId, CancellationToken cancellationToken)
+    private async Task<CasesIdentifyCaseResponse> handleByFormId(string formId, CancellationToken cancellationToken)
     {
         var documentListRequest = new GetDocumentListRequest { FormId = formId };
         var documentListResponse = await _documentArchiveServiceClient.GetDocumentList(documentListRequest, cancellationToken);
@@ -124,13 +127,13 @@ internal sealed partial class IdentifyCaseHandler(
                 var validationResponse = await _salesArrangementService.ValidateSalesArrangementId(documentOnSa.SalesArrangementId, false, cancellationToken);
 
                 if (!validationResponse.Exists || validationResponse.CaseId is null)
-                    return new IdentifyCaseResponse();
+                    return new CasesIdentifyCaseResponse();
 
                 return await handleByCaseId(validationResponse.CaseId.Value, cancellationToken);
             }
             catch (CisNotFoundException)
             {
-                return new IdentifyCaseResponse();
+                return new CasesIdentifyCaseResponse();
             }
         }
 
@@ -149,7 +152,13 @@ internal sealed partial class IdentifyCaseHandler(
 
         if (taskSubList.Count == 0)
         {
-            return new IdentifyCaseResponse { Cases = [ new(caseId.Value) ] };
+            return new CasesIdentifyCaseResponse 
+            { 
+                Cases = 
+                [ 
+                    new() { CaseId = caseId.Value } 
+                ] 
+            };
         }
 
         var taskDetails = new Dictionary<long, List<TaskDetailItem>>();
@@ -166,23 +175,32 @@ internal sealed partial class IdentifyCaseHandler(
 
         if (taskDetails.SelectMany(d => d.Value).Count() != 1)
         {
-            return new IdentifyCaseResponse { Cases = [new(caseId.Value)] };
+            return new CasesIdentifyCaseResponse
+            {
+                Cases =
+                [
+                    new() { CaseId = caseId.Value }
+                ]
+            };
         }
 
         var taskId = taskDetails.First().Key;
         var taskDetailRequest = new Workflow.GetTaskDetail.GetTaskDetailRequest(caseId.Value, taskId);
         var taskDetailResponse = await _mediator.Send(taskDetailRequest, cancellationToken);
 
-        return new IdentifyCaseResponse
+        return new CasesIdentifyCaseResponse
         {
-            Cases = [ new(caseId.Value) ],
+            Cases =
+            [
+                new() { CaseId = caseId.Value }
+            ],
             Task = taskDetailResponse.Task,
             TaskDetail = taskDetailResponse.TaskDetail,
             Documents = taskDetailResponse.Documents
         };
     }
     
-    private async Task<IdentifyCaseResponse> handleByPaymentAccount(PaymentAccount account, CancellationToken cancellationToken)
+    private async Task<CasesIdentifyCaseResponse> handleByPaymentAccount(CasesIdentifyCasePaymentAccount account, CancellationToken cancellationToken)
     {
         var request = new GetCaseIdRequest 
         { 
@@ -195,7 +213,7 @@ internal sealed partial class IdentifyCaseHandler(
         return await callProductService(request, cancellationToken);
     }
     
-    private async Task<IdentifyCaseResponse> handleByContractNumber(string contractNumber, CancellationToken cancellationToken)
+    private async Task<CasesIdentifyCaseResponse> handleByContractNumber(string contractNumber, CancellationToken cancellationToken)
     {
         var request = new GetCaseIdRequest 
         { 
@@ -207,7 +225,7 @@ internal sealed partial class IdentifyCaseHandler(
         return await callProductService(request, cancellationToken);
     }
 
-    private async Task<IdentifyCaseResponse> handleByCaseId(long caseId, CancellationToken cancellationToken)
+    private async Task<CasesIdentifyCaseResponse> handleByCaseId(long caseId, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId, false, cancellationToken);
 
@@ -220,18 +238,24 @@ internal sealed partial class IdentifyCaseHandler(
             }
             catch (CisNotFoundException)
             {
-                return new IdentifyCaseResponse();
+                return new CasesIdentifyCaseResponse();
             }
         }
         else
         {
             SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
         }
-        
-        return new IdentifyCaseResponse { Cases = [new(caseId)] };
+
+        return new CasesIdentifyCaseResponse
+        {
+            Cases =
+                [
+                    new() { CaseId = caseId }
+                ]
+        };
     }
 
-    private async Task<IdentifyCaseResponse> callProductService(GetCaseIdRequest request, CancellationToken cancellationToken)
+    private async Task<CasesIdentifyCaseResponse> callProductService(GetCaseIdRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -240,7 +264,7 @@ internal sealed partial class IdentifyCaseHandler(
         }
         catch (CisNotFoundException)
         {
-            return new IdentifyCaseResponse();
+            return new CasesIdentifyCaseResponse();
         }
     }
 

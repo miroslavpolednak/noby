@@ -43,11 +43,11 @@ public class CasesController(IMediator _mediator) : ControllerBase
     [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Case" ])]
-    [ProducesResponseType(typeof(List<GetCustomers.GetCustomersResponseCustomer>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<CasesGetCustomersResponseCustomer>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=7F566103-49D8-4a7a-83C3-B690F4A1CC1C")]
-    public async Task<List<GetCustomers.GetCustomersResponseCustomer>> GetCustomersOnCase([FromRoute] long caseId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetCustomers.GetCustomersRequest(caseId), cancellationToken);
+    public async Task<List<CasesGetCustomersResponseCustomer>> GetCustomersOnCase([FromRoute] long caseId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCustomersOnCase.GetCustomersOnCaseRequest(caseId), cancellationToken);
 
     /// <summary>
     /// Vytvoření servisního SalesArrangement-u
@@ -97,10 +97,10 @@ public class CasesController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Case" ])]
-    [ProducesResponseType(typeof(List<GetTotalsByStates.GetDashboardFiltersResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<CasesGetDashboardFiltersResponseItem>), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2FDB0893-BE64-4f37-A196-DDECBB910CB3")]
-    public async Task<List<GetTotalsByStates.GetDashboardFiltersResponse>> GetDashboardFilters(CancellationToken cancellationToken)
-        => await _mediator.Send(new GetTotalsByStates.GetDashboardFiltersRequest(), cancellationToken);
+    public async Task<List<CasesGetDashboardFiltersResponseItem>> GetDashboardFilters(CancellationToken cancellationToken)
+        => await _mediator.Send(new GetDashboardFilters.GetDashboardFiltersRequest(), cancellationToken);
 
     /// <summary>
     /// Seznam Cases pro přihlášeného uživatele.
@@ -143,9 +143,9 @@ public class CasesController(IMediator _mediator) : ControllerBase
     [NobySkipCaseOwnerValidation]
     [NobyAuthorize(UserPermissions.DASHBOARD_IdentifyCase)]
     [SwaggerOperation(Tags = [ "Case" ])]
-    [ProducesResponseType(typeof(IdentifyCase.IdentifyCaseResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CasesIdentifyCaseResponse), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=60DB6DA4-D938-4901-98DC-0C8DF8011589")]
-    public async Task<IdentifyCase.IdentifyCaseResponse> IdentifyCase([FromBody] IdentifyCase.IdentifyCaseRequest request)
+    public async Task<CasesIdentifyCaseResponse> IdentifyCase([FromBody] CasesIdentifyCaseRequest request)
         => await _mediator.Send(request);
     
     /// <summary>
@@ -159,10 +159,10 @@ public class CasesController(IMediator _mediator) : ControllerBase
     [NobyAuthorizePreload(NobyAuthorizePreloadAttribute.LoadableEntities.Case)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Case" ])]
-    [ProducesResponseType(typeof(GetCaseParameters.GetCaseParametersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CasesGetCaseParametersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EEB4BBAA-9996-43ff-BB50-61514A2B6107")]
-    public async Task<GetCaseParameters.GetCaseParametersResponse> GetCaseParameters([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task<CasesGetCaseParametersResponse> GetCaseParameters([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCaseParameters.GetCaseParametersRequest(caseId), cancellationToken);
 
 
@@ -193,10 +193,10 @@ public class CasesController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Case" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CasesGetCovenantsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=4378EDFB-2A3D-46f6-8C51-0241A3436D5E")]
-    public async Task<GetCovenants.GetCovenantsResponse> GetCovenants([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task<CasesGetCovenantsResponse> GetCovenants([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCovenants.GetCovenantsRequest(caseId), cancellationToken);
 
     /// <summary>
@@ -211,9 +211,9 @@ public class CasesController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Case" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CasesGetCovenantResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=56FAFD66-E483-475d-9868-6B90A4ED889B")]
-    public async Task<GetCovenant.GetCovenantResponse> GetCovenant([FromRoute] long caseId, [FromRoute] int covenantOrder, CancellationToken cancellationToken)
+    public async Task<CasesGetCovenantResponse> GetCovenant([FromRoute] long caseId, [FromRoute] int covenantOrder, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCovenant.GetCovenantRequest(caseId, covenantOrder), cancellationToken);
 }

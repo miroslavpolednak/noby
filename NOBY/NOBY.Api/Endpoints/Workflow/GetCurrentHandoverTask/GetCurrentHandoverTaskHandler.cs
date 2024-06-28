@@ -4,16 +4,13 @@ using NOBY.Services.WorkflowTask;
 
 namespace NOBY.Api.Endpoints.Workflow.GetCurrentHandoverTask;
 
-public class GetCurrentHandoverTaskHandler(
-    ICaseServiceClient caseService,
-    IWorkflowTaskService workflowTaskService,
-    ICodebookServiceClient codebookService) : IRequestHandler<GetCurrentHandoverTaskRequest, GetCurrentHandoverTaskResponse>
+internal sealed class GetCurrentHandoverTaskHandler(
+    ICaseServiceClient _caseService,
+    IWorkflowTaskService _workflowTaskService,
+    ICodebookServiceClient _codebookService) 
+    : IRequestHandler<GetCurrentHandoverTaskRequest, WorkflowGetCurrentHandoverTaskResponse>
 {
-    private readonly ICaseServiceClient _caseService = caseService;
-    private readonly IWorkflowTaskService _workflowTaskService = workflowTaskService;
-    private readonly ICodebookServiceClient _codebookService = codebookService;
-
-    public async Task<GetCurrentHandoverTaskResponse> Handle(GetCurrentHandoverTaskRequest request, CancellationToken cancellationToken)
+    public async Task<WorkflowGetCurrentHandoverTaskResponse> Handle(GetCurrentHandoverTaskRequest request, CancellationToken cancellationToken)
     {
         var task = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
             .Find(t => t.TaskTypeId == (int)WorkflowTaskTypes.PredaniNaSpecialitu && t.StateIdSb != 30);
@@ -33,7 +30,7 @@ public class GetCurrentHandoverTaskHandler(
         };
     }
 
-    private async Task<GetCurrentHandoverTaskResponse> CreateResponseManually(GetCurrentHandoverTaskRequest request, CancellationToken cancellationToken)
+    private async Task<WorkflowGetCurrentHandoverTaskResponse> CreateResponseManually(GetCurrentHandoverTaskRequest request, CancellationToken cancellationToken)
     {
         var workflowTypeName = (await _codebookService.WorkflowTaskTypes(cancellationToken)).Find(r => r.Id == 7)?.Name;
         var process = (await _caseService.GetProcessList(request.CaseId, cancellationToken)).FirstOrDefault(r => r.ProcessTypeId == (int)WorkflowProcesses.Main);
@@ -52,6 +49,5 @@ public class GetCurrentHandoverTaskHandler(
                 ProcessNameLong = process?.ProcessNameLong ?? string.Empty,
             }
         };
-
     }
 }

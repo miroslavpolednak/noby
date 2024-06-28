@@ -13,7 +13,7 @@ public sealed class MortgageRefinancingDataService(
     ICodebookServiceClient _codebookService,
     ICaseServiceClient _caseService,
     ISalesArrangementServiceClient _salesArrangementService,
-    WorkflowMapper.IWorkflowMapperService _workflowMapper)
+    WorkflowMapper.IWorkflowMapperServiceOld _workflowMapper)
 {
     public async Task<Dto.Refinancing.RefinancingDocument> CreateSigningDocument(GetRefinancingDataResult result, RefinancingTypes refinancingType, int? eaCode, string? documentId)
     {

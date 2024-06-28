@@ -1,6 +1,6 @@
 ﻿using LazyCache;
 using Microsoft.EntityFrameworkCore;
-using NOBY.Dto;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.FeBanners;
 
@@ -10,7 +10,7 @@ public sealed class FeBannersService(
     Database.FeApiDbContext _dbContext,
     IAppCache _cache)
 {
-    public FeBannerItem[] GetBanners()
+    public List<UsersGetCurrentBannerItem> GetBanners()
     {
         return _cache.GetOrAdd("FeBanners", () =>
         {
@@ -21,13 +21,13 @@ public sealed class FeBannersService(
                 .Where(t => t.VisibleFrom < d && t.VisibleTo > d)
                 .OrderByDescending(t => t.Severity).ThenBy(t => t.VisibleTo)
                 .Take(5)
-                .Select(t => new FeBannerItem
+                .Select(t => new UsersGetCurrentBannerItem
                 {
                     Description = t.Description,
                     Title = t.Title,
-                    Severity = (FeBannerItem.FeBannersSeverity)t.Severity
+                    Severity = (UsersGetCurrentBannerItemSeverity)t.Severity
                 })
-                .ToArray();
+                .ToList();
         }, DateTime.Now.AddMinutes(5));
     }
 }

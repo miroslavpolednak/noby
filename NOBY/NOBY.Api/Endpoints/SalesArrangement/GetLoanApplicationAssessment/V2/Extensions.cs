@@ -173,7 +173,7 @@ internal static class Extensions
             ObligationLaExposureId = loanType?.Id,
             ObligationLaExposureName = loanType?.Name,
             RoleId = roleId,
-            Creditor = new CustomerObligation.SharedDto.ObligationCreditorDto
+            Creditor = new()
             {
                 IsExternal = isExternal
             },

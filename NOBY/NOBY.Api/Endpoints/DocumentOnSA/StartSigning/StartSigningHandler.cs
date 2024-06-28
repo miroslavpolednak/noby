@@ -195,7 +195,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             FormId = result.DocumentOnSa.FormId,
             IsSigned = result.DocumentOnSa.IsSigned,
             SignatureTypeId = result.DocumentOnSa.SignatureTypeId,
-            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
+            SignatureState = DocumentOnSaMetadataManagerOld.GetSignatureState(new()
             {
                 IsValid = result.DocumentOnSa.IsValid,
                 DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
@@ -207,7 +207,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
                 EaCodeMainId = result.DocumentOnSa.EACodeMainId
             },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+            EACodeMainItem = DocumentOnSaMetadataManagerOld.GetEaCodeMainItem(
                 new() { DocumentTypeId = result.DocumentOnSa.DocumentTypeId, EACodeMainId = result.DocumentOnSa.EACodeMainId }, documentTypes, eACodeMains)
         };
     }

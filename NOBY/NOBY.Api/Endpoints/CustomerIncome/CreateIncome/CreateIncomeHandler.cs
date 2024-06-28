@@ -4,10 +4,12 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.CreateIncome;
 
-internal sealed class CreateIncomeHandler
-    : IRequestHandler<CreateIncomeRequest, int>
+internal sealed class CreateIncomeHandler(
+    ICustomerOnSAServiceClient _customerService,
+    FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService)
+        : IRequestHandler<CustomerIncomeCreateIncomeRequest, int>
 {
-    public async Task<int> Handle(CreateIncomeRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CustomerIncomeCreateIncomeRequest request, CancellationToken cancellationToken)
     {
         var model = new _HO.CreateIncomeRequest
         {
@@ -21,38 +23,27 @@ internal sealed class CreateIncomeHandler
         };
 
         // detail prijmu
-        if (request.Data is not null)
+        switch (request.IncomeTypeId)
         {
-            string dataString = ((System.Text.Json.JsonElement)request.Data).GetRawText();
+            case EnumIncomeTypes.Employement when request.Data?.Employment is not null:
+                model.Employement = request.Data.Employment.ToDomainServiceRequest();
+                break;
 
-            switch (request.IncomeTypeId)
-            {
-                case SharedTypes.Enums.CustomerIncomeTypes.Employement:
-                    var o1 = System.Text.Json.JsonSerializer.Deserialize<SharedDto.IncomeDataEmployement>(dataString, _jsonSerializerOptions);
-                    if (o1 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
-                        model.Employement = o1.ToDomainServiceRequest();
-                    break;
+            case EnumIncomeTypes.Other when request.Data?.Other is not null:
+                model.Other = request.Data.Other.ToDomainServiceRequest();
+                break;
 
-                case SharedTypes.Enums.CustomerIncomeTypes.Other:
-                    var o2 = System.Text.Json.JsonSerializer.Deserialize<SharedDto.IncomeDataOther>(dataString, _jsonSerializerOptions);
-                    if (o2 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
-                        model.Other = o2.ToDomainServiceRequest();
-                    break;
+            case EnumIncomeTypes.Entrepreneur when request.Data?.Entrepreneur is not null:
+                model.Entrepreneur = request.Data.Entrepreneur.ToDomainServiceRequest();
+                break;
 
-                case SharedTypes.Enums.CustomerIncomeTypes.Entrepreneur:
-                    var o3 = System.Text.Json.JsonSerializer.Deserialize<SharedDto.IncomeDataEntrepreneur>(dataString, _jsonSerializerOptions);
-                    if (o3 is not null) //TODO kdyz je to null, mam resit nejakou validaci?
-                        model.Entrepreneur = o3.ToDomainServiceRequest();
-                    break;
+            case EnumIncomeTypes.Rent:
+                // RENT nema zadna data
+                model.Rent = new _HO.IncomeDataRent();
+                break;
 
-                case SharedTypes.Enums.CustomerIncomeTypes.Rent:
-                    // RENT nema zadna data
-                    model.Rent = new _HO.IncomeDataRent();
-                    break;
-
-                default:
-                    throw new NotImplementedException($"IncomeType {request.IncomeTypeId} cast to domain service is not implemented");
-            }
+            default:
+                throw new NotImplementedException($"IncomeType {request.IncomeTypeId} cast to domain service is not implemented");
         }
 
         int incomeId = await _customerService.CreateIncome(model, cancellationToken);
@@ -60,22 +51,5 @@ internal sealed class CreateIncomeHandler
         await _flowSwitchMainHouseholdService.SetFlowSwitchByCustomerOnSAId(request.CustomerOnSAId.Value, cancellationToken: cancellationToken);
 
         return incomeId;
-    }
-
-    static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
-    {
-        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
-        PropertyNameCaseInsensitive = true
-    };
-
-    private readonly FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService;
-    private readonly ICustomerOnSAServiceClient _customerService;
-
-    public CreateIncomeHandler(
-        ICustomerOnSAServiceClient customerService, 
-        FlowSwitchAtLeastOneIncomeMainHouseholdService flowSwitchMainHouseholdService)
-    {
-        _customerService = customerService;
-        _flowSwitchMainHouseholdService = flowSwitchMainHouseholdService;
     }
 }

@@ -9,30 +9,30 @@ public partial class NullableGrpcDate
         Day = day;
     }
 
-    public static implicit operator DateOnly?(NullableGrpcDate grpcDate)
+    public static implicit operator DateOnly?(NullableGrpcDate? grpcDate)
     {
-        if (grpcDate == null) return default(DateOnly?);
+        if (grpcDate == null) return null;
 
         return new DateOnly(grpcDate.Year, grpcDate.Month, grpcDate.Day);
     }
 
     public static implicit operator NullableGrpcDate?(DateOnly? value)
     {
-        if (value == null) return default(NullableGrpcDate);
+        if (value == null) return null;
 
         return new NullableGrpcDate(value.Value.Year, value.Value.Month, value.Value.Day);
     }
 
     public static implicit operator NullableGrpcDate?(DateTime? value)
     {
-        if (value == null) return default(NullableGrpcDate);
+        if (value == null) return null;
 
         return new NullableGrpcDate(value.Value.Year, value.Value.Month, value.Value.Day);
     }
 
     public static implicit operator DateTime?(NullableGrpcDate? grpcDate)
-        => grpcDate == null ? default(DateTime?) : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
+        => grpcDate == null ? null : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 
     public static implicit operator DateTime(NullableGrpcDate grpcDate)
-        => grpcDate == null ? default(DateTime) : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
+        => grpcDate == null ? default : new DateTime(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 }

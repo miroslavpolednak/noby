@@ -10,7 +10,7 @@ public class CustomerInHousehold
     /// <summary>
     /// Prijmy customera
     /// </summary>
-    public List<CustomerIncome.SharedDto.IncomeBaseData>? Incomes { get; set; }
+    public List<IncomeBaseData>? Incomes { get; set; }
 
     /// <summary>
     /// Role klienta
@@ -35,5 +35,35 @@ public class CustomerInHousehold
     /// <summary>
     /// Zavazky customera
     /// </summary>
-    public List<CustomerObligation.SharedDto.ObligationFullDto>? Obligations { get; set; }
+    public List<CustomerObligationObligationFull>? Obligations { get; set; }
+}
+
+public class IncomeBaseData
+{
+    /// <summary>
+    /// Celkova castka prijmu
+    /// </summary>
+    /// <example>25000</example>
+    public decimal? Sum { get; set; }
+
+    /// <summary>
+    /// Kod meny
+    /// </summary>
+    /// <example>CZK</example>
+    public string? CurrencyCode { get; set; }
+
+    /// <summary>
+    /// ID prijmu, pokud se jedna o jiz ulozeny prijem. NULL pokud se jedna o novy prijem.
+    /// </summary>
+    public int? IncomeId { get; set; }
+
+    public string? IncomeSource { get; set; }
+
+    public bool? HasProofOfIncome { get; set; }
+
+    /// <summary>
+    /// Typ prijmu
+    /// </summary>
+    /// <example>1</example>
+    public SharedTypes.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
 }

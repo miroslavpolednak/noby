@@ -17,7 +17,6 @@ using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 internal sealed class CancelCaseHandler(
     TimeProvider _dateTime,
     ICodebookServiceClient _codebookService,
@@ -27,7 +26,7 @@ internal sealed class CancelCaseHandler(
     DocumentGenerator _documentGenerator,
     IDocumentArchiveServiceClient _documentArchiveService,
     ICurrentUserAccessor _currentUserAccessor,
-    IDocumentHelperService _documentHelper,
+    IDocumentHelperServiceOld _documentHelper,
     IUserServiceClient _userService) 
     : IRequestHandler<CancelCaseRequest, CasesCancelCaseResponse>
 {
@@ -44,7 +43,7 @@ internal sealed class CancelCaseHandler(
 
         var responseModel = new CasesCancelCaseResponse
         {
-            State = (CasesCancelCaseResponseState)caseDetail.State,
+            State = (EnumCaseStates)caseDetail.State,
             StateName = caseState.Name,
             CustomersOnSa = new List<CasesCancelCaseCustomerOnSAItem>(customerOnSas.Count)
         };

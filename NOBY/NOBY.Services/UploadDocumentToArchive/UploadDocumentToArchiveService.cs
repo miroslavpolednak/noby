@@ -82,7 +82,7 @@ internal sealed class UploadDocumentToArchiveService
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IUserServiceClient _userServiceClient;
     private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDocumentHelperService _documentHelper;
+    private readonly IDocumentHelperServiceOld _documentHelper;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
 
@@ -92,7 +92,7 @@ internal sealed class UploadDocumentToArchiveService
         IDocumentArchiveServiceClient documentArchiveService,
         IUserServiceClient userServiceClient,
         ICurrentUserAccessor currentUserAccessor,
-        IDocumentHelperService documentHelper,
+        IDocumentHelperServiceOld documentHelper,
         IDocumentOnSAServiceClient documentOnSAService,
         ISalesArrangementServiceClient salesArrangementService)
     {

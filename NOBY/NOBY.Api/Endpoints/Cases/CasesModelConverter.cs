@@ -29,7 +29,7 @@ internal sealed class CasesModelConverter(DomainServices.CodebookService.Clients
 		{
 			OfferContacts = new(),
 			CaseId = model.CaseId,
-			State = (CasesSharedCaseModelState)model.State,
+			State = (EnumCaseStates)model.State,
 			StateName = caseStates.First(x => x.Id == model.State).Name,
 			StateUpdated = model.StateUpdatedOn,
 			ContractNumber = model.Data.ContractNumber,
