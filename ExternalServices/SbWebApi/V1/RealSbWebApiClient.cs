@@ -299,7 +299,7 @@ internal sealed class RealSbWebApiClient
         return responseObject.Ea_number;
     }
 
-    public async Task<ICollection<string>?> GenerateCalculationDocuments(GenerateCalculationDocumentsRequest request, CancellationToken cancellationToken = default)
+    public async Task GenerateCalculationDocuments(GenerateCalculationDocumentsRequest request, CancellationToken cancellationToken = default)
     {
         var sbRequest = new CalculationDocuments_request
         {
@@ -319,13 +319,12 @@ internal sealed class RealSbWebApiClient
             Payment_reduction = request.IsInstallmentReduced,
             New_maturity_date = request.NewMaturityDate,
             New_payment_amount = (double?)request.NewPaymentAmount,
-            Print_signature_form = request.HandoverTypeDetailCode
+            Print_signature_form = request.HandoverTypeDetailCode,
+            Individual_pricing = request.IndividualPricing
         };
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/calculationdocuments", sbRequest, cancellationToken);
         var responseObject = await RequestHelper.ProcessResponse<CalculationDocuments_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
-
-        return responseObject.Ea_numbers;
     }
 
     private readonly HttpClient _httpClient;

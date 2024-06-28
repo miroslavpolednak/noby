@@ -1,4 +1,4 @@
-// 20240509
+// 20240628
 // https://sb2-test-server.vsskb.cz/WebApi/FAT/swagger/docs/v1
 
 {
@@ -9,24 +9,14 @@
 	},
 	"host": "sb2-test-server.vsskb.cz",
 	"basePath": "/WebApi/FAT",
-	"schemes": [
-		"https"
-	],
+	"schemes": [ "https" ],
 	"paths": {
 		"/api/getBookOfTermsAndLoanPurpose": {
 			"get": {
-				"tags": [
-					"BookOfTerms"
-				],
+				"tags": [ "BookOfTerms" ],
 				"operationId": "BookOfTerms_GetBookOfTermsAndLoanPurpose",
 				"consumes": [],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "contract_number",
@@ -38,15 +28,11 @@
 				"responses": {
 					"200": {
 						"description": "Book of terms and the loan purposes found and returned successfully",
-						"schema": {
-							"$ref": "#/definitions/BookOfTerms_response"
-						}
+						"schema": { "$ref": "#/definitions/BookOfTerms_response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -54,47 +40,26 @@
 		},
 		"/api/collaterals/instrument": {
 			"post": {
-				"tags": [
-					"Collateral"
-				],
+				"tags": [ "Collateral" ],
 				"operationId": "Collateral_BG_Instrument",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Coll_Request_Instrument"
-						}
+						"schema": { "$ref": "#/definitions/Coll_Request_Instrument" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Collateral instruments",
-						"schema": {
-							"$ref": "#/definitions/Coll_BG_Instrument_Response"
-						}
+						"schema": { "$ref": "#/definitions/Coll_BG_Instrument_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -102,47 +67,26 @@
 		},
 		"/api/collaterals/contract": {
 			"post": {
-				"tags": [
-					"Collateral"
-				],
+				"tags": [ "Collateral" ],
 				"operationId": "Collateral_BG_Contract",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Coll_Request_Contract"
-						}
+						"schema": { "$ref": "#/definitions/Coll_Request_Contract" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Collateral instruments",
-						"schema": {
-							"$ref": "#/definitions/Coll_BG_Contract_Response"
-						}
+						"schema": { "$ref": "#/definitions/Coll_BG_Contract_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -150,47 +94,26 @@
 		},
 		"/api/collaterals/owners": {
 			"post": {
-				"tags": [
-					"Collateral"
-				],
+				"tags": [ "Collateral" ],
 				"operationId": "Collateral_BG_Owners",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Coll_Request_Owners"
-						}
+						"schema": { "$ref": "#/definitions/Coll_Request_Owners" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Collateral instruments",
-						"schema": {
-							"$ref": "#/definitions/Coll_BG_Owners_Response"
-						}
+						"schema": { "$ref": "#/definitions/Coll_BG_Owners_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -198,47 +121,26 @@
 		},
 		"/api/collaterals/relationship": {
 			"post": {
-				"tags": [
-					"Collateral"
-				],
+				"tags": [ "Collateral" ],
 				"operationId": "Collateral_BG_Relationship",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Coll_Request_Relationship"
-						}
+						"schema": { "$ref": "#/definitions/Coll_Request_Relationship" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Collateral instruments",
-						"schema": {
-							"$ref": "#/definitions/Coll_BG_Relationship_Response"
-						}
+						"schema": { "$ref": "#/definitions/Coll_BG_Relationship_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -246,47 +148,26 @@
 		},
 		"/api/collaterals/valuation": {
 			"post": {
-				"tags": [
-					"Collateral"
-				],
+				"tags": [ "Collateral" ],
 				"operationId": "Collateral_BG_Valuation",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/Coll_Request_Valuation"
-						}
+						"schema": { "$ref": "#/definitions/Coll_Request_Valuation" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Collateral instruments",
-						"schema": {
-							"$ref": "#/definitions/Coll_BG_Valuation_Response"
-						}
+						"schema": { "$ref": "#/definitions/Coll_BG_Valuation_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -294,47 +175,26 @@
 		},
 		"/wfs/eventreport/documentbanksigned": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_DocumentBankSigned",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_DocumentBankSigned"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_DocumentBankSigned" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -342,47 +202,26 @@
 		},
 		"/wfs/eventreport/casestatechanged": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_CaseStateChanged",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_CaseStateChanged"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_CaseStateChanged" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -390,47 +229,26 @@
 		},
 		"/wfs/eventreport/verificationstart": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_VerificationStart",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_VerificationStart"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_VerificationStart" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -438,47 +256,26 @@
 		},
 		"/wfs/eventreport/verificationcommondocumentsstart": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_VerificationCommonDocumentsStart",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_VerificationCommonDocumentsStart"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_VerificationCommonDocumentsStart" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -486,47 +283,26 @@
 		},
 		"/wfs/eventreport/verificationconfidentialdocumentsstart": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_VerificationConfidentialDocumentsStart",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_VerificationConfidentialDocumentsStart"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_VerificationConfidentialDocumentsStart" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -534,47 +310,26 @@
 		},
 		"/wfs/eventreport/verificationconfidentialdocumentsdone": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_VerificationConfidentialDocumentsDone",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_VerificationConfidentialDocumentsDone"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_VerificationConfidentialDocumentsDone" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -582,47 +337,26 @@
 		},
 		"/wfs/eventreport/verificationfinished": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_VerificationFinished",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_VerificationFinished"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_VerificationFinished" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -630,47 +364,26 @@
 		},
 		"/wfs/eventreport/verificationnotification": {
 			"post": {
-				"tags": [
-					"EventReport"
-				],
+				"tags": [ "EventReport" ],
 				"operationId": "EventReport_VerificationNotification",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_VerificationNotification"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_VerificationNotification" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Event_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Event_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -678,47 +391,26 @@
 		},
 		"/wfs/findtasks/bytaskid": {
 			"post": {
-				"tags": [
-					"FindTasks"
-				],
+				"tags": [ "FindTasks" ],
 				"operationId": "FindTasks_ByTaskId",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_ByTaskId"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_ByTaskId" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Find_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Find_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -726,47 +418,26 @@
 		},
 		"/wfs/findtasks/bycaseid": {
 			"post": {
-				"tags": [
-					"FindTasks"
-				],
+				"tags": [ "FindTasks" ],
 				"operationId": "FindTasks_ByCaseId",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_ByCaseId"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_ByCaseId" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Find_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Find_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -774,47 +445,26 @@
 		},
 		"/wfs/findtasks/bycontractno": {
 			"post": {
-				"tags": [
-					"FindTasks"
-				],
+				"tags": [ "FindTasks" ],
 				"operationId": "FindTasks_ByContractNo",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_ByContractNo"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_ByContractNo" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Find_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Find_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -822,47 +472,26 @@
 		},
 		"/wfs/findtasks/bycpmicp": {
 			"post": {
-				"tags": [
-					"FindTasks"
-				],
+				"tags": [ "FindTasks" ],
 				"operationId": "FindTasks_ByCpmIcp",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_ByCpmIcp"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_ByCpmIcp" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Find_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Find_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -870,47 +499,26 @@
 		},
 		"/wfs/findtasks/bypools": {
 			"post": {
-				"tags": [
-					"FindTasks"
-				],
+				"tags": [ "FindTasks" ],
 				"operationId": "FindTasks_ByPools",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_ByPools"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_ByPools" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Find_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Find_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -918,47 +526,26 @@
 		},
 		"/wfs/managetask/createtask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_CreateTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_CreateTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_CreateTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_Manage_CreateTask_Response"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Manage_CreateTask_Response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -966,47 +553,26 @@
 		},
 		"/wfs/managetask/accepttask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_AcceptTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_AcceptTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_AcceptTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1014,47 +580,26 @@
 		},
 		"/wfs/managetask/changetask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_ChangeTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_ChangeTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_ChangeTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1062,47 +607,26 @@
 		},
 		"/wfs/managetask/assigntask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_AssignTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_AssignTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_AssignTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1110,47 +634,26 @@
 		},
 		"/wfs/managetask/unassigntask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_UnAssignTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_UnAssignTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_UnAssignTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1158,47 +661,26 @@
 		},
 		"/wfs/managetask/adopttask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_AdoptTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_AdoptTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_AdoptTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1206,47 +688,26 @@
 		},
 		"/wfs/managetask/completetask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_CompleteTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_CompleteTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_CompleteTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1254,47 +715,26 @@
 		},
 		"/wfs/managetask/canceltask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_CancelTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_CancelTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_CancelTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1302,47 +742,26 @@
 		},
 		"/wfs/managetask/updatetask": {
 			"post": {
-				"tags": [
-					"ManageTask"
-				],
+				"tags": [ "ManageTask" ],
 				"operationId": "ManageTask_UpdateTask",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/WFS_Request_UpdateTask"
-						}
+						"schema": { "$ref": "#/definitions/WFS_Request_UpdateTask" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "Event received successfully",
-						"schema": {
-							"$ref": "#/definitions/WFS_CommonResponse"
-						}
+						"schema": { "$ref": "#/definitions/WFS_CommonResponse" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1350,47 +769,26 @@
 		},
 		"/api/refixationservices/hedgerefixationappendix": {
 			"post": {
-				"tags": [
-					"RefixationServices"
-				],
+				"tags": [ "RefixationServices" ],
 				"operationId": "RefixationServices_RS_HedgeRefixationAppendix",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/HedgeRefixationAppendix_request"
-						}
+						"schema": { "$ref": "#/definitions/HedgeRefixationAppendix_request" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "RS_HedgeRefixationAppendix received successfully",
-						"schema": {
-							"$ref": "#/definitions/HedgeRefixationAppendix_response"
-						}
+						"schema": { "$ref": "#/definitions/HedgeRefixationAppendix_response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1398,47 +796,26 @@
 		},
 		"/api/refixationservices/retentionappendix": {
 			"post": {
-				"tags": [
-					"RefixationServices"
-				],
+				"tags": [ "RefixationServices" ],
 				"operationId": "RefixationServices_RS_RetentionAppendix",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/RetentionAppendix_request"
-						}
+						"schema": { "$ref": "#/definitions/RetentionAppendix_request" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "RS_RetentionAppendix received successfully",
-						"schema": {
-							"$ref": "#/definitions/RetentionAppendix_response"
-						}
+						"schema": { "$ref": "#/definitions/RetentionAppendix_response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1446,47 +823,26 @@
 		},
 		"/api/refixationservices/interestratenotification": {
 			"post": {
-				"tags": [
-					"RefixationServices"
-				],
+				"tags": [ "RefixationServices" ],
 				"operationId": "RefixationServices_RS_InterestRateNotification",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/InterestRateNotification_request"
-						}
+						"schema": { "$ref": "#/definitions/InterestRateNotification_request" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "RS_InterestRateNotification received successfully",
-						"schema": {
-							"$ref": "#/definitions/InterestRateNotification_response"
-						}
+						"schema": { "$ref": "#/definitions/InterestRateNotification_response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1494,47 +850,26 @@
 		},
 		"/api/refixationservices/calculationdocuments": {
 			"post": {
-				"tags": [
-					"RefixationServices"
-				],
+				"tags": [ "RefixationServices" ],
 				"operationId": "RefixationServices_RS_CalculationDocuments",
-				"consumes": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/x-www-form-urlencoded",
-					"application/vnd.api+json"
-				],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"consumes": [ "application/json", "text/json", "application/xml", "text/xml", "application/x-www-form-urlencoded", "application/vnd.api+json" ],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "request",
 						"in": "body",
 						"required": true,
-						"schema": {
-							"$ref": "#/definitions/CalculationDocuments_request"
-						}
+						"schema": { "$ref": "#/definitions/CalculationDocuments_request" }
 					}
 				],
 				"responses": {
 					"200": {
 						"description": "RS_CalculationDocuments received successfully",
-						"schema": {
-							"$ref": "#/definitions/CalculationDocuments_response"
-						}
+						"schema": { "$ref": "#/definitions/CalculationDocuments_response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1542,18 +877,10 @@
 		},
 		"/api/refixationservices/getinterestrate": {
 			"get": {
-				"tags": [
-					"RefixationServices"
-				],
+				"tags": [ "RefixationServices" ],
 				"operationId": "RefixationServices_RS_GetInterestRate",
 				"consumes": [],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "uver_id",
@@ -1580,15 +907,11 @@
 				"responses": {
 					"200": {
 						"description": "RS_GetInterestRate received successfully",
-						"schema": {
-							"$ref": "#/definitions/GetInterestRate_response"
-						}
+						"schema": { "$ref": "#/definitions/GetInterestRate_response" }
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1596,18 +919,10 @@
 		},
 		"/api/supportservice/getversioninfo": {
 			"get": {
-				"tags": [
-					"SupportService"
-				],
+				"tags": [ "SupportService" ],
 				"operationId": "SupportService_GetVersionInfo",
 				"consumes": [],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "mode",
@@ -1619,15 +934,11 @@
 				"responses": {
 					"200": {
 						"description": "",
-						"schema": {
-							"$ref": "#/definitions/GetVersionInfoResponse"
-						}
+						"schema": { "$ref": "#/definitions/GetVersionInfoResponse" }
 					},
 					"400": {
 						"description": "",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1635,18 +946,10 @@
 		},
 		"/api/transactions": {
 			"get": {
-				"tags": [
-					"Transactions"
-				],
+				"tags": [ "Transactions" ],
 				"operationId": "Transactions_GetTransactions",
 				"consumes": [],
-				"produces": [
-					"application/json",
-					"text/json",
-					"application/xml",
-					"text/xml",
-					"application/vnd.api+json"
-				],
+				"produces": [ "application/json", "text/json", "application/xml", "text/xml", "application/vnd.api+json" ],
 				"parameters": [
 					{
 						"name": "accountId",
@@ -1673,16 +976,12 @@
 						"description": "Transactions of account found and returned successfully",
 						"schema": {
 							"type": "array",
-							"items": {
-								"$ref": "#/definitions/SBSS_AccountTH"
-							}
+							"items": { "$ref": "#/definitions/SBSS_AccountTH" }
 						}
 					},
 					"400": {
 						"description": "An invalid or missing input parameter, non existing account will result in a bad request",
-						"schema": {
-							"type": "string"
-						}
+						"schema": { "type": "string" }
 					}
 				},
 				"deprecated": false
@@ -1693,27 +992,17 @@
 		"BookOfTerms_response": {
 			"type": "object",
 			"properties": {
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				},
+				"result": { "$ref": "#/definitions/CommonResult" },
 				"bookOfTerms": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/BookOfTermsItem"
-					}
+					"items": { "$ref": "#/definitions/BookOfTermsItem" }
 				},
 				"purposesOfLoan": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/PurposeOfLoanItem"
-					}
+					"items": { "$ref": "#/definitions/PurposeOfLoanItem" }
 				},
-				"purposeDetail": {
-					"$ref": "#/definitions/PurposeDetail"
-				},
-				"loanInfo": {
-					"$ref": "#/definitions/LoanInfo"
-				}
+				"purposeDetail": { "$ref": "#/definitions/PurposeDetail" },
+				"loanInfo": { "$ref": "#/definitions/LoanInfo" }
 			}
 		},
 		"CommonResult": {
@@ -1723,33 +1012,21 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"return_text": {
-					"type": "string"
-				}
+				"return_text": { "type": "string" }
 			}
 		},
 		"BookOfTermsItem": {
 			"type": "object",
 			"properties": {
-				"nameOfTerm": {
-					"type": "string"
-				},
-				"text": {
-					"type": "string"
-				},
-				"isZov": {
-					"type": "boolean"
-				},
-				"isLastConditionZov": {
-					"type": "boolean"
-				},
+				"nameOfTerm": { "type": "string" },
+				"text": { "type": "string" },
+				"isZov": { "type": "boolean" },
+				"isLastConditionZov": { "type": "boolean" },
 				"dateOfCompletion": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"completionOperator": {
-					"type": "string"
-				},
+				"completionOperator": { "type": "string" },
 				"actionCode": {
 					"format": "int32",
 					"type": "integer"
@@ -1762,19 +1039,13 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"orderInSection": {
-					"type": "string"
-				},
+				"orderInSection": { "type": "string" },
 				"blockedTo": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"isVisibleToClient": {
-					"type": "boolean"
-				},
-				"isInReminding": {
-					"type": "boolean"
-				},
+				"isVisibleToClient": { "type": "boolean" },
+				"isInReminding": { "type": "boolean" },
 				"reminding_Deadline": {
 					"format": "date-time",
 					"type": "string"
@@ -1796,9 +1067,7 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"isAdvanceDrawdownLoan": {
-					"type": "boolean"
-				},
+				"isAdvanceDrawdownLoan": { "type": "boolean" },
 				"amountOfPurpose": {
 					"format": "double",
 					"type": "number"
@@ -1824,9 +1093,7 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"numberOfValuationOfLastZov": {
-					"type": "string"
-				},
+				"numberOfValuationOfLastZov": { "type": "string" },
 				"feeForNextZov": {
 					"format": "double",
 					"type": "number"
@@ -1853,23 +1120,15 @@
 		"Coll_Request_Instrument": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/Coll_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/Coll_BG_Instrument"
-				}
+				"header": { "$ref": "#/definitions/Coll_Header" },
+				"message": { "$ref": "#/definitions/Coll_BG_Instrument" }
 			}
 		},
 		"Coll_Header": {
 			"type": "object",
 			"properties": {
-				"system": {
-					"type": "string"
-				},
-				"login": {
-					"type": "string"
-				}
+				"system": { "type": "string" },
+				"login": { "type": "string" }
 			}
 		},
 		"Coll_BG_Instrument": {
@@ -1879,15 +1138,9 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"companyCode": {
-					"type": "string"
-				},
-				"status": {
-					"type": "string"
-				},
-				"accountNumber": {
-					"type": "string"
-				}
+				"companyCode": { "type": "string" },
+				"status": { "type": "string" },
+				"accountNumber": { "type": "string" }
 			}
 		},
 		"Coll_BG_Instrument_Response": {
@@ -1897,28 +1150,16 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"companyCode": {
-					"type": "string"
-				},
-				"collateralCategory": {
-					"type": "string"
-				},
-				"collateralTypeCode": {
-					"type": "string"
-				},
-				"collateralTypeCzech": {
-					"type": "string"
-				},
-				"status": {
-					"type": "string"
-				},
+				"companyCode": { "type": "string" },
+				"collateralCategory": { "type": "string" },
+				"collateralTypeCode": { "type": "string" },
+				"collateralTypeCzech": { "type": "string" },
+				"status": { "type": "string" },
 				"insuranceValid": {
 					"format": "int32",
 					"type": "integer"
 				},
-				"insuranceBlocked": {
-					"type": "string"
-				},
+				"insuranceBlocked": { "type": "string" },
 				"insuranceContractDate": {
 					"format": "date-time",
 					"type": "string"
@@ -1931,9 +1172,7 @@
 					"format": "double",
 					"type": "number"
 				},
-				"currency": {
-					"type": "string"
-				},
+				"currency": { "type": "string" },
 				"unitCount": {
 					"format": "int32",
 					"type": "integer"
@@ -1946,31 +1185,17 @@
 					"format": "double",
 					"type": "number"
 				},
-				"descriptionLine1": {
-					"type": "string"
-				},
-				"descriptionLine2": {
-					"type": "string"
-				},
-				"descriptionLine3": {
-					"type": "string"
-				},
-				"descriptionLine4": {
-					"type": "string"
-				},
+				"descriptionLine1": { "type": "string" },
+				"descriptionLine2": { "type": "string" },
+				"descriptionLine3": { "type": "string" },
+				"descriptionLine4": { "type": "string" },
 				"dateOfAppraisal": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"appraisalMethod": {
-					"type": "string"
-				},
-				"accountNumber": {
-					"type": "string"
-				},
-				"liabilityType": {
-					"type": "string"
-				},
+				"appraisalMethod": { "type": "string" },
+				"accountNumber": { "type": "string" },
+				"liabilityType": { "type": "string" },
 				"ultimateEffectivityDate": {
 					"format": "date-time",
 					"type": "string"
@@ -1979,9 +1204,7 @@
 					"format": "double",
 					"type": "number"
 				},
-				"typeOfRealEstate": {
-					"type": "string"
-				},
+				"typeOfRealEstate": { "type": "string" },
 				"priority": {
 					"format": "int32",
 					"type": "integer"
@@ -2002,102 +1225,62 @@
 					"format": "double",
 					"type": "number"
 				},
-				"sumLoansMandant": {
-					"type": "string"
-				},
-				"postalCode": {
-					"type": "string"
-				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"sumLoansMandant": { "type": "string" },
+				"postalCode": { "type": "string" },
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"Coll_Request_Contract": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/Coll_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/Coll_BG_Contract"
-				}
+				"header": { "$ref": "#/definitions/Coll_Header" },
+				"message": { "$ref": "#/definitions/Coll_BG_Contract" }
 			}
 		},
 		"Coll_BG_Contract": {
 			"type": "object",
 			"properties": {
-				"contractNumber": {
-					"type": "string"
-				},
-				"companyCode": {
-					"type": "string"
-				},
-				"contractStatus": {
-					"type": "string"
-				},
+				"contractNumber": { "type": "string" },
+				"companyCode": { "type": "string" },
+				"contractStatus": { "type": "string" },
 				"idCollateral": {
 					"format": "int64",
 					"type": "integer"
 				},
-				"accountNumber": {
-					"type": "string"
-				}
+				"accountNumber": { "type": "string" }
 			}
 		},
 		"Coll_BG_Contract_Response": {
 			"type": "object",
 			"properties": {
-				"contractNumber": {
-					"type": "string"
-				},
-				"companyCode": {
-					"type": "string"
-				},
+				"contractNumber": { "type": "string" },
+				"companyCode": { "type": "string" },
 				"contractDate": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"contractStatus": {
-					"type": "string"
-				},
+				"contractStatus": { "type": "string" },
 				"idCollateral": {
 					"format": "int64",
 					"type": "integer"
 				},
-				"accountNumber": {
-					"type": "string"
-				},
+				"accountNumber": { "type": "string" },
 				"virtueFromDate": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"collateralCategory": {
-					"type": "string"
-				},
-				"proceedingNumber": {
-					"type": "string"
-				},
-				"delProceedingNumber": {
-					"type": "string"
-				},
-				"contractManager": {
-					"type": "string"
-				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"collateralCategory": { "type": "string" },
+				"proceedingNumber": { "type": "string" },
+				"delProceedingNumber": { "type": "string" },
+				"contractManager": { "type": "string" },
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"Coll_Request_Owners": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/Coll_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/Coll_BG_Owners"
-				}
+				"header": { "$ref": "#/definitions/Coll_Header" },
+				"message": { "$ref": "#/definitions/Coll_BG_Owners" }
 			}
 		},
 		"Coll_BG_Owners": {
@@ -2111,12 +1294,8 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"warrantorRoleType": {
-					"type": "string"
-				},
-				"companyCode": {
-					"type": "string"
-				}
+				"warrantorRoleType": { "type": "string" },
+				"companyCode": { "type": "string" }
 			}
 		},
 		"Coll_BG_Owners_Response": {
@@ -2124,13 +1303,9 @@
 			"properties": {
 				"owners": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Coll_BG_Owners_ResponseOne"
-					}
+					"items": { "$ref": "#/definitions/Coll_BG_Owners_ResponseOne" }
 				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"Coll_BG_Owners_ResponseOne": {
@@ -2144,54 +1319,34 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"warrantorRoleType": {
-					"type": "string"
-				},
+				"warrantorRoleType": { "type": "string" },
 				"equityPercentage": {
 					"format": "double",
 					"type": "number"
 				},
-				"companyCode": {
-					"type": "string"
-				}
+				"companyCode": { "type": "string" }
 			}
 		},
 		"Coll_Request_Relationship": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/Coll_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/Coll_BG_Relationship"
-				}
+				"header": { "$ref": "#/definitions/Coll_Header" },
+				"message": { "$ref": "#/definitions/Coll_BG_Relationship" }
 			}
 		},
 		"Coll_BG_Relationship": {
 			"type": "object",
 			"properties": {
-				"accountNumber": {
-					"type": "string"
-				},
-				"loanContractNumber": {
-					"type": "string"
-				},
-				"usageStatuses": {
-					"type": "string"
-				},
-				"contractStatus": {
-					"type": "string"
-				},
+				"accountNumber": { "type": "string" },
+				"loanContractNumber": { "type": "string" },
+				"usageStatuses": { "type": "string" },
+				"contractStatus": { "type": "string" },
 				"idCollateral": {
 					"format": "int64",
 					"type": "integer"
 				},
-				"companyCode": {
-					"type": "string"
-				},
-				"appraisalMethod": {
-					"type": "string"
-				}
+				"companyCode": { "type": "string" },
+				"appraisalMethod": { "type": "string" }
 			}
 		},
 		"Coll_BG_Relationship_Response": {
@@ -2199,24 +1354,16 @@
 			"properties": {
 				"relationships": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/Coll_BG_Relationship_ResponseOne"
-					}
+					"items": { "$ref": "#/definitions/Coll_BG_Relationship_ResponseOne" }
 				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"Coll_BG_Relationship_ResponseOne": {
 			"type": "object",
 			"properties": {
-				"accountNumber": {
-					"type": "string"
-				},
-				"loanContractNumber": {
-					"type": "string"
-				},
+				"accountNumber": { "type": "string" },
+				"loanContractNumber": { "type": "string" },
 				"sumUsedValue": {
 					"format": "double",
 					"type": "number"
@@ -2225,15 +1372,9 @@
 					"format": "double",
 					"type": "number"
 				},
-				"usageStatuses": {
-					"type": "string"
-				},
-				"contractNumber": {
-					"type": "string"
-				},
-				"contractStatus": {
-					"type": "string"
-				},
+				"usageStatuses": { "type": "string" },
+				"contractNumber": { "type": "string" },
+				"contractStatus": { "type": "string" },
 				"nominalValue": {
 					"format": "double",
 					"type": "number"
@@ -2242,43 +1383,27 @@
 					"format": "double",
 					"type": "number"
 				},
-				"airbEligibility": {
-					"type": "string"
-				},
+				"airbEligibility": { "type": "string" },
 				"currencyHaircut": {
 					"format": "double",
 					"type": "number"
 				},
-				"retailEligibility": {
-					"type": "string"
-				},
-				"caEligibility": {
-					"type": "string"
-				},
-				"ifrsEligibility": {
-					"type": "string"
-				},
+				"retailEligibility": { "type": "string" },
+				"caEligibility": { "type": "string" },
+				"ifrsEligibility": { "type": "string" },
 				"idCollateral": {
 					"format": "int64",
 					"type": "integer"
 				},
-				"companyCode": {
-					"type": "string"
-				},
-				"appraisalMethod": {
-					"type": "string"
-				}
+				"companyCode": { "type": "string" },
+				"appraisalMethod": { "type": "string" }
 			}
 		},
 		"Coll_Request_Valuation": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/Coll_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/Coll_BG_Valuation"
-				}
+				"header": { "$ref": "#/definitions/Coll_Header" },
+				"message": { "$ref": "#/definitions/Coll_BG_Valuation" }
 			}
 		},
 		"Coll_BG_Valuation": {
@@ -2288,12 +1413,8 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"appraisalMethod": {
-					"type": "string"
-				},
-				"companyCode": {
-					"type": "string"
-				}
+				"appraisalMethod": { "type": "string" },
+				"companyCode": { "type": "string" }
 			}
 		},
 		"Coll_BG_Valuation_Response": {
@@ -2303,9 +1424,7 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"statementNumber": {
-					"type": "string"
-				},
+				"statementNumber": { "type": "string" },
 				"idCollateral": {
 					"format": "int64",
 					"type": "integer"
@@ -2318,9 +1437,7 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"appraisalMethod": {
-					"type": "string"
-				},
+				"appraisalMethod": { "type": "string" },
 				"dateOfAppraisal": {
 					"format": "date-time",
 					"type": "string"
@@ -2329,9 +1446,7 @@
 					"format": "date-time",
 					"type": "string"
 				},
-				"companyCode": {
-					"type": "string"
-				},
+				"companyCode": { "type": "string" },
 				"usedCollateralValue": {
 					"format": "double",
 					"type": "number"
@@ -2344,55 +1459,35 @@
 					"format": "double",
 					"type": "number"
 				},
-				"priceType": {
-					"type": "string"
-				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"priceType": { "type": "string" },
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"WFS_Request_DocumentBankSigned": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_DocumentBankSigned"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_DocumentBankSigned" }
 			}
 		},
 		"WFS_Header": {
 			"type": "object",
 			"properties": {
-				"system": {
-					"type": "string"
-				},
-				"login": {
-					"type": "string"
-				}
+				"system": { "type": "string" },
+				"login": { "type": "string" }
 			}
 		},
 		"WFS_Event_DocumentBankSigned": {
 			"type": "object",
 			"properties": {
-				"external_id": {
-					"type": "string"
-				},
-				"document_type": {
-					"type": "string"
-				},
-				"contract_no": {
-					"type": "string"
-				},
+				"external_id": { "type": "string" },
+				"document_type": { "type": "string" },
+				"contract_no": { "type": "string" },
 				"bank_sign_date": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"bank_sign_login": {
-					"type": "string"
-				}
+				"bank_sign_login": { "type": "string" }
 			}
 		},
 		"WFS_Event_Response": {
@@ -2402,20 +1497,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"WFS_Request_CaseStateChanged": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_CaseStateChanged"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_CaseStateChanged" }
 			}
 		},
 		"WFS_Event_CaseStateChanged": {
@@ -2429,32 +1518,20 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"contract_no": {
-					"type": "string"
-				},
-				"loan_no": {
-					"type": "string"
-				},
-				"jmeno_prijmeni": {
-					"type": "string"
-				},
+				"contract_no": { "type": "string" },
+				"loan_no": { "type": "string" },
+				"jmeno_prijmeni": { "type": "string" },
 				"case_state_id": {
 					"format": "int32",
 					"type": "integer"
 				},
-				"case_state": {
-					"type": "string"
-				},
+				"case_state": { "type": "string" },
 				"product_type": {
 					"format": "int32",
 					"type": "integer"
 				},
-				"owner_cpm": {
-					"type": "string"
-				},
-				"owner_icp": {
-					"type": "string"
-				},
+				"owner_cpm": { "type": "string" },
+				"owner_icp": { "type": "string" },
 				"mandant": {
 					"format": "int32",
 					"type": "integer"
@@ -2463,20 +1540,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"risk_business_case_id": {
-					"type": "string"
-				}
+				"risk_business_case_id": { "type": "string" }
 			}
 		},
 		"WFS_Request_VerificationStart": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_VerificationStart"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_VerificationStart" }
 			}
 		},
 		"WFS_Event_VerificationStart": {
@@ -2491,12 +1562,8 @@
 		"WFS_Request_VerificationCommonDocumentsStart": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_VerificationCommonDocumentsStart"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_VerificationCommonDocumentsStart" }
 			}
 		},
 		"WFS_Event_VerificationCommonDocumentsStart": {
@@ -2510,40 +1577,26 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"cas_id": {
-					"type": "string"
-				},
-				"klient_schema": {
-					"type": "string"
-				},
+				"cas_id": { "type": "string" },
+				"klient_schema": { "type": "string" },
 				"documents": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/WFS_VerificationDocumentItem"
-					}
+					"items": { "$ref": "#/definitions/WFS_VerificationDocumentItem" }
 				}
 			}
 		},
 		"WFS_VerificationDocumentItem": {
 			"type": "object",
 			"properties": {
-				"doc_type": {
-					"type": "string"
-				},
-				"doc_desc": {
-					"type": "string"
-				}
+				"doc_type": { "type": "string" },
+				"doc_desc": { "type": "string" }
 			}
 		},
 		"WFS_Request_VerificationConfidentialDocumentsStart": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_VerificationConfidentialDocumentsStart"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_VerificationConfidentialDocumentsStart" }
 			}
 		},
 		"WFS_Event_VerificationConfidentialDocumentsStart": {
@@ -2557,29 +1610,19 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"cas_id": {
-					"type": "string"
-				},
-				"klient_schema": {
-					"type": "string"
-				},
+				"cas_id": { "type": "string" },
+				"klient_schema": { "type": "string" },
 				"documents": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/WFS_VerificationDocumentItem"
-					}
+					"items": { "$ref": "#/definitions/WFS_VerificationDocumentItem" }
 				}
 			}
 		},
 		"WFS_Request_VerificationConfidentialDocumentsDone": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_VerificationConfidentialDocumentsDone"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_VerificationConfidentialDocumentsDone" }
 			}
 		},
 		"WFS_Event_VerificationConfidentialDocumentsDone": {
@@ -2589,20 +1632,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"cas_id": {
-					"type": "string"
-				}
+				"cas_id": { "type": "string" }
 			}
 		},
 		"WFS_Request_VerificationFinished": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_VerificationFinished"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_VerificationFinished" }
 			}
 		},
 		"WFS_Event_VerificationFinished": {
@@ -2617,40 +1654,24 @@
 		"WFS_Request_VerificationNotification": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Event_VerificationNotification"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Event_VerificationNotification" }
 			}
 		},
 		"WFS_Event_VerificationNotification": {
 			"type": "object",
 			"properties": {
-				"risk_bc_id": {
-					"type": "string"
-				},
-				"ntf_subj": {
-					"type": "string"
-				},
-				"ntf_text": {
-					"type": "string"
-				},
-				"ntf_url": {
-					"type": "string"
-				}
+				"risk_bc_id": { "type": "string" },
+				"ntf_subj": { "type": "string" },
+				"ntf_text": { "type": "string" },
+				"ntf_url": { "type": "string" }
 			}
 		},
 		"WFS_Request_ByTaskId": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Find_ByTaskId"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Find_ByTaskId" }
 			}
 		},
 		"WFS_Find_ByTaskId": {
@@ -2678,13 +1699,9 @@
 				},
 				"tasks": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/WFS_FindItem"
-					}
+					"items": { "$ref": "#/definitions/WFS_FindItem" }
 				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"WFS_FindItem": {
@@ -2692,32 +1709,22 @@
 			"properties": {
 				"task": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/WFS_MetadataItem"
-					}
+					"items": { "$ref": "#/definitions/WFS_MetadataItem" }
 				}
 			}
 		},
 		"WFS_MetadataItem": {
 			"type": "object",
 			"properties": {
-				"mtdt_def": {
-					"type": "string"
-				},
-				"mtdt_val": {
-					"type": "string"
-				}
+				"mtdt_def": { "type": "string" },
+				"mtdt_val": { "type": "string" }
 			}
 		},
 		"WFS_Request_ByCaseId": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Find_ByCaseId"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Find_ByCaseId" }
 			}
 		},
 		"WFS_Find_ByCaseId": {
@@ -2734,28 +1741,20 @@
 						"type": "integer"
 					}
 				},
-				"search_pattern": {
-					"type": "string"
-				}
+				"search_pattern": { "type": "string" }
 			}
 		},
 		"WFS_Request_ByContractNo": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Find_ByContractNo"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Find_ByContractNo" }
 			}
 		},
 		"WFS_Find_ByContractNo": {
 			"type": "object",
 			"properties": {
-				"contract_no": {
-					"type": "string"
-				},
+				"contract_no": { "type": "string" },
 				"task_state": {
 					"type": "array",
 					"items": {
@@ -2763,31 +1762,21 @@
 						"type": "integer"
 					}
 				},
-				"search_pattern": {
-					"type": "string"
-				}
+				"search_pattern": { "type": "string" }
 			}
 		},
 		"WFS_Request_ByCpmIcp": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Find_ByCpmIcp"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Find_ByCpmIcp" }
 			}
 		},
 		"WFS_Find_ByCpmIcp": {
 			"type": "object",
 			"properties": {
-				"owner_cpm": {
-					"type": "string"
-				},
-				"owner_icp": {
-					"type": "string"
-				},
+				"owner_cpm": { "type": "string" },
+				"owner_icp": { "type": "string" },
 				"task_state": {
 					"type": "array",
 					"items": {
@@ -2800,12 +1789,8 @@
 		"WFS_Request_ByPools": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Find_ByPools"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Find_ByPools" }
 			}
 		},
 		"WFS_Find_ByPools": {
@@ -2813,9 +1798,7 @@
 			"properties": {
 				"pools": {
 					"type": "array",
-					"items": {
-						"type": "string"
-					}
+					"items": { "type": "string" }
 				},
 				"task_state": {
 					"type": "array",
@@ -2829,12 +1812,8 @@
 		"WFS_Request_CreateTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_CreateTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_CreateTask" }
 			}
 		},
 		"WFS_Manage_CreateTask": {
@@ -2852,14 +1831,10 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"performer": {
-					"type": "string"
-				},
+				"performer": { "type": "string" },
 				"metadata": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/WFS_MetadataItem"
-					}
+					"items": { "$ref": "#/definitions/WFS_MetadataItem" }
 				}
 			}
 		},
@@ -2874,20 +1849,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
+				"result": { "$ref": "#/definitions/CommonResult" }
 			}
 		},
 		"WFS_Request_AcceptTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_AcceptTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_AcceptTask" }
 			}
 		},
 		"WFS_Manage_AcceptTask": {
@@ -2897,28 +1866,18 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"performer": {
-					"type": "string"
-				}
+				"performer": { "type": "string" }
 			}
 		},
 		"WFS_CommonResponse": {
 			"type": "object",
-			"properties": {
-				"result": {
-					"$ref": "#/definitions/CommonResult"
-				}
-			}
+			"properties": { "result": { "$ref": "#/definitions/CommonResult" } }
 		},
 		"WFS_Request_ChangeTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_ChangeTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_ChangeTask" }
 			}
 		},
 		"WFS_Manage_ChangeTask": {
@@ -2937,12 +1896,8 @@
 		"WFS_Request_AssignTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_AssignTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_AssignTask" }
 			}
 		},
 		"WFS_Manage_AssignTask": {
@@ -2952,20 +1907,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"performer": {
-					"type": "string"
-				}
+				"performer": { "type": "string" }
 			}
 		},
 		"WFS_Request_UnAssignTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_UnAssignTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_UnAssignTask" }
 			}
 		},
 		"WFS_Manage_UnAssignTask": {
@@ -2975,20 +1924,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"note": {
-					"type": "string"
-				}
+				"note": { "type": "string" }
 			}
 		},
 		"WFS_Request_AdoptTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_AdoptTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_AdoptTask" }
 			}
 		},
 		"WFS_Manage_AdoptTask": {
@@ -2998,20 +1941,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"note": {
-					"type": "string"
-				}
+				"note": { "type": "string" }
 			}
 		},
 		"WFS_Request_CompleteTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_CompleteTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_CompleteTask" }
 			}
 		},
 		"WFS_Manage_CompleteTask": {
@@ -3023,21 +1960,15 @@
 				},
 				"metadata": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/WFS_MetadataItem"
-					}
+					"items": { "$ref": "#/definitions/WFS_MetadataItem" }
 				}
 			}
 		},
 		"WFS_Request_CancelTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_CancelTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_CancelTask" }
 			}
 		},
 		"WFS_Manage_CancelTask": {
@@ -3047,20 +1978,14 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"note": {
-					"type": "string"
-				}
+				"note": { "type": "string" }
 			}
 		},
 		"WFS_Request_UpdateTask": {
 			"type": "object",
 			"properties": {
-				"header": {
-					"$ref": "#/definitions/WFS_Header"
-				},
-				"message": {
-					"$ref": "#/definitions/WFS_Manage_UpdateTask"
-				}
+				"header": { "$ref": "#/definitions/WFS_Header" },
+				"message": { "$ref": "#/definitions/WFS_Manage_UpdateTask" }
 			}
 		},
 		"WFS_Manage_UpdateTask": {
@@ -3072,9 +1997,7 @@
 				},
 				"metadata": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/WFS_MetadataItem"
-					}
+					"items": { "$ref": "#/definitions/WFS_MetadataItem" }
 				}
 			}
 		},
@@ -3113,30 +2036,20 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"cpm": {
-					"type": "string"
-				},
-				"icp": {
-					"type": "string"
-				},
+				"cpm": { "type": "string" },
+				"icp": { "type": "string" },
 				"deadline_for_signature": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"individual_pricing": {
-					"type": "boolean"
-				}
+				"individual_pricing": { "type": "boolean" }
 			}
 		},
 		"HedgeRefixationAppendix_response": {
 			"type": "object",
 			"properties": {
-				"result": {
-					"$ref": "#/definitions/CommonResultEx"
-				},
-				"ea_number": {
-					"type": "string"
-				}
+				"result": { "$ref": "#/definitions/CommonResultEx" },
+				"ea_number": { "type": "string" }
 			}
 		},
 		"CommonResultEx": {
@@ -3146,16 +2059,12 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"warning_text": {
-					"type": "string"
-				},
+				"warning_text": { "type": "string" },
 				"return_val": {
 					"format": "int32",
 					"type": "integer"
 				},
-				"return_text": {
-					"type": "string"
-				}
+				"return_text": { "type": "string" }
 			}
 		},
 		"RetentionAppendix_request": {
@@ -3181,19 +2090,13 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"cpm": {
-					"type": "string"
-				},
-				"icp": {
-					"type": "string"
-				},
+				"cpm": { "type": "string" },
+				"icp": { "type": "string" },
 				"deadline_for_signature": {
 					"format": "date-time",
 					"type": "string"
 				},
-				"individual_pricing": {
-					"type": "boolean"
-				},
+				"individual_pricing": { "type": "boolean" },
 				"fee": {
 					"format": "double",
 					"type": "number"
@@ -3203,12 +2106,8 @@
 		"RetentionAppendix_response": {
 			"type": "object",
 			"properties": {
-				"result": {
-					"$ref": "#/definitions/CommonResultEx"
-				},
-				"ea_number": {
-					"type": "string"
-				}
+				"result": { "$ref": "#/definitions/CommonResultEx" },
+				"ea_number": { "type": "string" }
 			}
 		},
 		"InterestRateNotification_request": {
@@ -3238,23 +2137,15 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"cpm": {
-					"type": "string"
-				},
-				"icp": {
-					"type": "string"
-				}
+				"cpm": { "type": "string" },
+				"icp": { "type": "string" }
 			}
 		},
 		"InterestRateNotification_response": {
 			"type": "object",
 			"properties": {
-				"result": {
-					"$ref": "#/definitions/CommonResultEx"
-				},
-				"ea_number": {
-					"type": "string"
-				}
+				"result": { "$ref": "#/definitions/CommonResultEx" },
+				"ea_number": { "type": "string" }
 			}
 		},
 		"CalculationDocuments_request": {
@@ -3264,9 +2155,7 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"full_repayment": {
-					"type": "boolean"
-				},
+				"full_repayment": { "type": "boolean" },
 				"calculation_date": {
 					"format": "date-time",
 					"type": "string"
@@ -3275,9 +2164,7 @@
 					"format": "date-time",
 					"type": "string"
 				},
-				"client_id": {
-					"type": "string"
-				},
+				"client_id": { "type": "string" },
 				"extra_payment_sum": {
 					"format": "double",
 					"type": "number"
@@ -3306,12 +2193,8 @@
 					"format": "double",
 					"type": "number"
 				},
-				"loan_overdue": {
-					"type": "boolean"
-				},
-				"payment_reduction": {
-					"type": "boolean"
-				},
+				"loan_overdue": { "type": "boolean" },
+				"payment_reduction": { "type": "boolean" },
 				"new_maturity_date": {
 					"format": "date-time",
 					"type": "string"
@@ -3323,33 +2206,39 @@
 				"print_signature_form": {
 					"format": "int32",
 					"type": "integer"
-				}
+				},
+				"individual_pricing": { "type": "boolean" }
 			}
 		},
 		"CalculationDocuments_response": {
 			"type": "object",
 			"properties": {
-				"result": {
-					"$ref": "#/definitions/CommonResultEx"
-				},
+				"result": { "$ref": "#/definitions/CommonResultEx" },
 				"calculation_type": {
 					"format": "int32",
 					"type": "integer"
 				},
-				"ea_numbers": {
+				"calculation_documents": { "$ref": "#/definitions/CalculationDocumentDocument" },
+				"agreement_documents": {
 					"type": "array",
-					"items": {
-						"type": "string"
-					}
+					"items": { "$ref": "#/definitions/CalculationDocumentDocument" }
+				}
+			}
+		},
+		"CalculationDocumentDocument": {
+			"type": "object",
+			"properties": {
+				"earchiv_id": { "type": "string" },
+				"ea_code": {
+					"format": "int32",
+					"type": "integer"
 				}
 			}
 		},
 		"GetInterestRate_response": {
 			"type": "object",
 			"properties": {
-				"result": {
-					"$ref": "#/definitions/CommonResultEx"
-				},
+				"result": { "$ref": "#/definitions/CommonResultEx" },
 				"interest_rate": {
 					"format": "double",
 					"type": "number"
@@ -3363,42 +2252,18 @@
 		"GetVersionInfoResponse": {
 			"type": "object",
 			"properties": {
-				"Version": {
-					"type": "string"
-				},
-				"BuildDir": {
-					"type": "string"
-				},
-				"WebServicesBuilt": {
-					"type": "string"
-				},
-				"CoreBuilt": {
-					"type": "string"
-				},
-				"ShareBuilt": {
-					"type": "string"
-				},
-				"MachineName": {
-					"type": "string"
-				},
-				"DB": {
-					"type": "string"
-				},
-				"DBsysdate": {
-					"type": "string"
-				},
-				"DOD": {
-					"type": "string"
-				},
-				"User": {
-					"type": "string"
-				},
-				"CurrentCulture": {
-					"type": "string"
-				},
-				"DebugInfo": {
-					"type": "string"
-				},
+				"Version": { "type": "string" },
+				"BuildDir": { "type": "string" },
+				"WebServicesBuilt": { "type": "string" },
+				"CoreBuilt": { "type": "string" },
+				"ShareBuilt": { "type": "string" },
+				"MachineName": { "type": "string" },
+				"DB": { "type": "string" },
+				"DBsysdate": { "type": "string" },
+				"DOD": { "type": "string" },
+				"User": { "type": "string" },
+				"CurrentCulture": { "type": "string" },
+				"DebugInfo": { "type": "string" },
 				"Mandant": {
 					"format": "int32",
 					"type": "integer"
@@ -3408,14 +2273,10 @@
 		"SBSS_AccountTH": {
 			"type": "object",
 			"properties": {
-				"accountBase": {
-					"$ref": "#/definitions/SBSS_AccountBase"
-				},
+				"accountBase": { "$ref": "#/definitions/SBSS_AccountBase" },
 				"transactions": {
 					"type": "array",
-					"items": {
-						"$ref": "#/definitions/SBSS_Transaction"
-					}
+					"items": { "$ref": "#/definitions/SBSS_Transaction" }
 				}
 			}
 		},
@@ -3438,18 +2299,10 @@
 					"format": "int64",
 					"type": "integer"
 				},
-				"iban": {
-					"type": "string"
-				},
-				"accountCurrency": {
-					"type": "string"
-				},
-				"accountType": {
-					"type": "string"
-				},
-				"accountStatus": {
-					"type": "boolean"
-				},
+				"iban": { "type": "string" },
+				"accountCurrency": { "type": "string" },
+				"accountType": { "type": "string" },
+				"accountStatus": { "type": "boolean" },
 				"exportDate": {
 					"format": "date-time",
 					"type": "string"
@@ -3475,31 +2328,17 @@
 					"format": "int32",
 					"type": "integer"
 				},
-				"transactionDesc": {
-					"type": "string"
-				},
+				"transactionDesc": { "type": "string" },
 				"transactionAmount": {
 					"format": "double",
 					"type": "number"
 				},
-				"payerAccount": {
-					"type": "string"
-				},
-				"payerAccountName": {
-					"type": "string"
-				},
-				"constantSymbol": {
-					"type": "string"
-				},
-				"variableSymbol": {
-					"type": "string"
-				},
-				"specificSymbol": {
-					"type": "string"
-				},
-				"textMessage": {
-					"type": "string"
-				}
+				"payerAccount": { "type": "string" },
+				"payerAccountName": { "type": "string" },
+				"constantSymbol": { "type": "string" },
+				"variableSymbol": { "type": "string" },
+				"specificSymbol": { "type": "string" },
+				"textMessage": { "type": "string" }
 			}
 		}
 	}

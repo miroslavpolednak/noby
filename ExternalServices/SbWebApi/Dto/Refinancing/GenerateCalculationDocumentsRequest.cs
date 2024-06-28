@@ -33,4 +33,6 @@ public class GenerateCalculationDocumentsRequest
     public decimal NewPaymentAmount { get; set; }
 
     public int HandoverTypeDetailCode { get; set; }
+
+    public bool IndividualPricing { get; set; }
 }

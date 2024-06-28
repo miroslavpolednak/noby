@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Clients;
+﻿using System.Globalization;
+using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.OfferService.Clients.v1;
@@ -58,7 +59,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
 
         await UpdateSaParams(request, salesArrangement, customerDetail, cancellationToken);
 
-        await GenerateCalculationDocuments(request, salesArrangement, offer, cancellationToken);
+        await GenerateCalculationDocuments(request, salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
         await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.Finished, cancellationToken);
     }
@@ -134,7 +135,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
         await _salesArrangementService.UpdateSalesArrangementParameters(saRequest, cancellationToken);
     }
 
-    private async Task GenerateCalculationDocuments(GenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
+    private async Task GenerateCalculationDocuments(GenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, GetOfferResponse offer, bool hasIndividualPricing, CancellationToken cancellationToken)
     {
         var handoverTypeDetails = await _codebookService.HandoverTypeDetails(cancellationToken);
 
@@ -155,7 +156,8 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
 			IsInstallmentReduced = offer.MortgageExtraPayment.SimulationResults.IsInstallmentReduced,
             NewMaturityDate = offer.MortgageExtraPayment.SimulationResults.NewMaturityDate,
             NewPaymentAmount = offer.MortgageExtraPayment.SimulationResults.NewPaymentAmount,
-            HandoverTypeDetailCode = int.Parse(handoverTypeDetails.First(h => h.Id == request.HandoverTypeDetailId).Code)
+            HandoverTypeDetailCode = int.Parse(handoverTypeDetails.First(h => h.Id == request.HandoverTypeDetailId).Code, CultureInfo.InvariantCulture),
+            IndividualPricing = hasIndividualPricing
         }, cancellationToken);
     }
 }

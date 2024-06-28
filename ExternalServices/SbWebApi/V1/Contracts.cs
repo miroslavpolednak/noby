@@ -1558,6 +1558,9 @@ namespace ExternalServices.SbWebApi.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("print_signature_form")]
         public int? Print_signature_form { get; set; } = default!;
 
+        [System.Text.Json.Serialization.JsonPropertyName("individual_pricing")]
+        public bool? Individual_pricing { get; set; } = default!;
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -1570,8 +1573,23 @@ namespace ExternalServices.SbWebApi.V1.Contracts
         [System.Text.Json.Serialization.JsonPropertyName("calculation_type")]
         public int? Calculation_type { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("ea_numbers")]
-        public System.Collections.Generic.ICollection<string>? Ea_numbers { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("calculation_documents")]
+        public CalculationDocumentDocument? Calculation_documents { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreement_documents")]
+        public System.Collections.Generic.ICollection<CalculationDocumentDocument>? Agreement_documents { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    internal partial class CalculationDocumentDocument
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("earchiv_id")]
+        public string? Earchiv_id { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ea_code")]
+        public int? Ea_code { get; set; } = default!;
 
     }
 
