@@ -3,6 +3,7 @@ using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
+using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Services.MortgageRefinancing;
@@ -17,6 +18,7 @@ internal sealed class LinkMortgageExtraPaymentHandler(
 	ISalesArrangementServiceClient _salesArrangementService,
 	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementCreateService,
 	IOfferServiceClient _offerService,
+    IProductServiceClient _productService,
 	MortgageRefinancingWorkflowService _refinancingWorkflowService)
 		: IRequestHandler<LinkMortgageExtraPaymentRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
 {
@@ -29,10 +31,15 @@ internal sealed class LinkMortgageExtraPaymentHandler(
 
 	public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(LinkMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
+        var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
+
+        var mortgage = await _productService.GetMortgage(request.CaseId, cancellationToken);
+
+        if (mortgage.Mortgage.Principal < (decimal?)offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentAmount)
+            throw new NobyValidationException(90066);
+
         // ziskat existujici nebo zalozit novy SA
         var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageExtraPayment, cancellationToken);
-
-        var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
 
         await _validator.Validate(salesArrangement, offer, cancellationToken);
 
