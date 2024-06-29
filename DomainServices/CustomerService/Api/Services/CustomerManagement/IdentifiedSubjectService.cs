@@ -1,12 +1,11 @@
 ﻿using System.Globalization;
-using CIS.Core.Exceptions;
-using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
 using __Contracts = DomainServices.CustomerService.ExternalServices.IdentifiedSubjectBr.V1.Contracts;
 using DomainServices.CustomerService.Api.Extensions;
 using FastEnumUtility;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.ExternalServices.Kyc.V1.Contracts;
+using CMContacts = DomainServices.CustomerService.ExternalServices.Contacts.V1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -14,6 +13,7 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 internal sealed class IdentifiedSubjectService
 {
     private readonly ExternalServices.CustomerManagement.V2.ICustomerManagementClient _customerManagement;
+    private readonly CMContacts.IContactClient _contactClient;
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClient _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
@@ -28,9 +28,15 @@ internal sealed class IdentifiedSubjectService
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _netMonthEarnings = null!;
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _incomeMainTypesAML = null!;
 
-    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement, ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, ICodebookServiceClient codebook, CustomerManagementErrorMap errorMap, ExternalServices.Kyc.V1.IKycClient kycClient)
+    public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement,
+                                    CMContacts.IContactClient contactClient,
+                                    ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, 
+                                    ICodebookServiceClient codebook,
+                                    CustomerManagementErrorMap errorMap,
+                                    ExternalServices.Kyc.V1.IKycClient kycClient)
     {
         _customerManagement = customerManagement;
+        _contactClient = contactClient;
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;
         _errorMap = errorMap;
@@ -48,9 +54,13 @@ internal sealed class IdentifiedSubjectService
         if (response.Error is not null) 
             _errorMap.ResolveValidationError(response.Error);
 
+        var customerIdentity = new SharedTypes.GrpcTypes.Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb);
+
+        await CreateEmail(customerIdentity.IdentityId, request.Contacts, cancellationToken);
+
         return new CreateCustomerResponse
         {
-            CreatedCustomerIdentity = new SharedTypes.GrpcTypes.Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb),
+            CreatedCustomerIdentity = customerIdentity,
             IsVerified = response.Result?.CreatedSubject?.VerifiedInBr ?? false
         };
     }
@@ -59,24 +69,21 @@ internal sealed class IdentifiedSubjectService
     {
         await InitializeCodebooks(cancellationToken);
 
-        var customerId = request.Identities.FirstOrDefault(i => i.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb);
+        var customerId = request.Identities.FirstOrDefault(i => i.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId ??
+                         throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.KbIdentityMissing);
 
-        if (customerId is null)
-        {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.KbIdentityMissing);
-        }
-
-        var customer = await _customerManagement.GetDetail(customerId.IdentityId, cancellationToken);
+        var customer = await _customerManagement.GetDetail(customerId, cancellationToken);
 
         var identifiedSubject = BuildUpdateRequest(request);
 
         identifiedSubject.TemporaryStay = CreateTemporaryStayAddress(customer.TemporaryStay);
 
-        await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId.IdentityId, identifiedSubject, cancellationToken);
-        
+        await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId, identifiedSubject, cancellationToken);
+        await UpdateEmail(customerId, request.Contacts, cancellationToken);
+
         // https://jira.kb.cz/browse/HFICH-3555
-        await callSetSocialCharacteristics(customerId.IdentityId, request, cancellationToken);
-        await callSetKyc(customerId.IdentityId, request, customer.IsPoliticallyExposed, cancellationToken);
+        await callSetSocialCharacteristics(customerId, request, cancellationToken);
+        await callSetKyc(customerId, request, customer.IsPoliticallyExposed, cancellationToken);
     }
 
     private async Task callSetKyc(long customerId, UpdateCustomerRequest request, bool? isPoliticallyExposed, CancellationToken cancellationToken)
@@ -167,6 +174,33 @@ internal sealed class IdentifiedSubjectService
         async Task IncomeMainTypesAML() => _incomeMainTypesAML = await _codebook.IncomeMainTypesAML(cancellationToken);
     }
 
+    private async Task CreateEmail(long customerId, IEnumerable<Contact> contacts, CancellationToken cancellationToken)
+    {
+        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
+
+        if (email is null)
+            return;
+
+        await _contactClient.CreateOrUpdateContact(customerId, 15, email.Email.EmailAddress, cancellationToken);
+        await _contactClient.CreateOrUpdateContact(customerId, 7, email.Email.EmailAddress, cancellationToken);
+    }
+
+    private async Task UpdateEmail(long customerId, IEnumerable<Contact> contacts, CancellationToken cancellationToken)
+    {
+        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
+
+        if (email is null)
+            return;
+
+        var cmContacts = await _contactClient.LoadContacts(customerId, cancellationToken);
+
+        if (cmContacts.Any(c => c is { ContactMethodCode: 7, Confirmed: true }))
+            return;
+
+        await _contactClient.CreateOrUpdateContact(customerId, 15, email.Email.EmailAddress, cancellationToken);
+        await _contactClient.CreateOrUpdateContact(customerId, 7, email.Email.EmailAddress, cancellationToken);
+    }
+
     private __Contracts.IdentifiedSubject BuildCreateRequest(CreateCustomerRequest request)
     {
         return new()
@@ -180,8 +214,7 @@ internal sealed class IdentifiedSubjectService
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
-            PrimaryPhone = CreatePrimaryPhone(request.Contacts),
-            PrimaryEmail = CreatePrimaryEmail(request.Contacts)
+            PrimaryPhone = CreatePrimaryPhone(request.Contacts)
         };
     }
 
@@ -198,8 +231,7 @@ internal sealed class IdentifiedSubjectService
             ContactAddress = CreateAddress(request.Addresses, AddressTypes.Mailing, CreateContactAddress),
             PrimaryIdentificationDocument = CreateIdentificationDocument(request.IdentificationDocument),
             CustomerIdentification = CreateCustomerIdentification(request.CustomerIdentification),
-            PrimaryPhone = CreatePrimaryPhone(request.Contacts),
-            PrimaryEmail = CreatePrimaryEmail(request.Contacts)
+            PrimaryPhone = CreatePrimaryPhone(request.Contacts)
         };
     }
 
