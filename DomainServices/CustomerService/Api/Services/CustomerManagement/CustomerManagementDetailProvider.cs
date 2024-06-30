@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System.Runtime.CompilerServices;
-using SharedTypes.Enums;
 using DomainServices.CodebookService.Clients;
-using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 using DomainServices.CodebookService.Contracts.v1;
+using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
+using CMContacts = DomainServices.CustomerService.ExternalServices.Contacts.V1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
@@ -12,6 +12,7 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 internal sealed class CustomerManagementDetailProvider
 {
     private readonly CM.ICustomerManagementClient _customerManagement;
+    private readonly CMContacts.IContactClient _contactClient;
     private readonly ICodebookServiceClient _codebook;
     private readonly IRequestHandler<FormatAddressRequest, FormatAddressResponse> _formatAddressHandler;
 
@@ -27,10 +28,12 @@ internal sealed class CustomerManagementDetailProvider
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
     public CustomerManagementDetailProvider(CM.ICustomerManagementClient customerManagement,
+                                            CMContacts.IContactClient contactClient,
                                             ICodebookServiceClient codebook,
                                             IRequestHandler<FormatAddressRequest, FormatAddressResponse> formatAddressHandler)
     {
         _customerManagement = customerManagement;
+        _contactClient = contactClient;
         _codebook = codebook;
         _formatAddressHandler = formatAddressHandler;
     }
@@ -38,10 +41,11 @@ internal sealed class CustomerManagementDetailProvider
     public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)
     {
         var customer = await _customerManagement.GetDetail(customerId, cancellationToken);
+        var contacts = await _contactClient.LoadContacts(customerId, cancellationToken);
 
         await InitializeCodebooks(cancellationToken);
 
-        return await CreateDetailResponse(customer, cancellationToken);
+        return await CreateDetailResponse(customer, contacts, cancellationToken);
     }
 
     public async IAsyncEnumerable<CustomerDetailResponse> GetList(IEnumerable<long> customerIds, [EnumeratorCancellation] CancellationToken cancellationToken)
@@ -55,11 +59,12 @@ internal sealed class CustomerManagementDetailProvider
 
         foreach (var customer in customers)
         {
-            yield return await CreateDetailResponse(customer, cancellationToken);
+            var contacts = await _contactClient.LoadContacts(customer.CustomerId!.Value, cancellationToken);
+            yield return await CreateDetailResponse(customer, contacts, cancellationToken);
         }
     }
 
-    private async Task<CustomerDetailResponse> CreateDetailResponse(CM.Contracts.CustomerInfo customer, CancellationToken cancellationToken)
+    private async Task<CustomerDetailResponse> CreateDetailResponse(CM.Contracts.CustomerInfo customer, List<CMContacts.Contracts.Contact> contacts, CancellationToken cancellationToken)
     {
         var response = new CustomerDetailResponse
         {
@@ -73,7 +78,7 @@ internal sealed class CustomerManagementDetailProvider
         await AddAddress(AddressTypes.Mailing, response.Addresses.Add, customer.ContactAddress?.ComponentAddressPoint, customer.ContactAddress?.Confirmed, cancellationToken);
         await AddAddress(AddressTypes.Other, response.Addresses.Add, customer.TemporaryStay?.ComponentAddressPoint, null, cancellationToken);
 
-        AddContacts(customer, response.Contacts.Add);
+        AddContacts(customer, contacts, response.Contacts.Add);
 
         return response;
     }
@@ -223,7 +228,7 @@ internal sealed class CustomerManagementDetailProvider
         onAddAddress(address);
     }
 
-    private static void AddContacts(CM.Contracts.CustomerInfo customer, Action<Contact> onAddContact)
+    private static void AddContacts(CM.Contracts.CustomerInfo customer, List<CMContacts.Contracts.Contact> contacts, Action<Contact> onAddContact)
     {
         if (customer.PrimaryPhone is not null)
         {
@@ -242,7 +247,11 @@ internal sealed class CustomerManagementDetailProvider
             onAddContact(phone);
         }
 
-        if (customer.PrimaryEmail is not null)
+        var emailContact = contacts.FirstOrDefault(e => e is { ContactMethodCode: 7, Confirmed: true }) ??
+                           contacts.FirstOrDefault(e => e.ContactMethodCode == 15) ??
+                           contacts.FirstOrDefault(e => e.ContactMethodCode == 7);
+
+        if (emailContact is not null)
         {
             var email = new Contact
             {
@@ -250,9 +259,9 @@ internal sealed class CustomerManagementDetailProvider
                 IsPrimary = true,
                 Email = new EmailAddressItem
                 {
-                    EmailAddress = customer.PrimaryEmail.EmailAddress,
-                    IsEmailConfirmed = customer.PrimaryEmail.Confirmed
-                },
+                    EmailAddress = emailContact.ContactValue,
+                    IsEmailConfirmed = emailContact.Confirmed
+                }
             };
 
             onAddContact(email);

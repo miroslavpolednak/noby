@@ -23,4 +23,20 @@ public static class Helpers
 
         throw new CisExternalServiceValidationException($"{serviceName} unknown error {response?.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
     }
+
+    public static async Task ProcessResponse(string serviceName, HttpResponseMessage? response, CancellationToken cancellationToken)
+    {
+        if (response?.IsSuccessStatusCode ?? false)
+            return;
+
+        if (response?.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            var error = await response.Content.ReadFromJsonAsync<Dto.Error>(cancellationToken: cancellationToken);
+            if (error != null)
+                throw new CisExternalServiceValidationException($"{error.Message}: {error.Detail}");
+        }
+
+        throw new CisExternalServiceValidationException($"{serviceName} unknown error {response?.StatusCode}: {await response.SafeReadAsStringAsync(cancellationToken)}");
+
+    }
 }

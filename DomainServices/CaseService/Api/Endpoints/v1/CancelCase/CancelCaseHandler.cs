@@ -48,7 +48,7 @@ internal sealed class CancelCaseHandler(
         // druh storna podle datumu prvniho podpisu
         CaseStates newCaseState = await firstSignatureDateIsSet(salesArrangementId, documents, cancellation) ? CaseStates.ToBeCancelled : CaseStates.Cancelled;
 
-		// dojde k odeslání elektronicky podepsaných dokumentů do archivu (getDocumentsOnSAList nad produktovou žádostí zafiltrovaný na IsSigned = true a SignatureTypeId = 3)
+		// dojde k odeslání elektronicky podepsaných dokumentů do archivu (getDocumentsOnSAList nad produktovou žádostí zafiltrovaný na IsSigned = true a SignatureTypeId = 3 a IsArchived = false)
 		await setDocumentArchived(documents, cancellation);
 
 		if (newCaseState == CaseStates.ToBeCancelled) // pokud mame datum prvniho podpisu
@@ -117,7 +117,7 @@ internal sealed class CancelCaseHandler(
 
 	private async Task setDocumentArchived(List<DocumentOnSAToSign> documents, CancellationToken cancellationToken)
 	{
-		var docs = documents.Where(t => t.IsSigned && t.DocumentOnSAId.HasValue && t.SignatureTypeId == (int)SignatureTypes.Electronic);
+		var docs = documents.Where(t => t.IsSigned && t.DocumentOnSAId.HasValue && t.SignatureTypeId == (int)SignatureTypes.Electronic && !t.IsArchived);
 
 		foreach (var document in docs)
 		{

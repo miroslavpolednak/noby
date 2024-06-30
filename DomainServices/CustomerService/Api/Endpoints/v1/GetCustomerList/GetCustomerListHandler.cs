@@ -14,7 +14,7 @@ internal sealed class GetCustomerListHandler(
     {
         var identitiesLookup = request.Identities.ToLookup(x => x.IdentityScheme, y => y.IdentityId);
 
-        var customers = (await GetCMCustomers(identitiesLookup[SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb], cancellationToken)).Concat(                                          await GetKonsDbCustomers(identitiesLookup[SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp], cancellationToken));
+        var customers = (await GetCMCustomers(identitiesLookup[SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb], cancellationToken)).Concat(await GetKonsDbCustomers(identitiesLookup[SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp], cancellationToken));
 
         CheckMissingCustomers(customers, request.Identities);
 

@@ -101,7 +101,7 @@ internal sealed class SendToCmpHandler
 	private async Task ArchiveElectronicDocumets(int salesArrangementId, CancellationToken cancellationToken)
 	{
 		var digitallySignedDocuments = (await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, cancellationToken))
-									   .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic);
+									   .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic && !d.IsArchived);
 
 		await Task.WhenAll(digitallySignedDocuments.Select(doc => _documentOnSAService.SetDocumentOnSAArchived(doc.DocumentOnSAId!.Value, cancellationToken)));
 	}
