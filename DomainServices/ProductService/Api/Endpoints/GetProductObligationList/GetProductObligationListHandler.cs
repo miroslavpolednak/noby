@@ -7,6 +7,11 @@ internal sealed class GetProductObligationListHandler(IMpHomeClient _mpHomeClien
     {
         var product = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
 
+        if (product.Inactive)
+        {
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001);
+        }
+
         var responseItems = product?
             .Obligations?
             .Select(obligation =>
