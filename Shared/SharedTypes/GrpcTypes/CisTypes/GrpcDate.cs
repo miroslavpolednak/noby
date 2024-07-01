@@ -9,8 +9,11 @@ public partial class GrpcDate
         Day = day;
     }
 
+    public static implicit operator DateOnly?(GrpcDate? grpcDate)
+        => grpcDate is null ? null : new(grpcDate.Year, grpcDate.Month, grpcDate.Day);
+
     public static implicit operator DateOnly(GrpcDate grpcDate)
-        => new(grpcDate.Year, grpcDate.Month, grpcDate.Day);
+        => grpcDate is null ? default : new(grpcDate.Year, grpcDate.Month, grpcDate.Day);
 
     public static implicit operator GrpcDate(DateOnly value)
         => new(value.Year, value.Month, value.Day);
