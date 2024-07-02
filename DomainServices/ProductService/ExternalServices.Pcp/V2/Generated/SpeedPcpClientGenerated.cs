@@ -169,6 +169,29 @@ public partial class ReferentialMktItemInstanceId
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class ReferentialMktItemInstanceId3
+{
+
+    private string idField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class ProductInstanceReference
 {
@@ -329,6 +352,45 @@ public partial class InfoSourceCode
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class InfoSourceCode3
+{
+
+    private string classField;
+
+    private string codeField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string @class
+    {
+        get
+        {
+            return this.classField;
+        }
+        set
+        {
+            this.classField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public string code
+    {
+        get
+        {
+            return this.codeField;
+        }
+        set
+        {
+            this.codeField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class InfoSource
 {
@@ -342,6 +404,61 @@ public partial class InfoSource
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
     public InfoSourceCode infoSourceCode
+    {
+        get
+        {
+            return this.infoSourceCodeField;
+        }
+        set
+        {
+            this.infoSourceCodeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public System.DateTime on
+    {
+        get
+        {
+            return this.onField;
+        }
+        set
+        {
+            this.onField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIgnoreAttribute()]
+    public bool onSpecified
+    {
+        get
+        {
+            return this.onFieldSpecified;
+        }
+        set
+        {
+            this.onFieldSpecified = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class InfoSource3
+{
+
+    private InfoSourceCode3 infoSourceCodeField;
+
+    private System.DateTime onField;
+
+    private bool onFieldSpecified;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public InfoSourceCode3 infoSourceCode
     {
         get
         {
@@ -426,6 +543,46 @@ public partial class ProductInstanceInfo
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
+public partial class ProductInstanceInfo3
+{
+
+    private Account3 accountField;
+
+    private InfoSource3 infoSourceField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public Account3 account
+    {
+        get
+        {
+            return this.accountField;
+        }
+        set
+        {
+            this.accountField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public InfoSource3 infoSource
+    {
+        get
+        {
+            return this.infoSourceField;
+        }
+        set
+        {
+            this.infoSourceField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class Account
 {
 
@@ -449,8 +606,86 @@ public partial class Account
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class Account3
+{
+
+    private AccountNumber3 accountNumberField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public AccountNumber3 accountNumber
+    {
+        get
+        {
+            return this.accountNumberField;
+        }
+        set
+        {
+            this.accountNumberField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class AccountNumber
+{
+
+    private string bankCodeField;
+
+    private string coreField;
+
+    private string prefixField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string bankCode
+    {
+        get
+        {
+            return this.bankCodeField;
+        }
+        set
+        {
+            this.bankCodeField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public string core
+    {
+        get
+        {
+            return this.coreField;
+        }
+        set
+        {
+            this.coreField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 2)]
+    public string prefix
+    {
+        get
+        {
+            return this.prefixField;
+        }
+        set
+        {
+            this.prefixField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class AccountNumber3
 {
 
     private string bankCodeField;
@@ -683,6 +918,46 @@ public partial class OtherMktItemInstanceId
 }
 
 /// <remarks/>
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(MktItemInstanceIdByAccount))]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class OtherMktItemInstanceId3
+{
+
+    private string classField;
+
+    private string idField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string @class
+    {
+        get
+        {
+            return this.classField;
+        }
+        set
+        {
+            this.classField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public string id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+}
+
+/// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
@@ -711,6 +986,45 @@ public partial class MktItemInstanceIdByAccount : OtherMktItemInstanceId
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class MktItemInstanceState
+{
+
+    private string classField;
+
+    private string stateField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string @class
+    {
+        get
+        {
+            return this.classField;
+        }
+        set
+        {
+            this.classField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public string state
+    {
+        get
+        {
+            return this.stateField;
+        }
+        set
+        {
+            this.stateField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class MktItemInstanceState3
 {
 
     private string classField;
@@ -789,6 +1103,45 @@ public partial class MktItemInstanceId
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class MktItemInstanceId3
+{
+
+    private string classField;
+
+    private string idField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string @class
+    {
+        get
+        {
+            return this.classField;
+        }
+        set
+        {
+            this.classField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public string id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class RelatedProductInstanceReference
 {
@@ -798,6 +1151,29 @@ public partial class RelatedProductInstanceReference
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
     public MktItemInstanceId mktItemInstanceId
+    {
+        get
+        {
+            return this.mktItemInstanceIdField;
+        }
+        set
+        {
+            this.mktItemInstanceIdField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class RelatedProductInstanceReference3
+{
+
+    private MktItemInstanceId3 mktItemInstanceIdField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public MktItemInstanceId3 mktItemInstanceId
     {
         get
         {
@@ -824,6 +1200,45 @@ public partial class MktItemInstanceRelationship
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
     public RelatedProductInstanceReference relatedProductInstanceReference
+    {
+        get
+        {
+            return this.relatedProductInstanceReferenceField;
+        }
+        set
+        {
+            this.relatedProductInstanceReferenceField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public string purpose
+    {
+        get
+        {
+            return this.purposeField;
+        }
+        set
+        {
+            this.purposeField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class MktItemInstanceRelationship3
+{
+
+    private RelatedProductInstanceReference3 relatedProductInstanceReferenceField;
+
+    private string purposeField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public RelatedProductInstanceReference3 relatedProductInstanceReference
     {
         get
         {
@@ -893,6 +1308,45 @@ public partial class PartyInproductInstanceRoleCode
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class PartyInproductInstanceRoleCode3
+{
+
+    private string classField;
+
+    private string codeField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string @class
+    {
+        get
+        {
+            return this.classField;
+        }
+        set
+        {
+            this.classField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public string code
+    {
+        get
+        {
+            return this.codeField;
+        }
+        set
+        {
+            this.codeField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class PartyInProductInstanceRole
 {
@@ -917,8 +1371,54 @@ public partial class PartyInProductInstanceRole
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class PartyInProductInstanceRole3
+{
+
+    private PartyInproductInstanceRoleCode3 partyInproductInstanceRoleCodeField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public PartyInproductInstanceRoleCode3 partyInproductInstanceRoleCode
+    {
+        get
+        {
+            return this.partyInproductInstanceRoleCodeField;
+        }
+        set
+        {
+            this.partyInproductInstanceRoleCodeField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class KBCustomer
+{
+
+    private string idField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public string id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class KBCustomer3
 {
 
     private string idField;
@@ -966,6 +1466,45 @@ public partial class CustomerInProductInstance
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
     public PartyInProductInstanceRole partyInProductInstanceRole
+    {
+        get
+        {
+            return this.partyInProductInstanceRoleField;
+        }
+        set
+        {
+            this.partyInProductInstanceRoleField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class CustomerInProductInstance3
+{
+
+    private KBCustomer3 kBCustomerField;
+
+    private PartyInProductInstanceRole3 partyInProductInstanceRoleField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public KBCustomer3 kBCustomer
+    {
+        get
+        {
+            return this.kBCustomerField;
+        }
+        set
+        {
+            this.kBCustomerField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1)]
+    public PartyInProductInstanceRole3 partyInProductInstanceRole
     {
         get
         {
@@ -1816,6 +2355,29 @@ public partial class CatalogueProductInOfferSpecs : CommonCatalogueProductInOffe
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class CatalogueProductInOfferSpecs3 : CommonCatalogueProductInOffer
+{
+
+    private CatalogueBusinessProductSpecs3 catalogueBusinessProductSpecsField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public CatalogueBusinessProductSpecs3 catalogueBusinessProductSpecs
+    {
+        get
+        {
+            return this.catalogueBusinessProductSpecsField;
+        }
+        set
+        {
+            this.catalogueBusinessProductSpecsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class CatalogueBusinessProductSpecs : CommonCatalogueBusinessProduct
 {
@@ -1840,8 +2402,38 @@ public partial class CatalogueBusinessProductSpecs : CommonCatalogueBusinessProd
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class CatalogueBusinessProductSpecs3 : CommonCatalogueBusinessProduct
+{
+
+    private CatalogueTechnicalProductSpecs3 catalogueTechnicalProductSpecsField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
+    public CatalogueTechnicalProductSpecs3 catalogueTechnicalProductSpecs
+    {
+        get
+        {
+            return this.catalogueTechnicalProductSpecsField;
+        }
+        set
+        {
+            this.catalogueTechnicalProductSpecsField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class CatalogueTechnicalProductSpecs : CommonCatalogueTechnicalItem
+{
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class CatalogueTechnicalProductSpecs3 : CommonCatalogueTechnicalItem
 {
 }
 
@@ -2069,25 +2661,25 @@ public partial class getByIdsResponse
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstance", Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
+[System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstance", Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO/update")]
 public partial class ProductInstance3
 {
 
-    private CatalogueProductInOfferSpecs catalogueProductInOfferSpecsField;
+    private CatalogueProductInOfferSpecs3 catalogueProductInOfferSpecsField;
 
-    private CustomerInProductInstance[] customerInProductInstanceListField;
+    private CustomerInProductInstance3[] customerInProductInstanceListField;
 
-    private MktItemInstanceRelationship[] mktItemInstanceRelationshipListField;
+    private MktItemInstanceRelationship3[] mktItemInstanceRelationshipListField;
 
-    private MktItemInstanceState mktItemInstanceStateField;
+    private MktItemInstanceState3 mktItemInstanceStateField;
 
-    private OtherMktItemInstanceId[] otherMktItemInstanceIdListField;
+    private OtherMktItemInstanceId3[] otherMktItemInstanceIdListField;
 
-    private ProductInstanceArchFlag productInstanceArchFlagField;
+    private ProductInstanceArchFlag3 productInstanceArchFlagField;
 
-    private ProductInstanceInfo productInstanceInfoField;
+    private ProductInstanceInfo3 productInstanceInfoField;
 
-    private ReferentialMktItemInstanceId referentialMktItemInstanceIdField;
+    private ReferentialMktItemInstanceId3 referentialMktItemInstanceIdField;
 
     private System.DateTime createdOnField;
 
@@ -2103,7 +2695,7 @@ public partial class ProductInstance3
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
-    public CatalogueProductInOfferSpecs catalogueProductInOfferSpecs
+    public CatalogueProductInOfferSpecs3 catalogueProductInOfferSpecs
     {
         get
         {
@@ -2118,7 +2710,7 @@ public partial class ProductInstance3
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Order = 1)]
     [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable = false)]
-    public CustomerInProductInstance[] customerInProductInstanceList
+    public CustomerInProductInstance3[] customerInProductInstanceList
     {
         get
         {
@@ -2133,7 +2725,7 @@ public partial class ProductInstance3
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Order = 2)]
     [System.Xml.Serialization.XmlArrayItemAttribute("mktItemInstanceRelationship", IsNullable = false)]
-    public MktItemInstanceRelationship[] mktItemInstanceRelationshipList
+    public MktItemInstanceRelationship3[] mktItemInstanceRelationshipList
     {
         get
         {
@@ -2147,7 +2739,7 @@ public partial class ProductInstance3
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
-    public MktItemInstanceState mktItemInstanceState
+    public MktItemInstanceState3 mktItemInstanceState
     {
         get
         {
@@ -2162,7 +2754,7 @@ public partial class ProductInstance3
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Order = 4)]
     [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable = false)]
-    public OtherMktItemInstanceId[] otherMktItemInstanceIdList
+    public OtherMktItemInstanceId3[] otherMktItemInstanceIdList
     {
         get
         {
@@ -2176,7 +2768,7 @@ public partial class ProductInstance3
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 5)]
-    public ProductInstanceArchFlag productInstanceArchFlag
+    public ProductInstanceArchFlag3 productInstanceArchFlag
     {
         get
         {
@@ -2190,7 +2782,7 @@ public partial class ProductInstance3
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
-    public ProductInstanceInfo productInstanceInfo
+    public ProductInstanceInfo3 productInstanceInfo
     {
         get
         {
@@ -2204,7 +2796,7 @@ public partial class ProductInstance3
 
     /// <remarks/>
     [System.Xml.Serialization.XmlElementAttribute(Order = 7)]
-    public ReferentialMktItemInstanceId referentialMktItemInstanceId
+    public ReferentialMktItemInstanceId3 referentialMktItemInstanceId
     {
         get
         {
@@ -2306,6 +2898,13 @@ public partial class ProductInstance3
 [System.Diagnostics.DebuggerStepThroughAttribute()]
 [System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class ProductInstanceArchFlag
+{
+}
+
+/// <remarks/>
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
+public partial class ProductInstanceArchFlag3
 {
 }
 
