@@ -8,9 +8,9 @@ internal sealed class GetFlowSwitchesHandler(
     DomainServices.RealEstateValuationService.Clients.IRealEstateValuationServiceClient _realEstateValuationService,
     Services.FlowSwitches.IFlowSwitchesService _flowSwitches,
     DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSaService)
-        : IRequestHandler<GetFlowSwitchesRequest, GetFlowSwitchesResponse>
+        : IRequestHandler<GetFlowSwitchesRequest, SalesArrangementGetFlowSwitchesResponse>
 {
-    public async Task<GetFlowSwitchesResponse> Handle(GetFlowSwitchesRequest request, CancellationToken cancellationToken)
+    public async Task<SalesArrangementGetFlowSwitchesResponse> Handle(GetFlowSwitchesRequest request, CancellationToken cancellationToken)
     {
         // vytahnout flow switches z SA
         var existingSwitches = await _flowSwitches.GetFlowSwitchesForSA(request.SalesArrangementId, cancellationToken);
@@ -18,7 +18,7 @@ internal sealed class GetFlowSwitchesHandler(
         // zjistit stav jednotlivych sekci na FE
         var mergedSwitches = _flowSwitches.GetFlowSwitchesGroups(existingSwitches);
 
-        var response = new GetFlowSwitchesResponse
+        var response = new SalesArrangementGetFlowSwitchesResponse
         {
             ModelationSection = createSection(mergedSwitches[FlowSwitchesGroups.ModelationSection]),
             IndividualPriceSection = createSection(mergedSwitches[FlowSwitchesGroups.IndividualPriceSection]),
@@ -46,7 +46,7 @@ internal sealed class GetFlowSwitchesHandler(
         return response;
     }
 
-    private void adjustScoring(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    private void adjustScoring(SalesArrangementGetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
     {
         if (!flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.ScoringPerformedAtleastOnce && t.Value)
             && !_currentUserAccessor.HasPermission(UserPermissions.SCORING_Perform))
@@ -55,7 +55,7 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private void adjustSendButton(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    private void adjustSendButton(SalesArrangementGetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
     {
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Send))
         {
@@ -86,7 +86,7 @@ internal sealed class GetFlowSwitchesHandler(
     }
 
     private async Task adjustEvaluation(
-        GetFlowSwitchesResponse response, 
+        SalesArrangementGetFlowSwitchesResponse response, 
         int salesArrangementId, 
         List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches, 
         CancellationToken cancellationToken) 
@@ -113,7 +113,7 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private async Task adjustSigning(GetFlowSwitchesResponse response, int salesArrangementId, CancellationToken cancellationToken)
+    private async Task adjustSigning(SalesArrangementGetFlowSwitchesResponse response, int salesArrangementId, CancellationToken cancellationToken)
     {
         if (response.SigningSection.IsCompleted)
         {
@@ -136,17 +136,17 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private static GetFlowSwitchesResponseItemButton createSectionButton(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItemButton createSectionButton(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
     {
-        return new GetFlowSwitchesResponseItemButton
+        return new()
         {
             IsActive = group.IsActive
         };
     }
 
-    private static GetFlowSwitchesResponseItem createSection(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItem createSection(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
     {
-        return new GetFlowSwitchesResponseItem
+        return new()
         {
             IsActive = group.IsActive,
             IsCompleted = group.IsCompleted,

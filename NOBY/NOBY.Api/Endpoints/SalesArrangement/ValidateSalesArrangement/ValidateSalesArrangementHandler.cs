@@ -1,44 +1,36 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement;
 
-internal sealed class ValidateSalesArrangementHandler
-    : IRequestHandler<ValidateSalesArrangementRequest, ValidateSalesArrangementResponse>
+internal sealed class ValidateSalesArrangementHandler(
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService, 
+    Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization)
+        : IRequestHandler<ValidateSalesArrangementRequest, SalesArrangementValidateSalesArrangementResponse>
 {
-    public async Task<ValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task<SalesArrangementValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         // validace opravneni
         await _salesArrangementAuthorization.ValidateSaAccessBySaType213And248BySAId(request.SalesArrangementId, cancellationToken);
 
         var response = await _salesArrangementService.ValidateSalesArrangement(request.SalesArrangementId, cancellationToken);
 
-        return new ValidateSalesArrangementResponse
+        return new SalesArrangementValidateSalesArrangementResponse
         {
             Categories = response
                 .ValidationMessages
                 ?.Where(t => t.NobyMessageDetail.Severity != _SA.ValidationMessageNoby.Types.NobySeverity.None)
                 .GroupBy(t => t.NobyMessageDetail.Category)
                 .OrderBy(t => t.Min(x => x.NobyMessageDetail.CategoryOrder))
-                .Select(t => new ValidateCategory
+                .Select(t => new SalesArrangementSharedValidateCategory
                 {
                     CategoryName = t.Key,
-                    ValidationMessages = t.Select(t2 => new ValidateMessage
+                    ValidationMessages = t.Select(t2 => new SalesArrangementSharedValidateMessage
                     {
                         Message = t2.NobyMessageDetail.Message,
                         Parameter = t2.NobyMessageDetail.ParameterName,
-                        Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? MessageSeverity.Error : MessageSeverity.Warning
+                        Severity = t2.NobyMessageDetail.Severity == _SA.ValidationMessageNoby.Types.NobySeverity.Error ? SalesArrangementSharedValidateMessageSeverity.Error : SalesArrangementSharedValidateMessageSeverity.Warning
                     }).ToList()
                 }).ToList()
         };   
-    }
-
-    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-
-    public ValidateSalesArrangementHandler(DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService, Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
-    {
-        _salesArrangementService = salesArrangementService;
-        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }

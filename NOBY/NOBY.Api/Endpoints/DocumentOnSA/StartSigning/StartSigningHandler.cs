@@ -6,7 +6,6 @@ using FastEnumUtility;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 using ValidateSalesArrangementRequest = NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement.ValidateSalesArrangementRequest;
 using NOBY.Api.Extensions;
@@ -145,9 +144,9 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         }
     }
 
-    private static bool HasCategoryAnyError(ValidateCategory category) => category.ValidationMessages.Any(HasMessageError);
+    private static bool HasCategoryAnyError(SalesArrangementSharedValidateCategory category) => category.ValidationMessages.Any(HasMessageError);
 
-    private static bool HasMessageError(ValidateMessage message) => message.Severity == MessageSeverity.Error;
+    private static bool HasMessageError(SalesArrangementSharedValidateMessage message) => message.Severity == SalesArrangementSharedValidateMessageSeverity.Error;
 
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {

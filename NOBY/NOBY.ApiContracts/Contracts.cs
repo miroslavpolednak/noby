@@ -28,6 +28,130 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementValidateSalesArrangementResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("categories")]
+        public List<SalesArrangementSharedValidateCategory>? Categories { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedValidateCategory
+    {
+        /// <summary>
+        /// Jméno kategorie
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("categoryName")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string CategoryName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("validationMessages")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SalesArrangementSharedValidateMessage> ValidationMessages { get; set; } = new List<SalesArrangementSharedValidateMessage>();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedValidateMessage
+    {
+        /// <summary>
+        /// Název parametru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("parameter")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Parameter { get; set; } = default!;
+
+        /// <summary>
+        /// Textace chyby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string Message { get; set; } = default!;
+
+        /// <summary>
+        /// Severita chyby
+        /// <br/>
+        /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;1 - Warning&lt;/li&gt;&lt;li&gt;2 - Error&lt;/li&gt;&lt;/ul&gt;
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("severity")]
+        public SalesArrangementSharedValidateMessageSeverity Severity { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetFlowSwitchesResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("modelationSection")]
+        public SalesArrangementGetFlowSwitchesResponseItem ModelationSection { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdSection")]
+        public SalesArrangementGetFlowSwitchesResponseItem HouseholdSection { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("parametersSection")]
+        public SalesArrangementGetFlowSwitchesResponseItem ParametersSection { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("scoringSection")]
+        public SalesArrangementGetFlowSwitchesResponseItem ScoringSection { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("signingSection")]
+        public SalesArrangementGetFlowSwitchesResponseItem SigningSection { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("evaluationSection")]
+        public SalesArrangementGetFlowSwitchesResponseItem EvaluationSection { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("sendButton")]
+        public SalesArrangementGetFlowSwitchesResponseItemButton SendButton { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("individualPriceSection")]
+        public SalesArrangementGetFlowSwitchesResponseItem IndividualPriceSection { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetFlowSwitchesResponseItem
+    {
+        /// <summary>
+        /// Je sekce skrytá?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isVisible")]
+        public bool IsVisible { get; set; } = default!;
+
+        /// <summary>
+        /// Je sekce aktivní/neaktivní (lze prokliknout)?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Je v sekci vše splněné?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isCompleted")]
+        public bool IsCompleted { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetFlowSwitchesResponseItemButton
+    {
+        /// <summary>
+        /// Je sekce aktivní/neaktivní (lze prokliknout)?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class RealEstateValuationUpdateRealEstateValuationDetailRequest
     {
         /// <summary>
@@ -4453,6 +4577,16 @@ namespace NOBY.ApiContracts
         DTS = 2,
 
         Standard = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum SalesArrangementSharedValidateMessageSeverity
+    {
+
+        Warning = 1,
+
+        Error = 2,
 
     }
 
