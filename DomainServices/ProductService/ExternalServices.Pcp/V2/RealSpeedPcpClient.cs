@@ -85,15 +85,15 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
             {
                 customerInProductInstanceList =
 				[
-					new CustomerInProductInstance()
+					new CustomerInProductInstance3()
                     {
-                        kBCustomer = new KBCustomer
+                        kBCustomer = new KBCustomer3
                         {
                             id = customerKbId.ToString(CultureInfo.InvariantCulture)
                         },
-                        partyInProductInstanceRole = new PartyInProductInstanceRole
+                        partyInProductInstanceRole = new PartyInProductInstanceRole3
                         {
-                            partyInproductInstanceRoleCode = new PartyInproductInstanceRoleCode
+                            partyInproductInstanceRoleCode = new PartyInproductInstanceRoleCode3
                             {
                                 @class = "CB_CustomerInMortgageInstanceRole",
                                 code = "A"
@@ -101,12 +101,12 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
                         }
                     }
 				],
-				mktItemInstanceState = new MktItemInstanceState
+				mktItemInstanceState = new MktItemInstanceState3
                 {
                     state = "2",
                     @class = "CB_MortgageInstanceState"
 				},
-                referentialMktItemInstanceId = new ReferentialMktItemInstanceId
+                referentialMktItemInstanceId = new ReferentialMktItemInstanceId3
                 {
                     id = pcpId
                 },
