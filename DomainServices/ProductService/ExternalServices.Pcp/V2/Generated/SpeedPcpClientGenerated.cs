@@ -1061,7 +1061,7 @@ public partial class ProductInstance
 
     /// <remarks/>
     [System.Xml.Serialization.XmlArrayAttribute(Order = 1)]
-    [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable = false)]
+    [System.Xml.Serialization.XmlArrayItemAttribute("customerInProductInstance", IsNullable = false,  Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
     public CustomerInProductInstance[] customerInProductInstanceList
     {
         get
@@ -1090,7 +1090,7 @@ public partial class ProductInstance
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Order = 3)]
+    [System.Xml.Serialization.XmlElementAttribute(Order = 3, Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
     public MktItemInstanceState mktItemInstanceState
     {
         get
@@ -1104,7 +1104,7 @@ public partial class ProductInstance
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlArrayAttribute(Order = 4)]
+    [System.Xml.Serialization.XmlArrayAttribute(Order = 4, Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
     [System.Xml.Serialization.XmlArrayItemAttribute("otherMktItemInstanceId", IsNullable = false)]
     public OtherMktItemInstanceId[] otherMktItemInstanceIdList
     {
@@ -1133,7 +1133,7 @@ public partial class ProductInstance
     }
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Order = 6)]
+    [System.Xml.Serialization.XmlElementAttribute(Order = 6, Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
     public ProductInstanceInfo productInstanceInfo
     {
         get
