@@ -145,7 +145,6 @@ public partial class ServiceValidationExceptionConstraint
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class ReferentialMktItemInstanceId
 {
 
@@ -289,7 +288,6 @@ public partial class SourceMaster
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class InfoSourceCode
 {
 
@@ -329,7 +327,6 @@ public partial class InfoSourceCode
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class InfoSource
 {
 
@@ -385,7 +382,6 @@ public partial class InfoSource
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class ProductInstanceInfo
 {
 
@@ -425,7 +421,6 @@ public partial class ProductInstanceInfo
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class Account
 {
 
@@ -449,7 +444,6 @@ public partial class Account
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class AccountNumber
 {
 
@@ -645,7 +639,6 @@ public partial class CatalogueOffer : CommonCatalogueItem
 [System.Xml.Serialization.XmlIncludeAttribute(typeof(MktItemInstanceIdByAccount))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class OtherMktItemInstanceId
 {
 
@@ -709,7 +702,6 @@ public partial class MktItemInstanceIdByAccount : OtherMktItemInstanceId
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class MktItemInstanceState
 {
 
@@ -789,7 +781,6 @@ public partial class MktItemInstanceId
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class RelatedProductInstanceReference
 {
 
@@ -813,7 +804,6 @@ public partial class RelatedProductInstanceReference
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class MktItemInstanceRelationship
 {
 
@@ -853,7 +843,6 @@ public partial class MktItemInstanceRelationship
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class PartyInproductInstanceRoleCode
 {
 
@@ -893,7 +882,6 @@ public partial class PartyInproductInstanceRoleCode
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class PartyInProductInstanceRole
 {
 
@@ -917,7 +905,6 @@ public partial class PartyInProductInstanceRole
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class KBCustomer
 {
 
@@ -941,7 +928,6 @@ public partial class KBCustomer
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class CustomerInProductInstance
 {
 
@@ -1792,7 +1778,6 @@ public partial class ProductInstance2
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class CatalogueProductInOfferSpecs : CommonCatalogueProductInOffer
 {
 
@@ -2304,7 +2289,6 @@ public partial class ProductInstance3
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class ProductInstanceArchFlag
 {
 }
