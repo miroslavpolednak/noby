@@ -1,13 +1,6 @@
-﻿using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
+﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetComment;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.GetComment;
-
-internal sealed class GetCommentRequest : IRequest<Comment>
+internal sealed record GetCommentRequest(int SalesArrangementId)
+    : IRequest<SalesArrangementSharedComment>
 {
-    public int SalesArrangementId { get; }
-
-    public GetCommentRequest(int salesArrangementId)
-    {
-        SalesArrangementId = salesArrangementId;
-    }
 }

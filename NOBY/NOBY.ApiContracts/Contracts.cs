@@ -28,6 +28,149 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateCommentRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("comment")]
+        public SalesArrangementSharedComment Comment { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedComment
+    {
+        /// <summary>
+        /// Komentář k žádosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("text")]
+        public string? Text { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetCustomersOnSaItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public int Id { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
+        public System.DateTime? DateOfBirth { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerRoleId")]
+        public int CustomerRoleId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("birthNumber")]
+        public string? BirthNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("placeOfBirth")]
+        public string? PlaceOfBirth { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("maritalStatusId")]
+        public int? MaritalStatusId { get; set; } = default!;
+
+        /// <summary>
+        /// Adresa - bydliste, kontaktni atd.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("mainAddress")]
+        public SharedTypesAddress? MainAddress { get; set; } = default!;
+
+        /// <summary>
+        /// Adresa - bydliste, kontaktni atd.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("contactAddress")]
+        public SharedTypesAddress? ContactAddress { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("contacts")]
+        public SharedTypesContactsConfirmed? Contacts { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("identities")]
+        public List<SharedTypesCustomerIdentity>? Identities { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetSalesArrangementsItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int SalesArrangementId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerId")]
+        public int? OfferId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementTypeId")]
+        public int SalesArrangementTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementTypeText")]
+        public string? SalesArrangementTypeText { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("state")]
+        public EnumSalesArrangementStates State { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateText")]
+        public string? StateText { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        public System.DateTime CreatedTime { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdBy")]
+        public string? CreatedBy { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetCreditWorthinessResponse
+    {
+        /// <summary>
+        /// &lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;1 - Success&lt;/li&gt;&lt;li&gt;2 - Failed&lt;/li&gt;&lt;/ul&gt;
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("worthinessResult")]
+        public SalesArrangementGetCreditWorthinessResponseWorthinessResult WorthinessResult { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("maxAmount")]
+        public int MaxAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentLimit")]
+        public int InstallmentLimit { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("remainsLivingAnnuity")]
+        public int RemainsLivingAnnuity { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("remainsLivingInst")]
+        public int RemainsLivingInst { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("resultReasonCode")]
+        public string? ResultReasonCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("resultReasonDescription")]
+        public string? ResultReasonDescription { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public decimal? LoanAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        public decimal? LoanPaymentAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dti")]
+        public decimal? Dti { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dsti")]
+        public decimal? Dsti { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class SalesArrangementUpdateParametersRequest
     {
         /// <summary>
@@ -6434,6 +6577,33 @@ namespace NOBY.ApiContracts
     }
 
     /// <summary>
+    /// &lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - InProgress&lt;/li&gt;&lt;li&gt;2 - InApproval&lt;/li&gt;&lt;li&gt;3 - Cancelled&lt;/li&gt;&lt;li&gt;5 - NewArrangement&lt;/li&gt;&lt;li&gt;6 - Disbursed&lt;/li&gt;&lt;li&gt;7 - InSigning&lt;/li&gt;&lt;li&gt;8 - ToSend&lt;/li&gt;&lt;li&gt;9 - Finished&lt;/li&gt;&lt;li&gt;10 - RC2&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumSalesArrangementStates
+    {
+
+        InProgress = 1,
+
+        InApproval = 2,
+
+        Cancelled = 3,
+
+        NewArrangement = 5,
+
+        Disbursed = 6,
+
+        InSigning = 7,
+
+        ToSend = 8,
+
+        Finished = 9,
+
+        RC2 = 10,
+
+    }
+
+    /// <summary>
     /// Filter Noby stavu úkolu
     /// <br/>
     /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Active&lt;/li&gt;&lt;li&gt;2 - Finished&lt;/li&gt;&lt;/ul&gt;
@@ -6535,6 +6705,16 @@ namespace NOBY.ApiContracts
         DTS = 2,
 
         Standard = 3,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum SalesArrangementGetCreditWorthinessResponseWorthinessResult
+    {
+
+        Success = 1,
+
+        Failed = 2,
 
     }
 

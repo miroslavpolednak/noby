@@ -86,15 +86,14 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// Výpočet rozšírené bonity
     /// </summary>
     /// <param name="salesArrangementId">Sales arrangement</param>
-    /// <returns><see cref="GetCreditWorthiness.GetCreditWorthinessResponse"/> Výsledek výpočtu</returns>
     [HttpGet("{salesArrangementId:int}/credit-worthiness")]
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(typeof(GetCreditWorthiness.GetCreditWorthinessResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SalesArrangementGetCreditWorthinessResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EBB933C8-328F-497d-A434-9D2D3C565CB0")]
-    public async Task<GetCreditWorthiness.GetCreditWorthinessResponse> GetCreditWorthiness([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<SalesArrangementGetCreditWorthinessResponse> GetCreditWorthiness([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCreditWorthiness.GetCreditWorthinessRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -108,10 +107,10 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     [HttpGet("list/{caseId:long}")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(typeof(List<SharedDto.SalesArrangementListItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<SalesArrangementGetSalesArrangementsItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=3A82DF69-AF0D-4ec4-8263-D42354C4891E")]
-    public async Task<List<SharedDto.SalesArrangementListItem>> GetSalesArrangements([FromRoute] long caseId, CancellationToken cancellationToken)
+    public async Task<List<SalesArrangementGetSalesArrangementsItem>> GetSalesArrangements([FromRoute] long caseId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetSalesArrangements.GetSalesArrangementsRequest(caseId), cancellationToken);
 
     /// <summary>
@@ -125,11 +124,11 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(typeof(List<SharedDto.CustomerListItem>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<SalesArrangementGetCustomersOnSaItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=439685F4-2313-4dfe-A374-8EE45F1C8E86")]
-    public async Task<List<SharedDto.CustomerListItem>> GetCustomersOnSa([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetCustomers.GetCustomersRequest(salesArrangementId), cancellationToken);
+    public async Task<List<SalesArrangementGetCustomersOnSaItem>> GetCustomersOnSa([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetCustomersOnSa.GetCustomersOnSaRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
     /// Detail Sales Arrangement-u.
@@ -196,7 +195,7 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C")]
-    public async Task<SharedDto.Comment> GetComment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<SalesArrangementSharedComment> GetComment([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetComment.GetCommentRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -213,6 +212,6 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B")]
-    public async Task UpdateComment([FromRoute] int salesArrangementId, [FromBody] SharedDto.Comment? comment)
-        => await _mediator.Send(new UpdateComment.UpdateCommentRequest(salesArrangementId, comment ?? throw new NobyValidationException("Payload is empty")));
+    public async Task UpdateComment([FromRoute] int salesArrangementId, [FromBody] SalesArrangementUpdateCommentRequest? request)
+        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? throw new NobyValidationException("Payload is empty"));
 }

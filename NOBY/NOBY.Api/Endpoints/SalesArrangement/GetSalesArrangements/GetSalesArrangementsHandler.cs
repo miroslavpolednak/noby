@@ -7,10 +7,13 @@ using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangements;
 
-internal sealed class GetSalesArrangementsHandler
-    : IRequestHandler<GetSalesArrangementsRequest, List<SharedDto.SalesArrangementListItem>>
+internal sealed class GetSalesArrangementsHandler(
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICodebookServiceClient _codebookService,
+    ICurrentUserAccessor _currentUserAccessor)
+        : IRequestHandler<GetSalesArrangementsRequest, List<SalesArrangementGetSalesArrangementsItem>>
 {
-    public async Task<List<SharedDto.SalesArrangementListItem>> Handle(GetSalesArrangementsRequest request, CancellationToken cancellationToken)
+    public async Task<List<SalesArrangementGetSalesArrangementsItem>> Handle(GetSalesArrangementsRequest request, CancellationToken cancellationToken)
     {
         var result = await _salesArrangementService.GetSalesArrangementList(request.CaseId, cancellationToken: cancellationToken);
 
@@ -31,11 +34,11 @@ internal sealed class GetSalesArrangementsHandler
         }
 
         var model = query
-            .Select(t => new SharedDto.SalesArrangementListItem
+            .Select(t => new SalesArrangementGetSalesArrangementsItem
             {
                 SalesArrangementId = t.SalesArrangementId,
                 SalesArrangementTypeId = t.SalesArrangementTypeId,
-                State = (SalesArrangementStates)t.State,
+                State = (EnumSalesArrangementStates)t.State,
                 StateText = ((SalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
                 OfferId = t.OfferId,
                 CreatedBy = t.Created.UserName,
@@ -50,19 +53,5 @@ internal sealed class GetSalesArrangementsHandler
         });
 
         return model;
-    }
-
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-
-    public GetSalesArrangementsHandler(
-        ISalesArrangementServiceClient salesArrangementService,
-        ICodebookServiceClient codebookService,
-        ICurrentUserAccessor currentUserAccessor)
-    {
-        _codebookService = codebookService;
-        _salesArrangementService = salesArrangementService;
-        _currentUserAccessor = currentUserAccessor;
     }
 }

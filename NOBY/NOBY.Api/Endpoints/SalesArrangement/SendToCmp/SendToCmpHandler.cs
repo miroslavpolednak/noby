@@ -16,39 +16,17 @@ using Mandants = SharedTypes.GrpcTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 
-internal sealed class SendToCmpHandler
-    : IRequestHandler<SendToCmpRequest>
+internal sealed class SendToCmpHandler(
+    DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICustomerOnSAServiceClient _customerOnSaService,
+    IProductServiceClient _productService,
+    ICustomerServiceClient _customerService,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    IMediator _mediator)
+        : IRequestHandler<SendToCmpRequest>
 {
-
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly IProductServiceClient _productService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly IMediator _mediator;
-
-    public SendToCmpHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICustomerOnSAServiceClient customerOnSaService,
-        IProductServiceClient productService,
-        ICustomerServiceClient customerService,
-        IDocumentOnSAServiceClient documentOnSAService,
-        IMediator mediator)
-    {
-        _codebookService = codebookService;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _customerOnSaService = customerOnSaService;
-        _productService = productService;
-        _customerService = customerService;
-        _documentOnSAService = documentOnSAService;
-        _mediator = mediator;
-    }
-
     public async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
         // instance SA

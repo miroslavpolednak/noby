@@ -1,22 +1,24 @@
 ﻿using DomainServices.CustomerService.Clients;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomers;
+namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomersOnSa;
 
-internal sealed class GetCustomersHandler
-    : IRequestHandler<GetCustomersRequest, List<SharedDto.CustomerListItem>>
+internal sealed class GetCustomersOnSaHandler(
+    ICustomerServiceClient _customerService,
+    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService)
+        : IRequestHandler<GetCustomersOnSaRequest, List<SalesArrangementGetCustomersOnSaItem>>
 {
     //TODO tohle se bude nejspis cele predelavat, nema smysl to moc resit
-    public async Task<List<SharedDto.CustomerListItem>> Handle(GetCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<List<SalesArrangementGetCustomersOnSaItem>> Handle(GetCustomersOnSaRequest request, CancellationToken cancellationToken)
     {
         // najit existujici customeryOnSA
         var customersOnSA = await _customerOnSaService.GetCustomerList(request.SalesArrangementId, cancellationToken);
 
-        List<SharedDto.CustomerListItem> model = new();
+        List<SalesArrangementGetCustomersOnSaItem> model = [];
         
         //TODO idealne natahnout z customerService vsechny najednou?
         foreach (var t in customersOnSA)
         {
-            var c = new SharedDto.CustomerListItem()
+            var c = new SalesArrangementGetCustomersOnSaItem
             {
                 Id = t.CustomerOnSAId,
                 FirstName = t.FirstNameNaturalPerson,
@@ -30,7 +32,7 @@ internal sealed class GetCustomersHandler
             // pokud nema identitu, ani nevolej customerSvc
             if (t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Count != 0)
             {
-                c.Identities = t.CustomerIdentifiers.Select(x => new SharedTypes.Types.CustomerIdentity(x.IdentityId, (int)x.IdentityScheme)).ToList();
+                c.Identities = t.CustomerIdentifiers?.Select(x => (SharedTypesCustomerIdentity)x).ToList();
 
                 // zavolat customer svc pro detail
                 //TODO nejak prioritizovat schemata?
@@ -50,7 +52,7 @@ internal sealed class GetCustomersHandler
                 var address = customerDetail.Addresses?.FirstOrDefault(t => t.AddressTypeId == 1);
                 if (address is not null)
                 {
-                    c.MainAddress = new SharedTypes.Types.Address
+                    c.MainAddress = new SharedTypesAddress
                     {
                         Street = address.Street,
                         City = address.City,
@@ -64,7 +66,7 @@ internal sealed class GetCustomersHandler
                 var address2 = customerDetail.Addresses?.FirstOrDefault(t => t.AddressTypeId == 2);
                 if (address2 is not null)
                 {
-                    c.ContactAddress = new SharedTypes.Types.Address
+                    c.ContactAddress = new SharedTypesAddress
                     {
                         Street = address2.Street,
                         City = address2.City,
@@ -93,16 +95,5 @@ internal sealed class GetCustomersHandler
         }
 
         return model;
-    }
-
-    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly ICustomerServiceClient _customerService;
-
-    public GetCustomersHandler(
-        ICustomerServiceClient customerService,
-        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
-    {
-        _customerService = customerService;
-        _customerOnSaService = customerOnSaService;
     }
 }
