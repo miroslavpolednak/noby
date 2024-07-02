@@ -29,6 +29,6 @@ public static class IdentityExtensions
 
     private static bool KbIdentityCondition(Identity identity) => identity is { IdentityScheme: Identity.Types.IdentitySchemes.Kb, IdentityId: > 0 };
 
-    private static bool MpIdentityCondition(Identity identity) => identity is { IdentityScheme: Identity.Types.IdentitySchemes.Kb, IdentityId: > 0 };
+    private static bool MpIdentityCondition(Identity identity) => identity is { IdentityScheme: Identity.Types.IdentitySchemes.Mp, IdentityId: > 0 };
 
 }
