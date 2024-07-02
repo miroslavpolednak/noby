@@ -2,16 +2,20 @@
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using _dto = NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using FastEnumUtility;
 using NOBY.Services.SigningHelper;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
-internal sealed class UpdateParametersHandler
-    : IRequestHandler<UpdateParametersRequest>
+internal sealed class UpdateParametersHandler(
+    UpdateParametersValidator _helper,
+    ICodebookServiceClient _codebookService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IDocumentOnSAServiceClient _documentOnSaService,
+    ISigningHelperService _signingHelperService)
+        : IRequestHandler<SalesArrangementUpdateParametersRequest>
 {
-    public async Task Handle(UpdateParametersRequest request, CancellationToken cancellationToken)
+    public async Task Handle(SalesArrangementUpdateParametersRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
@@ -31,42 +35,42 @@ internal sealed class UpdateParametersHandler
             switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)
             {
                 case SalesArrangementTypes.Mortgage:
-                    updateRequest.Mortgage = (await _helper.DeserializeAndValidate<_dto.ParametersMortgage>(request.Parameters, saInstance))
+                    updateRequest.Mortgage = (await _helper.Validate(request.Parameters?.Mortgage, saInstance))
                         ?.ToDomainService(saInstance.Mortgage);
                     break;
 
                 case SalesArrangementTypes.Drawing:
-                    updateRequest.Drawing = (await _helper.DeserializeAndValidate<_dto.ParametersDrawing>(request.Parameters, saInstance))
+                    updateRequest.Drawing = (await _helper.Validate(request.Parameters?.Drawing, saInstance))
                         ?.ToDomainService();
                     break;
 
                 case SalesArrangementTypes.GeneralChange:
-                    updateRequest.GeneralChange = (await _helper.DeserializeAndValidate<Dto.GeneralChangeUpdate>(request.Parameters, saInstance))
+                    updateRequest.GeneralChange = (await _helper.Validate(request.Parameters?.GeneralChange, saInstance))
                         ?.ToDomainService(saInstance.GeneralChange);
                     break;
 
                 case SalesArrangementTypes.HUBN:
-                    updateRequest.HUBN = (await _helper.DeserializeAndValidate<Dto.HUBNUpdate>(request.Parameters, saInstance))
+                    updateRequest.HUBN = (await _helper.Validate(request.Parameters?.Hubn, saInstance))
                         ?.ToDomainService(saInstance.HUBN);
                     break;
 
                 case SalesArrangementTypes.CustomerChange:
-                    updateRequest.CustomerChange = (await _helper.DeserializeAndValidate<Dto.CustomerChangeUpdate>(request.Parameters, saInstance))
+                    updateRequest.CustomerChange = (await _helper.Validate(request.Parameters?.CustomerChange, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602A:
-                    updateRequest.CustomerChange3602A = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
+                    updateRequest.CustomerChange3602A = (await _helper.Validate(request.Parameters?.CustomerChange3602, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange3602A);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602B:
-                    updateRequest.CustomerChange3602B = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
+                    updateRequest.CustomerChange3602B = (await _helper.Validate(request.Parameters?.CustomerChange3602, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange3602B);
                     break;
 
                 case SalesArrangementTypes.CustomerChange3602C:
-                    updateRequest.CustomerChange3602C = (await _helper.DeserializeAndValidate<Dto.CustomerChange3602Update>(request.Parameters, saInstance))
+                    updateRequest.CustomerChange3602C = (await _helper.Validate(request.Parameters?.CustomerChange3602, saInstance))
                         ?.ToDomainService(saInstance.CustomerChange3602C);
                     break;
 
@@ -119,30 +123,10 @@ internal sealed class UpdateParametersHandler
         await _salesArrangementService.SetFlowSwitch(saInstance.SalesArrangementId, FlowSwitches.ParametersSavedAtLeastOnce, true, cancellationToken);
     }
 
-    private static int[] _disallowedStates = new[]
-    {
+    private static readonly int[] _disallowedStates =
+    [
         (int)SalesArrangementStates.Cancelled,
         (int)SalesArrangementStates.Disbursed,
         (int)SalesArrangementStates.InApproval
-    };
-
-    private readonly UpdateParametersHelper _helper;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IDocumentOnSAServiceClient _documentOnSaService;
-    private readonly ISigningHelperService _signingHelperService;
-
-    public UpdateParametersHandler(
-        UpdateParametersHelper helper,
-        ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IDocumentOnSAServiceClient documentOnSaService,
-        ISigningHelperService signingHelperService)
-    {
-        _helper = helper;
-        _codebookService = codebookService;
-        _documentOnSaService = documentOnSaService;
-        _signingHelperService = signingHelperService;
-        _salesArrangementService = salesArrangementService;
-    }
+    ];
 }

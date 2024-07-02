@@ -5,12 +5,20 @@ using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 using DomainServices.UserService.Clients;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
-internal sealed class GetLoanApplicationAssessmentHandler
-    : IRequestHandler<GetLoanApplicationAssessmentRequest, GetLoanApplicationAssessmentResponse>
+internal sealed class GetLoanApplicationAssessmentHandler(
+    GetLoanApplicationAssessmentResultService _resultService,
+    IUserServiceClient _userService,
+    ICurrentUserAccessor _currentUser,
+    DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService,
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    Services.RiskCaseProcessor.RiskCaseProcessorService _riskCaseProcessor,
+    DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService,
+    DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient _customerExposureService)
+        : IRequestHandler<GetLoanApplicationAssessmentRequest, SalesArrangementGetLoanApplicationAssessmentResponse>
 {
-    public async Task<GetLoanApplicationAssessmentResponse> Handle(GetLoanApplicationAssessmentRequest request, CancellationToken cancellationToken)
+    public async Task<SalesArrangementGetLoanApplicationAssessmentResponse> Handle(GetLoanApplicationAssessmentRequest request, CancellationToken cancellationToken)
     {
         // 
         if (request.NewAssessmentRequired && !_currentUser.HasPermission(UserPermissions.SCORING_Perform))
@@ -137,54 +145,25 @@ internal sealed class GetLoanApplicationAssessmentHandler
 
     private async Task updateLoanAssesment(DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, bool updateSalesArrangement, CancellationToken cancellationToken)
     {
-        var laResult = await _riskCaseProcessor.SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId!.Value, cancellationToken);
-        saInstance.LoanApplicationDataVersion = laResult.LoanApplicationDataVersion;
+        var (riskSegment, loanApplicationDataVersion) = await _riskCaseProcessor.SaveLoanApplication(saInstance.SalesArrangementId, saInstance.CaseId, saInstance.OfferId!.Value, cancellationToken);
+        saInstance.LoanApplicationDataVersion = loanApplicationDataVersion;
 
         if (updateSalesArrangement)
         {
             await _salesArrangementService.UpdateLoanAssessmentParameters(new DomainServices.SalesArrangementService.Contracts.UpdateLoanAssessmentParametersRequest
             {
                 SalesArrangementId = saInstance.SalesArrangementId,
-                RiskSegment = laResult.RiskSegment,
-                LoanApplicationDataVersion = laResult.LoanApplicationDataVersion
+                RiskSegment = riskSegment,
+                LoanApplicationDataVersion = loanApplicationDataVersion
             }, cancellationToken);
         }
     }
 
-    static List<RiskBusinessCaseRequestedDetails> _assessmentRequestDetails = new()
-    {
+    private static readonly List<RiskBusinessCaseRequestedDetails> _assessmentRequestDetails =
+    [
         RiskBusinessCaseRequestedDetails.assessmentDetail,
         RiskBusinessCaseRequestedDetails.householdAssessmentDetail,
         RiskBusinessCaseRequestedDetails.counterpartyAssessmentDetail,
         RiskBusinessCaseRequestedDetails.collateralRiskCharacteristics
-    };
-
-    private readonly GetLoanApplicationAssessmentResultService _resultService;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly IUserServiceClient _userService;
-    private readonly DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly NOBY.Services.RiskCaseProcessor.RiskCaseProcessorService _riskCaseProcessor;
-    private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
-    private readonly DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient _customerExposureService;
-
-    public GetLoanApplicationAssessmentHandler(
-        GetLoanApplicationAssessmentResultService resultService,
-        IUserServiceClient userService,
-        ICurrentUserAccessor currentUser,
-        DomainServices.OfferService.Clients.v1.IOfferServiceClient offerService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        Services.RiskCaseProcessor.RiskCaseProcessorService riskCaseProcessor,
-        DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
-        DomainServices.RiskIntegrationService.Clients.CustomerExposure.V2.ICustomerExposureServiceClient customerExposureService)
-    {
-        _resultService = resultService;
-        _offerService = offerService;
-        _riskBusinessCaseService = riskBusinessCaseService;
-        _currentUser = currentUser;
-        _userService = userService;
-        _salesArrangementService = salesArrangementService;
-        _riskCaseProcessor = riskCaseProcessor;
-        _customerExposureService = customerExposureService;
-    }
+    ];
 }

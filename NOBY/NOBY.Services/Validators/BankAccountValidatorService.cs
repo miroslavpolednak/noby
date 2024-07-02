@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using DomainServices.CodebookService.Clients;
-using NOBY.Dto;
+using SharedTypes.Interfaces;
 
 namespace NOBY.Services.Validators;
 

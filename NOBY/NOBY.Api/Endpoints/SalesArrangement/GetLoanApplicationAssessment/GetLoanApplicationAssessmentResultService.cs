@@ -7,12 +7,16 @@ using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
 
-namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2;
+namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 [ScopedService, SelfService]
-internal sealed class GetLoanApplicationAssessmentResultService
+internal sealed class GetLoanApplicationAssessmentResultService(
+    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
+    ICurrentUserAccessor _currentUser,
+    DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService)
 {
-    public async Task<GetLoanApplicationAssessmentResponse> CreateResult(
+    public async Task<SalesArrangementGetLoanApplicationAssessmentResponse> CreateResult(
         int salesArrangementId,
         LoanApplicationAssessmentResponse assessment,
         CustomerExposureCalculateResponse? exposure,
@@ -37,7 +41,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
         }
 
         // vytvoreni response
-        GetLoanApplicationAssessmentResponse response = new()
+        SalesArrangementGetLoanApplicationAssessmentResponse response = new()
         {
             RiskBusinesscaseExpirationDate = assessment!.RiskBusinessCaseExpirationDate,
             AssessmentResult = assessment.AssessmentResult,
@@ -54,12 +58,12 @@ internal sealed class GetLoanApplicationAssessmentResultService
         // vytvoreni response - households
         foreach (var household in households)
         {
-            Dto.Household householdResponse = new()
+            SalesArrangementGetLoanApplicationAssessmentHousehold householdResponse = new()
             {
                 HouseholdId = household.HouseholdId,
                 HouseholdTypeId = household.HouseholdTypeId,
                 Risk = assessment.HouseholdsDetails?.FirstOrDefault(t => t.HouseholdId.GetValueOrDefault() == household.HouseholdId)?.ToHouseholdRiskApiResponse(),
-                Customers = new List<Dto.HouseholdCustomerObligations>()
+                Customers = new List<SalesArrangementGetLoanApplicationAssessmentHouseholdCustomerObligations>()
             };
 
             if (household.CustomerOnSAId1.HasValue)
@@ -96,27 +100,27 @@ internal sealed class GetLoanApplicationAssessmentResultService
 
             if (t.RequestedCBCBNaturalPersonExposureItem.Count != 0)
             {
-                items.AddRange(t.RequestedCBCBNaturalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+                items.AddRange(t.RequestedCBCBNaturalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), x.CbcbContractId ?? "", x.CustomerRoleId.GetValueOrDefault())));
             }
             if (t.RequestedCBCBJuridicalPersonExposureItem.Count != 0)
             {
-                items.AddRange(t.RequestedCBCBJuridicalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+                items.AddRange(t.RequestedCBCBJuridicalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), x.CbcbContractId ?? "", x.CustomerRoleId.GetValueOrDefault())));
             }
             if (t.RequestedKBGroupNaturalPersonExposures.Count != 0)
             {
-                items.AddRange(t.RequestedKBGroupNaturalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.RiskBusinessCaseId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+                items.AddRange(t.RequestedKBGroupNaturalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), x.RiskBusinessCaseId ?? "", x.CustomerRoleId.GetValueOrDefault())));
             }
             if (t.RequestedKBGroupJuridicalPersonExposures.Count != 0)
             {
-                items.AddRange(t.RequestedKBGroupJuridicalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.RiskBusinessCaseId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+                items.AddRange(t.RequestedKBGroupJuridicalPersonExposures!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), x.RiskBusinessCaseId ?? "", x.CustomerRoleId.GetValueOrDefault())));
             }
             if (t.ExistingCBCBNaturalPersonExposureItem.Count != 0)
             {
-                items.AddRange(t.ExistingCBCBNaturalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+                items.AddRange(t.ExistingCBCBNaturalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), x.CbcbContractId ?? "", x.CustomerRoleId.GetValueOrDefault())));
             }
             if (t.ExistingCBCBJuridicalPersonExposureItem.Count != 0)
             {
-                items.AddRange(t.ExistingCBCBJuridicalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), (x.CbcbContractId ?? ""), x.CustomerRoleId.GetValueOrDefault())));
+                items.AddRange(t.ExistingCBCBJuridicalPersonExposureItem!.Select(x => new ExposureItemsHelperDto(customerId, x.GetHashCode(), x.CbcbContractId ?? "", x.CustomerRoleId.GetValueOrDefault())));
             }
             if (t.ExistingKBGroupNaturalPersonExposures.Count != 0)
             {
@@ -163,7 +167,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
         return codebtors;
     }
 
-    private Dto.HouseholdCustomerObligations getCustomer(
+    private SalesArrangementGetLoanApplicationAssessmentHouseholdCustomerObligations getCustomer(
         int customerOnSAId,
         CustomerExposureCalculateResponse? exposure)
     {
@@ -171,14 +175,14 @@ internal sealed class GetLoanApplicationAssessmentResultService
         var customer = _customers.First(t => t.CustomerOnSAId == customerOnSAId);
         var customerExposure = exposure?.Customers?.FirstOrDefault(t => t.InternalCustomerId == customer.CustomerOnSAId);
 
-        Dto.HouseholdCustomerObligations obligationCustomer = new()
+        SalesArrangementGetLoanApplicationAssessmentHouseholdCustomerObligations obligationCustomer = new()
         {
             DateOfBirth = customer.DateOfBirthNaturalPerson,
             FirstName = customer.FirstNameNaturalPerson,
             LastName = customer.Name,
-            RoleId = (CustomerRoles)customer.CustomerRoleId
+            RoleId = (EnumCustomerRoles)customer.CustomerRoleId
         };
-        
+
         if (customerExposure is null)
         {
             obligationCustomer.ExistingObligations = obligations.CreateHouseholdObligations(_obligationTypes)
@@ -194,13 +198,13 @@ internal sealed class GetLoanApplicationAssessmentResultService
                 obligationCustomer.RequestedObligations = getRequestedObligations(customerExposure);
             }
         }
-        
+
         return obligationCustomer;
     }
 
-    private List<Dto.HouseholdObligationItem> getRequestedObligations(CustomerExposureCustomer customerExposure)
+    private List<SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem> getRequestedObligations(CustomerExposureCustomer customerExposure)
     {
-        var obligations = new List<Dto.HouseholdObligationItem>();
+        var obligations = new List<SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem>();
 
         foreach (var exp in customerExposure.RequestedCBCBNaturalPersonExposureItem!)
         {
@@ -231,12 +235,12 @@ internal sealed class GetLoanApplicationAssessmentResultService
             .ToList();
     }
 
-    private List<Dto.HouseholdObligationItem> getExistingObligations(
-        CustomerExposureCustomer customerExposure, 
+    private List<SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem> getExistingObligations(
+        CustomerExposureCustomer customerExposure,
         List<Obligation> nobyObligations)
     {
-        var obligations = new List<Dto.HouseholdObligationItem>();
-        
+        var obligations = new List<SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem>();
+
         foreach (var exp in customerExposure.ExistingCBCBNaturalPersonExposureItem!)
         {
             var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false);
@@ -248,7 +252,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
             var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, true);
             obligations.Add(updateCodebtors(item, exp.GetHashCode()));
         }
-    
+
         foreach (var exp in customerExposure.ExistingKBGroupNaturalPersonExposures!)
         {
             var item = exp.CreateHouseholdObligations(_laExposureItems, _obligationTypes, false);
@@ -270,7 +274,7 @@ internal sealed class GetLoanApplicationAssessmentResultService
             .ToList();
     }
 
-    private Dto.HouseholdObligationItem updateCodebtors(Dto.HouseholdObligationItem item, int hash)
+    private SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem updateCodebtors(SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem item, int hash)
     {
         if (_codebtors!.TryGetValue(hash, out List<string>? value))
         {
@@ -289,21 +293,4 @@ internal sealed class GetLoanApplicationAssessmentResultService
     private Dictionary<int, List<Obligation>> _obligations = null!;
     private List<ObligationTypesResponse.Types.ObligationTypeItem> _obligationTypes = null!;
     private List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> _laExposureItems = null!;
-
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService;
-
-    public GetLoanApplicationAssessmentResultService(
-        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSAService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        ICurrentUserAccessor currentUser,
-        DomainServices.HouseholdService.Clients.IHouseholdServiceClient householdService)
-    {
-        _codebookService = codebookService;
-        _householdService = householdService;
-        _customerOnSAService = customerOnSAService;
-        _currentUser = currentUser;
-    }
 }

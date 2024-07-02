@@ -71,17 +71,16 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
     /// <param name="newAssessmentRequired">Požadováno nové posouzení</param>
-    /// <returns><see cref="GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse"/> Vysledek</returns>
     [HttpGet("{salesArrangementId:int}/loan-application-assessment")]
     [ApiVersion(2)]
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access, UserPermissions.SCORING_Perform)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(typeof(GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SalesArrangementGetLoanApplicationAssessmentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=CB8E73AD-C282-4555-B587-A571EE896E81")]
-    public async Task<GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentResponse> GetLoanApplicationAssessmentV2([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
-        => await _mediator.Send(new GetLoanApplicationAssessment.V2.GetLoanApplicationAssessmentRequest(salesArrangementId, newAssessmentRequired), cancellationToken);
+    public async Task<SalesArrangementGetLoanApplicationAssessmentResponse> GetLoanApplicationAssessment([FromRoute] int salesArrangementId, [FromQuery] bool newAssessmentRequired, CancellationToken cancellationToken)
+        => await _mediator.Send(new GetLoanApplicationAssessment.GetLoanApplicationAssessmentRequest(salesArrangementId, newAssessmentRequired), cancellationToken);
 
     /// <summary>
     /// Výpočet rozšírené bonity
@@ -142,10 +141,10 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     [HttpGet("{salesArrangementId:int}")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(typeof(GetSalesArrangement.GetSalesArrangementResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SalesArrangementGetSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=B35C47A9-4467-4949-9B03-0724D6D73F6F")]
-    public async Task<GetSalesArrangement.GetSalesArrangementResponse> GetSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<SalesArrangementGetSalesArrangementResponse> GetSalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetSalesArrangement.GetSalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -161,7 +160,7 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=18E19FC4-9238-4249-B43E-A26A9FBBC32C")]
-    public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] UpdateParameters.UpdateParametersRequest request)
+    public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] SalesArrangementUpdateParametersRequest request)
         => await _mediator.Send(request.InfuseId(salesArrangementId));
 
     /// <summary>

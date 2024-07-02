@@ -28,6 +28,1909 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersRequest
+    {
+        /// <summary>
+        /// Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("parameters")]
+        public SalesArrangementUpdateParametersParameters? Parameters { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersParameters
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
+        public string Discriminator { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
+        public SalesArrangementSharedParametersMortgage Mortgage { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("hubn")]
+        public SalesArrangementUpdateParametersHubn Hubn { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawing")]
+        public SalesArrangementSharedParametersDrawing Drawing { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("generalChange")]
+        public SalesArrangementUpdateParametersGeneralChange GeneralChange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerChange")]
+        public SalesArrangementUpdateParametersCustomerChange CustomerChange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerChange3602")]
+        public SalesArrangementUpdateParametersCustomerChange3602 CustomerChange3602 { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersCustomerChange3602
+    {
+        /// <summary>
+        /// Přistupující manžel/ka?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSpouseInDebt")]
+        public bool? IsSpouseInDebt { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersCustomerChange
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("release")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCustomerChangeDetailRelease Release { get; set; } = new SalesArrangementSharedCustomerChangeDetailRelease();
+
+        [System.Text.Json.Serialization.JsonPropertyName("add")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCustomerChangeDetailAdd Add { get; set; } = new SalesArrangementSharedCustomerChangeDetailAdd();
+
+        [System.Text.Json.Serialization.JsonPropertyName("agent")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCustomerChangeDetailAgentBase Agent { get; set; } = new SalesArrangementSharedCustomerChangeDetailAgentBase();
+
+        /// <summary>
+        /// Účet pro splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedPaymentAccount RepaymentAccount { get; set; } = new SalesArrangementSharedPaymentAccount();
+
+        /// <summary>
+        /// Komentář k žádosti o změnu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToChangeRequest")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCommentToChangeRequest CommentToChangeRequest { get; set; } = new SalesArrangementSharedCommentToChangeRequest();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersGeneralChange
+    {
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("applicant")]
+        public List<SharedTypesCustomerIdentity>? Applicant { get; set; } = default!;
+
+        /// <summary>
+        /// Zajištění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("collateral")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCollateral Collateral { get; set; } = new SalesArrangementSharedCollateral();
+
+        /// <summary>
+        /// Den splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentDay")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementUpdateParametersPaymentDay PaymentDay { get; set; } = new SalesArrangementUpdateParametersPaymentDay();
+
+        /// <summary>
+        /// Lhůta ukončení čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingDateTo")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDrawingDateToExtended DrawingDateTo { get; set; } = new SalesArrangementSharedDrawingDateToExtended();
+
+        /// <summary>
+        /// Účet pro splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedPaymentAccount RepaymentAccount { get; set; } = new SalesArrangementSharedPaymentAccount();
+
+        /// <summary>
+        /// Výše měsíční splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedLoanPaymentAmountBase LoanPaymentAmount { get; set; } = new SalesArrangementSharedLoanPaymentAmountBase();
+
+        /// <summary>
+        /// Splatnost
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dueDate")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDueDateBase DueDate { get; set; } = new SalesArrangementSharedDueDateBase();
+
+        /// <summary>
+        /// Objekty úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanRealEstate")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedLoanRealEstate LoanRealEstate { get; set; } = new SalesArrangementSharedLoanRealEstate();
+
+        /// <summary>
+        /// Účel úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurpose")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedLoanPurpose LoanPurpose { get; set; } = new SalesArrangementSharedLoanPurpose();
+
+        /// <summary>
+        /// Podmínky čerpání a další podmínky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingAndOtherConditions")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDrawingAndOtherConditions DrawingAndOtherConditions { get; set; } = new SalesArrangementSharedDrawingAndOtherConditions();
+
+        /// <summary>
+        /// Komentář k žádosti o změnu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToChangeRequest")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCommentToChangeRequest CommentToChangeRequest { get; set; } = new SalesArrangementSharedCommentToChangeRequest();
+
+    }
+
+    /// <summary>
+    /// Den splácení
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersPaymentDay
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Nový den splácení, CIS_DEN_SPLACENI
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("newPaymentDay")]
+        public int? NewPaymentDay { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersHubn
+    {
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("applicant")]
+        public List<SharedTypesCustomerIdentity>? Applicant { get; set; } = default!;
+
+        /// <summary>
+        /// Výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementUpdateParametersLoanAmount LoanAmount { get; set; } = new SalesArrangementUpdateParametersLoanAmount();
+
+        /// <summary>
+        /// Účely úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SalesArrangementSharedLoanPurposeItem> LoanPurposes { get; set; } = new List<SalesArrangementSharedLoanPurposeItem>();
+
+        /// <summary>
+        /// Objekty úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanRealEstates")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SalesArrangementSharedParametersLoanRealEstate> LoanRealEstates { get; set; } = new List<SalesArrangementSharedParametersLoanRealEstate>();
+
+        /// <summary>
+        /// Identifikace zajištění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("collateralIdentification")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCollateralIdentification CollateralIdentification { get; set; } = new SalesArrangementSharedCollateralIdentification();
+
+        /// <summary>
+        /// Předpokládaný termín prvního čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("expectedDateOfDrawing")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementUpdateParametersExpectedDateOfDrawing ExpectedDateOfDrawing { get; set; } = new SalesArrangementUpdateParametersExpectedDateOfDrawing();
+
+        /// <summary>
+        /// Lhůta ukončení čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingDateTo")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDrawingDateTo DrawingDateTo { get; set; } = new SalesArrangementSharedDrawingDateTo();
+
+        /// <summary>
+        /// Komentář k žádosti o změnu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToChangeRequest")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCommentToChangeRequest CommentToChangeRequest { get; set; } = new SalesArrangementSharedCommentToChangeRequest();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersExpectedDateOfDrawing
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Nový předpokládaný termín prvního čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("newExpectedDateOfDrawing")]
+        public System.DateTime? NewExpectedDateOfDrawing { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementUpdateParametersLoanAmount
+    {
+        /// <summary>
+        /// Změnit sjednanou výši úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("changeAgreedLoanAmount")]
+        public bool ChangeAgreedLoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Požadovaná výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requiredLoanAmount")]
+        public decimal? RequiredLoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Zachovat sjednanou splatnost do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("preserveLoanDueDate")]
+        public bool PreserveLoanDueDate { get; set; } = default!;
+
+        /// <summary>
+        /// Zachovat sjednanou splátku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("preserveAgreedPaymentAmount")]
+        public bool PreserveAgreedPaymentAmount { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetLoanApplicationAssessmentResponse
+    {
+        /// <summary>
+        /// Datum expirace obchodního případu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
+        public System.DateTime? RiskBusinesscaseExpirationDate { get; set; } = default!;
+
+        /// <summary>
+        /// Výsledek vyhodnocení&lt;br /&gt;501 - v pořádku&lt;br /&gt;502 - zamítnuto
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("assessmentResult")]
+        public long? AssessmentResult { get; set; } = default!;
+
+        /// <summary>
+        /// Důvody
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("reasons")]
+        public List<SalesArrangementGetLoanApplicationAssessmentAssessmentReason>? Reasons { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("application")]
+        public SalesArrangementGetLoanApplicationAssessmentLoanApplication? Application { get; set; } = default!;
+
+        /// <summary>
+        /// Domácnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("households")]
+        public List<SalesArrangementGetLoanApplicationAssessmentHousehold> Households { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("displayAssessmentResultInfoText")]
+        public bool DisplayAssessmentResultInfoText { get; set; } = default!;
+
+        /// <summary>
+        /// Informace o tom, zda bylo možné provolat C4M Exposure endpoint. (True=služba Exposure je nedostupná/nepodařilo se jí provolat)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("displayWarningExposureDoesNotWork")]
+        public bool DisplayWarningExposureDoesNotWork { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetLoanApplicationAssessmentHousehold
+    {
+        /// <summary>
+        /// ID domácnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdId")]
+        public long HouseholdId { get; set; } = default!;
+
+        /// <summary>
+        /// Typ domácnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdTypeId")]
+        public int HouseholdTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Risková data
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("risk")]
+        public SalesArrangementGetLoanApplicationAssessmentHouseholdRisk? Risk { get; set; } = default!;
+
+        /// <summary>
+        /// Závazky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customers")]
+        public List<SalesArrangementGetLoanApplicationAssessmentHouseholdCustomerObligations>? Customers { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetLoanApplicationAssessmentHouseholdCustomerObligations
+    {
+        /// <summary>
+        /// Jméno klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Příjmení klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narození klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
+        public DateOnly? DateOfBirth { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("roleId")]
+        public EnumCustomerRoles RoleId { get; set; } = default!;
+
+        /// <summary>
+        /// Existující závazky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("existingObligations")]
+        public List<SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem>? ExistingObligations { get; set; } = default!;
+
+        /// <summary>
+        /// Rozpracované závazky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requestedObligations")]
+        public List<SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem>? RequestedObligations { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationTypeOrder")]
+        public int ObligationTypeOrder { get; set; } = default!;
+
+        /// <summary>
+        /// Typ závazku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationTypeId")]
+        public int ObligationTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Typ závazku - název
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationTypeName")]
+        public string ObligationTypeName { get; set; } = default!;
+
+        /// <summary>
+        /// Stav závazku. 1=NOBY, 2=C4M
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationSourceId")]
+        public int ObligationSourceId { get; set; } = default!;
+
+        /// <summary>
+        /// Věřitel
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditor")]
+        public SharedTypesCustomerObligationCorrectionCreditor? Creditor { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("amountConsolidated")]
+        public decimal? AmountConsolidated { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmountTotal")]
+        public decimal? LoanAmountTotal { get; set; } = default!;
+
+        /// <summary>
+        /// Nesplacená jistina
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmountCurrent")]
+        public decimal? LoanAmountCurrent { get; set; } = default!;
+
+        /// <summary>
+        /// Splátka
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentAmount")]
+        public decimal? InstallmentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Limit
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditCardLimit")]
+        public decimal? CreditCardLimit { get; set; } = default!;
+
+        /// <summary>
+        /// Role klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("roleId")]
+        public int? RoleId { get; set; } = default!;
+
+        /// <summary>
+        /// Korekce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("correction")]
+        public SharedTypesCustomerObligationCorrection? Correction { get; set; } = default!;
+
+        /// <summary>
+        /// Kategorie závazku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationLaExposureId")]
+        public int? ObligationLaExposureId { get; set; } = default!;
+
+        /// <summary>
+        /// Kategorie závazku - název
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationLaExposureName")]
+        public string? ObligationLaExposureName { get; set; } = default!;
+
+        /// <summary>
+        /// Závazek FOP
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isEntrepreneur")]
+        public bool IsEntrepreneur { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("codebtors")]
+        public List<string>? Codebtors { get; set; } = default!;
+
+        /// <summary>
+        /// Kód skupiny
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("kbGroupInstanceCode")]
+        public string? KbGroupInstanceCode { get; set; } = default!;
+
+        /// <summary>
+        /// Vyčerpaná částka
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingAmount")]
+        public decimal? DrawingAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Číslo  úvěrového účtu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("bankAccount")]
+        public SharedTypesBankAccount? BankAccount { get; set; } = default!;
+
+        /// <summary>
+        /// Datum poskytnutí
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractDate")]
+        public System.DateTime? ContractDate { get; set; } = default!;
+
+        /// <summary>
+        /// Datum splatnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("maturityDate")]
+        public System.DateTime? MaturityDate { get; set; } = default!;
+
+        /// <summary>
+        /// Datum aktualizace dat v CBCB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cbcbDataLastUpdate")]
+        public System.DateTime? CbcbDataLastUpdate { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetLoanApplicationAssessmentHouseholdRisk
+    {
+        /// <summary>
+        /// Limit výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationLimit")]
+        public decimal? LoanApplicationLimit { get; set; } = default!;
+
+        /// <summary>
+        /// Limit výše splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationInstallmentLimit")]
+        public decimal? LoanApplicationInstallmentLimit { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové příjmy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyIncome")]
+        public decimal? MonthlyIncome { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové výdaje (bez splátek)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyCostsWithoutInstallments")]
+        public decimal? MonthlyCostsWithoutInstallments { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové stávající splátky v KB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInKBAmount")]
+        public decimal? MonthlyInstallmentsInKBAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové stávající splátky FOP v KB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyEntrepreneurInstallmentsInKBAmount")]
+        public decimal? MonthlyEntrepreneurInstallmentsInKBAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové stávající splátky MPSS
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInMPSS")]
+        public decimal? MonthlyInstallmentsInMPSS { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové prohlášené splátky (klient)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInOFI")]
+        public decimal? MonthlyInstallmentsInOFI { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové nalezené splátky (ext. registry)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInCBCB")]
+        public decimal? MonthlyInstallmentsInCBCB { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dti")]
+        public decimal? Dti { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dsti")]
+        public long? Dsti { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("cir")]
+        public long? Cir { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetLoanApplicationAssessmentLoanApplication
+    {
+        /// <summary>
+        /// Limit výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("limit")]
+        public decimal? Limit { get; set; } = default!;
+
+        /// <summary>
+        /// Požadováno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public decimal? LoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Limit výše splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentLimit")]
+        public decimal? InstallmentLimit { get; set; } = default!;
+
+        /// <summary>
+        /// Požadováno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        public decimal? LoanPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Zbývá na živobytí s požadovanou splátkou
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("remainingAnnuityLivingAmount")]
+        public decimal? RemainingAnnuityLivingAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové příjmy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyIncome")]
+        public decimal? MonthlyIncome { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové výdaje (bez splátek)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyCostsWithoutInstallments")]
+        public decimal? MonthlyCostsWithoutInstallments { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové stávající splátky v KB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInKB")]
+        public decimal? MonthlyInstallmentsInKB { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové stávající splátky FOP v KB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyEntrepreneurInstallmentsInKB")]
+        public decimal? MonthlyEntrepreneurInstallmentsInKB { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové stávající splátky MPSS
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInMPSS")]
+        public decimal? MonthlyInstallmentsInMPSS { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové prohlášené splátky (klient)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInOFI")]
+        public decimal? MonthlyInstallmentsInOFI { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové nalezené splátky (ext. registry)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallmentsInCBCB")]
+        public decimal? MonthlyInstallmentsInCBCB { get; set; } = default!;
+
+        /// <summary>
+        /// Limit úvěru bez vlivu na výši zajištění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("collateralLimit")]
+        public decimal? CollateralLimit { get; set; } = default!;
+
+        /// <summary>
+        /// Výsledné pásmo žádosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("score")]
+        public string? Score { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dti")]
+        public decimal? Dti { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dsti")]
+        public decimal? Dsti { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("cir")]
+        public decimal? Cir { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ltv")]
+        public decimal? Ltv { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lftv")]
+        public decimal? Lftv { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ltcp")]
+        public decimal? Ltcp { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetLoanApplicationAssessmentAssessmentReason
+    {
+        /// <summary>
+        /// Kód důvodu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+        public string? Code { get; set; } = default!;
+
+        /// <summary>
+        /// Úroveň důvodu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("level")]
+        public string? Level { get; set; } = default!;
+
+        /// <summary>
+        /// Váha důvodu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("weight")]
+        public long? Weight { get; set; } = default!;
+
+        /// <summary>
+        /// Cíl důvodu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("target")]
+        public string? Target { get; set; } = default!;
+
+        /// <summary>
+        /// Popis důvodu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("description")]
+        public string? Description { get; set; } = default!;
+
+        /// <summary>
+        /// Výsledek důvodu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("result")]
+        public string? Result { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetSalesArrangementResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("productTypeId")]
+        public int ProductTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// ID zadosti.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int SalesArrangementId { get; set; } = default!;
+
+        /// <summary>
+        /// Stav žádosti. Číselník SalesArrangementState.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("state")]
+        public int State { get; set; } = default!;
+
+        /// <summary>
+        /// Druh zadosti. Ciselnik SalesArrangementTypes.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementTypeId")]
+        public int SalesArrangementTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanApplicationAssessmentId")]
+        public string? LoanApplicationAssessmentId { get; set; } = default!;
+
+        /// <summary>
+        /// Datum vytvoreni SA
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        public System.DateTime CreatedTime { get; set; } = default!;
+
+        /// <summary>
+        /// Jmeno a prijmeni uzivatele, ktery vytvoril SA
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdBy")]
+        public string? CreatedBy { get; set; } = default!;
+
+        /// <summary>
+        /// Rozhodný den sazby (datum založení = datum garance)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerGuaranteeDateFrom")]
+        public System.DateTime OfferGuaranteeDateFrom { get; set; } = default!;
+
+        /// <summary>
+        /// Datum, kdy končí garance pro danou simulaci
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerGuaranteeDateTo")]
+        public System.DateTime OfferGuaranteeDateTo { get; set; } = default!;
+
+        /// <summary>
+        /// ID nalinkované Offer.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerId")]
+        public int? OfferId { get; set; } = default!;
+
+        /// <summary>
+        /// Id odpovídajícího procesu ve SB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("processId")]
+        public long? ProcessId { get; set; } = default!;
+
+        /// <summary>
+        /// Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("parameters")]
+        public SalesArrangementGetSalesArrangementParameters? Parameters { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementGetSalesArrangementParameters
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
+        public string Discriminator { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
+        public SalesArrangementSharedParametersMortgage Mortgage { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("hubn")]
+        public SalesArrangementSharedParametersHubn Hubn { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawing")]
+        public SalesArrangementSharedParametersDrawing Drawing { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("generalChange")]
+        public SalesArrangementSharedParametersGeneralChange GeneralChange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerChange")]
+        public SalesArrangementSharedParametersCustomerChange CustomerChange { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerChange3602")]
+        public SalesArrangementSharedParametersCustomerChange3602 CustomerChange3602 { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersCustomerChange3602
+    {
+        /// <summary>
+        /// ID domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdId")]
+        public int HouseholdId { get; set; } = default!;
+
+        /// <summary>
+        /// Přistupující manžel/ka?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSpouseInDebt")]
+        public bool? IsSpouseInDebt { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersCustomerChange
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("applicants")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SalesArrangementSharedCustomerChangeDetailApplicant> Applicants { get; set; } = new List<SalesArrangementSharedCustomerChangeDetailApplicant>();
+
+        [System.Text.Json.Serialization.JsonPropertyName("release")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCustomerChangeDetailRelease Release { get; set; } = new SalesArrangementSharedCustomerChangeDetailRelease();
+
+        [System.Text.Json.Serialization.JsonPropertyName("add")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCustomerChangeDetailAdd Add { get; set; } = new SalesArrangementSharedCustomerChangeDetailAdd();
+
+        [System.Text.Json.Serialization.JsonPropertyName("agent")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCustomerChangeDetailAgent Agent { get; set; } = new SalesArrangementSharedCustomerChangeDetailAgent();
+
+        /// <summary>
+        /// Účet pro splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedPaymentAccount RepaymentAccount { get; set; } = new SalesArrangementSharedPaymentAccount();
+
+        /// <summary>
+        /// Komentář k žádosti o změnu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToChangeRequest")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCommentToChangeRequest CommentToChangeRequest { get; set; } = new SalesArrangementSharedCommentToChangeRequest();
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCustomerChangeDetailAgentBase
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Nový zmocněnec pro doručování
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("newAgent")]
+        public string? NewAgent { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCustomerChangeDetailAgent : SalesArrangementSharedCustomerChangeDetailAgentBase
+    {
+        /// <summary>
+        /// Aktuální zmocněnec pro doručování
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("actualAgent")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string ActualAgent { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCustomerChangeDetailAdd
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customers")]
+        public List<SalesArrangementSharedCustomerChangeDetailAddCustomer>? Customers { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCustomerChangeDetailAddCustomer
+    {
+        /// <summary>
+        /// Jméno a příjmení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string? Name { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narození
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
+        public DateOnly? DateOfBirth { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCustomerChangeDetailRelease
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customers")]
+        public List<SalesArrangementSharedCustomerChangeDetailReleaseCustomer>? Customers { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCustomerChangeDetailReleaseCustomer
+    {
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identity")]
+        public SharedTypesCustomerIdentity? Identity { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("naturalPerson")]
+        public SharedTypesPersonBase? NaturalPerson { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCustomerChangeDetailApplicant
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("identity")]
+        public List<SharedTypesCustomerIdentity>? Identity { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("naturalPerson")]
+        public SharedTypesPersonBase? NaturalPerson { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("identificationDocument")]
+        public SharedTypesIdentificationDocumentBase? IdentificationDocument { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersGeneralChange
+    {
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("applicant")]
+        public List<SharedTypesCustomerIdentity>? Applicant { get; set; } = default!;
+
+        /// <summary>
+        /// Zajištění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("collateral")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCollateral Collateral { get; set; } = new SalesArrangementSharedCollateral();
+
+        /// <summary>
+        /// Den splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentDay")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedPaymentDay PaymentDay { get; set; } = new SalesArrangementSharedPaymentDay();
+
+        /// <summary>
+        /// Lhůta ukončení čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingDateTo")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDrawingDateToExtended DrawingDateTo { get; set; } = new SalesArrangementSharedDrawingDateToExtended();
+
+        /// <summary>
+        /// Účet pro splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedPaymentAccount RepaymentAccount { get; set; } = new SalesArrangementSharedPaymentAccount();
+
+        /// <summary>
+        /// Výše měsíční splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedLoanPaymentAmount LoanPaymentAmount { get; set; } = new SalesArrangementSharedLoanPaymentAmount();
+
+        /// <summary>
+        /// Splatnost
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dueDate")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDueDate DueDate { get; set; } = new SalesArrangementSharedDueDate();
+
+        /// <summary>
+        /// Objekty úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanRealEstate")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedLoanRealEstate LoanRealEstate { get; set; } = new SalesArrangementSharedLoanRealEstate();
+
+        /// <summary>
+        /// Účel úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurpose")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedLoanPurpose LoanPurpose { get; set; } = new SalesArrangementSharedLoanPurpose();
+
+        /// <summary>
+        /// Podmínky čerpání a další podmínky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingAndOtherConditions")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDrawingAndOtherConditions DrawingAndOtherConditions { get; set; } = new SalesArrangementSharedDrawingAndOtherConditions();
+
+        /// <summary>
+        /// Komentář k žádosti o změnu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToChangeRequest")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCommentToChangeRequest CommentToChangeRequest { get; set; } = new SalesArrangementSharedCommentToChangeRequest();
+
+    }
+
+    /// <summary>
+    /// Podmínky čerpání a další podmínky
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDrawingAndOtherConditions
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář ke změně v podmínkách smlouvy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToChangeContractConditions")]
+        public string? CommentToChangeContractConditions { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedLoanRealEstate
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanRealEstates")]
+        public List<SalesArrangementSharedParametersLoanRealEstateBase>? LoanRealEstates { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Splatnost
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDueDateBase
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Nový datum splatnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("newLoanDueDate")]
+        public System.DateTime? NewLoanDueDate { get; set; } = default!;
+
+        /// <summary>
+        /// V souvislosti s mimořádnou splátkou
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("connectionExtraordinaryPayment")]
+        public bool ConnectionExtraordinaryPayment { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Splatnost
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDueDate : SalesArrangementSharedDueDateBase
+    {
+        /// <summary>
+        /// Aktuální datum splatnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("actualLoanDueDate")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime ActualLoanDueDate { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Výše měsíční splátky
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedLoanPaymentAmountBase
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Nová výše měsíční splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("newLoanPaymentAmount")]
+        public decimal? NewLoanPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// V souvislosti s mimořádnou splátkou
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("connectionExtraordinaryPayment")]
+        public bool ConnectionExtraordinaryPayment { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Výše měsíční splátky
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedLoanPaymentAmount : SalesArrangementSharedLoanPaymentAmountBase
+    {
+        /// <summary>
+        /// Aktuální výše měsíční splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("actualLoanPaymentAmount")]
+        public decimal ActualLoanPaymentAmount { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Účet pro splácení
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedPaymentAccount : SharedTypesBankAccount
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreedBankAccount")]
+        public SharedTypesBankAccount? AgreedBankAccount { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno majitele účtu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("ownerFirstName")]
+        public string? OwnerFirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Příjmení majitele účtu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("ownerLastName")]
+        public string? OwnerLastName { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narození majitele účtu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("ownerDateOfBirth")]
+        public DateOnly? OwnerDateOfBirth { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Lhůta ukončení čerpání
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDrawingDateToExtended : SalesArrangementSharedDrawingDateTo
+    {
+        /// <summary>
+        /// Komentář ke lhůtě ukončení čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToDrawingDateTo")]
+        public string? CommentToDrawingDateTo { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Den splácení
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedPaymentDay
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Sjednaný den splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreedPaymentDay")]
+        public int AgreedPaymentDay { get; set; } = default!;
+
+        /// <summary>
+        /// Nový den splácení, CIS_DEN_SPLACENI
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("newPaymentDay")]
+        public int? NewPaymentDay { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Zajištění
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCollateral
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Identifikace nemovitosti (přidat zajištění)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("addLoanRealEstateCollateral")]
+        public string? AddLoanRealEstateCollateral { get; set; } = default!;
+
+        /// <summary>
+        /// Identifikace nemovitosti (uvolnit zajištění)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("releaseLoanRealEstateCollateral")]
+        public string? ReleaseLoanRealEstateCollateral { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersDrawing
+    {
+        /// <summary>
+        /// Žadatel o čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("applicant")]
+        public List<SharedTypesCustomerIdentity>? Applicant { get; set; } = default!;
+
+        /// <summary>
+        /// Zmocněná osoba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agent")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDrawingAgent Agent { get; set; } = new SalesArrangementSharedDrawingAgent();
+
+        /// <summary>
+        /// Účet pro splácení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("repaymentAccount")]
+        public SalesArrangementSharedDrawingRepaymentAccount? RepaymentAccount { get; set; } = default!;
+
+        /// <summary>
+        /// Seznam výplat
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("payoutList")]
+        public List<SalesArrangementSharedDrawingPayout>? PayoutList { get; set; } = default!;
+
+        /// <summary>
+        /// Datum čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingDate")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime DrawingDate { get; set; } = default!;
+
+        /// <summary>
+        /// Čerpání bezodkladně
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isImmediateDrawing")]
+        public bool IsImmediateDrawing { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Účet pro splácení
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDrawingRepaymentAccount : SharedTypesBankAccount
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("isAccountNumberMissing")]
+        public bool IsAccountNumberMissing { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDrawingPayout : SharedTypesBankAccount
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("productObligationId")]
+        public int? ProductObligationId { get; set; } = default!;
+
+        /// <summary>
+        /// Pořadové číslo výplaty v kolekci
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("order")]
+        public int Order { get; set; } = default!;
+
+        /// <summary>
+        /// Výše čerpané částky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingAmount")]
+        public decimal? DrawingAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Variabilní symbol
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("variableSymbol")]
+        public string? VariableSymbol { get; set; } = default!;
+
+        /// <summary>
+        /// Specifický symbol
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("specificSymbol")]
+        public string? SpecificSymbol { get; set; } = default!;
+
+        /// <summary>
+        /// Konstantní symbol
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("constantSymbol")]
+        public string? ConstantSymbol { get; set; } = default!;
+
+        /// <summary>
+        /// Typ výplaty - konsolidace nebo výplata
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("payoutTypeId")]
+        public int? PayoutTypeId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDrawingAgent : SharedTypesPersonBase
+    {
+        /// <summary>
+        /// Sekce je aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Osobní doklad
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identificationDocument")]
+        public SharedTypesIdentificationDocumentBase? IdentificationDocument { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersHubn
+    {
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("applicant")]
+        public List<SharedTypesCustomerIdentity>? Applicant { get; set; } = default!;
+
+        /// <summary>
+        /// Výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedLoanAmount LoanAmount { get; set; } = new SalesArrangementSharedLoanAmount();
+
+        /// <summary>
+        /// Účely úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SalesArrangementSharedLoanPurposeItem> LoanPurposes { get; set; } = new List<SalesArrangementSharedLoanPurposeItem>();
+
+        /// <summary>
+        /// Objekty úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanRealEstates")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SalesArrangementSharedParametersLoanRealEstate> LoanRealEstates { get; set; } = new List<SalesArrangementSharedParametersLoanRealEstate>();
+
+        /// <summary>
+        /// Identifikace zajištění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("collateralIdentification")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCollateralIdentification CollateralIdentification { get; set; } = new SalesArrangementSharedCollateralIdentification();
+
+        /// <summary>
+        /// Předpokládaný termín prvního čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("expectedDateOfDrawing")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedExpectedDateOfDrawing ExpectedDateOfDrawing { get; set; } = new SalesArrangementSharedExpectedDateOfDrawing();
+
+        /// <summary>
+        /// Lhůta ukončení čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingDateTo")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedDrawingDateTo DrawingDateTo { get; set; } = new SalesArrangementSharedDrawingDateTo();
+
+        /// <summary>
+        /// Komentář k žádosti o změnu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("commentToChangeRequest")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedCommentToChangeRequest CommentToChangeRequest { get; set; } = new SalesArrangementSharedCommentToChangeRequest();
+
+    }
+
+    /// <summary>
+    /// Komentář k žádosti o změnu
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCommentToChangeRequest
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Obecný komentář
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("generalComment")]
+        public string? GeneralComment { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedDrawingDateTo
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Sjednaný termín čerpání do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreedDrawingDateTo")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime AgreedDrawingDateTo { get; set; } = default!;
+
+        /// <summary>
+        /// Prodloužení konce lhůty čerpání o kolik měsíců
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("extensionDrawingDateToByMonths")]
+        public int? ExtensionDrawingDateToByMonths { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("isDrawingDateEarlier")]
+        public bool IsDrawingDateEarlier { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedExpectedDateOfDrawing
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Sjednaný termín prvního čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreedExpectedDateOfDrawing")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime AgreedExpectedDateOfDrawing { get; set; } = default!;
+
+        /// <summary>
+        /// Nový předpokládaný termín prvního čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("newExpectedDateOfDrawing")]
+        public System.DateTime? NewExpectedDateOfDrawing { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedCollateralIdentification
+    {
+        /// <summary>
+        /// Identifikace nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateIdentification")]
+        public string? RealEstateIdentification { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Účel úvěru
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedLoanPurpose
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář k popisu změny na stávajících účelech úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposesComment")]
+        public string? LoanPurposesComment { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Účel úvěru
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedLoanPurposeItem
+    {
+        /// <summary>
+        /// Účel úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public int Id { get; set; } = default!;
+
+        /// <summary>
+        /// Výše úvěru pro zvolený účel v Kč
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("sum")]
+        public decimal Sum { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedLoanAmount
+    {
+        /// <summary>
+        /// Změnit sjednanou výši úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("changeAgreedLoanAmount")]
+        public bool ChangeAgreedLoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Sjednaná výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreedLoanAmount")]
+        public decimal AgreedLoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Požadovaná výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requiredLoanAmount")]
+        public decimal? RequiredLoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Zachovat sjednanou splatnost do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("preserveLoanDueDate")]
+        public bool PreserveLoanDueDate { get; set; } = default!;
+
+        /// <summary>
+        /// Zachovat sjednanou splátku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("preserveAgreedPaymentAmount")]
+        public bool PreserveAgreedPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Sjednaná splatnost do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreedLoanDueDate")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime AgreedLoanDueDate { get; set; } = default!;
+
+        /// <summary>
+        /// Sjednaná měsíční splátka
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreedLoanPaymentAmount")]
+        public decimal AgreedLoanPaymentAmount { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersMortgage
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("expectedDateOfDrawing")]
+        public System.DateTime? ExpectedDateOfDrawing { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("incomeCurrencyCode")]
+        public string? IncomeCurrencyCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("residencyCurrencyCode")]
+        public string? ResidencyCurrencyCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractSignatureTypeId")]
+        public int? ContractSignatureTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanRealEstates")]
+        public List<SalesArrangementSharedParametersLoanRealEstate>? LoanRealEstates { get; set; } = default!;
+
+        /// <summary>
+        /// Zmocnenec - CustomerOnSAId
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agent")]
+        public int? Agent { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersLoanRealEstateBase
+    {
+        /// <summary>
+        /// Typ nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateTypeId")]
+        public int RealEstateTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Účel pořízení nemovitosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstatePurchaseTypeId")]
+        public int RealEstatePurchaseTypeId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementSharedParametersLoanRealEstate : SalesArrangementSharedParametersLoanRealEstateBase
+    {
+        /// <summary>
+        /// Slouží k zajištění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isCollateral")]
+        public bool IsCollateral { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class SalesArrangementValidateSalesArrangementResponse
     {
 
@@ -1508,7 +3411,7 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CasesSharedCaseModel
+    public partial class CasesSharedCaseModel : SharedTypesPersonBase
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("caseOwner")]
@@ -1527,27 +3430,6 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("customerIdentity")]
         public SharedTypesCustomerIdentity? CustomerIdentity { get; set; } = default!;
-
-        /// <summary>
-        /// FO/FOP/Cizinec/Nezletilec: Jméno
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
-        public string? FirstName { get; set; } = default!;
-
-        /// <summary>
-        /// FO/FOP/Cizinec/Nezletilec: Příjmení
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
-        public string? LastName { get; set; } = default!;
-
-        /// <summary>
-        /// FO/FOP/Cizinec/Nezletilec: Datum narození klienta
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public DateOnly? DateOfBirth { get; set; } = default!;
 
         /// <summary>
         /// Stavy Case
@@ -1789,7 +3671,7 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CasesGetCustomersResponseCustomer
+    public partial class CasesGetCustomersResponseCustomer : SharedTypesPersonBase
     {
         /// <summary>
         /// ID role klienta
@@ -1818,27 +3700,6 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("isKYCSuccessful")]
         public bool IsKYCSuccessful { get; set; } = default!;
-
-        /// <summary>
-        /// Jméno
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
-        public string? FirstName { get; set; } = default!;
-
-        /// <summary>
-        /// Příjmení
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
-        public string? LastName { get; set; } = default!;
-
-        /// <summary>
-        /// Datum narození
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
 
         /// <summary>
         /// KBID
@@ -2062,35 +3923,14 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CasesIdentifyCaseResponseItemCustomer
+    public partial class CasesIdentifyCaseResponseItemCustomer : SharedTypesPersonBase
     {
-        /// <summary>
-        /// Jméno customera
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
-        public string FirstName { get; set; } = default!;
-
-        /// <summary>
-        /// Příjmení customera
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
-        public string LastName { get; set; } = default!;
-
         /// <summary>
         /// Identita klienta
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("identity")]
         public SharedTypesCustomerIdentity? Identity { get; set; } = default!;
-
-        /// <summary>
-        /// Datum narození FO
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public DateOnly? DateOfBirth { get; set; } = default!;
 
     }
 
@@ -3761,7 +5601,7 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SharedTypesIdentificationDocumentFull
+    public partial class SharedTypesIdentificationDocumentBase
     {
         /// <summary>
         /// Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)
@@ -3778,6 +5618,11 @@ namespace NOBY.ApiContracts
         [System.ComponentModel.DataAnnotations.Required]
         public string Number { get; set; } = default!;
 
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesIdentificationDocumentFull : SharedTypesIdentificationDocumentBase
+    {
         /// <summary>
         /// Stát vydání dokladu
         /// </summary>
@@ -4420,6 +6265,119 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
         public string Name { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesPersonBase
+    {
+        /// <summary>
+        /// Jméno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Příjmení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narození
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
+        public DateOnly? DateOfBirth { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesCustomerObligationCorrection
+    {
+        /// <summary>
+        /// Z číselníku &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=440890324"&gt;ObligationCorrectionType (CIS_KOREKCE_ZAVAZKU)&lt;/a&gt;
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("correctionTypeId")]
+        public int? CorrectionTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Výše konsolidace/zrušení splátky daného závazku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentAmountCorrection")]
+        public decimal? InstallmentAmountCorrection { get; set; } = default!;
+
+        /// <summary>
+        /// Výše konsolidace/zrušení/snížení výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPrincipalAmountCorrection")]
+        public decimal? LoanPrincipalAmountCorrection { get; set; } = default!;
+
+        /// <summary>
+        /// Výše konsolidace/zrušení/snížení limitu KK/PD
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditCardLimitCorrection")]
+        public decimal? CreditCardLimitCorrection { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesCustomerObligationCorrectionCreditor
+    {
+        /// <summary>
+        /// Id věřitele z číselníku bank &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953"&gt;BankCode (CIS_KODY_BANK)&lt;/a&gt;
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditorId")]
+        public string? CreditorId { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno věřitele z číselníku bank &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=455007953"&gt;BankCode (CIS_KODY_BANK)&lt;/a&gt; nebo jméno věřitele zadané uživatelem
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string? Name { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud je veřitel externí (=JPÚ - jiný peněžní ústav)&lt;br /&gt;False pokud KB/MP (dáno vždy produktem)&lt;br /&gt;null pokud je nedefinovaný
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isExternal")]
+        public bool? IsExternal { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Druhy příjmu
+    /// <br/>
+    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Employement&lt;/li&gt;&lt;li&gt;2 - Entrepreneur&lt;/li&gt;&lt;li&gt;3 - Rent&lt;/li&gt;&lt;li&gt;4 - Other&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumCustomerRoles
+    {
+
+        Unknown = 0,
+
+        Debtor = 1,
+
+        Codebtor = 2,
+
+        Garantor = 8,
 
     }
 
