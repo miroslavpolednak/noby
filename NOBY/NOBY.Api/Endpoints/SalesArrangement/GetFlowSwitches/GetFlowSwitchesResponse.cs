@@ -33,6 +33,11 @@ public sealed class GetFlowSwitchesResponseItem
     public bool IsActive { get; set; }
 
     /// <summary>
+    /// Název stavu
+    /// </summary>
+    public string StateName { get; set; }
+
+    /// <summary>
     /// Hodnota z číselníku FlowSwitchState
     /// </summary>
     public int State { get; set; }

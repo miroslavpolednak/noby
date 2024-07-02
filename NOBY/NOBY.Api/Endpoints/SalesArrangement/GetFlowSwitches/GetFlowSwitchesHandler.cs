@@ -65,6 +65,17 @@ internal sealed class GetFlowSwitchesHandler(
         response.ScoringSection.StateIndicator = ind(response.ScoringSection.State);
         response.EvaluationSection.StateIndicator = ind(response.EvaluationSection.State);
 
+        response.ModelationSection.StateName = name(response.ModelationSection.State);
+        response.IndividualPriceSection.StateName = name(response.IndividualPriceSection.State);
+        response.HouseholdSection.StateName = name(response.HouseholdSection.State);
+        response.ParametersSection.StateName = name(response.ParametersSection.State);
+        response.SigningSection.StateName = name(response.SigningSection.State);
+        response.ScoringSection.StateName = name(response.ScoringSection.State);
+        response.EvaluationSection.StateName = name(response.EvaluationSection.State);
+
+        string name(int id)
+            => cb.First(t => t.Id == response.ModelationSection.State).Name;
+
         StateIndicators ind(int id)
             => (StateIndicators)cb.First(t => t.Id == response.ModelationSection.State).Indicator;
     }

@@ -49,6 +49,7 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
+    /// - <a href="">FlowSwitchStates</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
     /// - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
     /// - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> 
