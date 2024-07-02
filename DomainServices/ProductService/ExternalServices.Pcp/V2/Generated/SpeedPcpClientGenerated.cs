@@ -2069,7 +2069,7 @@ public partial class getByIdsResponse
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstance", Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
+[System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstance", Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO/update")]
 public partial class ProductInstance3
 {
 
