@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 internal static class Extensions
 {
-    public static _HO.CreateCustomerRequest ToDomainServiceRequest(this CreateMortgageCaseRequest request, int salesArrangementId)
+    public static _HO.CreateCustomerRequest ToDomainServiceRequest(this OfferCreateMortgageCaseRequest request, int salesArrangementId)
     {
         var model = new _HO.CreateCustomerRequest
         {
@@ -28,7 +28,7 @@ internal static class Extensions
     /// <summary>
     /// Vytvoreni requestu pro zalozeni CASE
     /// </summary>
-    public static _Case.CreateCaseRequest ToDomainServiceRequest(this CreateMortgageCaseRequest request, int userId, _Offer.MortgageOfferSimulationInputs offerInstance)
+    public static _Case.CreateCaseRequest ToDomainServiceRequest(this OfferCreateMortgageCaseRequest request, int userId, _Offer.MortgageOfferSimulationInputs offerInstance)
         => new _Case.CreateCaseRequest
         {
             CaseOwnerUserId = userId,

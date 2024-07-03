@@ -81,7 +81,7 @@ internal sealed class CreateMortgageCaseHandler(
         // create household
         int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
-            HouseholdTypeId = (int)SharedTypes.Enums.HouseholdTypes.Main,
+            HouseholdTypeId = (int)HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
         }, cancellationToken);

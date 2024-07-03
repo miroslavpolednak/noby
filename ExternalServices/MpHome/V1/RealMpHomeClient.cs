@@ -8,6 +8,8 @@ namespace ExternalServices.MpHome.V1;
 internal sealed class RealMpHomeClient(HttpClient _httpClient)
     : IMpHomeClient
 {
+    private const int _defaultCountryId = 16;
+
 	public async Task UpdatePcpId(long productId, string pcpId, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient
@@ -20,7 +22,12 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
     {
         var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/search", request, cancellationToken);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
-        return await response.EnsureSuccessStatusAndReadJson<List<PartnerResponse>>(StartupExtensions.ServiceName, cancellationToken);
+        var result = await response.EnsureSuccessStatusAndReadJson<List<PartnerResponse>>(StartupExtensions.ServiceName, cancellationToken);
+        result.ForEach(t =>
+        {
+            t.Addresses?.ForEach(x => x.CountryId = x.CountryId.GetValueOrDefault() == 0 ? _defaultCountryId : x.CountryId!.Value);
+        });
+        return result;
     }
 
     public async Task<List<CaseSearchResponse>?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
@@ -60,7 +67,9 @@ internal sealed class RealMpHomeClient(HttpClient _httpClient)
 	public async Task<PartnerResponse?> GetPartner(long partnerId, CancellationToken cancellationToken = default)
 	{
 		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", cancellationToken);
-		return await response.EnsureSuccessStatusAndReadJson<PartnerResponse>(StartupExtensions.ServiceName, cancellationToken);
+		var result = await response.EnsureSuccessStatusAndReadJson<PartnerResponse>(StartupExtensions.ServiceName, cancellationToken);
+        result.Addresses?.ForEach(x => x.CountryId = x.CountryId.GetValueOrDefault() == 0 ? _defaultCountryId : x.CountryId!.Value);
+        return result;
 	}
 
 	public async Task<LoanDetail> GetMortgage(long productId, CancellationToken cancellationToken = default)

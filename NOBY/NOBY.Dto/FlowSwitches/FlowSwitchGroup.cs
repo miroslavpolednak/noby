@@ -6,5 +6,6 @@ public sealed class FlowSwitchGroup
 
     public bool IsVisible { get; set; }
 
-    public bool IsCompleted { get; set; }
+    //public bool IsCompleted { get; set; }
+    public int State { get; set; }
 }

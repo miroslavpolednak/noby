@@ -195,6 +195,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
+             - <a href="">FlowSwitchStates</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
              - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> 
@@ -1458,57 +1459,7 @@
             Update parametru na SA -> musime si je znovu stahnout z nove vytvoreneho SA, protoze mohou obsahovat nejake defaulty doplnene domenovou sluzbou
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.OfferId">
-            <summary>
-            ID simulace ze ktere se ma vytvorit Case.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.Identity">
-            <summary>
-            Identifikovany klient.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.FirstName">
-            <summary>
-            Jmeno klienta, pokud neni identifikovan.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.LastName">
-            <summary>
-            Prijmeni klienta, pokud neni identifikovan.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest.DateOfBirth">
-            <summary>
-            Datum narozeni klienta, pokud neni identifikovan.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.CaseId">
-            <summary>
-            ID noveho Case
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.SalesArrangementId">
-            <summary>
-            ID noveho Sales Arrangement
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.OfferId">
-            <summary>
-            ID simulace pro kterou Case vznikl
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.HouseholdId">
-            <summary>
-            ID default domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseResponse.CustomerOnSAId">
-            <summary>
-            ID noveho klienta
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.MortgageOfferSimulationInputs)">
+        <member name="M:NOBY.Api.Endpoints.Offer.CreateMortgageCase.Extensions.ToDomainServiceRequest(NOBY.ApiContracts.OfferCreateMortgageCaseRequest,System.Int32,DomainServices.OfferService.Contracts.MortgageOfferSimulationInputs)">
             <summary>
             Vytvoreni requestu pro zalozeni CASE
             </summary>
@@ -1647,7 +1598,7 @@
             </remarks>
             <returns>Vstupy a výstupy uložené simulace.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.CreateMortgageCase(NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.CreateMortgageCase(NOBY.ApiContracts.OfferCreateMortgageCaseRequest)">
             <summary>
             Vytvoření nového případu (hypotéky) ze simulace.
             </summary>
@@ -1656,8 +1607,7 @@
             V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br />
             Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br />
             Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br /><br />
-            Endpoint podporuje rollback.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0F7EBD29-3702-4289-8AD3-9C0A44A4449C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Endpoint podporuje rollback.
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nově vytvořeného Case</returns>

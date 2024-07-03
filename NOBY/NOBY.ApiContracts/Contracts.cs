@@ -2377,11 +2377,21 @@ namespace NOBY.ApiContracts
         public bool IsActive { get; set; } = default!;
 
         /// <summary>
-        /// Je v sekci vše splněné?
+        /// Název stavu
         /// </summary>
 
-        [System.Text.Json.Serialization.JsonPropertyName("isCompleted")]
-        public bool IsCompleted { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        public string StateName { get; set; } = default!;
+
+        /// <summary>
+        /// Hodnota z číselníku FlowSwitchState
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("state")]
+        public int State { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateIndicator")]
+        public EnumWorkflowTaskStateIndicators StateIndicator { get; set; } = default!;
 
     }
 
