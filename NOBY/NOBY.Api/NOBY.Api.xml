@@ -195,6 +195,7 @@
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438049777">Fees</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=800055209">FeeChangeRequests</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=413645701">FixedRatePeriods</a>
+             - <a href="">FlowSwitchStates</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=405524365">Genders</a>
              - <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813">HandoverTypeDetails</a>
              - <a href="https://wiki.kb.cz/display/HT/HouseholdType+-+MOCK">HouseholdTypes</a> 
@@ -2747,9 +2748,19 @@
             Je sekce aktivní/neaktivní (lze prokliknout)?
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.IsCompleted">
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.StateName">
             <summary>
-            Je v sekci vše splněné?
+            Název stavu
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.State">
+            <summary>
+            Hodnota z číselníku FlowSwitchState
+            </summary>
+        </member>
+        <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches.GetFlowSwitchesResponseItem.StateIndicator">
+            <summary>
+            Indikátor stavu knedlíku, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment.V2.Dto.AssessmentReason.Code">

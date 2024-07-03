@@ -33,7 +33,17 @@ public sealed class GetFlowSwitchesResponseItem
     public bool IsActive { get; set; }
 
     /// <summary>
-    /// Je v sekci vše splněné?
+    /// Název stavu
     /// </summary>
-    public bool IsCompleted { get; set; }
+    public string StateName { get; set; }
+
+    /// <summary>
+    /// Hodnota z číselníku FlowSwitchState
+    /// </summary>
+    public int State { get; set; }
+
+    /// <summary>
+    /// Indikátor stavu knedlíku, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
+    /// </summary>
+    public StateIndicators StateIndicator { get; set; }
 }
