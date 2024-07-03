@@ -1,7 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace NOBY.Infrastructure.Swagger;
+namespace CIS.Infrastructure.WebApi.Swagger;
 
 public sealed class RollbackRequestSupportFilter
     : IOperationFilter

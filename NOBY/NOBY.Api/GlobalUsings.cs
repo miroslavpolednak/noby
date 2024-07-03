@@ -10,3 +10,4 @@ global using SharedTypes.Enums;
 global using System.Net.Mime;
 global using NOBY.ApiContracts;
 global using SharedTypes.Extensions;
+global using CIS.Infrastructure.WebApi.Swagger;

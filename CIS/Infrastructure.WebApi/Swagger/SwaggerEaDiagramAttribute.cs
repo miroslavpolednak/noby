@@ -1,4 +1,4 @@
-﻿namespace NOBY.Infrastructure.Swagger;
+﻿namespace CIS.Infrastructure.WebApi.Swagger;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 public sealed class SwaggerEaDiagramAttribute

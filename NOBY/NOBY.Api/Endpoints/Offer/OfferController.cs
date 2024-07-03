@@ -131,8 +131,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br />
     /// Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br />
     /// Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br /><br />
-    /// Endpoint podporuje rollback.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0F7EBD29-3702-4289-8AD3-9C0A44A4449C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+    /// Endpoint podporuje rollback.
     /// </remarks>
     /// <param name="request">Identifikace klienta a ID simulace.</param>
     /// <returns>ID nově vytvořeného Case</returns>
@@ -141,10 +140,11 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.DASHBOARD_CreateNewCase)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(CreateMortgageCase.CreateMortgageCaseResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OfferCreateMortgageCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<CreateMortgageCase.CreateMortgageCaseResponse> CreateMortgageCase([FromBody] CreateMortgageCase.CreateMortgageCaseRequest request)
-        => await _mediator.Send(request ?? new Offer.CreateMortgageCase.CreateMortgageCaseRequest());
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0F7EBD29-3702-4289-8AD3-9C0A44A4449C")]
+    public async Task<OfferCreateMortgageCaseResponse> CreateMortgageCase([FromBody] OfferCreateMortgageCaseRequest request)
+        => await _mediator.Send(request ?? new());
 
     /// <summary>
     /// Nalinkuje novou modelaci na stávající SA.

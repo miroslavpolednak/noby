@@ -1,4 +1,4 @@
-﻿namespace NOBY.Dto.Attributes;
+﻿namespace CIS.Infrastructure.WebApi.Swagger;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class SwaggerOneOfAttribute : Attribute

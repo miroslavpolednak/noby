@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
 using Microsoft.OpenApi.Models;
-using NOBY.Dto.Attributes;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace NOBY.Infrastructure.Swagger;
+namespace CIS.Infrastructure.WebApi.Swagger;
 
 public sealed class SwaggerOneOfSchemaFilter : ISchemaFilter
 {

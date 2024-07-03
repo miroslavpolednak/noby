@@ -28,6 +28,89 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferCreateMortgageCaseRequest
+    {
+        /// <summary>
+        /// ID simulace ze ktere se ma vytvorit Case.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerId")]
+        public int OfferId { get; set; } = default!;
+
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identity")]
+        public SharedTypesCustomerIdentity? Identity { get; set; } = default!;
+
+        /// <summary>
+        /// Jmeno klienta, pokud neni identifikovan.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Prijmeni klienta, pokud neni identifikovan.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narozeni klienta, pokud neni identifikovan.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
+        public System.DateTime? DateOfBirth { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerContacts")]
+        public SharedTypesContacts? OfferContacts { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferCreateMortgageCaseResponse
+    {
+        /// <summary>
+        /// ID noveho Case
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("caseId")]
+        public long CaseId { get; set; } = default!;
+
+        /// <summary>
+        /// ID noveho Sales Arrangement
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int SalesArrangementId { get; set; } = default!;
+
+        /// <summary>
+        /// ID simulace pro kterou Case vznikl
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerId")]
+        public int OfferId { get; set; } = default!;
+
+        /// <summary>
+        /// ID default domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdId")]
+        public int HouseholdId { get; set; } = default!;
+
+        /// <summary>
+        /// ID noveho klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerOnSAId")]
+        public int CustomerOnSAId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class PartySearchPartiesRequest
     {
         /// <summary>

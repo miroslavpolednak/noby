@@ -2,7 +2,7 @@
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Text.RegularExpressions;
 
-namespace NOBY.Infrastructure.Swagger;
+namespace CIS.Infrastructure.WebApi.Swagger;
 
 public partial class NewLineReplacementFilter : IOperationFilter, ISchemaFilter
 {
