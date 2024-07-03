@@ -28,6 +28,51 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class PartySearchPartiesRequest
+    {
+        /// <summary>
+        /// Id země z číselníku států
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("countryId")]
+        public int? CountryId { get; set; } = default!;
+
+        /// <summary>
+        /// IČ společnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cin")]
+        public string? Cin { get; set; } = default!;
+
+        /// <summary>
+        /// Pattern, podle kterého vyhledáváme
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("searchText")]
+        public string? SearchText { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class PartySearchPartiesResponse
+    {
+        /// <summary>
+        /// Název společnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+
+        /// <summary>
+        /// IČO
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("cin")]
+        public string Cin { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ProductGetCaseIdByPcpIdResponse
     {
 
