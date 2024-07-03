@@ -74,10 +74,10 @@ internal sealed class GetFlowSwitchesHandler(
         response.EvaluationSection.StateName = name(response.EvaluationSection.State);
 
         string name(int id)
-            => cb.First(t => t.Id == response.ModelationSection.State).Name;
+            => cb.First(t => t.Id == id).Name;
 
         StateIndicators ind(int id)
-            => (StateIndicators)cb.First(t => t.Id == response.ModelationSection.State).Indicator;
+            => (StateIndicators)cb.First(t => t.Id == id).Indicator;
     }
 
     private static void adjustIndividualPrice(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> existingSwitches)
