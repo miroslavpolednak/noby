@@ -10,7 +10,10 @@ internal sealed class GetTaskListHandler(
 {
     public async Task<WorkflowGetTaskListResponse> Handle(GetTaskListRequest request, CancellationToken cancellationToken)
     {
-        var response = new WorkflowGetTaskListResponse();
+        WorkflowGetTaskListResponse response = new()
+        {
+            Tasks = []
+        };
 
         var tasks = (await _caseService.GetTaskList(request.CaseId, cancellationToken))
             .Where(t => _allowedTaskTypes.Contains(t.TaskTypeId))
