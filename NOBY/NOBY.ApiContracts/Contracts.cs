@@ -28,6 +28,78 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProductGetCaseIdByPcpIdResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("caseId")]
+        public long CaseId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProductGetProductObligationListObligation
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligationTypeId")]
+        public int ObligationTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("amount")]
+        public decimal Amount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditorName")]
+        public string CreditorName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentAccount")]
+        public SharedTypesBankAccount PaymentAccount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentSymbols")]
+        public ProductGetProductObligationListPaymentSymbols PaymentSymbols { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProductGetProductObligationListPaymentSymbols
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("variableSymbol")]
+        public string? VariableSymbol { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ProductGetCustomersOnProductItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("identities")]
+        public List<SharedTypesCustomerIdentity>? Identities { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Příjmení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narození
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
+        public DateOnly? DateOfBirth { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("identificationDocument")]
+        public SharedTypesIdentificationDocumentBase? IdentificationDocument { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class SalesArrangementUpdateCommentRequest
     {
 

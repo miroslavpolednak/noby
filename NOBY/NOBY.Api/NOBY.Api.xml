@@ -2066,28 +2066,12 @@
             IČO
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.FirstName">
-            <summary>
-            Jméno
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.LastName">
-            <summary>
-            Příjmení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Product.GetCustomersOnProduct.GetCustomersOnProductCustomer.DateOfBirth">
-            <summary>
-            Datum narození
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Product.ProductController.GetCustomersOnProduct(System.Int64,System.Threading.CancellationToken)">
             <summary>
             Vrátí seznam dlužníků a spoludlužníků na daném produktu
             </summary>
             <remarks>
-            Vrátí seznam dlužníků a spoludlužníků na daném produktu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD7FC8B-6D32-4a81-9608-A502E6F0E74B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vrátí seznam dlužníků a spoludlužníků na daném produktu.
             </remarks>
             <returns>Seznam klientů na produktu</returns>
         </member>
@@ -2096,8 +2080,7 @@
              Vrátí seznam závazků na daném produktu
              </summary>
              <remarks>
-            Seznam z závazků načtený z KonsDB.<br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=058D1B76-375C-4747-90DB-D4E3BE5C46F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Seznam z závazků načtený z KonsDB.
              </remarks>
              <returns>Seznam závazků na produktu</returns>
         </member>
@@ -2106,8 +2089,7 @@
             Vrátí Case ID podle zadaného PCP ID
             </summary>
             <remarks>
-            Vyhledá Case ID podle PCP ID v KonsDB.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=048F18B9-903F-4e3a-8B79-02592E9ED41B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vyhledá Case ID podle PCP ID v KonsDB.
             </remarks>
             <param name="pcpId">PCP ID</param>
         </member>
