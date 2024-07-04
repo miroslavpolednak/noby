@@ -1,7 +1,7 @@
 ﻿namespace NOBY.Dto;
 
 public class BankAccount
-    : IBankAccount
+    : SharedTypes.Interfaces.IBankAccount
 {
     /// <summary>
     /// Předčíslí účtu
@@ -17,11 +17,4 @@ public class BankAccount
     /// Kód banky
     /// </summary>
     public string? AccountBankCode { get; set; }
-}
-
-public interface IBankAccount
-{
-    string? AccountPrefix { get; set; }
-    string? AccountNumber { get; set; }
-    string? AccountBankCode { get; set; }
 }

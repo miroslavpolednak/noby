@@ -630,6 +630,21 @@
         <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTimeReflection.Descriptor">
             <summary>File descriptor for NullableGrpcDateTime.proto</summary>
         </member>
+        <member name="P:SharedTypes.Interfaces.IBankAccount.AccountPrefix">
+            <summary>
+            Předčíslí účtu
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Interfaces.IBankAccount.AccountNumber">
+            <summary>
+            Číslo účtu
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Interfaces.IBankAccount.AccountBankCode">
+            <summary>
+            Kód banky
+            </summary>
+        </member>
         <member name="T:SharedTypes.Types.Address">
             <summary>
             Adresa - bydliste, kontaktni atd.

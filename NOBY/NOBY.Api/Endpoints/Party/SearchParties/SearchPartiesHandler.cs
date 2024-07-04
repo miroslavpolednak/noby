@@ -4,15 +4,15 @@ using ExternalServices.Party.V1;
 
 namespace NOBY.Api.Endpoints.Party.SearchParties;
 
-public class SearchPartiesHandler(ICodebookServiceClient codebookService, IPartyClient party, ICurrentUserAccessor currentUser) : IRequestHandler<SearchPartiesRequest, List<SearchPartiesResponse>>
+internal sealed class SearchPartiesHandler(
+    ICodebookServiceClient _codebookService, 
+    IPartyClient _party, 
+    ICurrentUserAccessor _currentUser) 
+    : IRequestHandler<PartySearchPartiesRequest, List<PartySearchPartiesResponse>>
 {
-    private readonly ICodebookServiceClient _codebookService = codebookService;
-    private readonly IPartyClient _party = party;
-    private readonly ICurrentUserAccessor _currentUser = currentUser;
-
-    public async Task<List<SearchPartiesResponse>> Handle(SearchPartiesRequest request, CancellationToken cancellationToken)
+    public async Task<List<PartySearchPartiesResponse>> Handle(PartySearchPartiesRequest request, CancellationToken cancellationToken)
     {
-        List<SearchPartiesResponse> resultList = [];
+        List<PartySearchPartiesResponse> resultList = [];
 
         var countryCode = (await _codebookService.Countries(cancellationToken)).SingleOrDefault(r => r.Id == request.CountryId)?.ShortName;
 
@@ -38,7 +38,7 @@ public class SearchPartiesHandler(ICodebookServiceClient codebookService, IParty
         {
             var suggestJuridicalPersonsResponse = await _party.SuggestJuridicalPersons(countryCode ?? string.Empty, request.SearchText, _currentUser.User?.Login!, cancellationToken);
             resultList.AddRange(suggestJuridicalPersonsResponse.suggestJuridicalPersonsResponse.juridicalPersonList
-                .Select(s => new SearchPartiesResponse
+                .Select(s => new PartySearchPartiesResponse
                 {
                     Name = s.name,
                     Cin = s.orgIdentification
@@ -46,7 +46,7 @@ public class SearchPartiesHandler(ICodebookServiceClient codebookService, IParty
         }
 
         //Merge results to contain each juridical person only once
-        return resultList.GroupBy(g => g.Cin).Select(s => new SearchPartiesResponse
+        return resultList.GroupBy(g => g.Cin).Select(s => new PartySearchPartiesResponse
         {
             Cin = s.Key,
             Name = s.First().Name

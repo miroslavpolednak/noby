@@ -1,6 +1,4 @@
-﻿using NOBY.Dto.Attributes;
-
-namespace NOBY.Dto.RealEstateValuation;
+﻿namespace NOBY.Dto.RealEstateValuation;
 
 /// <summary>
 /// Detail Ocenění nemovitosti

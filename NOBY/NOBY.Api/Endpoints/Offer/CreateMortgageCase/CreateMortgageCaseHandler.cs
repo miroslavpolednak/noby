@@ -24,9 +24,9 @@ internal sealed class CreateMortgageCaseHandler(
     ICodebookServiceClient _codebookService,
     IOfferServiceClient _offerService,
     ILogger<CreateMortgageCaseHandler> _logger)
-        : IRequestHandler<CreateMortgageCaseRequest, CreateMortgageCaseResponse>
+        : IRequestHandler<OfferCreateMortgageCaseRequest, OfferCreateMortgageCaseResponse>
 {
-    public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
+    public async Task<OfferCreateMortgageCaseResponse> Handle(OfferCreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
         // detail simulace
         var offerInstance = await _offerService.GetOffer(request.OfferId, cancellationToken);
@@ -67,7 +67,7 @@ internal sealed class CreateMortgageCaseHandler(
 
         // pokud je to KB klient, tak si stahni jeho data z CM a updatuj request
         var createCustomerRequest = request.ToDomainServiceRequest(salesArrangementId);
-        if (request.Identity?.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)
+        if (request.Identity?.Scheme == SharedTypesCustomerIdentityScheme.KB)
         {
             await updateCustomerFromCM(createCustomerRequest, cancellationToken);
         }
@@ -81,7 +81,7 @@ internal sealed class CreateMortgageCaseHandler(
         // create household
         int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
-            HouseholdTypeId = (int)SharedTypes.Enums.HouseholdTypes.Main,
+            HouseholdTypeId = (int)HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
         }, cancellationToken);
@@ -99,7 +99,7 @@ internal sealed class CreateMortgageCaseHandler(
 
         await _salesArrangementService.SetFlowSwitches(salesArrangementId, new List<EditableFlowSwitch> { identifiedFlowSwitch }, cancellationToken);
 
-        return new CreateMortgageCaseResponse
+        return new OfferCreateMortgageCaseResponse
         {
             SalesArrangementId = salesArrangementId,
             CaseId = caseId,

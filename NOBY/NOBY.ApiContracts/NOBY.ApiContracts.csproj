@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\Shared\SharedTypes\SharedTypes.csproj" />
   </ItemGroup>
 

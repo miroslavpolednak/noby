@@ -1,6 +1,4 @@
 ﻿using CIS.Core.Security;
-using System.Collections.Immutable;
-using System.DirectoryServices.ActiveDirectory;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
@@ -11,9 +9,9 @@ internal sealed class GetFlowSwitchesHandler(
     DomainServices.RealEstateValuationService.Clients.IRealEstateValuationServiceClient _realEstateValuationService,
     Services.FlowSwitches.IFlowSwitchesService _flowSwitches,
     DomainServices.DocumentOnSAService.Clients.IDocumentOnSAServiceClient _documentOnSaService)
-        : IRequestHandler<GetFlowSwitchesRequest, GetFlowSwitchesResponse>
+        : IRequestHandler<GetFlowSwitchesRequest, SalesArrangementGetFlowSwitchesResponse>
 {
-    public async Task<GetFlowSwitchesResponse> Handle(GetFlowSwitchesRequest request, CancellationToken cancellationToken)
+    public async Task<SalesArrangementGetFlowSwitchesResponse> Handle(GetFlowSwitchesRequest request, CancellationToken cancellationToken)
     {
         // vytahnout flow switches z SA
         var existingSwitches = await _flowSwitches.GetFlowSwitchesForSA(request.SalesArrangementId, cancellationToken);
@@ -21,7 +19,7 @@ internal sealed class GetFlowSwitchesHandler(
         // zjistit stav jednotlivych sekci na FE
         var mergedSwitches = _flowSwitches.GetFlowSwitchesGroups(existingSwitches);
 
-        var response = new GetFlowSwitchesResponse
+        var response = new SalesArrangementGetFlowSwitchesResponse
         {
             ModelationSection = createSection(mergedSwitches[FlowSwitchesGroups.ModelationSection]),
             IndividualPriceSection = createSection(mergedSwitches[FlowSwitchesGroups.IndividualPriceSection]),
@@ -53,7 +51,7 @@ internal sealed class GetFlowSwitchesHandler(
         return response;
     }
 
-    private async Task setIndicators(GetFlowSwitchesResponse response, CancellationToken cancellationToken)
+    private async Task setIndicators(SalesArrangementGetFlowSwitchesResponse response, CancellationToken cancellationToken)
     {
         var cb = await _codebookService.FlowSwitchStates(cancellationToken);
 
@@ -76,11 +74,11 @@ internal sealed class GetFlowSwitchesHandler(
         string name(int id)
             => cb.First(t => t.Id == id).Name;
 
-        StateIndicators ind(int id)
-            => (StateIndicators)cb.First(t => t.Id == id).Indicator;
+        EnumWorkflowTaskStateIndicators ind(int id)
+            => (EnumWorkflowTaskStateIndicators)cb.First(t => t.Id == id).Indicator;
     }
 
-    private static void adjustIndividualPrice(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> existingSwitches)
+    private static void adjustIndividualPrice(SalesArrangementGetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> existingSwitches)
     {
         if (isSet(FlowSwitches.DoesWflTaskForIPExist) && isSet(FlowSwitches.IsWflTaskForIPApproved))
         {
@@ -99,7 +97,7 @@ internal sealed class GetFlowSwitchesHandler(
             => existingSwitches.Any(t => t.FlowSwitchId == (int)fs && t.Value);
     }
 
-    private void adjustScoring(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    private void adjustScoring(SalesArrangementGetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
     {
         if (!flowSwitches.Any(t => t.FlowSwitchId == (int)FlowSwitches.ScoringPerformedAtleastOnce && t.Value)
             && !_currentUserAccessor.HasPermission(UserPermissions.SCORING_Perform))
@@ -108,7 +106,7 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private void adjustSendButton(GetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
+    private void adjustSendButton(SalesArrangementGetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches)
     {
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Send))
         {
@@ -139,7 +137,7 @@ internal sealed class GetFlowSwitchesHandler(
     }
 
     private async Task adjustEvaluation(
-        GetFlowSwitchesResponse response, 
+        SalesArrangementGetFlowSwitchesResponse response, 
         int salesArrangementId, 
         List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitches, 
         CancellationToken cancellationToken) 
@@ -166,7 +164,7 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private async Task adjustSigning(GetFlowSwitchesResponse response, int salesArrangementId, CancellationToken cancellationToken)
+    private async Task adjustSigning(SalesArrangementGetFlowSwitchesResponse response, int salesArrangementId, CancellationToken cancellationToken)
     {
         if (response.SigningSection.State == 1)
         {
@@ -189,17 +187,17 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private static GetFlowSwitchesResponseItemButton createSectionButton(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItemButton createSectionButton(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
     {
-        return new GetFlowSwitchesResponseItemButton
+        return new()
         {
             IsActive = group.IsActive
         };
     }
 
-    private static GetFlowSwitchesResponseItem createSection(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItem createSection(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
     {
-        return new GetFlowSwitchesResponseItem
+        return new()
         {
             IsActive = group.IsActive,
             State = group.State,

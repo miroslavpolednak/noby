@@ -7,7 +7,7 @@ namespace NOBY.Api.Endpoints.Users;
 [ApiController]
 [Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
-public class UsersController(IMediator _mediator) : ControllerBase
+public sealed class UsersController(IMediator _mediator) : ControllerBase
 {
     /// <summary>
     /// Informace a oprávnění o přihlášeném uživateli

@@ -1,5 +1,4 @@
 ﻿using CIS.Core;
-using DomainServices.CustomerService.Clients;
 using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _HO = DomainServices.HouseholdService.Contracts;
 
@@ -8,7 +7,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
-internal sealed class CreditWorthinessHouseholdService
+internal sealed class CreditWorthinessHouseholdService(
+    DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService,
+    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService)
 {
     public async Task<List<_Rip.CreditWorthinessHousehold>> CreateHouseholds(int salesArrangementId, CancellationToken cancellationToken)
     {
@@ -30,7 +31,7 @@ internal sealed class CreditWorthinessHouseholdService
                     Insurance = household.Expenses?.InsuranceExpenseAmount,
                     Other = household.Expenses?.OtherExpenseAmount
                 },
-                Customers = new()
+                Customers = []
             };
 
             // get customers
@@ -101,19 +102,5 @@ internal sealed class CreditWorthinessHouseholdService
             }).ToList();
 
         return c;
-    }
-
-    private readonly DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService;
-    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly ICustomerServiceClient _customerService;
-
-    public CreditWorthinessHouseholdService(
-        DomainServices.HouseholdService.Clients.IHouseholdServiceClient householdService,
-        ICustomerServiceClient customerService,
-        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
-    {
-        _householdService = householdService;
-        _customerService = customerService;
-        _customerOnSaService = customerOnSaService;
     }
 }

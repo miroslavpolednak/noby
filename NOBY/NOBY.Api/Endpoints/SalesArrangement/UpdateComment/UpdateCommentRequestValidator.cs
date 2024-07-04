@@ -2,7 +2,8 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateComment;
 
-internal sealed class UpdateCommentRequestValidator : AbstractValidator<UpdateCommentRequest>
+internal sealed class UpdateCommentRequestValidator 
+    : AbstractValidator<SalesArrangementUpdateCommentRequest>
 {
     public UpdateCommentRequestValidator()
     {

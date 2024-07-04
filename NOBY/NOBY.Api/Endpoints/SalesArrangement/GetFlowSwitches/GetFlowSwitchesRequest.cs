@@ -1,12 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.SalesArrangement.GetFlowSwitches;
 
-internal sealed class GetFlowSwitchesRequest
-    : IRequest<GetFlowSwitchesResponse>
+internal sealed record GetFlowSwitchesRequest(int SalesArrangementId)
+    : IRequest<SalesArrangementGetFlowSwitchesResponse>
 {
-    internal int SalesArrangementId;
-
-    public GetFlowSwitchesRequest(int salesArrangementId)
-    {
-        this.SalesArrangementId = salesArrangementId;
-    }
 }

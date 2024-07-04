@@ -1,6 +1,4 @@
-﻿using NOBY.Dto.Attributes;
-
-namespace NOBY.Dto.Workflow;
+﻿namespace NOBY.Dto.Workflow;
 
 public class WorkflowTaskDetail
 {
