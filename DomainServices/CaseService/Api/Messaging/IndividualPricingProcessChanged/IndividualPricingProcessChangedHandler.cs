@@ -38,14 +38,14 @@ internal class IndividualPricingProcessChangedHandler(
         // detail tasku
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId });
 
-        if (message.state is (ProcessStateEnum.ACTIVE or ProcessStateEnum.TERMINATED) && taskDetail.TaskObject.ProcessTypeId != 1)
+        if (message.state == ProcessStateEnum.TERMINATED && taskDetail.TaskObject.ProcessTypeId != 1)
         {
             _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, currentTaskId, taskDetail.TaskObject.ProcessTypeId);
             return;
         }
 
         // schvalena IC
-        if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.DecisionId == 1)
+        if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) && taskDetail.TaskObject.DecisionId == 1)
         {
             await saveEntity(currentTaskId, caseId, message.occurredOn, null);
 
@@ -55,7 +55,7 @@ internal class IndividualPricingProcessChangedHandler(
                 return;
             }
         }
-        else if (message.state is ProcessStateEnum.COMPLETED && taskDetail.TaskObject.ProcessTypeId == 3)
+        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) && taskDetail.TaskObject.ProcessTypeId == 3)
         {
             await saveEntity(currentTaskId, caseId, null, message.occurredOn);
         }
