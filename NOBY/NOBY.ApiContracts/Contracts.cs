@@ -28,6 +28,599 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedMortgageOutputs
+    {
+        /// <summary>
+        /// Výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public decimal? LoanAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanDueDate")]
+        public System.DateTime? LoanDueDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanDuration")]
+        public int? LoanDuration { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        public decimal? LoanPaymentAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("employeeBonusLoanCode")]
+        public int? EmployeeBonusLoanCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanToValue")]
+        public decimal LoanToValue { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("aprc")]
+        public decimal Aprc { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanTotalAmount")]
+        public decimal LoanTotalAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRateProvided")]
+        public decimal LoanInterestRateProvided { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractSignedDate")]
+        public System.DateTime? ContractSignedDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingDateTo")]
+        public System.DateTime DrawingDateTo { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("annuityPaymentsDateFrom")]
+        public System.DateTime? AnnuityPaymentsDateFrom { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("annuityPaymentsCount")]
+        public int? AnnuityPaymentsCount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRate")]
+        public decimal LoanInterestRate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRateAnnounced")]
+        public decimal LoanInterestRateAnnounced { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRateAnnouncedType")]
+        public int LoanInterestRateAnnouncedType { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("employeeBonusDeviation")]
+        public decimal EmployeeBonusDeviation { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("marketingActionsDeviation")]
+        public decimal MarketingActionsDeviation { get; set; } = default!;
+
+        /// <summary>
+        /// Den splátky úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentDay")]
+        public int? PaymentDay { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
+        public List<SharedTypesLoanPurposeItem>? LoanPurposes { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("marketingActions")]
+        public List<OfferSharedMortgageOutputsMarketingActionItem>? MarketingActions { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentScheduleSimple")]
+        public List<OfferSharedMortgageOutputsPaymentScheduleSimpleItem>? PaymentScheduleSimple { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("fees")]
+        public List<OfferSharedMortgageOutputsFeeItem>? Fees { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("warnings")]
+        public List<OfferSharedMortgageOutputsOutputWarning>? Warnings { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedMortgageOutputsOutputWarning
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("internalMessage")]
+        public string? InternalMessage { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("text")]
+        public string? Text { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedMortgageOutputsFeeItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("feeId")]
+        public int FeeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("discountPercentage")]
+        public decimal DiscountPercentage { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("tariffSum")]
+        public decimal? TariffSum { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("composedSum")]
+        public decimal? ComposedSum { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("finalSum")]
+        public decimal? FinalSum { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("marketingActionId")]
+        public int? MarketingActionId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string? Name { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("shortNameForExample")]
+        public string? ShortNameForExample { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("tariffName")]
+        public string? TariffName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("usageText")]
+        public string? UsageText { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("tariffTextWithAmount")]
+        public string? TariffTextWithAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("codeKB")]
+        public string? CodeKB { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("displayAsFreeOfCharge")]
+        public bool DisplayAsFreeOfCharge { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("includeInRPSN")]
+        public bool IncludeInRPSN { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("periodicity")]
+        public string? Periodicity { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("accountDateFrom")]
+        public System.DateTime? AccountDateFrom { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedMortgageOutputsPaymentScheduleSimpleItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentNumber")]
+        public string PaymentNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("date")]
+        public string Date { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("type")]
+        public string Type { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("amount")]
+        public string Amount { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedMortgageOutputsMarketingActionItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("code")]
+        public string Code { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("requested")]
+        public bool Requested { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("applied")]
+        public bool Applied { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("marketingActionId")]
+        public int? MarketingActionId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("deviation")]
+        public decimal? Deviation { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string Name { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedCreditWorthinessSimpleInputs
+    {
+        /// <summary>
+        /// Sekce aktivní
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isActive")]
+        public bool IsActive { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové měsíční příjmy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("totalMonthlyIncome")]
+        public decimal? TotalMonthlyIncome { get; set; } = default!;
+
+        /// <summary>
+        /// Celkové měsíční příjmy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("expensesRent")]
+        public decimal? ExpensesRent { get; set; } = default!;
+
+        /// <summary>
+        /// Ostatní měsíční výdaje
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("expensesOther")]
+        public decimal? ExpensesOther { get; set; } = default!;
+
+        /// <summary>
+        /// Splátky úvěrů a hypoték
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loansInstallmentsAmount")]
+        public decimal? LoansInstallmentsAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Limity kreditních karet
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditCardsAmount")]
+        public decimal? CreditCardsAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Limity debetů
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("authorizedOverdraftsTotalAmount")]
+        public decimal? AuthorizedOverdraftsTotalAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Počet dětí
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("childrenCount")]
+        public int? ChildrenCount { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class GetMortgageBySalesArrangementResponse
+    {
+        /// <summary>
+        /// ID simulace.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerId")]
+        public int OfferId { get; set; } = default!;
+
+        /// <summary>
+        /// Unikatni identifikator pro session simulace.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("resourceProcessId")]
+        public string ResourceProcessId { get; set; } = default!;
+
+        /// <summary>
+        /// Zadani simulace.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("simulationInputs")]
+        public OfferMortgageInputsExtended SimulationInputs { get; set; } = default!;
+
+        /// <summary>
+        /// Vysledky simulace.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("simulationResults")]
+        public OfferSharedMortgageOutputs SimulationResults { get; set; } = default!;
+
+        /// <summary>
+        /// Datum, kdy končí garance pro danou simulaci
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerGuaranteeDateTo")]
+        public DateOnly? OfferGuaranteeDateTo { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("creditWorthinessSimpleInputs")]
+        public OfferSharedCreditWorthinessSimpleInputs? CreditWorthinessSimpleInputs { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedInsuranceItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("sum")]
+        public decimal? Sum { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("frequency")]
+        public int? Frequency { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedDeveloper
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerId")]
+        public int? DeveloperId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("projectId")]
+        public int? ProjectId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("description")]
+        public string? Description { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedFeeInputItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("feeId")]
+        public int FeeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("discountPercentage")]
+        public decimal DiscountPercentage { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSharedMarketingActionInputItemResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("domicile")]
+        public bool Domicile { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("healthRiskInsurance")]
+        public bool HealthRiskInsurance { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateInsurance")]
+        public bool RealEstateInsurance { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("incomeLoanRatioDiscount")]
+        public bool IncomeLoanRatioDiscount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("userVip")]
+        public bool UserVip { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferMortgageInputsExtended
+    {
+        /// <summary>
+        /// ID produktu. Ciselnik ProductTypes.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("productTypeId")]
+        public int ProductTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Druh uveru. Ciselnik LoanKind.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanKindId")]
+        public int LoanKindId { get; set; } = default!;
+
+        /// <summary>
+        /// Výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public decimal? LoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Splatnost úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanDuration")]
+        public int? LoanDuration { get; set; } = default!;
+
+        /// <summary>
+        /// Délka fixace úrokové sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRatePeriod")]
+        public int FixedRatePeriod { get; set; } = default!;
+
+        /// <summary>
+        /// Předpokládáné hodnoty zajištění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("collateralAmount")]
+        public decimal CollateralAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Den splátky úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentDay")]
+        public int? PaymentDay { get; set; } = default!;
+
+        /// <summary>
+        /// Je žádáno zaměstnanecké zvýhodnění?
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isEmployeeBonusRequested")]
+        public bool? IsEmployeeBonusRequested { get; set; } = default!;
+
+        /// <summary>
+        /// Předpokládané datum čerpání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("expectedDateOfDrawing")]
+        public System.DateTime? ExpectedDateOfDrawing { get; set; } = default!;
+
+        /// <summary>
+        /// Vlastní zdroje
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("financialResourcesOwn")]
+        public decimal? FinancialResourcesOwn { get; set; } = default!;
+
+        /// <summary>
+        /// Cizí zdroje
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("financialResourcesOther")]
+        public decimal? FinancialResourcesOther { get; set; } = default!;
+
+        /// <summary>
+        /// uver.indCenotvorbaOdchylka
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscount")]
+        public decimal? InterestRateDiscount { get; set; } = default!;
+
+        /// <summary>
+        /// uver.typCerpani
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingTypeId")]
+        public int? DrawingTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// uver.lhutaDocerpani
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingDurationId")]
+        public int? DrawingDurationId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
+        public List<SharedTypesLoanPurposeItem>? LoanPurposes { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("developer")]
+        public OfferSharedDeveloper? Developer { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("fees")]
+        public List<OfferSharedFeeInputItem>? Fees { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("riskLifeInsurance")]
+        public OfferSharedInsuranceItem? RiskLifeInsurance { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("realEstateInsurance")]
+        public OfferSharedInsuranceItem? RealEstateInsurance { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("marketingActions")]
+        public OfferSharedMarketingActionInputItemResult? MarketingActions { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferGetFullPaymentScheduleResponse
+    {
+        /// <summary>
+        /// Položky splátkového kalendáře.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("items")]
+        public List<OfferGetFullPaymentScheduleItem>? Items { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferGetFullPaymentScheduleItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentNumber")]
+        public string? PaymentNumber { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("date")]
+        public string? Date { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("amount")]
+        public string? Amount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("principal")]
+        public string? Principal { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("interest")]
+        public string? Interest { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("remainingPrincipal")]
+        public string? RemainingPrincipal { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferDeveloperSearchRequest
+    {
+        /// <summary>
+        /// Text pro vyhledávání
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("searchText")]
+        [System.ComponentModel.DataAnnotations.Required]
+        public string SearchText { get; set; } = default!;
+
+        /// <summary>
+        /// Nastaveni strankovani a razeni.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("pagination")]
+        public SharedTypesPaginationRequest? Pagination { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferDeveloperSearchResponse
+    {
+        /// <summary>
+        /// Informace o strankovani a razeni.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("pagination")]
+        public SharedTypesPaginationResponse? Pagination { get; set; } = default!;
+
+        /// <summary>
+        /// Kolekce nalezenych projektu.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("rows")]
+        public List<CodebooksDeveloperSearchItem>? Rows { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class CodebooksDeveloperSearchItem
+    {
+        /// <summary>
+        /// ID developera
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerId")]
+        public int? DeveloperId { get; set; } = default!;
+
+        /// <summary>
+        /// ID developerského projektu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerProjectId")]
+        public int? DeveloperProjectId { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno developera
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerName")]
+        public string? DeveloperName { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno developerského projektu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerProjectName")]
+        public string? DeveloperProjectName { get; set; } = default!;
+
+        /// <summary>
+        /// ICO/RČ developera
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("developerCIN")]
+        public string? DeveloperCIN { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class OfferCreateMortgageCaseRequest
     {
         /// <summary>
@@ -602,7 +1195,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
         [System.ComponentModel.DataAnnotations.Required]
-        public List<SalesArrangementSharedLoanPurposeItem> LoanPurposes { get; set; } = new List<SalesArrangementSharedLoanPurposeItem>();
+        public List<SharedTypesLoanPurposeItem> LoanPurposes { get; set; } = new List<SharedTypesLoanPurposeItem>();
 
         /// <summary>
         /// Objekty úvěru
@@ -1980,7 +2573,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("loanPurposes")]
         [System.ComponentModel.DataAnnotations.Required]
-        public List<SalesArrangementSharedLoanPurposeItem> LoanPurposes { get; set; } = new List<SalesArrangementSharedLoanPurposeItem>();
+        public List<SharedTypesLoanPurposeItem> LoanPurposes { get; set; } = new List<SharedTypesLoanPurposeItem>();
 
         /// <summary>
         /// Objekty úvěru
@@ -2134,28 +2727,6 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("loanPurposesComment")]
         public string? LoanPurposesComment { get; set; } = default!;
-
-    }
-
-    /// <summary>
-    /// Účel úvěru
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SalesArrangementSharedLoanPurposeItem
-    {
-        /// <summary>
-        /// Účel úvěru
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("id")]
-        public int Id { get; set; } = default!;
-
-        /// <summary>
-        /// Výše úvěru pro zvolený účel v Kč
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("sum")]
-        public decimal Sum { get; set; } = default!;
 
     }
 
@@ -6712,6 +7283,28 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("isExternal")]
         public bool? IsExternal { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Účel úvěru
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesLoanPurposeItem
+    {
+        /// <summary>
+        /// Účel úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public int Id { get; set; } = default!;
+
+        /// <summary>
+        /// Výše úvěru pro zvolený účel v Kč
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("sum")]
+        public decimal Sum { get; set; } = default!;
 
     }
 

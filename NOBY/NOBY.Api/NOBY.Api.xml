@@ -1464,26 +1464,6 @@
             Vytvoreni requestu pro zalozeni CASE
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest.SearchText">
-            <summary>
-            Text pro vyhledávání
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest.Pagination">
-            <summary>
-            Nastaveni strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchResponse.Pagination">
-            <summary>
-            Informace o strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchResponse.Rows">
-            <summary>
-            Kolekce nalezenych projektu.
-            </summary>
-        </member>
         <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.FirstName">
             <summary>
             Jméno
@@ -1638,7 +1618,7 @@
             </remarks>
             <returns>Plný splátkový kalendář simulace.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.DeveloperSearch(NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.DeveloperSearch(NOBY.ApiContracts.OfferDeveloperSearchRequest)">
             <summary>
             Vyhledání developerských projektů a developerů bez projektu.
             </summary>
@@ -1646,8 +1626,7 @@
             Vyhledá developerské projekty na základě vyhledávacího textu.<br /><br />
             Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku 
             <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br /><br />
-            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageOffer(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest)">

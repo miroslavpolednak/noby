@@ -1,21 +1,20 @@
 ﻿using DomainServices.OfferService.Clients.v1;
-using NOBY.Api.Endpoints.Offer.SharedDto;
 
 namespace NOBY.Api.Endpoints.Offer.GetFullPaymentScheduleByOfferId;
 
 internal sealed class GetFullPaymentScheduleByOfferIdHandler(IOfferServiceClient _offerService)
-        : IRequestHandler<GetFullPaymentScheduleByOfferIdRequest, SharedDto.GetFullPaymentScheduleResponse>
+        : IRequestHandler<GetFullPaymentScheduleByOfferIdRequest, OfferGetFullPaymentScheduleResponse>
 {
-    public async Task<SharedDto.GetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
+    public async Task<OfferGetFullPaymentScheduleResponse> Handle(GetFullPaymentScheduleByOfferIdRequest request, CancellationToken cancellationToken)
     {
         try
         {
             var result = await _offerService.GetMortgageOfferFPSchedule(request.OfferId, cancellationToken);
 
-            return new GetFullPaymentScheduleResponse
+            return new()
             {
                 Items = result.PaymentScheduleFull.Select(i =>
-                    new PaymentScheduleFullItem
+                    new OfferGetFullPaymentScheduleItem
                     {
                         PaymentNumber = i.PaymentNumber,
                         Date = i.Date,

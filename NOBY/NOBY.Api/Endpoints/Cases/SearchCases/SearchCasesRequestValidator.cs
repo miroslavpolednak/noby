@@ -7,6 +7,6 @@ internal sealed class SearchCasesRequestValidator
 {
     public SearchCasesRequestValidator()
     {
-        RuleFor(t => t.Pagination).SetValidator(new NOBY.Api.Validators.PaginationRequestValidator());
+        RuleFor(t => t.Pagination).SetValidator(new Validators.PaginationRequestValidator());
     }
 }

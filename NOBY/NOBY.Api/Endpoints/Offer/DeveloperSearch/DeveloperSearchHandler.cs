@@ -1,12 +1,11 @@
 ﻿using CIS.Core.Types;
-using CIS.Infrastructure.WebApi.Types;
 
 namespace NOBY.Api.Endpoints.Offer.DeveloperSearch;
 
 internal sealed class DeveloperSearchHandler(DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService)
-        : IRequestHandler<DeveloperSearchRequest, DeveloperSearchResponse>
+        : IRequestHandler<OfferDeveloperSearchRequest, OfferDeveloperSearchResponse>
 {
-    public async Task<DeveloperSearchResponse> Handle(DeveloperSearchRequest request, CancellationToken cancellationToken)
+    public async Task<OfferDeveloperSearchResponse> Handle(OfferDeveloperSearchRequest request, CancellationToken cancellationToken)
     {
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
@@ -19,10 +18,17 @@ internal sealed class DeveloperSearchHandler(DomainServices.CodebookService.Clie
             .Take(paginable.PageSize)
             .ToList();
 
-        return new DeveloperSearchResponse
+        return new OfferDeveloperSearchResponse
         {
-            Rows = rows,
-            Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Count)
+            Rows = rows.Select(t => new CodebooksDeveloperSearchItem
+            {
+                DeveloperCIN = t.DeveloperCIN,
+                DeveloperId = t.DeveloperId,
+                DeveloperName = t.DeveloperName,
+                DeveloperProjectId = t.DeveloperProjectId,
+                DeveloperProjectName = t.DeveloperProjectName
+            }).ToList(),
+            Pagination = new(request.Pagination as IPaginableRequest ?? paginable, result.Count)
         };
     }
 }

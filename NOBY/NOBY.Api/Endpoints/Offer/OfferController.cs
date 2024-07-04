@@ -118,9 +118,9 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [HttpGet("offer/mortgage/sales-arrangement/{salesArrangementId:int}")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(SharedDto.GetMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(GetMortgageBySalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<SharedDto.GetMortgageResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<GetMortgageBySalesArrangementResponse> GetMortgageBySalesArrangement([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetMortgageBySalesArrangement.GetMortgageBySalesArrangementRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -177,17 +177,17 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// Plný splátkový kalendář dle ID simulace.
     /// </summary>
     /// <remarks>
-    /// Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId.Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy.Chyba simulační služby se propaguje.<br /><br />
-    /// <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=994B63B5-C1C0-4433-AB92-9FCC23760F52" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
+    /// Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId.Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy.Chyba simulační služby se propaguje.
     /// </remarks>
     /// <returns>Plný splátkový kalendář simulace.</returns>
     [HttpGet("offer/mortgage/{offerId:int}/full-payment-schedule")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(SharedDto.GetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(OfferGetFullPaymentScheduleResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<SharedDto.GetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=994B63B5-C1C0-4433-AB92-9FCC23760F52")]
+    public async Task<OfferGetFullPaymentScheduleResponse> GetFullPaymentScheduleByOfferId([FromRoute] int offerId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetFullPaymentScheduleByOfferId.GetFullPaymentScheduleByOfferIdRequest(offerId), cancellationToken);
 
     /// <summary>
@@ -197,15 +197,15 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// Vyhledá developerské projekty na základě vyhledávacího textu.<br /><br />
     /// Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku 
     /// <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br /><br />
-    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+    /// Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
     /// </remarks>
     [HttpPost("offer/mortgage/developer-project/search")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(DeveloperSearch.DeveloperSearchResponse), StatusCodes.Status200OK)]
-    public async Task<DeveloperSearch.DeveloperSearchResponse> DeveloperSearch([FromBody] DeveloperSearch.DeveloperSearchRequest request)
-        => await _mediator.Send(request ?? new DeveloperSearch.DeveloperSearchRequest());
+    [ProducesResponseType(typeof(OfferDeveloperSearchResponse), StatusCodes.Status200OK)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D43515EA-4014-47a1-AD45-0E80EE43AEB9")]
+    public async Task<OfferDeveloperSearchResponse> DeveloperSearch([FromBody] OfferDeveloperSearchRequest request)
+        => await _mediator.Send(request ?? new());
 
     /// <summary>
     /// Nalinkuje novou modelaci na stávající SA.
