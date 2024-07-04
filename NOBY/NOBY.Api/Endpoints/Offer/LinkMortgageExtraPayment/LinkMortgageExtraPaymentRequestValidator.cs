@@ -3,7 +3,8 @@ using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment;
 
-public class LinkMortgageExtraPaymentRequestValidator: AbstractValidator<LinkMortgageExtraPaymentRequest>
+internal sealed class LinkMortgageExtraPaymentRequestValidator
+    : AbstractValidator<OfferLinkMortgageExtraPaymentRequest>
 {
     public LinkMortgageExtraPaymentRequestValidator(IFeatureManager featureManager)
     {

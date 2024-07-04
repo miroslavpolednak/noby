@@ -12,7 +12,7 @@ internal sealed class LinkMortgageOfferHandler(
     ICaseServiceClient _caseService, 
     ISalesArrangementServiceClient _salesArrangementService, 
     IOfferServiceClient _offerService) 
-    : IRequestHandler<LinkMortgageOfferRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
+    : IRequestHandler<OfferLinkMortgageOfferRequest, OfferRefinancingLinkResult>
 {
     private static readonly MortgageOfferLinkValidator _validator = new()
     {
@@ -22,7 +22,7 @@ internal sealed class LinkMortgageOfferHandler(
         ValidStates = { SalesArrangementStates.InSigning, SalesArrangementStates.ToSend }
     };
 
-	public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(LinkMortgageOfferRequest request, CancellationToken cancellationToken)
+	public async Task<OfferRefinancingLinkResult> Handle(OfferLinkMortgageOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
@@ -34,13 +34,13 @@ internal sealed class LinkMortgageOfferHandler(
 
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
 
-        return new Dto.Refinancing.RefinancingLinkResult
+        return new()
         {
             SalesArrangementId = salesArrangement.SalesArrangementId
         };
     }
 
-    private async Task UpdateOfferContracts(long caseId, Dto.ContactsDto? contacts, CancellationToken cancellationToken)
+    private async Task UpdateOfferContracts(long caseId, SharedTypesContacts? contacts, CancellationToken cancellationToken)
     {
         var offerContacts = new OfferContacts
         {
@@ -55,7 +55,7 @@ internal sealed class LinkMortgageOfferHandler(
         await _caseService.UpdateOfferContacts(caseId, offerContacts, cancellationToken);
     }
 
-    private async Task UpdateCustomerData(long caseId, LinkMortgageOfferRequest request, CancellationToken cancellationToken)
+    private async Task UpdateCustomerData(long caseId, OfferLinkMortgageOfferRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.GetCaseDetail(caseId, cancellationToken);
 

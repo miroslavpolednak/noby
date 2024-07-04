@@ -1464,126 +1464,41 @@
             Vytvoreni requestu pro zalozeni CASE
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest.SearchText">
-            <summary>
-            Text pro vyhledávání
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest.Pagination">
-            <summary>
-            Nastaveni strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchResponse.Pagination">
-            <summary>
-            Informace o strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchResponse.Rows">
-            <summary>
-            Kolekce nalezenych projektu.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.FirstName">
-            <summary>
-            Jméno
-            </summary>
-            <example>Jonatán</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.LastName">
-            <summary>
-            Příjmení
-            </summary>
-            <example>Skočdopole</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.DateOfBirth">
-            <summary>
-            Datum narození
-            </summary>
-            <example>2002-10-26</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest.IndividualPriceCommentLastVersion">
-            <summary>
-            Komentář k Cenové výjimce
-            </summary>
-            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest.IndividualPriceCommentLastVersion">
-            <summary>
-            Komentář k Cenové výjimce
-            </summary>
-            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.FirstName">
-            <summary>
-            Jméno
-            </summary>
-            <example>Jonatán</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.LastName">
-            <summary>
-            Příjmení
-            </summary>
-            <example>Skočdopole</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest.DateOfBirth">
-            <summary>
-            Datum narození
-            </summary>
-            <example>2002-10-26</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest.IndividualPriceCommentLastVersion">
-            <summary>
-            Komentář k Cenové výjimce
-            </summary>
-            <example>Prosím o slevu, jde o dlouhodobého loajálního klienta</example>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRefixationOfferList(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRefixationOfferList(System.Int64,NOBY.ApiContracts.OfferSimulateMortgageRefixationOfferListRequest)">
             <summary>
             Vezme stávající simulace k refixacím, aktuální i sdělené a přepočítá všechny s novou slevou na sazbě
             </summary>
-            <remarks>
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DAE69855-3C72-4ec4-8332-81E91814FA47"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageExtraPayment(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageExtraPayment(System.Int64,NOBY.ApiContracts.OfferSimulateMortgageExtraPaymentRequest)">
             <summary>
             Simulace mimořádné splátky hypotéky.
             </summary>
             <remarks>
             Provolá simulační službu Starbuildu pro refixace.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F3564317-C787-445d-AB54-A6B4FE1847C0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRefixation(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRefixation(System.Int64,NOBY.ApiContracts.OfferSimulateMortgageRefixationRequest)">
             <summary>
             Simulace KB refixací.
             </summary>
             <remarks>
             Provolá simulační službu Starbuildu pro refixace.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B794F3FC-3B89-4280-AF28-449F0442ACFD"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRetention(System.Int64,NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgageRetention(System.Int64,NOBY.ApiContracts.OfferSimulateMortgageRetentionRequest)">
             <summary>
             Simulace KB retencí.
             </summary>
             <remarks>
             Provolá simulační službu Starbuildu pro retence.
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BFEF73A4-5876-4b5b-940B-8F65FEB5F660"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgage(NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateMortgage(NOBY.ApiContracts.OfferSimulateMortgageRequest)">
             <summary>
             Simulace KB hypotéky.
             </summary>
             <remarks>
-            Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F8D7E9A3-7589-42af-B2B3-9B34A243D6AB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.
             </remarks>
             <param name="request">Nastaveni simulace.</param>
             <returns>ID vytvořené simulace a její výsledky.</returns>
@@ -1593,8 +1508,7 @@
             Detail provedené simulace dle ID Sales Arrangement.
             </summary>
             <remarks>
-            Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=43139152-F859-4d55-9D06-11353DA80961"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.
             </remarks>
             <returns>Vstupy a výstupy uložené simulace.</returns>
         </member>
@@ -1612,33 +1526,29 @@
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nově vytvořeného Case</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkModelation(System.Int32,NOBY.Api.Endpoints.Offer.LinkModelation.LinkModelationRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkModelation(System.Int32,NOBY.ApiContracts.OfferLinkModelationRequest)">
             <summary>
             Nalinkuje novou modelaci na stávající SA.
             </summary>
             <remarks>
-            Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SetOfferFlags(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SetOfferFlags(System.Int64,System.Int32,NOBY.ApiContracts.OfferSetOfferFlagsRequest)">
             <summary>
             Nastavuje příznaky na modelaci.
             </summary>
-            <remarks>
-            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.GetFullPaymentScheduleByOfferId(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Plný splátkový kalendář dle ID simulace.
             </summary>
             <remarks>
-            Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId.Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy.Chyba simulační služby se propaguje.<br /><br />
-            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=994B63B5-C1C0-4433-AB92-9FCC23760F52" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width= "20" height= "20" /> Diagram v EA</a>
+            Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId.Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy.Chyba simulační služby se propaguje.
             </remarks>
             <returns>Plný splátkový kalendář simulace.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.DeveloperSearch(NOBY.Api.Endpoints.Offer.DeveloperSearch.DeveloperSearchRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.DeveloperSearch(NOBY.ApiContracts.OfferDeveloperSearchRequest)">
             <summary>
             Vyhledání developerských projektů a developerů bez projektu.
             </summary>
@@ -1646,342 +1556,32 @@
             Vyhledá developerské projekty na základě vyhledávacího textu.<br /><br />
             Vyhledává se v číselníku <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046695">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku 
             <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=438046776">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br /><br />
-            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D43515EA-4014-47a1-AD45-0E80EE43AEB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
+            Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageOffer(System.Int64,System.Int32,NOBY.Api.Endpoints.Offer.LinkMortgageOffer.LinkMortgageOfferRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageOffer(System.Int64,System.Int32,NOBY.ApiContracts.OfferLinkMortgageOfferRequest)">
             <summary>
             Nalinkuje novou modelaci na stávající SA.
             </summary>
             <remarks>
-            Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8996A9D6-2732-4011-9152-0EAE7FEECE07"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageRetentionOffer(System.Int64,NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer.LinkMortgageRetentionOfferRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageRetentionOffer(System.Int64,NOBY.ApiContracts.OfferLinkMortgageRetentionOfferRequest)">
             <summary>
             Nalinkuje retenční nabídku na stávající SA.
             </summary>
             <remarks>
-            Nalinkuje retenční nabídku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=92B4B98B-3F57-4541-9828-EB8CFDFA9035"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Nalinkuje retenční nabídku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageExtraPayment(System.Int64,NOBY.Api.Endpoints.Offer.LinkMortgageExtraPayment.LinkMortgageExtraPaymentRequest)">
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkMortgageExtraPayment(System.Int64,NOBY.ApiContracts.OfferLinkMortgageExtraPaymentRequest)">
             <summary>
             Nalinkuje mimořádnou splátku na stávající SA.
             </summary>
             <remarks>
-            Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F178A-72B5-46f6-85B2-D8414F5043B3"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.
             </remarks>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequest.Flags">
-            <summary>
-            Seznam příznaku k nastavení
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequestItem.FlagType">
-            <summary>
-            Typ příznaku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SetOfferFlags.SetOfferFlagsRequestItem.SetFlag">
-            <summary>
-            True = set flag, False = unset flag
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.FeeAmountDiscount">
-            <summary>
-            Sleva z pokuty
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentDate">
-            <summary>
-            Datum mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentAmount">
-            <summary>
-            Částka mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.ExtraPaymentReasonId">
-            <summary>
-            Důvod mimořádné splátky
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentRequest.IsExtraPaymentFullyRepaid">
-            <summary>
-            Typ mimořádné splátky - částečná false, úplná true
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.OfferId">
-            <summary>
-            ID vytvorene simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment.SimulateMortgageExtraPaymentResponse.SimulationResults">
-            <summary>
-            Původní simulace nalinkovaná na SA
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList.SimulateMortgageRefixationOfferListRequest.InterestRateDiscount">
-            <summary>
-            Sleva ze sazby
-            </summary>
-            <example>0.09</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation.SimulateMortgageRefixationRequest.FixedRatePeriods">
-            <summary>
-            Platnost nové úrokové sazby od.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.InterestRateValidFrom">
-            <summary>
-            Platnost nové úrokové sazby od.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.InterestRateDiscount">
-            <summary>
-            Sleva ze sazby
-            </summary>
-            <example>0.09</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionRequest.FeeAmountDiscounted">
-            <summary>
-            Upravená výše poplatku. Relevantní pouze pro retence.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.FeeAmount">
-            <summary>
-            Výše poplatku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgageRetention.SimulateMortgageRetentionResponse.FeeAmountDiscounted">
-            <summary>
-            Upravená výše poplatku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.WorthinessResult">
-            <summary>
-            Výsledek bonity
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.InstallmentLimit">
-            <summary>
-            Měsíční splátka (maximum)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.MaxAmount">
-            <summary>
-            Měsíční splátka (maximum)
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.RemainsLivingAnnuity">
-            <summary>
-            Zbývá na živobytí s požadovanou splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.CreditWorthinessSimpleResults.RemainsLivingInst">
-            <summary>
-            Zbývá na živobytí s maximální splátkou
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.ResourceProcessId">
-            <summary>
-            Unikatni identifikator pro session simulace.
-            Musi byt parsovatelny na .NET Guid type.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.WithGuarantee">
-            <summary>
-            Simulace s garancí úrokové sazby, default hodnota false
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageRequest.SalesArrangementId">
-            <summary>
-            ID Sales Arrangement-u
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferId">
-            <summary>
-            ID vytvorene simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.OfferGuaranteeDateTo">
-            <summary>
-            Datum, kdy končí garance pro danou simulaci
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.ResourceProcessId">
-            <summary>
-            Unikatni identifikator pro session simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SimulateMortgage.SimulateMortgageResponse.SimulationResults">
-            <summary>
-            Vysledky simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.IsActive">
-            <summary>
-            Sekce aktivní
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.TotalMonthlyIncome">
-            <summary>
-            Celkové měsíční příjmy
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.ExpensesRent">
-            <summary>
-            Celkové měsíční příjmy
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.ExpensesOther">
-            <summary>
-            Ostatní měsíční výdaje
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.LoansInstallmentsAmount">
-            <summary>
-            Splátky úvěrů a hypoték
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.CreditCardsAmount">
-            <summary>
-            Limity kreditních karet
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.AuthorizedOverdraftsTotalAmount">
-            <summary>
-            Limity debetů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.CreditWorthinessSimpleInputs.ChildrenCount">
-            <summary>
-            Počet dětí
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.GetFullPaymentScheduleResponse.Items">
-            <summary>
-            Položky splátkového kalendáře.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.GetMortgageResponse.OfferId">
-            <summary>
-            ID simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.GetMortgageResponse.ResourceProcessId">
-            <summary>
-            Unikatni identifikator pro session simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.GetMortgageResponse.SimulationInputs">
-            <summary>
-            Zadani simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.GetMortgageResponse.SimulationResults">
-            <summary>
-            Vysledky simulace.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.GetMortgageResponse.OfferGuaranteeDateTo">
-            <summary>
-            Datum, kdy končí garance pro danou simulaci
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.ProductTypeId">
-            <summary>
-            ID produktu. Ciselnik ProductTypes.
-            </summary>
-            <example>20001</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.LoanKindId">
-            <summary>
-            Druh uveru. Ciselnik LoanKind.
-            </summary>
-            <example>0</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.LoanAmount">
-            <summary>
-            Výše úvěru
-            </summary>
-            <example>1000000</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.LoanDuration">
-            <summary>
-            Splatnost úvěru
-            </summary>
-            <example>10</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.FixedRatePeriod">
-            <summary>
-            Délka fixace úrokové sazby
-            </summary>
-            <example>48</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.CollateralAmount">
-            <summary>
-            Předpokládáné hodnoty zajištění
-            </summary>
-            <example>5000000</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.PaymentDay">
-            <summary>
-            Den splátky úvěru
-            </summary>
-            <example></example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.IsEmployeeBonusRequested">
-            <summary>
-            Je žádáno zaměstnanecké zvýhodnění?
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.ExpectedDateOfDrawing">
-            <summary>
-            Předpokládané datum čerpání
-            </summary>
-            <example></example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.FinancialResourcesOwn">
-            <summary>
-            Vlastní zdroje
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.FinancialResourcesOther">
-            <summary>
-            Cizí zdroje
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.InterestRateDiscount">
-            <summary>
-            uver.indCenotvorbaOdchylka
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.DrawingTypeId">
-            <summary>
-            uver.typCerpani
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageInputs.DrawingDurationId">
-            <summary>
-            uver.lhutaDocerpani
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageOutputs.LoanAmount">
-            <summary>
-            Výše úvěru
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Offer.SharedDto.MortgageOutputs.PaymentDay">
-            <summary>
-            Den splátky úvěru
-            </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Party.PartyController.SearchParties(NOBY.ApiContracts.PartySearchPartiesRequest,System.Threading.CancellationToken)">
             <summary>

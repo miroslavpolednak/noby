@@ -37,7 +37,7 @@ internal sealed class SearchCasesHandler(
         return new CasesSearchCasesResponse
         {
             Rows = await _converter.FromContracts(result.Cases),
-            Pagination = new SharedTypesPaginationResponse(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
+            Pagination = new(request.Pagination as IPaginableRequest ?? paginable, result.Pagination.RecordsTotalSize)
         };
     }
 

@@ -1,5 +1,4 @@
 ﻿using DomainServices.OfferService.Clients.v1;
-using NOBY.Api.Endpoints.Offer.SharedDto;
 using Abstraction = DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
@@ -7,9 +6,9 @@ namespace NOBY.Api.Endpoints.Offer.GetMortgageBySalesArrangement;
 internal sealed class GetMortgageBySalesArrangementHandler(
     Abstraction.ISalesArrangementServiceClient _salesArrangementService,
     IOfferServiceClient _offerService)
-        : IRequestHandler<GetMortgageBySalesArrangementRequest, SharedDto.GetMortgageResponse>
+        : IRequestHandler<GetMortgageBySalesArrangementRequest, GetMortgageBySalesArrangementResponse>
 {
-    public async Task<SharedDto.GetMortgageResponse> Handle(GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task<GetMortgageBySalesArrangementResponse> Handle(GetMortgageBySalesArrangementRequest request, CancellationToken cancellationToken)
     {
         // ziskat offerId z SA
         var salesArrangementInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -21,7 +20,7 @@ internal sealed class GetMortgageBySalesArrangementHandler(
         var offer = await _offerService.GetMortgageDetail(salesArrangementInstance.OfferId.Value, cancellationToken);
 
         // predelat z DS na FE Dto
-        return new GetMortgageResponse
+        return new()
         {
             OfferId = offer.Data.OfferId,
             OfferGuaranteeDateTo = offer.BasicParameters.GuaranteeDateTo,

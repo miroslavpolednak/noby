@@ -20,7 +20,7 @@ internal sealed class LinkMortgageExtraPaymentHandler(
 	IOfferServiceClient _offerService,
     IProductServiceClient _productService,
 	MortgageRefinancingWorkflowService _refinancingWorkflowService)
-		: IRequestHandler<LinkMortgageExtraPaymentRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
+		: IRequestHandler<OfferLinkMortgageExtraPaymentRequest, OfferRefinancingLinkResult>
 {
     private static readonly MortgageOfferLinkValidator _validator = new()
     {
@@ -29,7 +29,7 @@ internal sealed class LinkMortgageExtraPaymentHandler(
         AdditionalValidation = AdditionalValidation
     };
 
-	public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(LinkMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
+	public async Task<OfferRefinancingLinkResult> Handle(OfferLinkMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
         var offer = await _offerService.GetOffer(request.OfferId, cancellationToken);
 
@@ -51,14 +51,14 @@ internal sealed class LinkMortgageExtraPaymentHandler(
 
         await _salesArrangementService.LinkModelationToSalesArrangement(salesArrangement.SalesArrangementId, request.OfferId, cancellationToken);
 
-        return new Dto.Refinancing.RefinancingLinkResult
+        return new()
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             ProcessId = salesArrangement.ProcessId
         };
     }
 
-    private async Task ProcessWorkflow(LinkMortgageExtraPaymentRequest request, MortgageExtraPaymentFullData extraPayment, _SA salesArrangement, CancellationToken cancellationToken)
+    private async Task ProcessWorkflow(OfferLinkMortgageExtraPaymentRequest request, MortgageExtraPaymentFullData extraPayment, _SA salesArrangement, CancellationToken cancellationToken)
     {
         var workflowResult = await _refinancingWorkflowService.GetProcessInfoByProcessId(request.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 
@@ -97,7 +97,7 @@ internal sealed class LinkMortgageExtraPaymentHandler(
         await _caseService.UpdateTask(updateRequest, cancellationToken);
     }
 
-    private Task UpdateSalesArrangementParameters(LinkMortgageExtraPaymentRequest request, _SA salesArrangement, CancellationToken cancellationToken)
+    private Task UpdateSalesArrangementParameters(OfferLinkMortgageExtraPaymentRequest request, _SA salesArrangement, CancellationToken cancellationToken)
     {
         salesArrangement.ExtraPayment.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
 

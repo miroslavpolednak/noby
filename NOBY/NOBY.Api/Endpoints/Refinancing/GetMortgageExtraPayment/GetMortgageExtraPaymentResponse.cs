@@ -34,7 +34,7 @@ public sealed class GetMortgageExtraPaymentResponse
     /// </summary>
     public decimal? FeeAmountDiscount { get; set; }
 
-    public NOBY.Dto.Refinancing.ExtraPaymentSimulationResult? SimulationResults { get; set; }
+    public OfferSharedExtraPaymentSimulationResult? SimulationResults { get; set; }
 
     public sealed class HandoverObject
     {

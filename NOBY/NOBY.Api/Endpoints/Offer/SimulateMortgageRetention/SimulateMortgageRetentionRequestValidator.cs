@@ -6,7 +6,7 @@ using NOBY.Services.InterestRatesValidFrom;
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRetention;
 
 internal sealed class SimulateMortgageRetentionRequestValidator
-    : AbstractValidator<SimulateMortgageRetentionRequest>
+    : AbstractValidator<OfferSimulateMortgageRetentionRequest>
 {
     public SimulateMortgageRetentionRequestValidator(ICodebookServiceClient codebookService, InterestRatesValidFromService ratesValidFromService, IFeatureManager featureManager)
     {

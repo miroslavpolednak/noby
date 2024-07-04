@@ -10,9 +10,9 @@ internal sealed class SimulateMortgageRefixationHandler(
     MortgageRefinancingDataService _refinancingDataService,
     ICodebookServiceClient _codebookService, 
     IProductServiceClient _productService)
-        : IRequestHandler<SimulateMortgageRefixationRequest, List<Dto.Refinancing.RefinancingSimulationResult>>
+        : IRequestHandler<OfferSimulateMortgageRefixationRequest, List<OfferSimulateMortgageRefixationResponse>>
 {
-    public async Task<List<Dto.Refinancing.RefinancingSimulationResult>> Handle(SimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<List<OfferSimulateMortgageRefixationResponse>> Handle(OfferSimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         // validace zda na Case jiz neexistuje simulace se stejnou delkou fixace
         var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
@@ -46,7 +46,7 @@ internal sealed class SimulateMortgageRefixationHandler(
         }
 
         // vytvorit vsechny simulace
-        List<Dto.Refinancing.RefinancingSimulationResult> response = [];
+        List<OfferSimulateMortgageRefixationResponse> response = [];
 
         foreach (var period in request.FixedRatePeriods)
         {
@@ -70,7 +70,7 @@ internal sealed class SimulateMortgageRefixationHandler(
             // spocitat simulaci
             var result = await _offerService.SimulateMortgageRefixation(dsRequest, cancellationToken);
 
-            response.Add(new Dto.Refinancing.RefinancingSimulationResult
+            response.Add(new OfferSimulateMortgageRefixationResponse
             {
                 OfferId = result.OfferId,
                 InterestRate = interestRate,

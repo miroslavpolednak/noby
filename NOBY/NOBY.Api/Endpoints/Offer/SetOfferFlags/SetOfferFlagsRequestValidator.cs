@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Offer.SetOfferFlags;
 
 internal sealed class SetOfferFlagsRequestValidator
-    : AbstractValidator<SetOfferFlagsRequest>
+    : AbstractValidator<OfferSetOfferFlagsRequest>
 {
     public SetOfferFlagsRequestValidator()
     {
@@ -17,10 +17,8 @@ internal sealed class SetOfferFlagsRequestValidator
                     .Cascade(CascadeMode.Stop)
                     .IsInEnum()
                     // validace na moznost zmeny
-                    .Must(t => t is OfferFlagTypes.Liked or OfferFlagTypes.Selected);
+                    .Must(t => t is EnumOfferFlagTypes.Liked or EnumOfferFlagTypes.Selected);
             })
             .When(t => t.Flags is not null);
-
-        
     }
 }

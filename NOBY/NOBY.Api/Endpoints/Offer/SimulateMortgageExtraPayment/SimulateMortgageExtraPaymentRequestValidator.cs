@@ -5,7 +5,7 @@ using Microsoft.FeatureManagement;
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment;
 
 internal sealed class SimulateMortgageExtraPaymentRequestValidator
-    : AbstractValidator<SimulateMortgageExtraPaymentRequest>
+    : AbstractValidator<OfferSimulateMortgageExtraPaymentRequest>
 {
     public SimulateMortgageExtraPaymentRequestValidator(ICodebookServiceClient codebookService, IFeatureManager featureManager)
     {
