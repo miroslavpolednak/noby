@@ -2364,10 +2364,4682 @@
           }
         }
       }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}/flow": {
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Detailní informace pro sluníčko",
+        "description": "Provede vyhodnocení klapek na základě konfigurace v konfiguračním excelu a vrátí informace nutné pro správné zobrazení rozcestníku žádosti (sluníčka).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=2709EE14-C343-4c7f-B733-A092E41EA839\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetFlowSwitches",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID Sales Arrangement",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}/validate": {
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Validace dat SalesArrangementu - checkform.",
+        "description": "Provolání SB metody Checkform pro kontrolu správnosti vyplnění SalesArrangementu.<br /><br /><br />Data z doménové služby jsou roztříděné do kategorií a seřazeny abecedně v rámci kategorie podle parametru 'parameter'<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=91FE5011-5C25-486e-B425-002C76448D66\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "ValidateSalesArrangement",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesArrangementValidateSalesArrangementResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}": {
+      "delete": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Smazaní SalesArrangement-u",
+        "description": "Smazání pouze servisních žádostí.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=513586F4-297B-4e72-BF55-2207943157C6\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>CHANGE_REQUESTS_Access",
+        "operationId": "DeleteSalesArrangement",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Detail Sales Arrangement-u.",
+        "description": "Obsahuje kompilaci údajů z SA a navázené Offer. Pro každý typ produktu se vrací jiná struktura Data objektu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=B35C47A9-4467-4949-9B03-0724D6D73F6F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetSalesArrangement",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID Sales Arrangement",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesArrangementGetSalesArrangementResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v2/sales-arrangement/{salesArrangementId}/loan-application-assessment": {
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Vrací vyhodnocení dané úvěrové žádosti",
+        "description": "Použít pro Skóring - výsledek vyhodnocení<br /> <br />- výsledek vyhodnocení žádosti<br /><br />- výsledek vyhodnocení za jednotlivé domácnosti<br /><br />Možno vyžadovat nové vyhodnocení<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=CB8E73AD-C282-4555-B587-A571EE896E81\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access <font color=\"lightgrey\">[AND]</font> SCORING_Perform",
+        "operationId": "GetLoanApplicationAssessment",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID Sales Arrangement-u",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "newAssessmentRequired",
+            "in": "query",
+            "description": "Požadováno nové posouzení",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}/parameters": {
+      "put": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Update dat SalesArrangement-u",
+        "description": "Aktualizuje parametry produktového či servisního SalesArrangementu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=18E19FC4-9238-4249-B43E-A26A9FBBC32C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "UpdateParameters",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalesArrangementUpdateParametersRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}/credit-worthiness": {
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Výpočet rozšírené bonity",
+        "description": "<a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EBB933C8-328F-497d-A434-9D2D3C565CB0\"><br />  <img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetCreditWorthiness",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "Sales arrangement",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesArrangementGetCreditWorthinessResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/list/{caseId}": {
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Seznam Sales Arrangements pro Case.",
+        "description": "Operace slouží k získání Sales Arrangements k danému ID obchodního případu (caseId). <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=3A82DF69-AF0D-4ec4-8263-D42354C4891E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetSalesArrangements",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "description": "ID Case-u",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SalesArrangementGetSalesArrangementsItem"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}/customers": {
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Seznam klientů navázaných na Sales Arrangement.",
+        "description": "Vrátí seznam klientů navázaných na SalesArrangement.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=439685F4-2313-4dfe-A374-8EE45F1C8E86\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetCustomersOnSa",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID Sales Arrangement",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SalesArrangementGetCustomersOnSaItem"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}/comment": {
+      "get": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Získání komentáře na SalesArrangementu.",
+        "description": "Vrátí komentář produktové žádosti. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8B0AD4B8-A056-465a-8EBB-F3E690484E4C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetComment",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID Sales Arrangementu",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SalesArrangementSharedComment"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Aktualizace komentáře na SalesArrangementu.",
+        "description": "Aktualizuje komentář produktové žádosti. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access<br/><font color=\"lightgrey\">[AND]</font><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "UpdateComment",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SalesArrangementUpdateCommentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/sales-arrangement/{salesArrangementId}/send": {
+      "post": {
+        "tags": ["Sales Arrangement"],
+        "summary": "Validace SalesArrangementu a odeslání do StarBuildu",
+        "description": "Dojde ke zvalidování obsahu žádosti stejně, jako při operaci validace a předání datových vět na rozhraní Starbuildu.<br /><br /><br />Pokud žádost obsahuje chyby, které nejsou/nemohou být ignorovány, vrací se chyba.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Send <font color=\"lightgrey\">[AND]</font> SALES_ARRANGEMENT_Access",
+        "operationId": "SendToCmp",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "ignoreWarnings",
+            "in": "query",
+            "description": "Ignorovat varování a odeslat do Starbuildu",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/product/{caseId}/customers": {
+      "get": {
+        "tags": ["Produkt"],
+        "summary": "Vrátí seznam dlužníků a spoludlužníků na daném produktu",
+        "description": "Vrátí seznam dlužníků a spoludlužníků na daném produktu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DFD7FC8B-6D32-4a81-9608-A502E6F0E74B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetCustomersOnProduct",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductGetCustomersOnProductItem"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/product/{caseId}/obligations": {
+      "get": {
+        "tags": ["Produkt"],
+        "summary": "Vrátí seznam závazků na daném produktu",
+        "description": "Seznam z závazků načtený z KonsDB.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=058D1B76-375C-4747-90DB-D4E3BE5C46F7\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetProductObligations",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProductGetProductObligationListObligation"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/product/caseid-by-pcpid/{pcpId}": {
+      "get": {
+        "tags": ["Produkt"],
+        "summary": "Vrátí Case ID podle zadaného PCP ID",
+        "description": "Vyhledá Case ID podle PCP ID v KonsDB.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=048F18B9-903F-4e3a-8B79-02592E9ED41B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetCaseIdByPcpId",
+        "parameters": [
+          {
+            "name": "pcpId",
+            "in": "path",
+            "description": "PCP ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductGetCaseIdByPcpIdResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/party/search": {
+      "post": {
+        "tags": ["Klient - příjem"],
+        "summary": "Našeptávač jmen a IČ",
+        "description": "Provoláním získáme 0-N dvojic jméno-IČ<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=815A085A-B652-489e-987D-CBB0517846C6\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "SearchParties",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PartySearchPartiesRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PartySearchPartiesResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/offer/mortgage/create-case": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Vytvoření nového případu (hypotéky) ze simulace.",
+        "description": "Vytvoří nový Case, Sales Arrangement, Household, CustomerOnSA.<br /><br />V případe identifikovaného klienta navíc vytvořit Product, RiskBusinessCaseId.<br /><br />Pokud je identifikován klient, v request modelu musí být naplněna vlastnost customer.<br /><br />Pokud se jedná o anonymní případ, musi být vyplneny vlastnosti <strong>firstName</strong> , <strong>lastName</strong> a <strong>dateOfBirth</strong>.<br /><br /><br />Endpoint podporuje rollback.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0F7EBD29-3702-4289-8AD3-9C0A44A4449C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong>Rollback support</strong><br/>- maže domácnost s customerOnSA<br/>- maže SalesArrangement<br/>- maže Case<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>DASHBOARD_CreateNewCase",
+        "operationId": "CreateMortgageCase",
+        "requestBody": {
+          "description": "Identifikace klienta a ID simulace.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferCreateMortgageCaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferCreateMortgageCaseResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/v1/offer/mortgage/developer-project/search": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Vyhledání developerských projektů a developerů bez projektu.",
+        "description": "Vyhledá developerské projekty na základě vyhledávacího textu.<br /><br /><br />Vyhledává se v číselníku <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438046695\">Developer (CIS_DEVELOPER)</a> v atributech Name (NAZEV) a Cin (ICO_RC) a v číselníku <br /><a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=438046776\">DeveloperProject (CIS_DEVELOPER_PROJEKTY_SPV)</a> v atributu Name (PROJEKT).<br /><br /><br />Text se vyhledává jako subřetězce v uvedených sloupcích - ty jsou oddělené ve vyhledávacím textu mezerou.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D43515EA-4014-47a1-AD45-0E80EE43AEB9\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "DeveloperSearch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferDeveloperSearchRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferDeveloperSearchResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/offer/mortgage/{offerId}/full-payment-schedule": {
+      "get": {
+        "tags": ["Modelace"],
+        "summary": "Plný splátkový kalendář dle ID simulace.",
+        "description": "Provolá modelaci se stejnými daty jako jsou obsažena v Offer dle OfferId.Na výstupu jsou pouze data plného splátkového kalendáře a jsou potlačeny warningy.Chyba simulační služby se propaguje.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=994B63B5-C1C0-4433-AB92-9FCC23760F52\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" /> Diagram v EA</a>",
+        "operationId": "GetFullPaymentScheduleByOfferId",
+        "parameters": [
+          {
+            "name": "offerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferGetFullPaymentScheduleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/offer/mortgage/sales-arrangement/{salesArrangementId}": {
+      "get": {
+        "tags": ["Modelace"],
+        "summary": "Detail provedené simulace dle ID Sales Arrangement.",
+        "description": "Stejný endpoint jako GetMortgageByOfferId, jen podle jiného ID.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=43139152-F859-4d55-9D06-11353DA80961\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetMortgageBySalesArrangement",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetMortgageBySalesArrangementResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/offer/mortgage": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Simulace KB hypotéky.",
+        "description": "Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů. V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F8D7E9A3-7589-42af-B2B3-9B34A243D6AB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "SimulateMortgage",
+        "requestBody": {
+          "description": "Nastaveni simulace.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/OfferSimulateMortgageRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferSimulateMortgageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/v1/offer/mortgage/sales-arrangement/{salesArrangementId}/link": {
+      "put": {
+        "tags": ["Modelace"],
+        "summary": "Nalinkuje novou modelaci na stávající SA.",
+        "description": "Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8996A9D6-2732-4011-9152-0EAE7FEECE07\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "LinkModelation",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferLinkModelationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/api/v1/case/{caseId}/link-mortgage-extra-payment": {
+      "put": {
+        "tags": ["Modelace"],
+        "summary": "Nalinkuje mimořádnou splátku na stávající SA.",
+        "description": "Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=138F178A-72B5-46f6-85B2-D8414F5043B3\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_RefinancingAccess",
+        "operationId": "LinkMortgageExtraPayment",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferLinkMortgageExtraPaymentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferRefinancingLinkResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/sales-arrangement/{salesArrangementId}/link-mortgage-offer": {
+      "put": {
+        "tags": ["Modelace"],
+        "summary": "Nalinkuje novou modelaci na stávající SA.",
+        "description": "Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8996A9D6-2732-4011-9152-0EAE7FEECE07\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "LinkMortgageOffer",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferLinkMortgageOfferRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferRefinancingLinkResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/link-mortgage-retention-offer": {
+      "put": {
+        "tags": ["Modelace"],
+        "summary": "Nalinkuje retenční nabídku na stávající SA.",
+        "description": "Nalinkuje retenční nabídku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=92B4B98B-3F57-4541-9828-EB8CFDFA9035\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_RefinancingAccess",
+        "operationId": "LinkMortgageRetentionOffer",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferLinkMortgageRetentionOfferRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferRefinancingLinkResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/offer/{offerId}/flags": {
+      "put": {
+        "tags": ["Modelace"],
+        "summary": "Nastavuje příznaky na modelaci.",
+        "description": "",
+        "operationId": "SetOfferFlags",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "offerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferSetOfferFlagsRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/simulate-mortgage-extra-payment-offer": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Simulace mimořádné splátky hypotéky.",
+        "description": "Provolá simulační službu Starbuildu pro refixace.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F3564317-C787-445d-AB54-A6B4FE1847C0\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "SimulateMortgageExtraPayment",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferSimulateMortgageExtraPaymentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferSimulateMortgageExtraPaymentResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/simulate-mortgage-refixation-offer": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Simulace KB refixací.",
+        "description": "Provolá simulační službu Starbuildu pro refixace.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=B794F3FC-3B89-4280-AF28-449F0442ACFD\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "SimulateMortgageRefixation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferSimulateMortgageRefixationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OfferSimulateMortgageRefixationResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/simulate-mortgage-refixation-offer-list": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Vezme stávající simulace k refixacím, aktuální i sdělené a přepočítá všechny s novou slevou na sazbě",
+        "description": "<a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DAE69855-3C72-4ec4-8332-81E91814FA47\"><br />  <img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "SimulateMortgageRefixationOfferList",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferSimulateMortgageRefixationOfferListRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferSimulateMortgageRefixationOfferListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/simulate-mortgage-retention-offer": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Simulace KB retencí.",
+        "description": "Provolá simulační službu Starbuildu pro retence.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=BFEF73A4-5876-4b5b-940B-8F65FEB5F660\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "SimulateMortgageRetention",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfferSimulateMortgageRetentionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferSimulateMortgageRetentionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "OfferSimulateMortgageRetentionResponse": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "description": "ID vytvorene simulace.",
+            "format": "int32"
+          },
+          "interestRate": {
+            "type": "number",
+            "description": "Sazba",
+            "format": "decimal",
+            "example": 4.7
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "nullable": true,
+            "example": 0.2
+          },
+          "interestRateDiscounted": {
+            "type": "number",
+            "description": "Sazba po slevě",
+            "format": "decimal",
+            "nullable": true,
+            "readOnly": true,
+            "example": 4.5
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "description": "Výše měsíční splátky.",
+            "format": "decimal"
+          },
+          "loanPaymentAmountDiscounted": {
+            "type": "number",
+            "description": "Výše měsíční splátky se zohledněním IC.",
+            "format": "decimal",
+            "nullable": true
+          },
+          "feeAmount": {
+            "type": "number",
+            "description": "Výše poplatku",
+            "format": "decimal"
+          },
+          "feeAmountDiscounted": {
+            "type": "number",
+            "description": "Upravená výše poplatku",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageRetentionRequest": {
+        "required": ["interestRateValidFrom"],
+        "type": "object",
+        "properties": {
+          "interestRateValidFrom": {
+            "type": "string",
+            "description": "Platnost nové úrokové sazby od.",
+            "format": "date-time"
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "nullable": true,
+            "example": 0.09
+          },
+          "feeAmountDiscounted": {
+            "type": "number",
+            "description": "Upravená výše poplatku. Relevantní pouze pro retence.",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageRefixationOfferListRequest": {
+        "type": "object",
+        "properties": {
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "example": 0.09
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageRefixationOfferListResponse": {
+        "type": "object",
+        "properties": {
+          "offers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefinancingSharedOfferDetail"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingSharedOfferDetail": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/OfferSimulateMortgageRefixationResponse" }],
+        "properties": {
+          "isLegalNotice": {
+            "type": "boolean",
+            "description": "Jedná se o zákonné sdělení"
+          },
+          "isCurrent": {
+            "type": "boolean",
+            "description": "Jedná se o Aktuální nabídku"
+          },
+          "isCommunicated": {
+            "type": "boolean",
+            "description": "Jedná se o sdělenou nabídku"
+          },
+          "isLiked": {
+            "type": "boolean",
+            "description": "Jedná se o likovanou nabídku"
+          },
+          "isSelected": {
+            "type": "boolean",
+            "description": "Jedná se o zvolenou nabídku"
+          },
+          "isLegalNoticeDefault": {
+            "type": "boolean",
+            "description": "Jedná se o výchozí nabídku"
+          },
+          "fixedRatePeriod": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Platnost nabídky do",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageRefixationResponse": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "description": "ID vytvorene simulace.",
+            "format": "int32"
+          },
+          "interestRate": {
+            "type": "number",
+            "description": "Sazba",
+            "format": "decimal",
+            "example": 4.7
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "nullable": true,
+            "example": 0.2
+          },
+          "interestRateDiscounted": {
+            "type": "number",
+            "description": "Sazba po slevě",
+            "format": "decimal",
+            "nullable": true,
+            "readOnly": true,
+            "example": 4.5
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "description": "Výše měsíční splátky.",
+            "format": "decimal"
+          },
+          "loanPaymentAmountDiscounted": {
+            "type": "number",
+            "description": "Výše měsíční splátky se zohledněním IC.",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageRefixationRequest": {
+        "required": ["fixedRatePeriods"],
+        "type": "object",
+        "properties": {
+          "fixedRatePeriods": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "Platnost nové úrokové sazby od."
+          },
+          "processId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedExtraPaymentSimulationResult": {
+        "type": "object",
+        "properties": {
+          "extraPaymentReasonId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "Čas vytvoření Offer",
+            "format": "date-time"
+          },
+          "isExtraPaymentComplete": {
+            "type": "boolean",
+            "description": "Typ mimořádné splátky"
+          },
+          "extraPaymentAmount": {
+            "type": "number",
+            "description": "Celková výše mimořádné splátky",
+            "format": "decimal"
+          },
+          "feeAmount": {
+            "type": "number",
+            "description": "Výše účelně vynaložených nákladů",
+            "format": "decimal"
+          },
+          "principalAmount": {
+            "type": "number",
+            "description": "Jistina splacená mimořádnou splátkou",
+            "format": "decimal"
+          },
+          "interestAmount": {
+            "type": "number",
+            "description": "Úroky splacené mimořádnou splátkou",
+            "format": "decimal"
+          },
+          "otherUnpaidFees": {
+            "type": "number",
+            "description": "Neuhrazené poplatky splacené mimořádnou splátkou",
+            "format": "decimal"
+          },
+          "interestOnLate": {
+            "type": "number",
+            "description": "Úroky z prodlení splacené mimořádnou splátkou",
+            "format": "decimal"
+          },
+          "interestCovid": {
+            "type": "number",
+            "description": "Úroky s odloženou splatností splacené mimořádnou splátkou",
+            "format": "decimal"
+          },
+          "isLoanOverdue": {
+            "type": "boolean",
+            "description": "Příznak, zda je úvěr po splatnosti"
+          },
+          "isInstallmentReduced": {
+            "type": "boolean",
+            "description": "Příznak, zda se snižuje výše pravidelné splátky"
+          },
+          "newMaturityDate": {
+            "type": "string",
+            "description": "Nové datum splatnosti, pokud se zkracuje splacením mimořádné splátky",
+            "format": "date-time"
+          },
+          "newPaymentAmount": {
+            "type": "number",
+            "description": "Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky",
+            "format": "decimal"
+          },
+          "feeTypeId": {
+            "type": "integer",
+            "description": "Typ pokuty za předčasné splacení",
+            "format": "int32"
+          },
+          "feeCalculationBase": {
+            "type": "number",
+            "description": "Základ pro výpočet pokuty",
+            "format": "decimal"
+          },
+          "feeAmountContracted": {
+            "type": "number",
+            "description": "Smluvní pokuty",
+            "format": "decimal"
+          },
+          "fixedRateSanctionFreePeriodFrom": {
+            "type": "string",
+            "description": "Období k fixaci od",
+            "format": "date-time"
+          },
+          "fixedRateSanctionFreePeriodTo": {
+            "type": "string",
+            "description": "Období k fixaci do",
+            "format": "date-time"
+          },
+          "annualSanctionFreePeriodFrom": {
+            "type": "string",
+            "description": "Období bez sankce od",
+            "format": "date-time"
+          },
+          "annualSanctionFreePeriodTo": {
+            "type": "string",
+            "description": "Období bez sankce do",
+            "format": "date-time"
+          },
+          "sanctionFreeAmount": {
+            "type": "number",
+            "description": "Částka k období bez sankce",
+            "format": "decimal"
+          },
+          "feeAmountTotal": {
+            "type": "number",
+            "description": "Spočítaná pokuta (Pokuta – sleva za pokutu, minimálně 0)",
+            "format": "decimal"
+          },
+          "extraPaymentAmountTotal": {
+            "type": "number",
+            "description": "Spočítaná nová výše splátky jako ExtraPaymentAmount + FeeAmountTotal (s odečtenou slevou)",
+            "format": "decimal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageExtraPaymentRequest": {
+        "required": ["extraPaymentDate", "extraPaymentReasonId"],
+        "type": "object",
+        "properties": {
+          "feeAmountDiscount": {
+            "type": "number",
+            "description": "Sleva z pokuty",
+            "format": "decimal",
+            "nullable": true
+          },
+          "extraPaymentDate": {
+            "type": "string",
+            "description": "Datum mimořádné splátky",
+            "format": "date"
+          },
+          "extraPaymentAmount": {
+            "type": "number",
+            "description": "Částka mimořádné splátky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "extraPaymentReasonId": {
+            "type": "integer",
+            "description": "Důvod mimořádné splátky",
+            "format": "int32"
+          },
+          "isExtraPaymentFullyRepaid": {
+            "type": "boolean",
+            "description": "Typ mimořádné splátky - částečná false, úplná true"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageExtraPaymentResponse": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "description": "ID vytvorene simulace.",
+            "format": "int32"
+          },
+          "simulationResults": {
+            "$ref": "#/components/schemas/OfferSharedExtraPaymentSimulationResult",
+            "description": "Původní simulace nalinkovaná na SA",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSetOfferFlagsRequest": {
+        "type": "object",
+        "properties": {
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferSetOfferFlagsRequestItem"
+            },
+            "description": "Seznam příznaku k nastavení",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSetOfferFlagsRequestItem": {
+        "type": "object",
+        "properties": {
+          "flagType": {
+            "$ref": "#/components/schemas/EnumOfferFlagTypes"
+          },
+          "setFlag": {
+            "type": "boolean",
+            "description": "True = set flag, False = unset flag"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferLinkMortgageRetentionOfferRequest": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "individualPriceCommentLastVersion": {
+            "type": "string",
+            "description": "Komentář k Cenové výjimce",
+            "nullable": true,
+            "example": "Prosím o slevu, jde o dlouhodobého loajálního klienta"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferLinkMortgageOfferRequest": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Jméno",
+            "nullable": true,
+            "example": "Jonatán"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení",
+            "nullable": true,
+            "example": "Skočdopole"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2002-10-26"
+          },
+          "offerContacts": {
+            "$ref": "#/components/schemas/SharedTypesContacts",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferRefinancingLinkResult": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferLinkMortgageExtraPaymentRequest": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "individualPriceCommentLastVersion": {
+            "type": "string",
+            "description": "Komentář k Cenové výjimce",
+            "nullable": true,
+            "example": "Prosím o slevu, jde o dlouhodobého loajálního klienta"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferLinkModelationRequest": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Jméno",
+            "nullable": true,
+            "example": "Jonatán"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení",
+            "nullable": true,
+            "example": "Skočdopole"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date-time",
+            "nullable": true,
+            "example": "2002-10-26"
+          },
+          "offerContacts": {
+            "$ref": "#/components/schemas/SharedTypesContacts",
+            "nullable": true
+          },
+          "individualPriceCommentLastVersion": {
+            "type": "string",
+            "description": "Komentář k Cenové výjimce",
+            "nullable": true,
+            "example": "Prosím o slevu, jde o dlouhodobého loajálního klienta"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageResponse": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "description": "ID vytvorene simulace.",
+            "format": "int32"
+          },
+          "offerGuaranteeDateTo": {
+            "type": "string",
+            "description": "Datum, kdy končí garance pro danou simulaci",
+            "format": "date",
+            "nullable": true
+          },
+          "resourceProcessId": {
+            "type": "string",
+            "description": "Unikatni identifikator pro session simulace.",
+            "nullable": true
+          },
+          "simulationResults": {
+            "$ref": "#/components/schemas/OfferSharedMortgageOutputs",
+            "description": "Vysledky simulace.",
+            "nullable": true
+          },
+          "creditWorthinessSimpleResults": {
+            "$ref": "#/components/schemas/OfferSimulateMortgageCreditWorthinessSimpleResults",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageCreditWorthinessSimpleResults": {
+        "type": "object",
+        "properties": {
+          "worthinessResult": {
+            "enum": [0, 1, 2],
+            "type": "integer",
+            "description": "Výsledek bonity\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Success</li><li>2 - Failed</li></ul>",
+            "format": "int32",
+            "x-enum-varnames": ["Unknown", "Success", "Failed"],
+            "x-enum-descriptions": ["Unknown", "Success", "Failed"],
+            "x-enumNames": ["Unknown", "Success", "Failed"]
+          },
+          "installmentLimit": {
+            "type": "integer",
+            "description": "Měsíční splátka (maximum)",
+            "format": "int32"
+          },
+          "maxAmount": {
+            "type": "integer",
+            "description": "Měsíční splátka (maximum)",
+            "format": "int32"
+          },
+          "remainsLivingAnnuity": {
+            "type": "integer",
+            "description": "Zbývá na živobytí s požadovanou splátkou",
+            "format": "int32"
+          },
+          "remainsLivingInst": {
+            "type": "integer",
+            "description": "Zbývá na živobytí s maximální splátkou",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSimulateMortgageRequest": {
+        "required": ["resourceProcessId"],
+        "type": "object",
+        "properties": {
+          "productTypeId": {
+            "type": "integer",
+            "description": "ID produktu. Ciselnik ProductTypes.",
+            "format": "int32",
+            "example": 20001
+          },
+          "loanKindId": {
+            "type": "integer",
+            "description": "Druh uveru. Ciselnik LoanKind.",
+            "format": "int32",
+            "example": 0
+          },
+          "loanAmount": {
+            "type": "number",
+            "description": "Výše úvěru",
+            "format": "decimal",
+            "nullable": true,
+            "example": 1000000
+          },
+          "loanDuration": {
+            "type": "integer",
+            "description": "Splatnost úvěru",
+            "format": "int32",
+            "nullable": true,
+            "example": 10
+          },
+          "fixedRatePeriod": {
+            "type": "integer",
+            "description": "Délka fixace úrokové sazby",
+            "format": "int32",
+            "example": 48
+          },
+          "collateralAmount": {
+            "type": "number",
+            "description": "Předpokládáné hodnoty zajištění",
+            "format": "decimal",
+            "example": 5000000
+          },
+          "paymentDay": {
+            "type": "integer",
+            "description": "Den splátky úvěru",
+            "format": "int32",
+            "nullable": true
+          },
+          "isEmployeeBonusRequested": {
+            "type": "boolean",
+            "description": "Je žádáno zaměstnanecké zvýhodnění?",
+            "nullable": true
+          },
+          "expectedDateOfDrawing": {
+            "type": "string",
+            "description": "Předpokládané datum čerpání",
+            "format": "date-time",
+            "nullable": true,
+            "example": ""
+          },
+          "financialResourcesOwn": {
+            "type": "number",
+            "description": "Vlastní zdroje",
+            "format": "decimal",
+            "nullable": true
+          },
+          "financialResourcesOther": {
+            "type": "number",
+            "description": "Cizí zdroje",
+            "format": "decimal",
+            "nullable": true
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "uver.indCenotvorbaOdchylka",
+            "format": "decimal",
+            "nullable": true
+          },
+          "drawingTypeId": {
+            "type": "integer",
+            "description": "uver.typCerpani",
+            "format": "int32",
+            "nullable": true
+          },
+          "drawingDurationId": {
+            "type": "integer",
+            "description": "uver.lhutaDocerpani",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPurposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesLoanPurposeItem"
+            },
+            "nullable": true
+          },
+          "developer": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OfferSharedDeveloper"
+              }
+            ],
+            "nullable": true
+          },
+          "fees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferSharedFeeInputItem"
+            },
+            "nullable": true
+          },
+          "riskLifeInsurance": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OfferSharedInsuranceItem"
+              }
+            ],
+            "nullable": true
+          },
+          "realEstateInsurance": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/OfferSharedInsuranceItem"
+              }
+            ],
+            "nullable": true
+          },
+          "resourceProcessId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Unikatni identifikator pro session simulace.<br />Musi byt parsovatelny na .NET Guid type."
+          },
+          "withGuarantee": {
+            "type": "boolean",
+            "description": "Simulace s garancí úrokové sazby, default hodnota false",
+            "nullable": true
+          },
+          "salesArrangementId": {
+            "type": "integer",
+            "description": "ID Sales Arrangement-u",
+            "format": "int32",
+            "nullable": true
+          },
+          "customerIdentities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "nullable": true
+          },
+          "creditWorthinessSimpleInputs": {
+            "$ref": "#/components/schemas/OfferSharedCreditWorthinessSimpleInputs",
+            "nullable": true
+          },
+          "marketingActions": {
+            "$ref": "#/components/schemas/OfferSharedMarketingActionInputItem",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedMarketingActionInputItem": {
+        "type": "object",
+        "properties": {
+          "domicile": {
+            "type": "boolean"
+          },
+          "healthRiskInsurance": {
+            "type": "boolean"
+          },
+          "realEstateInsurance": {
+            "type": "boolean"
+          },
+          "incomeLoanRatioDiscount": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedMortgageOutputs": {
+        "type": "object",
+        "properties": {
+          "loanAmount": {
+            "type": "number",
+            "description": "Výše úvěru",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanDueDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "loanDuration": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "employeeBonusLoanCode": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanToValue": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "aprc": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "loanTotalAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "loanInterestRateProvided": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "contractSignedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "drawingDateTo": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "annuityPaymentsDateFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "annuityPaymentsCount": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanInterestRate": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "loanInterestRateAnnounced": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "loanInterestRateAnnouncedType": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "employeeBonusDeviation": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "marketingActionsDeviation": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "paymentDay": {
+            "type": "integer",
+            "description": "Den splátky úvěru",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPurposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesLoanPurposeItem"
+            },
+            "nullable": true
+          },
+          "marketingActions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferSharedMortgageOutputsMarketingActionItem"
+            },
+            "nullable": true
+          },
+          "paymentScheduleSimple": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferSharedMortgageOutputsPaymentScheduleSimpleItem"
+            },
+            "nullable": true
+          },
+          "fees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferSharedMortgageOutputsFeeItem"
+            },
+            "nullable": true
+          },
+          "warnings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferSharedMortgageOutputsOutputWarning"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedMortgageOutputsOutputWarning": {
+        "type": "object",
+        "properties": {
+          "internalMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "text": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedMortgageOutputsFeeItem": {
+        "type": "object",
+        "properties": {
+          "feeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discountPercentage": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "tariffSum": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "composedSum": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "finalSum": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "marketingActionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortNameForExample": {
+            "type": "string",
+            "nullable": true
+          },
+          "tariffName": {
+            "type": "string",
+            "nullable": true
+          },
+          "usageText": {
+            "type": "string",
+            "nullable": true
+          },
+          "tariffTextWithAmount": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeKB": {
+            "type": "string",
+            "nullable": true
+          },
+          "displayAsFreeOfCharge": {
+            "type": "boolean"
+          },
+          "includeInRPSN": {
+            "type": "boolean"
+          },
+          "periodicity": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountDateFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedMortgageOutputsPaymentScheduleSimpleItem": {
+        "type": "object",
+        "properties": {
+          "paymentNumber": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedMortgageOutputsMarketingActionItem": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "requested": {
+            "type": "boolean"
+          },
+          "applied": {
+            "type": "boolean"
+          },
+          "marketingActionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "deviation": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedCreditWorthinessSimpleInputs": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "totalMonthlyIncome": {
+            "type": "number",
+            "description": "Celkové měsíční příjmy",
+            "format": "decimal",
+            "nullable": true
+          },
+          "expensesRent": {
+            "type": "number",
+            "description": "Celkové měsíční příjmy",
+            "format": "decimal",
+            "nullable": true
+          },
+          "expensesOther": {
+            "type": "number",
+            "description": "Ostatní měsíční výdaje",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loansInstallmentsAmount": {
+            "type": "number",
+            "description": "Splátky úvěrů a hypoték",
+            "format": "decimal",
+            "nullable": true
+          },
+          "creditCardsAmount": {
+            "type": "number",
+            "description": "Limity kreditních karet",
+            "format": "decimal",
+            "nullable": true
+          },
+          "authorizedOverdraftsTotalAmount": {
+            "type": "number",
+            "description": "Limity debetů",
+            "format": "decimal",
+            "nullable": true
+          },
+          "childrenCount": {
+            "type": "integer",
+            "description": "Počet dětí",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "GetMortgageBySalesArrangementResponse": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "description": "ID simulace.",
+            "format": "int32"
+          },
+          "resourceProcessId": {
+            "type": "string",
+            "description": "Unikatni identifikator pro session simulace."
+          },
+          "simulationInputs": {
+            "$ref": "#/components/schemas/OfferMortgageInputsExtended",
+            "description": "Zadani simulace."
+          },
+          "simulationResults": {
+            "$ref": "#/components/schemas/OfferSharedMortgageOutputs",
+            "description": "Vysledky simulace."
+          },
+          "offerGuaranteeDateTo": {
+            "type": "string",
+            "description": "Datum, kdy končí garance pro danou simulaci",
+            "format": "date",
+            "nullable": true
+          },
+          "creditWorthinessSimpleInputs": {
+            "$ref": "#/components/schemas/OfferSharedCreditWorthinessSimpleInputs",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedInsuranceItem": {
+        "type": "object",
+        "properties": {
+          "sum": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "frequency": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedDeveloper": {
+        "type": "object",
+        "properties": {
+          "developerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "projectId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedFeeInputItem": {
+        "type": "object",
+        "properties": {
+          "feeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "discountPercentage": {
+            "type": "number",
+            "format": "decimal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferSharedMarketingActionInputItemResult": {
+        "type": "object",
+        "properties": {
+          "domicile": {
+            "type": "boolean"
+          },
+          "healthRiskInsurance": {
+            "type": "boolean"
+          },
+          "realEstateInsurance": {
+            "type": "boolean"
+          },
+          "incomeLoanRatioDiscount": {
+            "type": "boolean"
+          },
+          "userVip": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferMortgageInputsExtended": {
+        "type": "object",
+        "properties": {
+          "productTypeId": {
+            "type": "integer",
+            "description": "ID produktu. Ciselnik ProductTypes.",
+            "format": "int32",
+            "example": 20001
+          },
+          "loanKindId": {
+            "type": "integer",
+            "description": "Druh uveru. Ciselnik LoanKind.",
+            "format": "int32",
+            "example": 0
+          },
+          "loanAmount": {
+            "type": "number",
+            "description": "Výše úvěru",
+            "format": "decimal",
+            "nullable": true,
+            "example": 1000000
+          },
+          "loanDuration": {
+            "type": "integer",
+            "description": "Splatnost úvěru",
+            "format": "int32",
+            "nullable": true,
+            "example": 10
+          },
+          "fixedRatePeriod": {
+            "type": "integer",
+            "description": "Délka fixace úrokové sazby",
+            "format": "int32",
+            "example": 48
+          },
+          "collateralAmount": {
+            "type": "number",
+            "description": "Předpokládáné hodnoty zajištění",
+            "format": "decimal",
+            "example": 5000000
+          },
+          "paymentDay": {
+            "type": "integer",
+            "description": "Den splátky úvěru",
+            "format": "int32",
+            "nullable": true
+          },
+          "isEmployeeBonusRequested": {
+            "type": "boolean",
+            "description": "Je žádáno zaměstnanecké zvýhodnění?",
+            "nullable": true
+          },
+          "expectedDateOfDrawing": {
+            "type": "string",
+            "description": "Předpokládané datum čerpání",
+            "format": "date-time",
+            "nullable": true,
+            "example": ""
+          },
+          "financialResourcesOwn": {
+            "type": "number",
+            "description": "Vlastní zdroje",
+            "format": "decimal",
+            "nullable": true
+          },
+          "financialResourcesOther": {
+            "type": "number",
+            "description": "Cizí zdroje",
+            "format": "decimal",
+            "nullable": true
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "uver.indCenotvorbaOdchylka",
+            "format": "decimal",
+            "nullable": true
+          },
+          "drawingTypeId": {
+            "type": "integer",
+            "description": "uver.typCerpani",
+            "format": "int32",
+            "nullable": true
+          },
+          "drawingDurationId": {
+            "type": "integer",
+            "description": "uver.lhutaDocerpani",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPurposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesLoanPurposeItem"
+            },
+            "nullable": true
+          },
+          "developer": {
+            "$ref": "#/components/schemas/OfferSharedDeveloper",
+            "nullable": true
+          },
+          "fees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferSharedFeeInputItem"
+            },
+            "nullable": true
+          },
+          "riskLifeInsurance": {
+            "$ref": "#/components/schemas/OfferSharedInsuranceItem",
+            "nullable": true
+          },
+          "realEstateInsurance": {
+            "$ref": "#/components/schemas/OfferSharedInsuranceItem",
+            "nullable": true
+          },
+          "marketingActions": {
+            "$ref": "#/components/schemas/OfferSharedMarketingActionInputItemResult",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferGetFullPaymentScheduleResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OfferGetFullPaymentScheduleItem"
+            },
+            "description": "Položky splátkového kalendáře.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferGetFullPaymentScheduleItem": {
+        "type": "object",
+        "properties": {
+          "paymentNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "string",
+            "nullable": true
+          },
+          "principal": {
+            "type": "string",
+            "nullable": true
+          },
+          "interest": {
+            "type": "string",
+            "nullable": true
+          },
+          "remainingPrincipal": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferDeveloperSearchRequest": {
+        "required": ["searchText"],
+        "type": "object",
+        "properties": {
+          "searchText": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Text pro vyhledávání"
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/SharedTypesPaginationRequest",
+            "description": "Nastaveni strankovani a razeni.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferDeveloperSearchResponse": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "$ref": "#/components/schemas/SharedTypesPaginationResponse",
+            "description": "Informace o strankovani a razeni.",
+            "nullable": true
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodebooksDeveloperSearchItem"
+            },
+            "description": "Kolekce nalezenych projektu.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CodebooksDeveloperSearchItem": {
+        "type": "object",
+        "properties": {
+          "developerId": {
+            "type": "integer",
+            "description": "ID developera",
+            "format": "int32",
+            "nullable": true
+          },
+          "developerProjectId": {
+            "type": "integer",
+            "description": "ID developerského projektu",
+            "format": "int32",
+            "nullable": true
+          },
+          "developerName": {
+            "type": "string",
+            "description": "Jméno developera",
+            "nullable": true
+          },
+          "developerProjectName": {
+            "type": "string",
+            "description": "Jméno developerského projektu",
+            "nullable": true
+          },
+          "developerCIN": {
+            "type": "string",
+            "description": "ICO/RČ developera",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferCreateMortgageCaseRequest": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "description": "ID simulace ze ktere se ma vytvorit Case.",
+            "format": "int32"
+          },
+          "identity": {
+            "$ref": "#/components/schemas/SharedTypesCustomerIdentity",
+            "description": "Identita klienta",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Jmeno klienta, pokud neni identifikovan.",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Prijmeni klienta, pokud neni identifikovan.",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narozeni klienta, pokud neni identifikovan.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "offerContacts": {
+            "$ref": "#/components/schemas/SharedTypesContacts",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfferCreateMortgageCaseResponse": {
+        "type": "object",
+        "properties": {
+          "caseId": {
+            "type": "integer",
+            "description": "ID noveho Case",
+            "format": "int64"
+          },
+          "salesArrangementId": {
+            "type": "integer",
+            "description": "ID noveho Sales Arrangement",
+            "format": "int32"
+          },
+          "offerId": {
+            "type": "integer",
+            "description": "ID simulace pro kterou Case vznikl",
+            "format": "int32"
+          },
+          "householdId": {
+            "type": "integer",
+            "description": "ID default domacnosti",
+            "format": "int32"
+          },
+          "customerOnSAId": {
+            "type": "integer",
+            "description": "ID noveho klienta",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartySearchPartiesRequest": {
+        "type": "object",
+        "properties": {
+          "countryId": {
+            "type": "integer",
+            "description": "Id země z číselníku států",
+            "format": "int32",
+            "nullable": true
+          },
+          "cin": {
+            "type": "string",
+            "description": "IČ společnosti",
+            "nullable": true
+          },
+          "searchText": {
+            "type": "string",
+            "description": "Pattern, podle kterého vyhledáváme",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PartySearchPartiesResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Název společnosti"
+          },
+          "cin": {
+            "type": "string",
+            "description": "IČO"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGetCaseIdByPcpIdResponse": {
+        "type": "object",
+        "properties": {
+          "caseId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGetProductObligationListObligation": {
+        "type": "object",
+        "properties": {
+          "obligationTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "creditorName": {
+            "type": "string"
+          },
+          "paymentAccount": {
+            "$ref": "#/components/schemas/SharedTypesBankAccount"
+          },
+          "paymentSymbols": {
+            "$ref": "#/components/schemas/ProductGetProductObligationListPaymentSymbols"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGetProductObligationListPaymentSymbols": {
+        "type": "object",
+        "properties": {
+          "variableSymbol": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductGetCustomersOnProductItem": {
+        "type": "object",
+        "properties": {
+          "identities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Jméno",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date",
+            "nullable": true
+          },
+          "identificationDocument": {
+            "$ref": "#/components/schemas/SharedTypesIdentificationDocumentBase",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateCommentRequest": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "$ref": "#/components/schemas/SalesArrangementSharedComment"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedComment": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Komentář k žádosti",
+            "nullable": true,
+            "example": "Tvrdí, že není politicky exponovaná osoba, ale já myslím, že je."
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetCustomersOnSaItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "customerRoleId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "birthNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "placeOfBirth": {
+            "type": "string",
+            "nullable": true
+          },
+          "maritalStatusId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "mainAddress": {
+            "$ref": "#/components/schemas/SharedTypesAddress",
+            "description": "Adresa - bydliste, kontaktni atd.",
+            "nullable": true
+          },
+          "contactAddress": {
+            "$ref": "#/components/schemas/SharedTypesAddress",
+            "description": "Adresa - bydliste, kontaktni atd.",
+            "nullable": true
+          },
+          "contacts": {
+            "$ref": "#/components/schemas/SharedTypesContactsConfirmed",
+            "nullable": true
+          },
+          "identities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetSalesArrangementsItem": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offerId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "salesArrangementTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salesArrangementTypeText": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "$ref": "#/components/schemas/EnumSalesArrangementStates"
+          },
+          "stateText": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetCreditWorthinessResponse": {
+        "type": "object",
+        "properties": {
+          "worthinessResult": {
+            "enum": [1, 2],
+            "type": "integer",
+            "description": "<small>Enum Values</small><ul><li>1 - Success</li><li>2 - Failed</li></ul>",
+            "format": "int32",
+            "x-enum-varnames": ["Success", "Failed"],
+            "x-enum-descriptions": ["Success", "Failed"],
+            "x-enumNames": ["Success", "Failed"]
+          },
+          "maxAmount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "installmentLimit": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "remainsLivingAnnuity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "remainsLivingInst": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "resultReasonCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "resultReasonDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "dti": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "dsti": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateParametersRequest": {
+        "type": "object",
+        "properties": {
+          "parameters": {
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersParameters",
+            "description": "Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateParametersParameters": {
+        "type": "object",
+        "properties": {
+          "discriminator": { "type": "string", "nullable": false },
+          "mortgage": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersMortgage"
+          },
+          "hubn": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersHubn"
+          },
+          "drawing": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersDrawing"
+          },
+          "generalChange": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersGeneralChange"
+          },
+          "customerChange": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersCustomerChange"
+          },
+          "customerChange3602": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersCustomerChange3602"
+          }
+        }
+      },
+      "SalesArrangementUpdateParametersCustomerChange3602": {
+        "type": "object",
+        "properties": {
+          "isSpouseInDebt": {
+            "type": "boolean",
+            "description": "Přistupující manžel/ka?",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateParametersCustomerChange": {
+        "required": ["add", "agent", "commentToChangeRequest", "release", "repaymentAccount"],
+        "type": "object",
+        "properties": {
+          "release": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailRelease"
+          },
+          "add": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailAdd"
+          },
+          "agent": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailAgentBase"
+          },
+          "repaymentAccount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedPaymentAccount",
+            "description": "Účet pro splácení"
+          },
+          "commentToChangeRequest": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCommentToChangeRequest",
+            "description": "Komentář k žádosti o změnu"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateParametersGeneralChange": {
+        "required": [
+          "collateral",
+          "commentToChangeRequest",
+          "drawingAndOtherConditions",
+          "drawingDateTo",
+          "dueDate",
+          "loanPaymentAmount",
+          "loanPurpose",
+          "loanRealEstate",
+          "paymentDay",
+          "repaymentAccount"
+        ],
+        "type": "object",
+        "properties": {
+          "applicant": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "description": "Identita klienta",
+            "nullable": true
+          },
+          "collateral": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SalesArrangementSharedCollateral"
+              }
+            ],
+            "description": "Zajištění"
+          },
+          "paymentDay": {
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersPaymentDay",
+            "description": "Den splácení"
+          },
+          "drawingDateTo": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingDateToExtended",
+            "description": "Lhůta ukončení čerpání"
+          },
+          "repaymentAccount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedPaymentAccount",
+            "description": "Účet pro splácení"
+          },
+          "loanPaymentAmount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedLoanPaymentAmountBase",
+            "description": "Výše měsíční splátky"
+          },
+          "dueDate": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDueDateBase",
+            "description": "Splatnost"
+          },
+          "loanRealEstate": {
+            "$ref": "#/components/schemas/SalesArrangementSharedLoanRealEstate",
+            "description": "Objekty úvěru"
+          },
+          "loanPurpose": {
+            "$ref": "#/components/schemas/SalesArrangementSharedLoanPurpose",
+            "description": "Účel úvěru"
+          },
+          "drawingAndOtherConditions": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingAndOtherConditions",
+            "description": "Podmínky čerpání a další podmínky"
+          },
+          "commentToChangeRequest": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCommentToChangeRequest",
+            "description": "Komentář k žádosti o změnu"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateParametersPaymentDay": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "newPaymentDay": {
+            "type": "integer",
+            "description": "Nový den splácení, CIS_DEN_SPLACENI",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Den splácení"
+      },
+      "SalesArrangementUpdateParametersHubn": {
+        "required": [
+          "collateralIdentification",
+          "commentToChangeRequest",
+          "drawingDateTo",
+          "expectedDateOfDrawing",
+          "loanAmount",
+          "loanPurposes",
+          "loanRealEstates"
+        ],
+        "type": "object",
+        "properties": {
+          "applicant": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "description": "Identita klienta",
+            "nullable": true
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersLoanAmount",
+            "description": "Výše úvěru"
+          },
+          "loanPurposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesLoanPurposeItem"
+            },
+            "description": "Účely úvěru"
+          },
+          "loanRealEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedParametersLoanRealEstate"
+            },
+            "description": "Objekty úvěru"
+          },
+          "collateralIdentification": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCollateralIdentification",
+            "description": "Identifikace zajištění"
+          },
+          "expectedDateOfDrawing": {
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersExpectedDateOfDrawing",
+            "description": "Předpokládaný termín prvního čerpání"
+          },
+          "drawingDateTo": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingDateTo",
+            "description": "Lhůta ukončení čerpání"
+          },
+          "commentToChangeRequest": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCommentToChangeRequest",
+            "description": "Komentář k žádosti o změnu"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateParametersExpectedDateOfDrawing": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "newExpectedDateOfDrawing": {
+            "type": "string",
+            "description": "Nový předpokládaný termín prvního čerpání",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementUpdateParametersLoanAmount": {
+        "required": ["changeAgreedLoanAmount", "preserveAgreedPaymentAmount", "preserveLoanDueDate"],
+        "type": "object",
+        "properties": {
+          "changeAgreedLoanAmount": {
+            "type": "boolean",
+            "description": "Změnit sjednanou výši úvěru"
+          },
+          "requiredLoanAmount": {
+            "type": "number",
+            "description": "Požadovaná výše úvěru",
+            "format": "decimal",
+            "nullable": true
+          },
+          "preserveLoanDueDate": {
+            "type": "boolean",
+            "description": "Zachovat sjednanou splatnost do"
+          },
+          "preserveAgreedPaymentAmount": {
+            "type": "boolean",
+            "description": "Zachovat sjednanou splátku"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetLoanApplicationAssessmentResponse": {
+        "type": "object",
+        "properties": {
+          "riskBusinesscaseExpirationDate": {
+            "type": "string",
+            "description": "Datum expirace obchodního případu",
+            "format": "date-time",
+            "nullable": true
+          },
+          "assessmentResult": {
+            "type": "integer",
+            "description": "Výsledek vyhodnocení<br />501 - v pořádku<br />502 - zamítnuto",
+            "format": "int64",
+            "nullable": true
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentAssessmentReason"
+            },
+            "description": "Důvody",
+            "nullable": true
+          },
+          "application": {
+            "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentLoanApplication",
+            "nullable": true
+          },
+          "households": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentHousehold"
+            },
+            "description": "Domácnosti"
+          },
+          "displayAssessmentResultInfoText": {
+            "type": "boolean"
+          },
+          "displayWarningExposureDoesNotWork": {
+            "type": "boolean",
+            "description": "Informace o tom, zda bylo možné provolat C4M Exposure endpoint. (True=služba Exposure je nedostupná/nepodařilo se jí provolat)"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetLoanApplicationAssessmentHousehold": {
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": "integer",
+            "description": "ID domácnosti",
+            "format": "int64"
+          },
+          "householdTypeId": {
+            "type": "integer",
+            "description": "Typ domácnosti",
+            "format": "int32"
+          },
+          "risk": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentHouseholdRisk"
+              }
+            ],
+            "description": "Risková data",
+            "nullable": true
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentHouseholdCustomerObligations"
+            },
+            "description": "Závazky",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetLoanApplicationAssessmentHouseholdCustomerObligations": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Jméno klienta"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení klienta"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození klienta",
+            "format": "date",
+            "nullable": true
+          },
+          "roleId": {
+            "$ref": "#/components/schemas/EnumCustomerRoles"
+          },
+          "existingObligations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem"
+            },
+            "description": "Existující závazky",
+            "nullable": true
+          },
+          "requestedObligations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem"
+            },
+            "description": "Rozpracované závazky",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetLoanApplicationAssessmentHouseholdObligationItem": {
+        "type": "object",
+        "properties": {
+          "obligationTypeOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "obligationTypeId": {
+            "type": "integer",
+            "description": "Typ závazku",
+            "format": "int32"
+          },
+          "obligationTypeName": {
+            "type": "string",
+            "description": "Typ závazku - název"
+          },
+          "obligationSourceId": {
+            "type": "integer",
+            "description": "Stav závazku. 1=NOBY, 2=C4M",
+            "format": "int32"
+          },
+          "creditor": {
+            "$ref": "#/components/schemas/SharedTypesCustomerObligationCorrectionCreditor",
+            "description": "Věřitel",
+            "nullable": true
+          },
+          "amountConsolidated": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanAmountTotal": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanAmountCurrent": {
+            "type": "number",
+            "description": "Nesplacená jistina",
+            "format": "decimal",
+            "nullable": true
+          },
+          "installmentAmount": {
+            "type": "number",
+            "description": "Splátka",
+            "format": "decimal",
+            "nullable": true
+          },
+          "creditCardLimit": {
+            "type": "number",
+            "description": "Limit",
+            "format": "decimal",
+            "nullable": true
+          },
+          "roleId": {
+            "type": "integer",
+            "description": "Role klienta",
+            "format": "int32",
+            "nullable": true
+          },
+          "correction": {
+            "$ref": "#/components/schemas/SharedTypesCustomerObligationCorrection",
+            "description": "Korekce",
+            "nullable": true
+          },
+          "obligationLaExposureId": {
+            "type": "integer",
+            "description": "Kategorie závazku",
+            "format": "int32",
+            "nullable": true
+          },
+          "obligationLaExposureName": {
+            "type": "string",
+            "description": "Kategorie závazku - název",
+            "nullable": true
+          },
+          "isEntrepreneur": {
+            "type": "boolean",
+            "description": "Závazek FOP"
+          },
+          "codebtors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "kbGroupInstanceCode": {
+            "type": "string",
+            "description": "Kód skupiny",
+            "nullable": true
+          },
+          "drawingAmount": {
+            "type": "number",
+            "description": "Vyčerpaná částka",
+            "format": "decimal",
+            "nullable": true
+          },
+          "bankAccount": {
+            "$ref": "#/components/schemas/SharedTypesBankAccount",
+            "description": "Číslo  úvěrového účtu",
+            "nullable": true
+          },
+          "contractDate": {
+            "type": "string",
+            "description": "Datum poskytnutí",
+            "format": "date-time",
+            "nullable": true
+          },
+          "maturityDate": {
+            "type": "string",
+            "description": "Datum splatnosti",
+            "format": "date-time",
+            "nullable": true
+          },
+          "cbcbDataLastUpdate": {
+            "type": "string",
+            "description": "Datum aktualizace dat v CBCB",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetLoanApplicationAssessmentHouseholdRisk": {
+        "type": "object",
+        "properties": {
+          "loanApplicationLimit": {
+            "type": "number",
+            "description": "Limit výše úvěru",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanApplicationInstallmentLimit": {
+            "type": "number",
+            "description": "Limit výše splátky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyIncome": {
+            "type": "number",
+            "description": "Celkové příjmy",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyCostsWithoutInstallments": {
+            "type": "number",
+            "description": "Celkové výdaje (bez splátek)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInKBAmount": {
+            "type": "number",
+            "description": "Celkové stávající splátky v KB",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyEntrepreneurInstallmentsInKBAmount": {
+            "type": "number",
+            "description": "Celkové stávající splátky FOP v KB",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInMPSS": {
+            "type": "number",
+            "description": "Celkové stávající splátky MPSS",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInOFI": {
+            "type": "number",
+            "description": "Celkové prohlášené splátky (klient)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInCBCB": {
+            "type": "number",
+            "description": "Celkové nalezené splátky (ext. registry)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "dti": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "dsti": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "cir": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetLoanApplicationAssessmentLoanApplication": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "number",
+            "description": "Limit výše úvěru",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanAmount": {
+            "type": "number",
+            "description": "Požadováno",
+            "format": "decimal",
+            "nullable": true
+          },
+          "installmentLimit": {
+            "type": "number",
+            "description": "Limit výše splátky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "description": "Požadováno",
+            "format": "decimal",
+            "nullable": true
+          },
+          "remainingAnnuityLivingAmount": {
+            "type": "number",
+            "description": "Zbývá na živobytí s požadovanou splátkou",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyIncome": {
+            "type": "number",
+            "description": "Celkové příjmy",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyCostsWithoutInstallments": {
+            "type": "number",
+            "description": "Celkové výdaje (bez splátek)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInKB": {
+            "type": "number",
+            "description": "Celkové stávající splátky v KB",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyEntrepreneurInstallmentsInKB": {
+            "type": "number",
+            "description": "Celkové stávající splátky FOP v KB",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInMPSS": {
+            "type": "number",
+            "description": "Celkové stávající splátky MPSS",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInOFI": {
+            "type": "number",
+            "description": "Celkové prohlášené splátky (klient)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "monthlyInstallmentsInCBCB": {
+            "type": "number",
+            "description": "Celkové nalezené splátky (ext. registry)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "collateralLimit": {
+            "type": "number",
+            "description": "Limit úvěru bez vlivu na výši zajištění",
+            "format": "decimal",
+            "nullable": true
+          },
+          "score": {
+            "type": "string",
+            "description": "Výsledné pásmo žádosti",
+            "nullable": true
+          },
+          "dti": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "dsti": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "cir": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "ltv": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "lftv": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          },
+          "ltcp": {
+            "type": "number",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetLoanApplicationAssessmentAssessmentReason": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Kód důvodu",
+            "nullable": true
+          },
+          "level": {
+            "type": "string",
+            "description": "Úroveň důvodu",
+            "nullable": true
+          },
+          "weight": {
+            "type": "integer",
+            "description": "Váha důvodu",
+            "format": "int64",
+            "nullable": true
+          },
+          "target": {
+            "type": "string",
+            "description": "Cíl důvodu",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Popis důvodu",
+            "nullable": true
+          },
+          "result": {
+            "type": "string",
+            "description": "Výsledek důvodu",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetSalesArrangementResponse": {
+        "type": "object",
+        "properties": {
+          "productTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "salesArrangementId": {
+            "type": "integer",
+            "description": "ID zadosti.",
+            "format": "int32"
+          },
+          "state": {
+            "type": "integer",
+            "description": "Stav žádosti. Číselník SalesArrangementState.",
+            "format": "int32"
+          },
+          "salesArrangementTypeId": {
+            "type": "integer",
+            "description": "Druh zadosti. Ciselnik SalesArrangementTypes.",
+            "format": "int32"
+          },
+          "loanApplicationAssessmentId": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "Datum vytvoreni SA",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Jmeno a prijmeni uzivatele, ktery vytvoril SA",
+            "nullable": true
+          },
+          "offerGuaranteeDateFrom": {
+            "type": "string",
+            "description": "Rozhodný den sazby (datum založení = datum garance)",
+            "format": "date-time"
+          },
+          "offerGuaranteeDateTo": {
+            "type": "string",
+            "description": "Datum, kdy končí garance pro danou simulaci",
+            "format": "date-time"
+          },
+          "offerId": {
+            "type": "integer",
+            "description": "ID nalinkované Offer.",
+            "format": "int32",
+            "nullable": true
+          },
+          "processId": {
+            "type": "integer",
+            "description": "Id odpovídajícího procesu ve SB",
+            "format": "int64",
+            "nullable": true
+          },
+          "parameters": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementGetSalesArrangementParameters",
+            "description": "Dalsi udaje o pripadu/uveru. Typ objektu je podle typu SA.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetSalesArrangementParameters": {
+        "type": "object",
+        "properties": {
+          "discriminator": { "type": "string", "nullable": false },
+          "mortgage": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersMortgage"
+          },
+          "hubn": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersHubn"
+          },
+          "drawing": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersDrawing"
+          },
+          "generalChange": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersGeneralChange"
+          },
+          "customerChange": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersCustomerChange"
+          },
+          "customerChange3602": {
+            "type": "object",
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersCustomerChange3602"
+          }
+        }
+      },
+      "SalesArrangementSharedParametersCustomerChange3602": {
+        "required": ["householdId"],
+        "type": "object",
+        "properties": {
+          "householdId": {
+            "type": "integer",
+            "description": "ID domacnosti",
+            "format": "int32"
+          },
+          "isSpouseInDebt": {
+            "type": "boolean",
+            "description": "Přistupující manžel/ka?",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedParametersCustomerChange": {
+        "required": ["add", "agent", "applicants", "commentToChangeRequest", "release", "repaymentAccount"],
+        "type": "object",
+        "properties": {
+          "applicants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailApplicant"
+            }
+          },
+          "release": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailRelease"
+          },
+          "add": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailAdd"
+          },
+          "agent": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailAgent"
+          },
+          "repaymentAccount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedPaymentAccount",
+            "description": "Účet pro splácení"
+          },
+          "commentToChangeRequest": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCommentToChangeRequest",
+            "description": "Komentář k žádosti o změnu"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCustomerChangeDetailAgentBase": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "newAgent": {
+            "type": "string",
+            "description": "Nový zmocněnec pro doručování",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCustomerChangeDetailAgent": {
+        "required": ["actualAgent", "isActive"],
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailAgentBase" }],
+        "properties": {
+          "actualAgent": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Aktuální zmocněnec pro doručování"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCustomerChangeDetailAdd": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailAddCustomer"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCustomerChangeDetailAddCustomer": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Jméno a příjmení",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCustomerChangeDetailRelease": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedCustomerChangeDetailReleaseCustomer"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCustomerChangeDetailReleaseCustomer": {
+        "type": "object",
+        "properties": {
+          "identity": {
+            "$ref": "#/components/schemas/SharedTypesCustomerIdentity",
+            "description": "Identita klienta",
+            "nullable": true
+          },
+          "naturalPerson": {
+            "$ref": "#/components/schemas/SharedTypesPersonBase",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCustomerChangeDetailApplicant": {
+        "type": "object",
+        "properties": {
+          "identity": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "nullable": true
+          },
+          "naturalPerson": {
+            "$ref": "#/components/schemas/SharedTypesPersonBase",
+            "nullable": true
+          },
+          "identificationDocument": {
+            "$ref": "#/components/schemas/SharedTypesIdentificationDocumentBase",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedParametersGeneralChange": {
+        "required": [
+          "collateral",
+          "commentToChangeRequest",
+          "drawingAndOtherConditions",
+          "drawingDateTo",
+          "dueDate",
+          "loanPaymentAmount",
+          "loanPurpose",
+          "loanRealEstate",
+          "paymentDay",
+          "repaymentAccount"
+        ],
+        "type": "object",
+        "properties": {
+          "applicant": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "description": "Identita klienta",
+            "nullable": true
+          },
+          "collateral": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCollateral",
+            "description": "Zajištění"
+          },
+          "paymentDay": {
+            "$ref": "#/components/schemas/SalesArrangementSharedPaymentDay",
+            "description": "Den splácení"
+          },
+          "drawingDateTo": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingDateToExtended",
+            "description": "Lhůta ukončení čerpání"
+          },
+          "repaymentAccount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedPaymentAccount",
+            "description": "Účet pro splácení"
+          },
+          "loanPaymentAmount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedLoanPaymentAmount",
+            "description": "Výše měsíční splátky"
+          },
+          "dueDate": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDueDate",
+            "description": "Splatnost"
+          },
+          "loanRealEstate": {
+            "$ref": "#/components/schemas/SalesArrangementSharedLoanRealEstate",
+            "description": "Objekty úvěru"
+          },
+          "loanPurpose": {
+            "$ref": "#/components/schemas/SalesArrangementSharedLoanPurpose",
+            "description": "Účel úvěru"
+          },
+          "drawingAndOtherConditions": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingAndOtherConditions",
+            "description": "Podmínky čerpání a další podmínky"
+          },
+          "commentToChangeRequest": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCommentToChangeRequest",
+            "description": "Komentář k žádosti o změnu"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedDrawingAndOtherConditions": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "commentToChangeContractConditions": {
+            "type": "string",
+            "description": "Komentář ke změně v podmínkách smlouvy",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Podmínky čerpání a další podmínky"
+      },
+      "SalesArrangementSharedLoanRealEstate": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "loanRealEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedParametersLoanRealEstateBase"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedDueDateBase": {
+        "required": ["actualLoanDueDate", "connectionExtraordinaryPayment"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "newLoanDueDate": {
+            "type": "string",
+            "description": "Nový datum splatnosti",
+            "format": "date-time",
+            "nullable": true
+          },
+          "connectionExtraordinaryPayment": {
+            "type": "boolean",
+            "description": "V souvislosti s mimořádnou splátkou"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Splatnost"
+      },
+      "SalesArrangementSharedDueDate": {
+        "required": ["actualLoanDueDate", "connectionExtraordinaryPayment"],
+        "allOf": [{ "$ref": "#/components/schemas/SalesArrangementSharedDueDateBase" }],
+        "type": "object",
+        "properties": {
+          "actualLoanDueDate": {
+            "type": "string",
+            "description": "Aktuální datum splatnosti",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Splatnost"
+      },
+      "SalesArrangementSharedLoanPaymentAmountBase": {
+        "required": ["connectionExtraordinaryPayment", "isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "newLoanPaymentAmount": {
+            "type": "number",
+            "description": "Nová výše měsíční splátky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "connectionExtraordinaryPayment": {
+            "type": "boolean",
+            "description": "V souvislosti s mimořádnou splátkou"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Výše měsíční splátky"
+      },
+      "SalesArrangementSharedLoanPaymentAmount": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SalesArrangementSharedLoanPaymentAmountBase" }],
+        "required": ["actualLoanPaymentAmount", "connectionExtraordinaryPayment", "isActive"],
+        "properties": {
+          "actualLoanPaymentAmount": {
+            "type": "number",
+            "description": "Aktuální výše měsíční splátky",
+            "format": "decimal"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Výše měsíční splátky"
+      },
+      "SalesArrangementSharedPaymentAccount": {
+        "required": ["isActive"],
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesBankAccount" }],
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "agreedBankAccount": {
+            "allOf": [{ "$ref": "#/components/schemas/SharedTypesBankAccount" }],
+            "nullable": true
+          },
+          "ownerFirstName": {
+            "type": "string",
+            "description": "Jméno majitele účtu",
+            "nullable": true
+          },
+          "ownerLastName": {
+            "type": "string",
+            "description": "Příjmení majitele účtu",
+            "nullable": true
+          },
+          "ownerDateOfBirth": {
+            "type": "string",
+            "description": "Datum narození majitele účtu",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Účet pro splácení"
+      },
+      "SalesArrangementSharedDrawingDateToExtended": {
+        "required": ["agreedDrawingDateTo", "isActive"],
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SalesArrangementSharedDrawingDateTo" }],
+        "properties": {
+          "commentToDrawingDateTo": {
+            "type": "string",
+            "description": "Komentář ke lhůtě ukončení čerpání",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Lhůta ukončení čerpání"
+      },
+      "SalesArrangementSharedPaymentDay": {
+        "required": ["agreedPaymentDay", "isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "agreedPaymentDay": {
+            "type": "integer",
+            "description": "Sjednaný den splácení",
+            "format": "int32"
+          },
+          "newPaymentDay": {
+            "type": "integer",
+            "description": "Nový den splácení, CIS_DEN_SPLACENI",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Den splácení"
+      },
+      "SalesArrangementSharedCollateral": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "addLoanRealEstateCollateral": {
+            "type": "string",
+            "description": "Identifikace nemovitosti (přidat zajištění)",
+            "nullable": true
+          },
+          "releaseLoanRealEstateCollateral": {
+            "type": "string",
+            "description": "Identifikace nemovitosti (uvolnit zajištění)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Zajištění"
+      },
+      "SalesArrangementSharedParametersDrawing": {
+        "required": ["agent", "drawingDate"],
+        "type": "object",
+        "properties": {
+          "applicant": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "description": "Žadatel o čerpání",
+            "nullable": true
+          },
+          "agent": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingAgent",
+            "description": "Zmocněná osoba"
+          },
+          "repaymentAccount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingRepaymentAccount",
+            "description": "Účet pro splácení",
+            "nullable": true
+          },
+          "payoutList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedDrawingPayout"
+            },
+            "description": "Seznam výplat",
+            "nullable": true
+          },
+          "drawingDate": {
+            "type": "string",
+            "description": "Datum čerpání",
+            "format": "date-time"
+          },
+          "isImmediateDrawing": {
+            "type": "boolean",
+            "description": "Čerpání bezodkladně"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedDrawingRepaymentAccount": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesBankAccount" }],
+        "properties": {
+          "isAccountNumberMissing": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Účet pro splácení"
+      },
+      "SalesArrangementSharedDrawingPayout": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesBankAccount" }],
+        "properties": {
+          "productObligationId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "order": {
+            "type": "integer",
+            "description": "Pořadové číslo výplaty v kolekci",
+            "format": "int32"
+          },
+          "drawingAmount": {
+            "type": "number",
+            "description": "Výše čerpané částky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "variableSymbol": {
+            "type": "string",
+            "description": "Variabilní symbol",
+            "nullable": true
+          },
+          "specificSymbol": {
+            "type": "string",
+            "description": "Specifický symbol",
+            "nullable": true
+          },
+          "constantSymbol": {
+            "type": "string",
+            "description": "Konstantní symbol",
+            "nullable": true
+          },
+          "payoutTypeId": {
+            "type": "integer",
+            "description": "Typ výplaty - konsolidace nebo výplata",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedDrawingAgent": {
+        "required": ["isActive"],
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesPersonBase" }],
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce je aktivní"
+          },
+          "identificationDocument": {
+            "$ref": "#/components/schemas/SharedTypesIdentificationDocumentBase",
+            "description": "Osobní doklad",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedParametersHubn": {
+        "required": [
+          "collateralIdentification",
+          "commentToChangeRequest",
+          "drawingDateTo",
+          "expectedDateOfDrawing",
+          "loanAmount",
+          "loanPurposes",
+          "loanRealEstates"
+        ],
+        "type": "object",
+        "properties": {
+          "applicant": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "description": "Identita klienta",
+            "nullable": true
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/SalesArrangementSharedLoanAmount",
+            "description": "Výše úvěru"
+          },
+          "loanPurposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesLoanPurposeItem"
+            },
+            "description": "Účely úvěru"
+          },
+          "loanRealEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedParametersLoanRealEstate"
+            },
+            "description": "Objekty úvěru"
+          },
+          "collateralIdentification": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCollateralIdentification",
+            "description": "Identifikace zajištění"
+          },
+          "expectedDateOfDrawing": {
+            "$ref": "#/components/schemas/SalesArrangementSharedExpectedDateOfDrawing",
+            "description": "Předpokládaný termín prvního čerpání"
+          },
+          "drawingDateTo": {
+            "$ref": "#/components/schemas/SalesArrangementSharedDrawingDateTo",
+            "description": "Lhůta ukončení čerpání"
+          },
+          "commentToChangeRequest": {
+            "$ref": "#/components/schemas/SalesArrangementSharedCommentToChangeRequest",
+            "description": "Komentář k žádosti o změnu"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCommentToChangeRequest": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "generalComment": {
+            "type": "string",
+            "description": "Obecný komentář",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Komentář k žádosti o změnu"
+      },
+      "SalesArrangementSharedDrawingDateTo": {
+        "required": ["agreedDrawingDateTo", "isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "agreedDrawingDateTo": {
+            "type": "string",
+            "description": "Sjednaný termín čerpání do",
+            "format": "date-time"
+          },
+          "extensionDrawingDateToByMonths": {
+            "type": "integer",
+            "description": "Prodloužení konce lhůty čerpání o kolik měsíců",
+            "format": "int32",
+            "nullable": true
+          },
+          "isDrawingDateEarlier": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedExpectedDateOfDrawing": {
+        "required": ["agreedExpectedDateOfDrawing", "isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "agreedExpectedDateOfDrawing": {
+            "type": "string",
+            "description": "Sjednaný termín prvního čerpání",
+            "format": "date-time"
+          },
+          "newExpectedDateOfDrawing": {
+            "type": "string",
+            "description": "Nový předpokládaný termín prvního čerpání",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedCollateralIdentification": {
+        "type": "object",
+        "properties": {
+          "realEstateIdentification": {
+            "type": "string",
+            "description": "Identifikace nemovitosti",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedLoanPurpose": {
+        "required": ["isActive"],
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Sekce aktivní"
+          },
+          "loanPurposesComment": {
+            "type": "string",
+            "description": "Komentář k popisu změny na stávajících účelech úvěru",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Účel úvěru"
+      },
+      "SalesArrangementSharedLoanAmount": {
+        "required": [
+          "agreedLoanAmount",
+          "agreedLoanDueDate",
+          "agreedLoanPaymentAmount",
+          "changeAgreedLoanAmount",
+          "preserveAgreedPaymentAmount",
+          "preserveLoanDueDate"
+        ],
+        "type": "object",
+        "properties": {
+          "changeAgreedLoanAmount": {
+            "type": "boolean",
+            "description": "Změnit sjednanou výši úvěru"
+          },
+          "agreedLoanAmount": {
+            "type": "number",
+            "description": "Sjednaná výše úvěru",
+            "format": "decimal"
+          },
+          "requiredLoanAmount": {
+            "type": "number",
+            "description": "Požadovaná výše úvěru",
+            "format": "decimal",
+            "nullable": true
+          },
+          "preserveLoanDueDate": {
+            "type": "boolean",
+            "description": "Zachovat sjednanou splatnost do"
+          },
+          "preserveAgreedPaymentAmount": {
+            "type": "boolean",
+            "description": "Zachovat sjednanou splátku"
+          },
+          "agreedLoanDueDate": {
+            "type": "string",
+            "description": "Sjednaná splatnost do",
+            "format": "date-time"
+          },
+          "agreedLoanPaymentAmount": {
+            "type": "number",
+            "description": "Sjednaná měsíční splátka",
+            "format": "decimal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedParametersMortgage": {
+        "type": "object",
+        "properties": {
+          "expectedDateOfDrawing": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "incomeCurrencyCode": {
+            "type": "string",
+            "nullable": true,
+            "example": "CZK"
+          },
+          "residencyCurrencyCode": {
+            "type": "string",
+            "nullable": true,
+            "example": "CZK"
+          },
+          "contractSignatureTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "example": 1
+          },
+          "loanRealEstates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedParametersLoanRealEstate"
+            },
+            "nullable": true
+          },
+          "agent": {
+            "type": "integer",
+            "description": "Zmocnenec - CustomerOnSAId",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedParametersLoanRealEstateBase": {
+        "type": "object",
+        "properties": {
+          "realEstateTypeId": {
+            "type": "integer",
+            "description": "Typ nemovitosti",
+            "format": "int32"
+          },
+          "realEstatePurchaseTypeId": {
+            "type": "integer",
+            "description": "Účel pořízení nemovitosti",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedParametersLoanRealEstate": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SalesArrangementSharedParametersLoanRealEstateBase" }],
+        "properties": {
+          "isCollateral": {
+            "type": "boolean",
+            "description": "Slouží k zajištění"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementValidateSalesArrangementResponse": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedValidateCategory"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedValidateCategory": {
+        "required": ["categoryName", "validationMessages"],
+        "type": "object",
+        "properties": {
+          "categoryName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Jméno kategorie",
+            "example": "Klient"
+          },
+          "validationMessages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesArrangementSharedValidateMessage"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementSharedValidateMessage": {
+        "required": ["message", "parameter", "severity"],
+        "type": "object",
+        "properties": {
+          "parameter": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Název parametru",
+            "example": "Frantisek Novak, Doklad 1, chyba v poli Datum vydání"
+          },
+          "message": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Textace chyby",
+            "example": "09.08.2022 Staré datum platnost od '01.09.2022' do '31.12.9999"
+          },
+          "severity": {
+            "enum": [1, 2],
+            "type": "integer",
+            "description": "Severita chyby\n\n<small>Enum Values</small><ul><li>1 - Warning</li><li>2 - Error</li></ul>",
+            "format": "int32",
+            "x-enum-varnames": ["Warning", "Error"],
+            "x-enum-descriptions": ["Warning", "Error"],
+            "x-enumNames": ["Warning", "Error"]
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetFlowSwitchesResponse": {
+        "type": "object",
+        "properties": {
+          "modelationSection": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItem"
+          },
+          "householdSection": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItem"
+          },
+          "parametersSection": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItem"
+          },
+          "scoringSection": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItem"
+          },
+          "signingSection": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItem"
+          },
+          "evaluationSection": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItem"
+          },
+          "sendButton": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItemButton"
+          },
+          "individualPriceSection": {
+            "$ref": "#/components/schemas/SalesArrangementGetFlowSwitchesResponseItem"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetFlowSwitchesResponseItem": {
+        "type": "object",
+        "properties": {
+          "isVisible": {
+            "type": "boolean",
+            "description": "Je sekce skrytá?"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "Je sekce aktivní/neaktivní (lze prokliknout)?"
+          },
+          "stateName": {
+            "type": "string",
+            "description": "Název stavu"
+          },
+          "state": {
+            "type": "integer",
+            "description": "Hodnota z číselníku FlowSwitchState",
+            "format": "int32"
+          },
+          "stateIndicator": {
+            "$ref": "#/components/schemas/EnumWorkflowTaskStateIndicators"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementGetFlowSwitchesResponseItemButton": {
+        "type": "object",
+        "properties": {
+          "isActive": {
+            "type": "boolean",
+            "description": "Je sekce aktivní/neaktivní (lze prokliknout)?"
+          }
+        },
+        "additionalProperties": false
+      },
       "RealEstateValuationUpdateRealEstateValuationDetailRequest": {
         "required": ["isLoanRealEstate"],
         "type": "object",
@@ -3568,6 +8240,7 @@
       },
       "CasesSharedCaseModel": {
         "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesPersonBase" }],
         "properties": {
           "caseOwner": {
             "$ref": "#/components/schemas/CasesSharedCaseOwnerModel",
@@ -3581,22 +8254,6 @@
           "customerIdentity": {
             "$ref": "#/components/schemas/SharedTypesCustomerIdentity",
             "description": "Identita klienta",
-            "nullable": true
-          },
-          "firstName": {
-            "type": "string",
-            "description": "FO/FOP/Cizinec/Nezletilec: Jméno",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "description": "FO/FOP/Cizinec/Nezletilec: Příjmení",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "description": "FO/FOP/Cizinec/Nezletilec: Datum narození klienta",
-            "format": "date",
             "nullable": true
           },
           "state": {
@@ -3806,6 +8463,7 @@
       },
       "CasesGetCustomersResponseCustomer": {
         "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesPersonBase" }],
         "properties": {
           "roleId": {
             "type": "integer",
@@ -3824,22 +8482,6 @@
           "isKYCSuccessful": {
             "type": "boolean",
             "description": "Příznak o úspěšně doběhlé KYC proceduře"
-          },
-          "firstName": {
-            "type": "string",
-            "description": "Jméno",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "description": "Příjmení",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "description": "Datum narození",
-            "format": "date-time",
-            "nullable": true
           },
           "kbId": {
             "type": "string",
@@ -4055,24 +8697,11 @@
       },
       "CasesIdentifyCaseResponseItemCustomer": {
         "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesPersonBase" }],
         "properties": {
-          "firstName": {
-            "type": "string",
-            "description": "Jméno customera"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "Příjmení customera"
-          },
           "identity": {
             "$ref": "#/components/schemas/SharedTypesCustomerIdentity",
             "description": "Identita klienta",
-            "nullable": true
-          },
-          "dateOfBirth": {
-            "type": "string",
-            "description": "Datum narození FO",
-            "format": "date",
             "nullable": true
           }
         },
@@ -5703,8 +10332,8 @@
         },
         "additionalProperties": false
       },
-      "SharedTypesIdentificationDocumentFull": {
-        "required": ["identificationDocumentTypeId", "issuedBy", "issuedOn", "issuingCountryId", "number", "validTo"],
+      "SharedTypesIdentificationDocumentBase": {
+        "required": ["identificationDocumentTypeId", "number"],
         "type": "object",
         "properties": {
           "identificationDocumentTypeId": {
@@ -5716,7 +10345,15 @@
             "minLength": 1,
             "type": "string",
             "description": "Číslo osobního dokladu"
-          },
+          }
+        },
+        "additionalProperties": false
+      },
+      "SharedTypesIdentificationDocumentFull": {
+        "required": ["identificationDocumentTypeId", "issuedBy", "issuedOn", "issuingCountryId", "number", "validTo"],
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/SharedTypesIdentificationDocumentBase" }],
+        "properties": {
           "issuingCountryId": {
             "type": "integer",
             "description": "Stát vydání dokladu",
@@ -6317,7 +10954,105 @@
         },
         "additionalProperties": false
       },
+      "SharedTypesPersonBase": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Jméno",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date",
+            "nullable": true
+          }
+        }
+      },
+      "SharedTypesCustomerObligationCorrection": {
+        "type": "object",
+        "properties": {
+          "correctionTypeId": {
+            "type": "integer",
+            "description": "Z číselníku <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=440890324\">ObligationCorrectionType (CIS_KOREKCE_ZAVAZKU)</a>",
+            "format": "int32",
+            "nullable": true
+          },
+          "installmentAmountCorrection": {
+            "type": "number",
+            "description": "Výše konsolidace/zrušení splátky daného závazku",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanPrincipalAmountCorrection": {
+            "type": "number",
+            "description": "Výše konsolidace/zrušení/snížení výše úvěru",
+            "format": "decimal",
+            "nullable": true
+          },
+          "creditCardLimitCorrection": {
+            "type": "number",
+            "description": "Výše konsolidace/zrušení/snížení limitu KK/PD",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SharedTypesCustomerObligationCorrectionCreditor": {
+        "type": "object",
+        "properties": {
+          "creditorId": {
+            "type": "string",
+            "description": "Id věřitele z číselníku bank <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=455007953\">BankCode (CIS_KODY_BANK)</a>",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Jméno věřitele z číselníku bank <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=455007953\">BankCode (CIS_KODY_BANK)</a> nebo jméno věřitele zadané uživatelem",
+            "nullable": true
+          },
+          "isExternal": {
+            "type": "boolean",
+            "description": "True pokud je veřitel externí (=JPÚ - jiný peněžní ústav)<br />False pokud KB/MP (dáno vždy produktem)<br />null pokud je nedefinovaný",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SharedTypesLoanPurposeItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Účel úvěru",
+            "format": "int32"
+          },
+          "sum": {
+            "type": "number",
+            "description": "Výše úvěru pro zvolený účel v Kč",
+            "format": "decimal"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Účel úvěru"
+      },
 
+      "EnumCustomerRoles": {
+        "enum": [0, 1, 2, 8],
+        "type": "integer",
+        "description": "Druhy příjmu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Employement</li><li>2 - Entrepreneur</li><li>3 - Rent</li><li>4 - Other</li></ul>",
+        "format": "int32",
+        "x-enum-varnames": ["Unknown", "Debtor", "Codebtor", "Garantor"],
+        "x-enum-descriptions": ["Unknown", "Dlužník", "Spoludlužník", "Ručitel"],
+        "x-enumNames": ["Unknown", "Debtor", "Codebtor", "Garantor"]
+      },
       "EnumIncomeTypes": {
         "enum": [0, 1, 2, 3, 4],
         "type": "integer",
@@ -6369,6 +11104,25 @@
           "ToBeCancelledConfirmed"
         ]
       },
+      "EnumSalesArrangementStates": {
+        "enum": [1, 2, 3, 5, 6, 7, 8, 9, 10],
+        "type": "integer",
+        "description": "<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - InProgress</li><li>2 - InApproval</li><li>3 - Cancelled</li><li>5 - NewArrangement</li><li>6 - Disbursed</li><li>7 - InSigning</li><li>8 - ToSend</li><li>9 - Finished</li><li>10 - RC2</li></ul>",
+        "format": "int32",
+        "x-enum-varnames": ["InProgress", "InApproval", "Cancelled", "NewArrangement", "Disbursed", "InSigning", "ToSend", "Finished", "RC2"],
+        "x-enum-descriptions": [
+          "Rozpracováno",
+          "Předáno ke zpracování",
+          "Zrušeno",
+          "Nová",
+          "Vyčerpáno",
+          "Podepisování",
+          "K odeslání",
+          "Dokončeno",
+          "Předáno RC2"
+        ],
+        "x-enumNames": ["InProgress", "InApproval", "Cancelled", "NewArrangement", "Disbursed", "InSigning", "ToSend", "Finished", "RC2"]
+      },
       "EnumWorkflowTaskStateFilters": {
         "enum": [0, 1, 2],
         "type": "integer",
@@ -6413,6 +11167,23 @@
         "x-enum-varnames": ["Unknown", "Online", "DTS", "Standard"],
         "x-enum-descriptions": ["Unknown", "Online", "DTS", "Standard"],
         "x-enumNames": ["Unknown", "Online", "DTS", "Standard"]
+      },
+      "EnumOfferFlagTypes": {
+        "enum": [0, 1, 2, 4, 8, 16, 32],
+        "type": "integer",
+        "description": "Položky označené * není možné měnit pomocí API SetOfferFlags",
+        "format": "int32",
+        "x-enum-varnames": ["None", "Current", "Communicated", "LegalNotice", "Liked", "Selected", "LegalNoticeDefault"],
+        "x-enum-descriptions": [
+          "Unknown",
+          "* Aktuální nabídka",
+          "* Komunikovaná nabídka",
+          "* Zákonné oznámení",
+          "Likovaná nabídka",
+          "Vybraná nabídka",
+          "* Výchozí nabídka"
+        ],
+        "x-enumNames": ["None", "Current", "Communicated", "LegalNotice", "Liked", "Selected", "LegalNoticeDefault"]
       }
     }
   }
