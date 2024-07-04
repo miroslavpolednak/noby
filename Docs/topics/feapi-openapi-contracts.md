@@ -17,7 +17,6 @@
 },
 ```
 
-
 ## Jmenné konvence
 
 Název objektu (OpenApi schématu) je složen z namespace (části aplikace v kontextu které je objekt používán), názvu endpointu a suffixu.  
@@ -119,6 +118,59 @@ Následně objekt, který dědí z base modelu:
 }
 ```
 
+### OneOf -> více možných typů objektů v jedné vlastnosti
+OneOf funkčnost v OpenApi nepoužíváme, protože do C# generuje špatně kód. 
+Abychom dokázali tuto funkčnost nahradit, používáme podobný přístup jako Protobuf.
+OneOf je tedy objekt, který má tolik vlastností, kolika typů může výsledek nabývat.
+
+K vytvořenému objektu, který zastupuje všechny OneOf typy přidáváme vlastnost `discriminator`, která obsahuje název objektu, který je v dané instanci naplněn.
+
+Ukázka OpenApi specifikace:
+```json
+// implementace objektu, který obsahuje OneOf vlastnost -> "amendments" může nabývat různých typů
+"SharedTypesWorkflowTaskDetail": {
+	...
+	"properties": {
+		"amendments": {
+			"$ref": "#/components/schemas/SharedTypesWorkflowTaskDetailAmendments",
+			"description": "OneOf",
+			"nullable": true
+		}
+	}
+	...
+}
+
+// implementace OneOf objektu
+"SharedTypesWorkflowTaskDetailAmendments": {
+	"type": "object",
+	"properties": {
+		"discriminator": {
+			"type": "string",
+			"nullable": false
+		},
+		"consultationData": {
+			"$ref": "#/components/schemas/SharedTypesWorkflowAmendmentsConsultationData",
+			"nullable": true
+		},
+		"priceException": {
+			"$ref": "#/components/schemas/SharedTypesWorkflowAmendmentsPriceException",
+			"nullable": true
+		}
+	}
+},
+```
+
+Ukázka výsledného JSONu:
+```json
+{
+	"amendments": {
+		"discriminator": "consultationData",
+		"consultationData": { a: 1, b: 1 },
+		"priceException": null
+	}
+}
+```
+
 # DEV dokumentace
 Kontrakty a partial třídy pro FE API jsou generovány z OpenApi specifikace a jsou umístěny v projektu **NOBY.ApiContracts** v souboru **Contracts.cs**.
 Kontrakty jsou vygenerovány pomocí nástroje *NSwag*, nastavení pro NSwag je uloženo v souboru **settings.nswag** v projektu *NOBY.ApiContracts*.
@@ -126,3 +178,20 @@ Kontrakty jsou vygenerovány pomocí nástroje *NSwag*, nastavení pro NSwag je 
 Projekt **NOBY.ApiContracts** dále obsahuje rozšíření (partial classes) pro třídy vygenerované *NSwagem*.
 Zejména se jedná o Mediatr requesty u kterých je potřeba implementovat rozhraní `IRequest`, případně metodu `InfuseId`.
 Partial třídy requestů jsou umístěny v adresáři **PartialRequests**.
+
+Ukázka partial class pro request v adresáři **PartialRequest**:
+```csharp
+namespace NOBY.ApiContracts;
+
+public partial class CustomerIncomeCreateIncomeRequest : IRequest<int>
+{
+    [JsonIgnore]
+    public int? CustomerOnSAId { get; private set; }
+
+    public CustomerIncomeCreateIncomeRequest InfuseId(int customerOnSAId)
+    {
+        this.CustomerOnSAId = customerOnSAId;
+        return this;
+    }
+}
+```
