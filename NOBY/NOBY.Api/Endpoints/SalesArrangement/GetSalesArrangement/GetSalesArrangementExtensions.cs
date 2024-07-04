@@ -165,7 +165,7 @@ internal static class GetSalesArrangementExtensions
                 AgreedLoanDueDate = model.LoanAmount?.AgreedLoanDueDate,
                 AgreedLoanPaymentAmount = model.LoanAmount?.AgreedLoanPaymentAmount ?? 0
             },
-            LoanPurposes = model.LoanPurposes?.Select(t => new SalesArrangementSharedLoanPurposeItem
+            LoanPurposes = model.LoanPurposes?.Select(t => new SharedTypesLoanPurposeItem
             {
                 Id = t.LoanPurposeId,
                 Sum = t.Sum

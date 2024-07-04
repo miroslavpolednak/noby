@@ -4,14 +4,14 @@ using DomainServices.OfferService.Contracts;
 namespace NOBY.Api.Endpoints.Offer.SetOfferFlags;
 
 internal sealed class SetOfferFlagsHandler(IOfferServiceClient _offerService)
-        : IRequestHandler<SetOfferFlagsRequest>
+    : IRequestHandler<OfferSetOfferFlagsRequest>
 {
-    public async Task Handle(SetOfferFlagsRequest request, CancellationToken cancellationToken)
+    public async Task Handle(OfferSetOfferFlagsRequest request, CancellationToken cancellationToken)
     {
         var offerInstance = await _offerService.GetOffer(request.OfferId, cancellationToken);
 
         // aktualni nastaveni flagu
-        OfferFlagTypes flag = (OfferFlagTypes)offerInstance.Data.Flags;
+        var flag = (EnumOfferFlagTypes)offerInstance.Data.Flags;
         
         // nastavit flags nove
         foreach (var flagToSet in request.Flags!)
@@ -24,7 +24,7 @@ internal sealed class SetOfferFlagsHandler(IOfferServiceClient _offerService)
             {
                 flag |= flagToSet.FlagType;
 
-                if (flagToSet.FlagType == OfferFlagTypes.Selected)
+                if (flagToSet.FlagType.HasFlag(EnumOfferFlagTypes.Selected))
                 {
                     await validateSelectedOffer(offerInstance, cancellationToken);
                 }
@@ -45,8 +45,8 @@ internal sealed class SetOfferFlagsHandler(IOfferServiceClient _offerService)
         var list = await _offerService.GetOfferList(offerInstance.Data.CaseId!.Value, offerInstance.Data.OfferType, true, cancellationToken);
 
         if (list.Any(t => t.Data.OfferId != offerInstance.Data.OfferId
-            && ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Selected)
-            && ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated)))
+            && ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Selected)
+            && ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Communicated)))
         {
             throw new NobyValidationException("Selected offer already exist");
         }

@@ -9,7 +9,7 @@ using _Ca = DomainServices.CaseService.Contracts;
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 
 internal sealed class LinkModelationHandler
-    : IRequestHandler<LinkModelationRequest>
+    : IRequestHandler<OfferLinkModelationRequest>
 {
     private static readonly SalesArrangementStates[] _allowedStates = [
         SalesArrangementStates.InProgress,
@@ -18,7 +18,7 @@ internal sealed class LinkModelationHandler
         SalesArrangementStates.ToSend
     ];
 
-    public async Task Handle(LinkModelationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(OfferLinkModelationRequest request, CancellationToken cancellationToken)
     {
         // get SA data
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -54,7 +54,7 @@ internal sealed class LinkModelationHandler
         await _salesArrangementService.LinkModelationToSalesArrangement(request.SalesArrangementId, request.OfferId, cancellationToken);
     }
 
-    private async Task updateMortgage(LinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
+    private async Task updateMortgage(OfferLinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement saInstance, CancellationToken cancellationToken)
     {
         // get case instance
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
@@ -83,7 +83,7 @@ internal sealed class LinkModelationHandler
         }
     }
 
-    private async Task UpdateRefinancing(LinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
+    private async Task UpdateRefinancing(OfferLinkModelationRequest request, DomainServices.SalesArrangementService.Contracts.SalesArrangement salesArrangement, GetOfferResponse offer, CancellationToken cancellationToken)
     {
         var taskResult = await _caseService.GetTaskByTaskId(salesArrangement.CaseId, salesArrangement.ProcessId!.Value, cancellationToken);
 

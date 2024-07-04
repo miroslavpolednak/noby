@@ -1,7 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
 using Google.Protobuf.Collections;
-using NOBY.Api.Endpoints.Offer.SharedDto;
-using NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
 namespace NOBY.Api.Endpoints.Offer;
 
@@ -133,14 +131,14 @@ internal static class OfferApiModuleDtoExtensions
             UsageText = t.UsageText
         }).ToList();
 
-    public static CreditWorthinessSimpleResults? ToApiResponse(this MortgageOfferCreditWorthinessSimpleResults? result)
+    public static OfferSimulateMortgageCreditWorthinessSimpleResults? ToApiResponse(this MortgageOfferCreditWorthinessSimpleResults? result)
     {
         if (result is null)
             return null;
 
-        return new CreditWorthinessSimpleResults
+        return new()
         {
-            WorthinessResult = (SimulateMortgage.WorthinessResult)result.WorthinessResult,
+            WorthinessResult = (OfferSimulateMortgageCreditWorthinessSimpleResultsWorthinessResult)result.WorthinessResult,
             InstallmentLimit = result.InstallmentLimit ?? 0,
             MaxAmount = result.MaxAmount ?? 0,
             RemainsLivingAnnuity = result.RemainsLivingAnnuity ?? 0,

@@ -3,7 +3,8 @@ using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Offer.LinkMortgageRetentionOffer;
 
-public class LinkMortgageRetentionOfferRequestValidator : AbstractValidator<LinkMortgageRetentionOfferRequest>
+public class LinkMortgageRetentionOfferRequestValidator 
+    : AbstractValidator<OfferLinkMortgageRetentionOfferRequest>
 {
     public LinkMortgageRetentionOfferRequestValidator(IFeatureManager featureManager)
     {

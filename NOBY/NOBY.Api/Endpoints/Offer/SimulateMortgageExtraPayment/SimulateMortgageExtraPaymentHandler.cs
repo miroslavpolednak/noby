@@ -3,9 +3,9 @@
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment;
 
 internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _offerService)
-    : IRequestHandler<SimulateMortgageExtraPaymentRequest, SimulateMortgageExtraPaymentResponse>
+    : IRequestHandler<OfferSimulateMortgageExtraPaymentRequest, OfferSimulateMortgageExtraPaymentResponse>
 {
-    public async Task<SimulateMortgageExtraPaymentResponse> Handle(SimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
+    public async Task<OfferSimulateMortgageExtraPaymentResponse> Handle(OfferSimulateMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
         var dsRequest = new DomainServices.OfferService.Contracts.SimulateMortgageExtraPaymentRequest
         {
@@ -26,7 +26,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(IOfferServiceClient _o
         // spocitat simulaci
         var result = await _offerService.SimulateMortgageExtraPayment(dsRequest, cancellationToken);
 
-        return new SimulateMortgageExtraPaymentResponse
+        return new()
         {
             OfferId = result.OfferId,
 			SimulationResults = result.SimulationResults.ToDto(DateTime.Now, request.FeeAmountDiscount)

@@ -2,7 +2,7 @@
 
 internal static class MortgageExtraPaymentExtensions
 {
-    public static Dto.Refinancing.ExtraPaymentSimulationResult ToDto(this DomainServices.OfferService.Contracts.MortgageExtraPaymentSimulationResults result, DateTime createdOn, decimal? feeAmountDiscounted)
+    public static OfferSharedExtraPaymentSimulationResult ToDto(this DomainServices.OfferService.Contracts.MortgageExtraPaymentSimulationResults result, DateTime createdOn, decimal? feeAmountDiscounted)
         => new()
         {
             ExtraPaymentAmount = result.ExtraPaymentAmount,

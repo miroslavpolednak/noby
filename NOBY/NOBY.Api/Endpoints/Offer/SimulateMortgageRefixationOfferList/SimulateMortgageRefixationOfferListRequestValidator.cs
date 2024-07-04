@@ -3,7 +3,8 @@ using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList;
 
-public class SimulateMortgageRefixationOfferListRequestValidator : AbstractValidator<SimulateMortgageRefixationOfferListRequest>
+internal sealed class SimulateMortgageRefixationOfferListRequestValidator 
+    : AbstractValidator<OfferSimulateMortgageRefixationOfferListRequest>
 {
     public SimulateMortgageRefixationOfferListRequestValidator(IFeatureManager featureManager)
     {

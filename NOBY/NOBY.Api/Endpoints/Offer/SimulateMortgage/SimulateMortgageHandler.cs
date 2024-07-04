@@ -10,9 +10,9 @@ internal sealed class SimulateMortgageHandler(
     IOfferServiceClient _offerService,
     ISalesArrangementServiceClient _salesArrangementService,
     IUserServiceClient _userService)
-        : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
+        : IRequestHandler<OfferSimulateMortgageRequest, OfferSimulateMortgageResponse>
 {
-    public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
+    public async Task<OfferSimulateMortgageResponse> Handle(OfferSimulateMortgageRequest request, CancellationToken cancellationToken)
     {
         // HFICH-5024
         if ((request.Developer?.DeveloperId != null && request.Developer?.ProjectId != null && !string.IsNullOrEmpty(request.Developer?.Description))

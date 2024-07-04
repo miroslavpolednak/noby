@@ -5,9 +5,9 @@ namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList;
 internal sealed class SimulateMortgageRefixationOfferListHandler(
     IOfferServiceClient _offerService, 
     TimeProvider _timeProvider)
-        : IRequestHandler<SimulateMortgageRefixationOfferListRequest, SimulateMortgageRefixationOfferListResponse>
+        : IRequestHandler<OfferSimulateMortgageRefixationOfferListRequest, OfferSimulateMortgageRefixationOfferListResponse>
 {
-    public async Task<SimulateMortgageRefixationOfferListResponse> Handle(SimulateMortgageRefixationOfferListRequest request, CancellationToken cancellationToken)
+    public async Task<OfferSimulateMortgageRefixationOfferListResponse> Handle(OfferSimulateMortgageRefixationOfferListRequest request, CancellationToken cancellationToken)
     {
         decimal? interestRateDiscount = request.InterestRateDiscount == 0 ? null : request.InterestRateDiscount;
 
@@ -15,12 +15,12 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
             .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
 
-        List<Dto.Refinancing.RefinancingOfferDetail> finalOffers = [];
+        List<RefinancingSharedOfferDetail> finalOffers = [];
 
         foreach (var offer in offers)
         {
             // IC je rozdilna mezi ulozenou offer a requestem
-            if (!((OfferFlagTypes)offer.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice)
+            if (!((EnumOfferFlagTypes)offer.Data.Flags).HasFlag(EnumOfferFlagTypes.LegalNotice)
                 && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != interestRateDiscount)
             {
                 var simulateRequest = new DomainServices.OfferService.Contracts.SimulateMortgageRefixationRequest
@@ -35,7 +35,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
 
                 var result = await _offerService.SimulateMortgageRefixation(simulateRequest, cancellationToken);
                 
-                var item = Dto.Refinancing.RefinancingOfferDetail.CreateRefixationOffer(offer);
+                var item = RefinancingSharedOfferDetail.CreateRefixationOffer(offer);
                 item.InterestRateDiscount = result.SimulationInputs.InterestRateDiscount;
                 item.LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted;
 
@@ -43,7 +43,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
             }
             else
             {
-                finalOffers.Add(Dto.Refinancing.RefinancingOfferDetail.CreateRefixationOffer(offer));
+                finalOffers.Add(RefinancingSharedOfferDetail.CreateRefixationOffer(offer));
             }
         }
 
@@ -53,7 +53,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
             throw new NobyValidationException(90060);
         }
 
-        return new SimulateMortgageRefixationOfferListResponse
+        return new()
         {
             Offers = finalOffers.OrderBy(t => t.FixedRatePeriod).ToList()
         };
