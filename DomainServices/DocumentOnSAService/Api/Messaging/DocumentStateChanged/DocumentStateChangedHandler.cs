@@ -8,19 +8,27 @@ namespace DomainServices.DocumentOnSAService.Api.Messaging.DocumentStateChanged;
 
 public sealed class DocumentStateChangedHandler(
 	DocumentOnSAServiceDbContext _context, 
-	IMediator _mediator) 
+	IMediator _mediator,
+    ILogger<DocumentStateChangedHandler> _logger) 
     : IMessageHandler<E.DocumentStateChanged>
 {
     public async Task Handle(IMessageContext context, E.DocumentStateChanged message)
     {
-        switch (message.state)
+        try
         {
-            case E.DocumentStateEnum.SIGNED or E.DocumentStateEnum.VERIFIED or E.DocumentStateEnum.SENT:
-				await signDocument(message.documentExternalId, Operations.SignDocument);
-                break;
-            case E.DocumentStateEnum.DELETED:
-				await signDocument(message.documentExternalId, Operations.StopSigning);
-                break;
+            switch (message.state)
+            {
+                case E.DocumentStateEnum.SIGNED or E.DocumentStateEnum.VERIFIED or E.DocumentStateEnum.SENT:
+                    await signDocument(message.documentExternalId, Operations.SignDocument);
+                    break;
+                case E.DocumentStateEnum.DELETED:
+                    await signDocument(message.documentExternalId, Operations.StopSigning);
+                    break;
+            }
+        }
+        catch (CisException ex)
+        {
+			_logger.KafkaSigningDocumentFailed(message.documentExternalId, ex);
         }
 	}
 
