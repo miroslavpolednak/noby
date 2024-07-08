@@ -20,7 +20,6 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     /// <returns>Seznam klientů na produktu</returns>
     [HttpGet("{caseId:long}/customers")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Produkt"])]
     [ProducesResponseType(typeof(List<ProductGetCustomersOnProductItem>), StatusCodes.Status200OK)]

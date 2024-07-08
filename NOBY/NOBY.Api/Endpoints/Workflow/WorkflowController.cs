@@ -35,7 +35,6 @@ public class WorkflowController(IMediator _mediator) : ControllerBase
     /// Stornování úkolu ve SB.
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:int}/cancel")]
-    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Workflow Task"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
