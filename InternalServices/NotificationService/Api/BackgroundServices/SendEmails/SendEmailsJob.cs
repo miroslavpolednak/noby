@@ -231,6 +231,8 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
                 // oznacit jako odeslano
                 send(id);
 
+                await _dbContext.SaveChangesAsync(default);
+
                 // odeslat
                 var response = await client.SendAsync(email, cancellationToken);
 
@@ -246,11 +248,15 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
             {
                 error(id, "SMTP-NON-EXISTING-PAYLOAD", ex.Message);
 
+                await _dbContext.SaveChangesAsync(default);
+
                 _logger.SendEmailsJobPayloadFailed(id, ex);
             }
             catch (CisValidationException ex)
             {
                 error(id, "SMTP-WHITELIST-EXCEPTION", ex.Message);
+
+                await _dbContext.SaveChangesAsync(default);
 
                 _logger.SendEmailsJobValidationError(id, ex);
             }
@@ -261,10 +267,10 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
                 // odstranit zamek, chceme zkusit odeslat znovu
                 await _dbContext.Database.ExecuteSqlInterpolatedAsync($"Delete From SentNotification Where Id = {id}", cancellationToken);
 
+                await _dbContext.SaveChangesAsync(default);
+
                 _logger.SendEmailsJobFailedToSend(id, ex);
             }
-
-            await _dbContext.SaveChangesAsync(default);
         }
 
         _logger.SendEmailsJobEnd(emailsSent);
