@@ -85,12 +85,16 @@ internal class IndividualPricingProcessChangedHandler(
     {
         var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskIdSB == taskIdSB);
 
-        existingConfirmedEntity ??= new Database.Entities.ConfirmedPriceException
+        if (existingConfirmedEntity is null)
+        {
+            existingConfirmedEntity = new Database.Entities.ConfirmedPriceException
             {
                 TaskIdSB = taskIdSB,
                 CaseId = caseId
             };
-
+            _dbContext.ConfirmedPriceExceptions.Add(existingConfirmedEntity);
+        }
+        
         existingConfirmedEntity.ConfirmedDate = confirmedDate.HasValue ? DateOnly.FromDateTime(confirmedDate.Value) : null;
         existingConfirmedEntity.DeclinedDate = declinedDate.HasValue ? DateOnly.FromDateTime(declinedDate.Value) : null;
         existingConfirmedEntity.CreatedTime = DateTime.Now;
