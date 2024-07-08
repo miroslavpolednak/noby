@@ -322,6 +322,21 @@
         <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.ResultData.Types.SmsRequestData.SmsTypeFieldNumber">
             <summary>Field number for the "SmsType" field.</summary>
         </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StatisticsResultData.NotificationIdFieldNumber">
+            <summary>Field number for the "NotificationId" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StatisticsResultData.StateFieldNumber">
+            <summary>Field number for the "State" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StatisticsResultData.ChannelFieldNumber">
+            <summary>Field number for the "Channel" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StatisticsResultData.RequestTimestampFieldNumber">
+            <summary>Field number for the "RequestTimestamp" field.</summary>
+        </member>
+        <member name="F:CIS.InternalServices.NotificationService.Contracts.v2.StatisticsResultData.MandantFieldNumber">
+            <summary>Field number for the "Mandant" field.</summary>
+        </member>
         <member name="T:CIS.InternalServices.NotificationService.Contracts.v2.SendSmsReflection">
             <summary>Holder for reflection information generated from Messages/SendSms.proto</summary>
         </member>

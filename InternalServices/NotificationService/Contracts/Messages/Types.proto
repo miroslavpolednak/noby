@@ -101,3 +101,12 @@ message ResultData
 
     message EmailRequestData { }
 }
+
+message StatisticsResultData
+{
+    string NotificationId = 1;
+    NotificationStates State = 2;
+    NotificationChannels Channel = 3;
+    google.protobuf.Timestamp RequestTimestamp = 4;
+    string Mandant = 5;
+}

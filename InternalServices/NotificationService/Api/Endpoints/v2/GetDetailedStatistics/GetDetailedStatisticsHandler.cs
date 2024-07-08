@@ -1,4 +1,5 @@
 ﻿using CIS.InternalServices.NotificationService.Api.Database;
+using CIS.InternalServices.NotificationService.Api.Database.Entities;
 using CIS.InternalServices.NotificationService.Contracts.v2;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.GetDetailedStatistics;
@@ -44,13 +45,22 @@ internal sealed class GetDetailedStatisticsHandler(
         var data = await query
             .OrderBy(t => t.CreatedTime)
             .Take(1000) // radsi omezit max?
+            .Select(t => new Contracts.v2.StatisticsResultData
+            {
+                NotificationId = t.Id.ToString(),
+                State = t.State,
+                Channel = t.Channel,
+                RequestTimestamp = Google.Protobuf.WellKnownTypes.Timestamp.FromDateTime(t.CreatedTime.ToUniversalTime()),
+                Mandant = t.Mandant.ToString()
+            })
             .ToListAsync(cancellationToken);
 
         var response = new GetDetailedStatisticsResponse()
         {
             Statistics = statistics.Statistics
         };
-        response.Results.AddRange(data.Select(t => t.MapToResultDataV2()));
+        response.Results.AddRange(data);
+
         return response;
     }
 }
