@@ -55,11 +55,19 @@ internal class IndividualPricingProcessChangedHandler(
                 return;
             }
         }
-        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) && taskDetail.TaskObject.ProcessTypeId == 3)
+        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) && taskDetail.TaskObject.DecisionId == 2)
         {
-            await saveEntity(currentTaskId, caseId, null, message.occurredOn);
+            if (taskDetail.TaskObject.ProcessTypeId != 1)
+            {
+                await saveEntity(currentTaskId, caseId, null, message.occurredOn);
+            }
         }
-
+        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) && taskDetail.TaskObject.ProcessTypeId != 1)
+        {
+            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, currentTaskId, taskDetail.TaskObject.ProcessTypeId);
+            return;
+        }
+        
         await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, currentTaskId, CancellationToken.None);
 
         // nastaveni flow switches
