@@ -89,7 +89,7 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
 
                return email;
            },
-           send: async (id) => {
+           send: (id) => {
                var email = emails.First(t => t.Id == id);
 
                // nastavit result
@@ -97,11 +97,8 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
                email.ResultTimestamp = _dateTime.GetLocalNow().DateTime;
                email.ErrorSet = new HashSet<ResultError>();
                email.Resend = false;
-
-               await _dbContext.SaveChangesAsync(default);
-
            },
-           error: async (id, code, message) => {
+           error: (id, code, message) => {
                var email = emails.First(t => t.Id == id);
 
                // nastavit result
@@ -109,11 +106,8 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
                email.ErrorSet = new() {
                     new () { Code = code, Message = message }
                };
-
-               await _dbContext.SaveChangesAsync(default);
-
            },
-           exception: async (id, code, message) => {
+           exception: (id, code, message) => {
                var email = emails.First(t => t.Id == id);
 
                // nastavit result
@@ -121,9 +115,6 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
                email.ErrorSet = new() {
                     new () { Code = code, Message = message }
                };
-
-               await _dbContext.SaveChangesAsync(default);
-
            },
            cancellationToken: default);
     }
@@ -155,7 +146,7 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
 
                return email;
            },
-           send: async (id) => {
+           send: (id) => {
                var email = emails.First(t => t.Id == id);
 
                // nastavit result
@@ -163,29 +154,20 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
                email.ResultTime = _dateTime.GetLocalNow().DateTime;
                email.Errors = new ();
                email.Resend = false;
-
-               await _dbContext.SaveChangesAsync(default);
-
            },
-           error: async (id, code, message) => {
+           error: (id, code, message) => {
                var email = emails.First(t => t.Id == id);
 
                // nastavit result
                email.State = Contracts.v2.NotificationStates.Error;
                email.Errors = [ new () { Code = code, Message = message }];
-
-               await _dbContext.SaveChangesAsync(default);
-
            },
-           exception: async (id, code, message) => {
+           exception: (id, code, message) => {
                var email = emails.First(t => t.Id == id);
 
                // nastavit result
                email.State = Contracts.v2.NotificationStates.InProgress;
                email.Errors = [new() { Code = code, Message = message }];
-
-               await _dbContext.SaveChangesAsync(default);
-
            },
            cancellationToken: default);
     }
@@ -281,6 +263,8 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
 
                 _logger.SendEmailsJobFailedToSend(id, ex);
             }
+
+            await _dbContext.SaveChangesAsync(default);
         }
 
         _logger.SendEmailsJobEnd(emailsSent);
