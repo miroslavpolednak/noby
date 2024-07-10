@@ -41,7 +41,7 @@ public interface ISbWebApiClient
 
     Task UpdateTask(Dto.UpdateTask.UpdateTaskRequest request, CancellationToken cancellationToken = default);
 
-    Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime interestRateValidTo, CancellationToken cancellationToken);
+    Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime interestRateValidTo, int? fixedRatePeriod, CancellationToken cancellationToken);
 
     Task<string?> GenerateRetentionDocument(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken);
     Task<string?> GenerateHedgeAppendixDocument(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken = default);

@@ -7,7 +7,7 @@ internal sealed class GetInterestRateHandler(ExternalServices.SbWebApi.V1.ISbWeb
 {
     public async Task<GetInterestRateResponse> Handle(GetInterestRateRequest request, CancellationToken cancellationToken)
     {
-        var result = await _sbWebApi.GetRefixationInterestRate(request.CaseId, request.FutureInterestRateValidTo, cancellationToken);
+        var result = await _sbWebApi.GetRefixationInterestRate(request.CaseId, request.FutureInterestRateValidTo, request.FixedRatePeriod, cancellationToken);
 
         return new GetInterestRateResponse
         {

@@ -54,7 +54,7 @@ internal sealed class MockSbWebApiClient
         throw new NotImplementedException();
     }
 
-    public Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime date, CancellationToken cancellationToken)
+    public Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime date, int? fixedRatePeriod, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
