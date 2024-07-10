@@ -11,7 +11,7 @@ internal sealed class GenerateRefixationDocumentRequestValidator : AbstractValid
              () =>
              {
                  RuleFor(x => x.SignatureDeadline)
-                     .GreaterThanOrEqualTo(DateTime.UtcNow.AddDays(1).Date.ToLocalTime())
+                     .GreaterThanOrEqualTo(DateTime.UtcNow.AddDays(1).Date)
                      .WithErrorCode(90032)
                      .WithMessage("SignatureDeadline is lower than current time");
              });
