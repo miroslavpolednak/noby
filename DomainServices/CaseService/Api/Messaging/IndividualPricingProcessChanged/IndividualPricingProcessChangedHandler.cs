@@ -45,7 +45,9 @@ internal class IndividualPricingProcessChangedHandler(
         }
 
         // schvalena IC
-        if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) && taskDetail.TaskObject.DecisionId == 1)
+        if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) 
+            && taskDetail.TaskObject.DecisionId == 1 
+            && taskDetail.TaskObject.PhaseTypeId == 2)
         {
             await saveEntity(currentTaskId, caseId, message.occurredOn, null);
 
@@ -55,7 +57,9 @@ internal class IndividualPricingProcessChangedHandler(
                 return;
             }
         }
-        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) && taskDetail.TaskObject.DecisionId == 2)
+        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) 
+            && taskDetail.TaskObject.DecisionId == 2 
+            && taskDetail.TaskObject.PhaseTypeId == 2)
         {
             if (taskDetail.TaskObject.ProcessTypeId != 1)
             {
