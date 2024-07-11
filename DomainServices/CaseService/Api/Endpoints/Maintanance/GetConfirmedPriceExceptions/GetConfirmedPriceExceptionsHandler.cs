@@ -10,7 +10,7 @@ internal sealed class GetConfirmedPriceExceptionsHandler(CaseServiceDbContext _d
     {
         var list = await _dbContext
             .ConfirmedPriceExceptions
-            .Where(t => t.ConfirmedDate != null || t.DeclinedDate < request.OlderThan)
+            .Where(t => (t.ConfirmedDate != null && t.ConfirmedDate < request.OlderThan) || (t.DeclinedDate != null && t.DeclinedDate < request.OlderThan))
             .Select(t => new { t.CaseId, t.TaskIdSB })
             .ToListAsync(cancellationToken);
 
