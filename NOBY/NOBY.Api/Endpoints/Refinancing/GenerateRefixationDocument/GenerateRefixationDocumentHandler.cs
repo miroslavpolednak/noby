@@ -46,10 +46,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
     {
         var product = await _productService.GetMortgage(request.CaseId, cancellationToken);
 
-        if (DateTime.Now.AddDays(14) > ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.Now))
-            throw new NobyValidationException(90062);
-
-        await ValidateSignatureTypeDetailId(request, cancellationToken);
+        await ValidateSignatureTypeDetailId(request, product, cancellationToken);
 
         var salesArrangement = await _refinancingDocumentService.LoadAndValidateSA(request.SalesArrangementId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
         var offer = await LoadAndValidateOffer(salesArrangement.CaseId, cancellationToken);
@@ -74,18 +71,27 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
     }
 
-    private async Task ValidateSignatureTypeDetailId(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken)
+    private async Task ValidateSignatureTypeDetailId(GenerateRefixationDocumentRequest request, GetMortgageResponse product, CancellationToken cancellationToken)
     {
         var signatureTypeDetails = await _codebookService.SignatureTypeDetails(cancellationToken);
+        var fixedRateValidToDate = ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.Now).Date;
 
-        if (signatureTypeDetails.Any(s => s.Id == request.SignatureTypeDetailId &&
-                                          (s.IsHedgeAvailable && request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix) ||
-                                          (s.IsIndividualAvailable && request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.InterestRateNotification)))
+        if (request.RefixationDocumentTypeId == (int)RefixationDocumentTypes.HedgeAppendix)
         {
-            return;
-        }
+            if (!signatureTypeDetails.Any(s => s.Id == request.SignatureTypeDetailId && s.IsHedgeAvailable))
+                throw new NobyValidationException(90032);
 
-        throw new NobyValidationException(90032);
+            if (DateTime.Now.Date.AddDays(14) >= fixedRateValidToDate) 
+                throw new NobyValidationException(90062);
+        }
+        else
+        {
+            if (!signatureTypeDetails.Any(s => s.Id == request.SignatureTypeDetailId && s.IsIndividualAvailable))
+                throw new NobyValidationException(90032);
+
+            if (DateTime.Now.Date > fixedRateValidToDate) 
+                throw new NobyValidationException(90062);
+        }
     }
 
     private async Task<GetOfferListResponse.Types.GetOfferListItem> LoadAndValidateOffer(long caseId, CancellationToken cancellationToken)
