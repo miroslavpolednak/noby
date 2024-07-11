@@ -33,17 +33,10 @@ internal sealed class SimulateMortgageRefixationHandler(
 
         var validFrom = ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.MinValue).AddDays(1);
 
-        // ziskat int.rate
-        var interestRate = await _offerService.GetInterestRate(request.CaseId, validFrom, cancellationToken);
-
         // aktivni IC
         decimal? currentInterestRateDiscount = request.ProcessId.HasValue ? (await _refinancingDataService.GetActivePriceException(request.CaseId, request.ProcessId.Value, cancellationToken))?.LoanInterestRate?.LoanInterestRateDiscount : null;
 
-        // validace rate
-        if (currentInterestRateDiscount.GetValueOrDefault() > 0 && (interestRate - currentInterestRateDiscount!.Value) < 0.1M)
-        {
-            throw new NobyValidationException(90060);
-        }
+        var interestRates = await GetInterestRates(request.CaseId, validFrom, request.FixedRatePeriods, currentInterestRateDiscount, cancellationToken);
 
         // vytvorit vsechny simulace
         List<OfferSimulateMortgageRefixationResponse> response = [];
@@ -60,7 +53,7 @@ internal sealed class SimulateMortgageRefixationHandler(
                 },
                 SimulationInputs = new()
                 {
-                    InterestRate = interestRate,
+                    InterestRate = interestRates[period],
                     InterestRateDiscount = currentInterestRateDiscount,
                     FixedRatePeriod = period,
                     InterestRateValidFrom = validFrom
@@ -73,7 +66,7 @@ internal sealed class SimulateMortgageRefixationHandler(
             response.Add(new OfferSimulateMortgageRefixationResponse
             {
                 OfferId = result.OfferId,
-                InterestRate = interestRate,
+                InterestRate = interestRates[period],
                 InterestRateDiscount = currentInterestRateDiscount,
                 LoanPaymentAmount = result.SimulationResults.LoanPaymentAmount,
                 LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted
@@ -81,5 +74,26 @@ internal sealed class SimulateMortgageRefixationHandler(
         }
 
         return response;
+    }
+
+    private async Task<Dictionary<int, decimal>> GetInterestRates(long caseId, DateTime validFrom, List<int> fixedRatePeriods, decimal? currentInterestRateDiscount, CancellationToken cancellationToken)
+    {
+        var interestRates = new Dictionary<int, decimal>(fixedRatePeriods.Count);
+
+        foreach (var fixedRatePeriod in fixedRatePeriods)
+        {
+            // ziskat int.rate
+            var interestRate = await _offerService.GetInterestRate(caseId, validFrom, fixedRatePeriod, cancellationToken);
+
+            // validace rate
+            if (currentInterestRateDiscount.GetValueOrDefault() > 0 && (interestRate - currentInterestRateDiscount!.Value) < 0.1M)
+            {
+                throw new NobyValidationException(90060);
+            }
+
+            interestRates[fixedRatePeriod] = interestRate;
+        }
+
+        return interestRates;
     }
 }

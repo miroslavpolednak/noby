@@ -11,7 +11,7 @@ internal sealed class SimulateMortgageRetentionHandler(
     public async Task<OfferSimulateMortgageRetentionResponse> Handle(OfferSimulateMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
         // ziskat int.rate
-        var interestRate = await _offerService.GetInterestRate(request.CaseId, request.InterestRateValidFrom, cancellationToken);
+        var interestRate = await _offerService.GetInterestRate(request.CaseId, request.InterestRateValidFrom, cancellationToken: cancellationToken);
         
         // validace rate
         if (request.InterestRateDiscount.GetValueOrDefault() > 0 && (interestRate - request.InterestRateDiscount!.Value) < 0.1M)

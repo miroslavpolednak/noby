@@ -11,7 +11,7 @@ internal sealed class GetInterestRateHandler
         // zjistit datumy, pouzit vychozi
         var validityDates = await _ratesValidFromService.GetValidityDates(request.CaseId, cancellationToken);
 
-        var result = await _offerService.GetInterestRate(request.CaseId, validityDates.Date2, cancellationToken);
+        var result = await _offerService.GetInterestRate(request.CaseId, validityDates.Date2, cancellationToken: cancellationToken);
         return new GetInterestRateResponse
         {
             LoanInterestRateCurrent = result

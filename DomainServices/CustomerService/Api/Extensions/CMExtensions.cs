@@ -21,7 +21,7 @@ public static class CMExtensions
         switch (item.ContactTypeId)
         {
             case (int)ContactTypes.Mobil:
-                if (string.IsNullOrEmpty(contact.Value))
+                if (string.IsNullOrWhiteSpace(contact.Value))
                     item.Mobile = new MobilePhoneItem();
                 else if (contact.Value.Length == 9)
                     item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value, PhoneIDC = "" };

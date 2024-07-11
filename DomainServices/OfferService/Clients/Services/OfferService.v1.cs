@@ -5,11 +5,12 @@ namespace DomainServices.OfferService.Clients.v1;
 internal sealed class OfferService 
     : IOfferServiceClient
 {
-    public async Task<decimal> GetInterestRate(long caseId, DateTime futureInterestRateValidTo, CancellationToken cancellationToken = default)
+    public async Task<decimal> GetInterestRate(long caseId, DateTime futureInterestRateValidTo, int? fixedRatePeriod = default, CancellationToken cancellationToken = default)
         => (await _service.GetInterestRateAsync(new GetInterestRateRequest
         {
             CaseId = caseId,
-            FutureInterestRateValidTo = futureInterestRateValidTo
+            FutureInterestRateValidTo = futureInterestRateValidTo,
+            FixedRatePeriod = fixedRatePeriod,
         }, cancellationToken: cancellationToken)).LoanInterestRate;
 
     public async Task<List<Contracts.GetOfferListResponse.Types.GetOfferListItem>> GetOfferList(long caseId, OfferTypes offerType, bool ommitParametersFromResponse = false, CancellationToken cancellationToken = default)

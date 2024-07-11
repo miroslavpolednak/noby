@@ -14,6 +14,7 @@ internal sealed class GetProductObligationListHandler(IMpHomeClient _mpHomeClien
 
         var responseItems = product?
             .Obligations?
+            .Where(obligation => obligation.ObligationType != 0 && obligation.Amount > 0 && !string.IsNullOrWhiteSpace(obligation.Creditor))
             .Select(obligation =>
             {
                 var item = new GetProductObligationItem

@@ -184,9 +184,6 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
     {
         _logger.SendEmailsJobStart(ids.Count);
 
-        // vytahnout k emailum payload
-        var emailPayloads = await _documentDataStorage.GetList<TPayload, string>(ids.Select(t => t.ToString()).ToArray(), cancellationToken);
-
         int emailsSent = 0;
 
         // projit vsechny emaily a odeslat je
@@ -210,14 +207,14 @@ internal sealed class SendEmailsJob(SendEmailsJobConfiguration _configuration,
 
             try
             {
-                // najit payload
-                var payload = emailPayloads.FirstOrDefault(t => t.EntityId == id.ToString())?.Data;
+                // vytahnout k emailu payload (kvuli velikym priloham delat jednotlive)
+                var payload = await _documentDataStorage.FirstOrDefaultByEntityId<TPayload, string>(id.ToString(), cancellationToken);
 
-                if (payload is null)
+                if (payload is null || payload.Data is null)
                     throw new CisNotFoundException(0, $"Request payload for email result id {id} was not found.");
 
                 // vytvorit zpravu
-                var email = createEmail(id, payload);
+                var email = createEmail(id, payload.Data);
 
                 // zkontrolovat whitelist
                 if (_configuration.EmailDomainWhitelist.Count != 0)
