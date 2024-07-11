@@ -32,7 +32,7 @@
 
 	<ItemGroup>
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
