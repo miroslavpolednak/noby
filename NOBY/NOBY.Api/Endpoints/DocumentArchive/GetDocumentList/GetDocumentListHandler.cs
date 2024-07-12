@@ -5,7 +5,7 @@ using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
-public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, GetDocumentListResponse>
+public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, DocumentArchiveGetDocumentListResponse>
 {
     private readonly IDocumentArchiveServiceClient _client;
     private readonly ICurrentUserAccessor _currentUserAccessor;
@@ -21,7 +21,7 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
         _documentHelper = documentHelper;
     }
 
-    public async Task<GetDocumentListResponse> Handle(GetDocumentListRequest request, CancellationToken cancellationToken)
+    public async Task<DocumentArchiveGetDocumentListResponse> Handle(GetDocumentListRequest request, CancellationToken cancellationToken)
     {
         var user = _currentUserAccessor.User;
 
@@ -46,7 +46,7 @@ public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, Ge
 
         var mergedDocumentMetadataFiltered = (await _documentHelper.FilterDocumentsVisibleForKb(mergedDocumentMetadata, cancellationToken)).ToList();
 
-        var finalResponse = new GetDocumentListResponse();
+        var finalResponse = new DocumentArchiveGetDocumentListResponse();
         finalResponse.DocumentsMetadata = mergedDocumentMetadataFiltered;
         finalResponse.CategoryEaCodeMain = await _documentHelper.CalculateCategoryEaCodeMain(mergedDocumentMetadataFiltered, cancellationToken);
         return finalResponse;

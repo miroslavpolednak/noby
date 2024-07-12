@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
-public class GetDocumentListRequest:IRequest<GetDocumentListResponse>
+public class GetDocumentListRequest:IRequest<DocumentArchiveGetDocumentListResponse>
 {
 	public GetDocumentListRequest(long caseId, string? formId)
 	{
