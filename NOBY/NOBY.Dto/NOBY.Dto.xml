@@ -114,32 +114,6 @@
             Kategorie profese, validováno oproti číselníku ProfessionCategory (se zohledněním validních hodnot - IsValid a IsValidNoby)
             </summary>
         </member>
-        <member name="P:NOBY.Dto.Documents.DocumentInformation.Guid">
-            <summary>
-            GUID dokumentu v dočasném úložišti
-            </summary>
-        </member>
-        <member name="P:NOBY.Dto.Documents.DocumentInformation.EaCodeMainId">
-            <summary>
-            Id EA kódu
-            </summary>
-        </member>
-        <member name="P:NOBY.Dto.Documents.DocumentInformation.Description">
-            <summary>
-            Popis dokumentu
-            </summary>
-        </member>
-        <member name="P:NOBY.Dto.Documents.DocumentsMetadata.FormId">
-            <summary>
-            Businessové ID
-            </summary>
-        </member>
-        <member name="P:NOBY.Dto.Documents.DocumentsMetadata.UploadStatus">
-            <summary>
-            Stav přenosu dokumentu do eArchivu. Enum Values: 0 - Uloženo v eArchivu, 1 - Ve zpracování, 2 - Chyba
-            </summary>
-            <example>1</example>
-        </member>
         <member name="P:NOBY.Dto.EmailAddressConfirmedDto.EmailAddress">
             <summary>
             Emailová adresa

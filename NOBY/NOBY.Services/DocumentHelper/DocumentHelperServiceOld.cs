@@ -1,24 +1,24 @@
-﻿using NOBY.Dto.Documents;
-using __Contract = DomainServices.DocumentArchiveService.Contracts;
+﻿using __Contract = DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.UserService.Contracts;
 using CIS.Core.Security;
 using NOBY.Infrastructure.ErrorHandling;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.DocumentHelper;
 
 public interface IDocumentHelperServiceOld
 {
-    IEnumerable<DocumentsMetadata> MergeDocuments(IEnumerable<DocumentsMetadata> documentList, IEnumerable<DocumentsMetadata> documentInQueue);
+    IEnumerable<SharedTypesDocumentsMetadata> MergeDocuments(IEnumerable<SharedTypesDocumentsMetadata> documentList, IEnumerable<SharedTypesDocumentsMetadata> documentInQueue);
 
-    IEnumerable<DocumentsMetadata> MapGetDocumentsInQueueMetadata(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult);
+    IEnumerable<SharedTypesDocumentsMetadata> MapGetDocumentsInQueueMetadata(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult);
 
-    IEnumerable<DocumentsMetadata> MapGetDocumentListMetadata(__Contract.GetDocumentListResponse getDocumentListResult);
+    IEnumerable<SharedTypesDocumentsMetadata> MapGetDocumentListMetadata(__Contract.GetDocumentListResponse getDocumentListResult);
 
-    Task<IEnumerable<DocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<DocumentsMetadata> docMetadata, CancellationToken cancellationToken);
+    Task<IEnumerable<SharedTypesDocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<SharedTypesDocumentsMetadata> docMetadata, CancellationToken cancellationToken);
 
-    Task<IReadOnlyCollection<CategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<DocumentsMetadata> documentsMetadata, CancellationToken cancellationToken);
+    Task<List<SharedTypesDocumentsCategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<SharedTypesDocumentsMetadata> documentsMetadata, CancellationToken cancellationToken);
 
     string GetAuthorUserLoginForDocumentUpload(User user);
 }
@@ -40,15 +40,15 @@ internal sealed class DocumentHelperServiceOld
         _currentUserAccessor = currentUserAccessor;
     }
 
-    public IEnumerable<DocumentsMetadata> MergeDocuments(IEnumerable<DocumentsMetadata> documentList, IEnumerable<DocumentsMetadata> documentInQueue)
+    public IEnumerable<SharedTypesDocumentsMetadata> MergeDocuments(IEnumerable<SharedTypesDocumentsMetadata> documentList, IEnumerable<SharedTypesDocumentsMetadata> documentInQueue)
     {
         return documentList.Concat(documentInQueue.Where(d => !documentList.Select(l => l.DocumentId)
                                                                         .Contains(d.DocumentId)));
     }
 
-    public IEnumerable<DocumentsMetadata> MapGetDocumentsInQueueMetadata(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult)
+    public IEnumerable<SharedTypesDocumentsMetadata> MapGetDocumentsInQueueMetadata(__Contract.GetDocumentsInQueueResponse getDocumentsInQueueResult)
     {
-        return getDocumentsInQueueResult.QueuedDocuments.Select(s => new DocumentsMetadata
+        return getDocumentsInQueueResult.QueuedDocuments.Select(s => new SharedTypesDocumentsMetadata
         {
             DocumentId = s.EArchivId,
             EaCodeMainId = s.EaCodeMainId,
@@ -60,9 +60,9 @@ internal sealed class DocumentHelperServiceOld
         });
     }
 
-    public IEnumerable<DocumentsMetadata> MapGetDocumentListMetadata(__Contract.GetDocumentListResponse getDocumentListResult)
+    public IEnumerable<SharedTypesDocumentsMetadata> MapGetDocumentListMetadata(__Contract.GetDocumentListResponse getDocumentListResult)
     {
-        return getDocumentListResult.Metadata.Select(s => new DocumentsMetadata
+        return getDocumentListResult.Metadata.Select(s => new SharedTypesDocumentsMetadata
         {
             DocumentId = s.DocumentId,
             EaCodeMainId = s.EaCodeMainId,
@@ -74,7 +74,7 @@ internal sealed class DocumentHelperServiceOld
         });
     }
 
-    public async Task<IEnumerable<DocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<DocumentsMetadata> docMetadata, CancellationToken cancellationToken)
+    public async Task<IEnumerable<SharedTypesDocumentsMetadata>> FilterDocumentsVisibleForKb(IEnumerable<SharedTypesDocumentsMetadata> docMetadata, CancellationToken cancellationToken)
     {
         EaCodeMainItems = await _codebookService.EaCodesMain(cancellationToken);
 
@@ -89,7 +89,7 @@ internal sealed class DocumentHelperServiceOld
         return query.Select(s => s.docData);
     }
 
-    public async Task<IReadOnlyCollection<CategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<DocumentsMetadata> documentsMetadata, CancellationToken cancellationToken)
+    public async Task<List<SharedTypesDocumentsCategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<SharedTypesDocumentsMetadata> documentsMetadata, CancellationToken cancellationToken)
     {
         EaCodeMainItems ??= await _codebookService.EaCodesMain(cancellationToken);
 
@@ -103,16 +103,16 @@ internal sealed class DocumentHelperServiceOld
 
         var eaCodeMainCategories = dataWithEaCodeMain.Select(s => s.eACodeMainObj!.Category.Trim()).Distinct().ToList();
 
-        var categoryEaCodeMains = new List<CategoryEaCodeMain>();
+        var categoryEaCodeMains = new List<SharedTypesDocumentsCategoryEaCodeMain>();
 
         foreach (var eaCodeMainCategory in eaCodeMainCategories)
         {
-            var categoryEaCodeMain = new CategoryEaCodeMain
+            var categoryEaCodeMain = new SharedTypesDocumentsCategoryEaCodeMain
             {
                 Name = eaCodeMainCategory,
                 DocumentCountInCategory = dataWithEaCodeMain.Count(c => c.eACodeMainObj!.Category == eaCodeMainCategory),
                 EaCodeMainIdList = dataWithEaCodeMain.Where(c => c.eACodeMainObj!.Category == eaCodeMainCategory)
-                                                     .Select(s => s.docData.EaCodeMainId).Distinct().ToList(),
+                                                     .Select(s => s.docData.EaCodeMainId ?? 0).Distinct().ToList(),
             };
 
             categoryEaCodeMains.Add(categoryEaCodeMain);
@@ -133,11 +133,11 @@ internal sealed class DocumentHelperServiceOld
             throw new CisNotFoundException(ErrorCodeMapper.DefaultExceptionCode, "Cannot get NOBY user identifier");
     }
 
-    private static UploadStatuses getUploadStatus(int stateInQueue) => stateInQueue switch
+    private static SharedTypesDocumentsMetadataUploadStatus getUploadStatus(int stateInQueue) => stateInQueue switch
     {
-        100 or 110 or 200 => UploadStatuses.InProgress,
-        300 => UploadStatuses.Error,
-        400 => UploadStatuses.SaveInEArchive,
+        100 or 110 or 200 => SharedTypesDocumentsMetadataUploadStatus.InProgress,
+        300 => SharedTypesDocumentsMetadataUploadStatus.Error,
+        400 => SharedTypesDocumentsMetadataUploadStatus.SaveInEArchive,
         _ => throw new ArgumentException("StatusInDocumentInterface is not supported")
     };
 }

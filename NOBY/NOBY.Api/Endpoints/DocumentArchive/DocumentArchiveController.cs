@@ -1,10 +1,8 @@
 ﻿using Asp.Versioning;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 using NOBY.Api.Endpoints.DocumentArchive.SetDocumentStatusInQueue;
 using NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
-using NOBY.Dto.Documents;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.DocumentArchive;
@@ -39,14 +37,14 @@ public class DocumentArchiveController : ControllerBase
     [ProducesResponseType(typeof(Stream), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetDocument(
-        [FromQuery] FileContentDispositions contentDisposition,
-        [FromQuery] GetDocument.Source source,
+        [FromQuery] EnumContentDisposition contentDisposition,
+        [FromQuery] EnumDocumentSource source,
         [FromQuery] string? documentId,
         [FromQuery] string? externalId,
         CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetDocumentRequest(source, documentId, externalId), cancellationToken);
-        if (contentDisposition == FileContentDispositions.inline)
+        if (contentDisposition == EnumContentDisposition.Inline)
         {
             return File(result.Content.BinaryData, result.Content.MimeType);
         }
@@ -69,9 +67,9 @@ public class DocumentArchiveController : ControllerBase
     [HttpGet("case/{caseId:long}/documents")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Dokument" ])]
-    [ProducesResponseType(typeof(GetDocumentListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DocumentArchiveGetDocumentListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetDocumentListResponse> GetDocumentList([FromRoute] long caseId, [FromQuery] string? formId, CancellationToken cancellationToken)
+    public async Task<DocumentArchiveGetDocumentListResponse> GetDocumentList([FromRoute] long caseId, [FromQuery] string? formId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetDocumentListRequest(caseId, formId), cancellationToken);
 
     /// <summary>
@@ -100,7 +98,7 @@ public class DocumentArchiveController : ControllerBase
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SaveDocumentsToArchive(
      [FromRoute] long caseId,
-     [FromBody] SaveDocumentsToArchiveRequest request)
+     [FromBody] DocumentArchiveSaveDocumentsToArchiveRequest request)
     {
         await _mediator.Send(request?.InfuseId(caseId) ?? throw new NobyValidationException("Payload is empty"));
         return Accepted();

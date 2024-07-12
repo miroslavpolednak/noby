@@ -4,6 +4,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.WorkflowMapper;
 using NOBY.Infrastructure.ErrorHandling;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.WorkflowTask;
 
@@ -11,7 +12,7 @@ namespace NOBY.Services.WorkflowTask;
 internal sealed class WorkflowTaskServiceOld
     : IWorkflowTaskServiceOld
 {
-    public async Task<(Dto.Workflow.WorkflowTask Task, Dto.Workflow.WorkflowTaskDetail TaskDetail, List<Dto.Documents.DocumentsMetadata> Documents)> GetTaskDetail(
+    public async Task<(Dto.Workflow.WorkflowTask Task, Dto.Workflow.WorkflowTaskDetail TaskDetail, List<SharedTypesDocumentsMetadata> Documents)> GetTaskDetail(
         long caseId, 
         int taskIdSb, 
         CancellationToken cancellationToken = default)
@@ -30,11 +31,11 @@ internal sealed class WorkflowTaskServiceOld
         }
         else
         {
-            return (taskDto, taskDetailDto, new List<Dto.Documents.DocumentsMetadata>());
+            return (taskDto, taskDetailDto, new List<SharedTypesDocumentsMetadata>());
         }
     }
 
-    private async Task<List<Dto.Documents.DocumentsMetadata>> getDocuments(long caseId, string[] taskDocumentIds, CancellationToken cancellationToken)
+    private async Task<List<SharedTypesDocumentsMetadata>> getDocuments(long caseId, string[] taskDocumentIds, CancellationToken cancellationToken)
     {
         var documentListResponse = await _documentArchiveService.GetDocumentList(new()
         {

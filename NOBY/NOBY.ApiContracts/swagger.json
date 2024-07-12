@@ -3491,7 +3491,272 @@
           }
         }
       }
-    }
+    },
+	
+	"/api/v1/document": {
+        "get": {
+          "tags": [
+            "Dokument"
+          ],
+          "summary": "Načtení dokumentu z archivu nebo starbuildu",
+          "description": "Načtení contentu dokumentu. Vrací se stream binárních dat.<br /><br />Nenačítají se z eArchivu dokumenty s EaCodeMain.IsVisibleForKb=false. <br /><br /><br />DocumentId je povinné v kombinaci se source = 0 (eArchiv) a externalId je povinné v kombinaci se source = 1, 2 (Starbuild).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=9617EAF8-9876-4444-A130-DFCCD597484D\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+          "operationId": "GetDocument",
+          "parameters": [
+            {
+              "name": "contentDisposition",
+              "in": "query",
+              "description": "0 (Uložit jako ), 1 (Zobrazit v prohlížeči), 0 je default",
+              "schema": {
+               "$ref": "#/components/schemas/EnumContentDisposition"
+              }
+            },
+            {
+              "name": "source",
+              "in": "query",
+              "description": "Zdroj dokumentu (0 - e-archiv; 1 - Starbuild dokumenty (D); 2 - Starbuild přílohy (A), 0 je default",
+              "schema": {
+                 "$ref": "#/components/schemas/EnumDocumentSource"  
+              }
+            },
+            {
+              "name": "documentId",
+              "in": "query",
+              "description": "Id dokumentu eArchivu",
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "externalId",
+              "in": "query",
+              "description": "Externí ID ePodpisů",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Dokument"
+          ],
+          "summary": "Nahrání dokumentu",
+          "description": "Uložení binárních dat dokumentu do dočasného úložiště.<br /><br /><br />Zasílá se i jméno souboru viz. filename v multipart/form-data<a href=\"https://www.rfc-editor.org/rfc/rfc7578\"> rfc7578</a><br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=618F9E36-618D-4dc5-A3C6-38626871504C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" /> Diagram v EA</a>",
+          "operationId": "UploadDocument",
+          "requestBody": {
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                },
+                "encoding": {
+                  "file": {
+                    "style": "form"
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "text/plain": {
+                  "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "application/json": {
+                  "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "text/json": {
+                  "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+	"/api/v1/case/{caseId}/documents": {
+        "get": {
+          "tags": [
+            "Dokument"
+          ],
+          "summary": "Seznam dokumentů ke Case-u",
+          "description": "Načtení seznamu dokumentů ke Case-u<br />Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+          "operationId": "GetDocumentList",
+          "parameters": [
+            {
+              "name": "caseId",
+              "in": "path",
+              "description": "ID Case-u",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            {
+              "name": "formId",
+              "in": "query",
+              "description": "Businessové ID dokumentu, na které chceme zafiltrovat.",
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/DocumentArchiveGetDocumentListResponse"
+                  }
+                }
+              }
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "Dokument"
+          ],
+          "summary": "Uložení dokumentů ke Case-u do archivu",
+          "description": "Uložení dokumentů do archivu <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+          "operationId": "SaveDocumentsToArchive",
+          "parameters": [
+            {
+              "name": "caseId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/DocumentArchiveSaveDocumentsToArchiveRequest"
+                    }
+                  ]
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/DocumentArchiveSaveDocumentsToArchiveRequest"
+                    }
+                  ]
+                }
+              },
+              "application/*+json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/DocumentArchiveSaveDocumentsToArchiveRequest"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "responses": {
+            "202": {
+              "description": "Accepted"
+            }
+          }
+        }
+      },  
+	"/api/v1/document/{documentId}/status/{statusId}": {
+        "put": {
+          "tags": [
+            "Dokument"
+          ],
+          "summary": "Slouží k nastavení stavu dokumentu ve frontě",
+          "description": "Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C23F8DBF-9F26-465b-BB34-8736133D020D\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+          "operationId": "SetDocumentStatusInQueue",
+          "parameters": [
+            {
+              "name": "documentId",
+              "in": "path",
+              "description": "ID dokumentu",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "statusId",
+              "in": "path",
+              "description": "status dokumentu ve frontě",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int32"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "404": {
+              "description": "Not Found"
+            }
+          }
+        }
+      },
   },
   "components": {
     "schemas": {
@@ -10064,7 +10329,55 @@
         "additionalProperties": false
       },
 
-      "SharedTypesCustomerIdentity": {
+	  "DocumentArchiveGetDocumentListResponse": {
+          "type": "object",
+          "properties": {
+            "documentsMetadata": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/SharedTypesDocumentsMetadata"
+              }
+            },
+            "categoryEaCodeMain": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/SharedTypesDocumentsCategoryEaCodeMain"
+              }
+            }
+          },
+          "additionalProperties": false
+      },
+	  "DocumentArchiveSaveDocumentsToArchiveRequest": {
+          "type": "object",
+          "properties": {
+            "documentsInformation": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DocumentArchiveDocumentsInformation"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+	  "DocumentArchiveDocumentsInformation": {
+          "type": "object",
+          "properties": {
+            "documentInformation": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SharedTypesDocumentInformation"
+                }
+              ]
+            },
+            "formId": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "additionalProperties": false
+        },
+	  
+	  "SharedTypesCustomerIdentity": {
         "type": "object",
         "properties": {
           "id": {
@@ -11169,6 +11482,7 @@
         "x-enumNames": ["Unknown", "Online", "DTS", "Standard"]
       },
       "EnumOfferFlagTypes": {
+		  
         "enum": [0, 1, 2, 4, 8, 16, 32],
         "type": "integer",
         "description": "Položky označené * není možné měnit pomocí API SetOfferFlags",
@@ -11184,7 +11498,23 @@
           "* Výchozí nabídka"
         ],
         "x-enumNames": ["None", "Current", "Communicated", "LegalNotice", "Liked", "Selected", "LegalNoticeDefault"]
-      }
-    }
+      },
+      "EnumContentDisposition":{
+		   "enum": [0, 1],
+		   "type": "integer",
+		   "description": "<small>Enum Values</small><ul><li>0 - attachment</li><li>1 - inline</li></ul>",
+           "format": "int32",
+		   "x-enum-varnames": ["Attachment", "Inline"],
+		   "x-enumNames": ["Attachment", "Inline"]
+	  },
+	  "EnumDocumentSource":{
+		   "enum": [0, 1, 2],
+           "type": "integer",
+           "description": "<small>Enum Values</small><ul><li>0 - EArchive</li><li>1 - SbDocument</li><li>2 - SbAttachment</li></ul>",
+           "format": "int32",
+		   "x-enum-varnames": ["EArchive", "SbDocument","SbAttachment"],
+		   "x-enumNames": ["EArchive", "SbDocument","SbAttachment"]
+	  }
+	}
   }
 }

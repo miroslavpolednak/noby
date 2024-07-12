@@ -7078,6 +7078,39 @@ namespace NOBY.ApiContracts
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentArchiveGetDocumentListResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentsMetadata")]
+        public List<SharedTypesDocumentsMetadata> DocumentsMetadata { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("categoryEaCodeMain")]
+        public List<SharedTypesDocumentsCategoryEaCodeMain> CategoryEaCodeMain { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentArchiveSaveDocumentsToArchiveRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentsInformation")]
+        public List<DocumentArchiveDocumentsInformation> DocumentsInformation { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentArchiveDocumentsInformation
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentInformation")]
+        public SharedTypesDocumentInformation DocumentInformation { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("formId")]
+        public string? FormId { get; set; } = default!;
+
+    }
+
     /// <summary>
     /// Identita klienta
     /// </summary>
@@ -8383,6 +8416,34 @@ namespace NOBY.ApiContracts
 
     }
 
+    /// <summary>
+    /// &lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - attachment&lt;/li&gt;&lt;li&gt;1 - inline&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumContentDisposition
+    {
+
+        Attachment = 0,
+
+        Inline = 1,
+
+    }
+
+    /// <summary>
+    /// &lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - EArchive&lt;/li&gt;&lt;li&gt;1 - SbDocument&lt;/li&gt;&lt;li&gt;2 - SbAttachment&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumDocumentSource
+    {
+
+        EArchive = 0,
+
+        SbDocument = 1,
+
+        SbAttachment = 2,
+
+    }
+
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public enum OfferSimulateMortgageCreditWorthinessSimpleResultsWorthinessResult
     {
@@ -8502,6 +8563,70 @@ namespace NOBY.ApiContracts
         Error = 2,
 
     }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class FileParameter
+    {
+        public FileParameter(System.IO.Stream data)
+            : this (data, null, null)
+        {
+        }
+
+        public FileParameter(System.IO.Stream data, string? fileName)
+            : this (data, fileName, null)
+        {
+        }
+
+        public FileParameter(System.IO.Stream data, string? fileName, string? contentType)
+        {
+            Data = data;
+            FileName = fileName;
+            ContentType = contentType;
+        }
+
+        public System.IO.Stream Data { get; private set; }
+
+        public string? FileName { get; private set; }
+
+        public string? ContentType { get; private set; }
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class FileResponse : System.IDisposable
+    {
+        private System.IDisposable? _client;
+        private System.IDisposable? _response;
+
+        public int StatusCode { get; private set; }
+
+        public System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> Headers { get; private set; }
+
+        public System.IO.Stream Stream { get; private set; }
+
+        public bool IsPartial
+        {
+            get { return StatusCode == 206; }
+        }
+
+        public FileResponse(int statusCode, System.Collections.Generic.IReadOnlyDictionary<string, System.Collections.Generic.IEnumerable<string>> headers, System.IO.Stream stream, System.IDisposable? client, System.IDisposable? response)
+        {
+            StatusCode = statusCode;
+            Headers = headers;
+            Stream = stream;
+            _client = client;
+            _response = response;
+        }
+
+        public void Dispose()
+        {
+            Stream.Dispose();
+            if (_response != null)
+                _response.Dispose();
+            if (_client != null)
+                _client.Dispose();
+        }
+    }
+
 
 
 }

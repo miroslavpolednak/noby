@@ -13,7 +13,7 @@ using NOBY.Services.EaCodeMain;
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
 public class SaveDocumentToArchiveHandler
-    : IRequestHandler<SaveDocumentsToArchiveRequest>
+    : IRequestHandler<DocumentArchiveSaveDocumentsToArchiveRequest>
 {
     private const string _defaultContractNumber = "HF00111111125";
 
@@ -56,7 +56,7 @@ public class SaveDocumentToArchiveHandler
         _eaCodeMainHelper = eaCodeMainHelper;
     }
 
-    public async Task Handle(SaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
+    public async Task Handle(DocumentArchiveSaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var filePaths = new List<Guid>();
@@ -94,7 +94,7 @@ public class SaveDocumentToArchiveHandler
         await _tempFileManager.Delete(filePaths, cancellationToken);
     }
 
-    private async Task CheckIfDocumentCanByUploadedFromNoby(DocumentsInformation docInfo, CancellationToken cancellationToken)
+    private async Task CheckIfDocumentCanByUploadedFromNoby(DocumentArchiveDocumentsInformation docInfo, CancellationToken cancellationToken)
     {
         var eaCodeMainItems = await _codebookService.EaCodesMain(cancellationToken);
         var eACodeMain = eaCodeMainItems.Find(e => e.Id == docInfo.DocumentInformation.EaCodeMainId)
@@ -130,7 +130,7 @@ public class SaveDocumentToArchiveHandler
         throw new CisAuthorizationException("CheckDrawingPermissionIfArrangementIsDrawing failed");
     }
 
-    private async Task CheckIfFormIdRequired(DocumentsInformation docInfo, CancellationToken cancellationToken)
+    private async Task CheckIfFormIdRequired(DocumentArchiveDocumentsInformation docInfo, CancellationToken cancellationToken)
     {
         var eACodeMains = await _codebookService.EaCodesMain(cancellationToken);
 
@@ -146,7 +146,7 @@ public class SaveDocumentToArchiveHandler
     /// </summary>
     /// <returns>DocumentOnSa.DocumentOnSAId</returns>
     /// <exception cref="CisValidationException">Unable to upload file for selected FormId</exception>
-    private async Task<int?> ValidateFormId(long caseId, DocumentsInformation docInfo, CancellationToken cancellationToken)
+    private async Task<int?> ValidateFormId(long caseId, DocumentArchiveDocumentsInformation docInfo, CancellationToken cancellationToken)
     {
         var eaCodeMainId = docInfo.DocumentInformation.EaCodeMainId!.Value;
 
@@ -181,7 +181,7 @@ public class SaveDocumentToArchiveHandler
         string fileName,
         string documentId,
         long caseId,
-        DocumentsInformation documentInformation,
+        DocumentArchiveDocumentsInformation documentInformation,
         string authorUserLogin,
         CancellationToken cancellationToken)
     {
