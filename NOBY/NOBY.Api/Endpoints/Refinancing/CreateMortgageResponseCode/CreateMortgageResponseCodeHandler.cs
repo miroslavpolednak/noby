@@ -1,4 +1,5 @@
-﻿using DomainServices.CodebookService.Clients;
+﻿using System.Globalization;
+using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 
@@ -25,7 +26,7 @@ internal sealed class CreateMortgageResponseCodeHandler(
             ValidTo = (DateTime?)mortgage.Mortgage.FixedRateValidTo ?? DateTime.Now.AddYears(3),
             Data = responseCode.DataType switch
             {
-                DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date => request.DataDateTime!.Value.ToString("s"),
+                DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.Date => request.DataDateTime!.Value.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                 DomainServices.CodebookService.Contracts.v1.ResponseCodeTypesResponse.Types.ResponseCodesItemDataTypes.BankCode => request.DataBankCode,
                 _ => request.DataString
             }
