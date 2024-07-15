@@ -2,6 +2,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
 using ExternalServices;
+using System.Text.Json;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -49,6 +50,8 @@ internal static class NobyServices
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
+                //TODO ODSTRANIT az FE bude reflektovat rozdil mezi datetime a date !!!!!!!!!!!!!!!!!!!!!!!
+                options.JsonSerializerOptions.Converters.Add(new TempJsonConverterForDateOnly());
             });
 
         // dbcontext
@@ -68,5 +71,35 @@ internal static class NobyServices
         builder.AddMpssSecurityCookie();
 
         return builder;
+    }
+}
+
+public sealed class TempJsonConverterForDateOnly
+    : System.Text.Json.Serialization.JsonConverter<DateOnly?>
+{
+    public override DateOnly? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null)
+        {
+            return null;
+        }
+        else
+        {
+            return reader.TryGetDateTime(out DateTime d) ? DateOnly.FromDateTime(d) : null;
+        }
+    }
+
+    // This method will be ignored on serialization, and the default typeof(DateTime) converter is used instead.
+    // This is a bug: https://github.com/dotnet/corefx/issues/41070#issuecomment-560949493
+    public override void Write(Utf8JsonWriter writer, DateOnly? value, JsonSerializerOptions options)
+    {
+        if (!value.HasValue)
+        {
+            writer.WriteStringValue("");
+        }
+        else
+        {
+            writer.WriteStringValue($"{value.Value:yyyy-MM-dd}");
+        }
     }
 }
