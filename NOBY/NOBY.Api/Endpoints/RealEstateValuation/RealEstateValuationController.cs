@@ -73,7 +73,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     public async Task<IActionResult> SetValuationTypeId(
         [FromRoute] long caseId,
         [FromRoute] int realEstateValuationId,
-        [FromBody] SetValuationTypeId.SetValuationTypeIdRequest request,
+        [FromBody] RealEstateValuationSetValuationTypeIdRequest request,
         CancellationToken cancellationToken)
     {
         await _mediator.Send(request.InfuseId(caseId, realEstateValuationId), cancellationToken);

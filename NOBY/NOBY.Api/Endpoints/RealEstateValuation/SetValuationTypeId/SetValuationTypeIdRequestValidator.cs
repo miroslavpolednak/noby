@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId;
 
 internal sealed class SetValuationTypeIdRequestValidator
-    : AbstractValidator<SetValuationTypeIdRequest>
+    : AbstractValidator<RealEstateValuationSetValuationTypeIdRequest>
 {
     public SetValuationTypeIdRequestValidator()
     {

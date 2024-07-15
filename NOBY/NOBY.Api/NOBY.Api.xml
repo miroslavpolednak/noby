@@ -790,9 +790,7 @@
             </summary>
             <remarks>
             Načtení seznamu dokumentů ke Case-u<br />Nevrací se dokumenty s EaCodeMain.IsVisibleForKb=false
-            
-            <a href ="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=25F73554-B9DB-42a4-8CB5-25FC3B3F6902"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
-            </remarks> 
+            </remarks>
             <param name="caseId">ID Case-u</param>
             <param name="formId">Businessové ID dokumentu, na které chceme zafiltrovat.</param>
         </member>
@@ -803,8 +801,7 @@
             <remarks>
             Uložení binárních dat dokumentu do dočasného úložiště.<br /><br />
             Zasílá se i jméno souboru viz. filename v multipart/form-data<a href="https://www.rfc-editor.org/rfc/rfc7578"> rfc7578</a><br /><br />
-            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=618F9E36-618D-4dc5-A3C6-38626871504C"><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width= "20" height= "20" /> Diagram v EA</a>
-            </remarks> 
+            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SaveDocumentsToArchive(System.Int64,NOBY.ApiContracts.DocumentArchiveSaveDocumentsToArchiveRequest)">
             <summary>
@@ -812,7 +809,6 @@
             </summary>
             <remarks>
             Uložení dokumentů do archivu <br/><br/>
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks> 
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SetDocumentStatusInQueue(System.String,System.Int32,System.Threading.CancellationToken)">
@@ -821,8 +817,6 @@
             </summary>
             <remarks>
             Nastavení stavu dokumentu ve frontě pro uložení do eArchiv-u
-            
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C23F8DBF-9F26-465b-BB34-8736133D020D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="documentId">ID dokumentu</param>
             <param name="statusId">status dokumentu ve frontě</param>
@@ -1643,7 +1637,7 @@
             Průběžné uložení konktaktů pro místní šetření pro pozdější použití.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SetValuationTypeId(System.Int64,System.Int32,NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.RealEstateValuation.RealEstateValuationController.SetValuationTypeId(System.Int64,System.Int32,NOBY.ApiContracts.RealEstateValuationSetValuationTypeIdRequest,System.Threading.CancellationToken)">
             <summary>
             Nastavení typu Ocenění nemovitosti
             </summary>
@@ -1774,16 +1768,6 @@
         <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SaveRealEstateValuationAttachments.SaveRealEstateValuationAttachmentsRequest.Attachments">
             <summary>
             Seznam uploadnutých příloh, které se mají založit k ocenění
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest">
-            <summary>
-            Hodnota valuationTypeId
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.RealEstateValuation.SetValuationTypeId.SetValuationTypeIdRequest.ValuationTypeId">
-            <summary>
-            Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
             </summary>
         </member>
         <member name="P:NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest.HandoverTypeDetailId">
