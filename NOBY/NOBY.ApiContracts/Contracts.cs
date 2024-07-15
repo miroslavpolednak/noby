@@ -7075,6 +7075,39 @@ namespace NOBY.ApiContracts
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class GeneralDocumentGetGeneralDocumentsDocument
+    {
+        /// <summary>
+        /// Id dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public int Id { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("name")]
+        public string? Name { get; set; } = default!;
+
+        /// <summary>
+        /// Jméno souboru ke stažení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("filename")]
+        public string? Filename { get; set; } = default!;
+
+        /// <summary>
+        /// Formát dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("format")]
+        public string? Format { get; set; } = default!;
+
+    }
+
     /// <summary>
     /// Identita klienta
     /// </summary>

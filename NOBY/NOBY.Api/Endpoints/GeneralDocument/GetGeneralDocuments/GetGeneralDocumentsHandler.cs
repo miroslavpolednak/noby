@@ -2,14 +2,14 @@
 
 namespace NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments;
 
-internal sealed class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDocumentsRequest, List<Document>>
+internal sealed class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDocumentsRequest, List<GeneralDocumentGetGeneralDocumentsDocument>>
 {
-    public async Task<List<Document>> Handle(GetGeneralDocumentsRequest request, CancellationToken cancellationToken)
+    public async Task<List<GeneralDocumentGetGeneralDocumentsDocument>> Handle(GetGeneralDocumentsRequest request, CancellationToken cancellationToken)
     {
         await Task.Delay(1, cancellationToken);
         var documents = await _codebookService.GetGeneralDocumentList(cancellationToken);
 
-        return documents.Select(d => new Document()
+        return documents.Select(d => new GeneralDocumentGetGeneralDocumentsDocument()
         {
             Id = d.Id,
             Filename = d.Filename,

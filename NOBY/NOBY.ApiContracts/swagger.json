@@ -3956,6 +3956,32 @@
       }
     },
     
+	"/api/v1/general-documents": {
+      "get": {
+        "tags": [
+          "Dokument"
+        ],
+        "summary": "Seznam obecných dokumentů ke stažení",
+        "description": "Načtení seznamu obecných dokumentů, které je možné stáhnout a vyplnit. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EA4655D8-5314-469b-8C92-5D2324EF1824\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetGeneralDocuments",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GeneralDocumentGetGeneralDocumentsDocument"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+	
 	},
   "components": {
     "schemas": {
@@ -10575,6 +10601,36 @@
           "formId": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+
+	  "GeneralDocumentGetGeneralDocumentsDocument": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Id dokumentu",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "description": "Jméno dokumentu",
+            "nullable": true,
+            "example": "Potvrzení o příjmech"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Jméno souboru ke stažení",
+            "nullable": true,
+            "example": "potvrzeni_o_prijmech.pdf"
+          },
+          "format": {
+            "type": "string",
+            "description": "Formát dokumentu",
+            "nullable": true,
+            "example": "PDF"
           }
         },
         "additionalProperties": false
