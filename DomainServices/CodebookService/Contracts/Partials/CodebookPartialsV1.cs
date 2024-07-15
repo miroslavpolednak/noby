@@ -7,6 +7,8 @@ public partial class GenericCodebookResponse : IItemsResponse<GenericCodebookRes
         public partial class GenericCodebookItem : IBaseCodebook { }
     }
 }
+public partial class BuildingSavingsMarketingActionsResponse : IItemsResponse<BuildingSavingsMarketingActionsResponse.Types.BuildingSavingsMarketingActionsItem> { }
+public partial class BuildingSavingsPropertiesResponse : IItemsResponse<BuildingSavingsPropertiesResponse.Types.BuildingSavingsPropertiesItem> { }
 public partial class FlowSwitchStatesResponse : IItemsResponse<FlowSwitchStatesResponse.Types.FlowSwitchStatesItem> { }
 public partial class IdentificationSubjectMethodsResponse : IItemsResponse<IdentificationSubjectMethodsResponse.Types.IdentificationSubjectMethodsItem> { }
 public partial class RefinancingStatesResponse : IItemsResponse<RefinancingStatesResponse.Types.RefinancingStatesItem> { }

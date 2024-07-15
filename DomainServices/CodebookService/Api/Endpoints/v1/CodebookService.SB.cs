@@ -5,6 +5,16 @@ namespace DomainServices.CodebookService.Api.Endpoints.v1;
 
 internal partial class CodebookService
 {
+    public override Task<BuildingSavingsMarketingActionsResponse> BuildingSavingsMarketingActions(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    {
+        return Task.FromResult(new BuildingSavingsMarketingActionsResponse());
+    }
+
+    public override Task<BuildingSavingsPropertiesResponse> BuildingSavingsProperties(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
+    {
+        return Task.FromResult(new BuildingSavingsPropertiesResponse());
+    }
+    
     public override Task<GenericCodebookResponse> ExtraPaymentReasons(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
 

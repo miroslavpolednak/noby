@@ -3,6 +3,33 @@ package DomainServices.CodebookService.v1;
 option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
+import "GrpcDecimal.proto";
+
+message BuildingSavingsMarketingActionsResponse {
+	repeated BuildingSavingsMarketingActionsItem Items = 1;
+
+	message BuildingSavingsMarketingActionsItem {
+		int32 Id = 1;
+		string Code = 2;
+		string Name = 3;
+		string Description = 4;
+		int32 DurationInMonths  = 5;
+		bool IsValid = 6;
+	}
+}
+
+message BuildingSavingsPropertiesResponse {
+	repeated BuildingSavingsPropertiesItem Items = 1;
+
+	message BuildingSavingsPropertiesItem {
+		int32 Id = 1;
+		string Code = 2;
+		string Name = 3;
+		int32 MinimumTargetAmount = 4;
+		cis.types.GrpcDecimal MinimumMonthlyDeposit  = 5;
+		bool IsValid = 6;
+	}
+}
 
 message IdentificationSubjectMethodsResponse {
 	repeated IdentificationSubjectMethodsItem Items = 1;

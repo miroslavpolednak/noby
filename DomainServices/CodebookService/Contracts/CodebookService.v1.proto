@@ -10,6 +10,20 @@ import "Messages/GetACVAndBagmanRealEstateType.proto";
 import "Messages/GetNonBankingDays.proto";
 
 service CodebookService {
+	rpc BuildingSavingsMarketingActions (google.protobuf.Empty) returns (BuildingSavingsMarketingActionsResponse) {
+	   option (google.api.http) = {
+			post: "/v1/building-savings-marketing-action",
+			body: "*"
+		};
+   }
+
+	rpc BuildingSavingsProperties (google.protobuf.Empty) returns (BuildingSavingsPropertiesResponse) {
+	   option (google.api.http) = {
+			post: "/v1/building-savings-properties",
+			body: "*"
+		};
+   }
+
 	rpc FlowSwitchStates (google.protobuf.Empty) returns (FlowSwitchStatesResponse) {
 	   option (google.api.http) = {
 			post: "/v1/flow-switch-states",
