@@ -17,4 +17,5 @@ internal sealed class LoggerEventIdCodes
     public const int KafkaConsumerStarted = 13515;
     public const int KafkaIndividualPricingProcessChangedSkipped = 13516;
     public const int KafkaLoanRetentionProcessChangedSkipped = 13517;
+    public const int KafkaIndividualPricingProcessChangedSkippedState = 13518;
 }

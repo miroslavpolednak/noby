@@ -17,6 +17,43 @@ internal class IndividualPricingProcessChangedHandler(
 {
     public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
     {
+        var (currentTaskId, caseId, isValid) = initialValidations(message);
+        if (isValid)
+        {
+            return;
+        }
+
+        // detail tasku
+        var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId });
+
+
+    }
+
+    private (int CurrentTaskId, long CaseId, bool IsValid) initialValidations(IndividualPricingProcessChanged message)
+    {
+        if (!int.TryParse(message.currentTask.id, out var currentTaskId))
+        {
+            _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.currentTask.id);
+            return (0, 0, false);
+        }
+
+        if (!long.TryParse(message.@case.caseId.id, out var caseId))
+        {
+            _logger.KafkaMessageCaseIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.@case.caseId.id);
+            return (0, 0, false);
+        }
+
+        if (message.state is not (ProcessStateEnum.ACTIVE or ProcessStateEnum.TERMINATED or ProcessStateEnum.COMPLETED))
+        {
+            _logger.KafkaIndividualPricingProcessChangedSkippedState(caseId, currentTaskId, message.state.ToString());
+            return (0, 0, false);
+        }
+
+        return (currentTaskId, caseId, true);
+    }
+
+    public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
+    {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
             _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(IndividualPricingProcessChangedHandler), message.currentTask.id);
