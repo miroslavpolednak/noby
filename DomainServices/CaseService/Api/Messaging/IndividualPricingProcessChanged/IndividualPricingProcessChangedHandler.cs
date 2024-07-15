@@ -26,7 +26,19 @@ internal class IndividualPricingProcessChangedHandler(
         // detail tasku
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = currentTaskId });
 
+        if (message.state == ProcessStateEnum.TERMINATED)
+        {
+            await _dbContext.ConfirmedPriceExceptions.Where(t => t.TaskIdSB == currentTaskId).ExecuteDeleteAsync(CancellationToken.None);
 
+            if (taskDetail.TaskObject.ProcessTypeId != 1)
+            {
+                _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, currentTaskId, taskDetail.TaskObject.ProcessTypeId);
+                return;
+            }
+        }
+        else if (taskDetail.TaskObject.DecisionId == 1 && taskDetail.TaskObject.PhaseTypeId == 2) // schvalene IC
+        {
+        }
     }
 
     private (int CurrentTaskId, long CaseId, bool IsValid) initialValidations(IndividualPricingProcessChanged message)
