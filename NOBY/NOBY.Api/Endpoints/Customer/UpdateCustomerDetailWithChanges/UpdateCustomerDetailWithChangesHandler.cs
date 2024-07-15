@@ -165,7 +165,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         var delta = CreateDelta(request, originalModel);
 
         //Update SingleLine address if address was changed
-        if (delta.Addresses is not null)
+        if (delta?.Addresses is not null)
         {
             foreach (var requestAddress in request.Addresses!)
             {
