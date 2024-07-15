@@ -11,6 +11,7 @@ internal sealed class ConfirmedPriceException
 
     public long CaseId { get; set; }
     public int TaskIdSB { get; set; }
+    public long? TaskId { get; set; }
     public DateOnly? ConfirmedDate { get; set; }
     public DateOnly? DeclinedDate { get; set; }
     public DateTime CreatedTime { get; set; }
