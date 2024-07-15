@@ -120,13 +120,12 @@ internal class IndividualPricingProcessChangedHandler(
 
     private async Task saveEntity(long taskId, int taskIdSB, long caseId, DateTime? confirmedDate, DateTime? declinedDate)
     {
-        var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskId == taskId && t.TaskIdSB == taskIdSB);
+        var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskId == taskId);
 
         if (existingConfirmedEntity is null)
         {
             existingConfirmedEntity = new Database.Entities.ConfirmedPriceException
             {
-                TaskIdSB = taskIdSB,
                 CaseId = caseId,
                 TaskId = taskId
             };
@@ -136,6 +135,7 @@ internal class IndividualPricingProcessChangedHandler(
         existingConfirmedEntity.ConfirmedDate = confirmedDate.HasValue ? DateOnly.FromDateTime(confirmedDate.Value) : null;
         existingConfirmedEntity.DeclinedDate = declinedDate.HasValue ? DateOnly.FromDateTime(declinedDate.Value) : null;
         existingConfirmedEntity.CreatedTime = DateTime.Now;
+        existingConfirmedEntity.TaskIdSB = taskIdSB;
 
         await _dbContext.SaveChangesAsync();
     }
