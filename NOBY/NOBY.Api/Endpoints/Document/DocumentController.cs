@@ -24,7 +24,6 @@ public class DocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u.<br />Výstup je bez vodoznaku<br/><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=01EE50D6-556E-47e8-ADD8-673A844864C2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">Sales Arrangement ID</param>
     [HttpGet("offer/sales-arrangement/{salesArrangementId:int}")]
@@ -33,6 +32,7 @@ public class DocumentController : ControllerBase
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=01EE50D6-556E-47e8-ADD8-673A844864C2")]
     public async Task<IActionResult> GetOffer(int salesArrangementId, CancellationToken cancellationToken)
     {
         var request = new GetOffer.GetOfferRequest
@@ -52,7 +52,6 @@ public class DocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
     [HttpGet("calculation/offer/{offerId:int}")]
@@ -61,6 +60,7 @@ public class DocumentController : ControllerBase
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C")]
     public Task<IActionResult> GetCalculation(int offerId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetOfferInput(offerId);
@@ -73,7 +73,6 @@ public class DocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="offerId">Offer ID</param>
     [HttpGet("payment-schedule/offer/{offerId:int}")]
@@ -82,6 +81,7 @@ public class DocumentController : ControllerBase
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F")]
     public Task<IActionResult> GetPaymentSchedule(int offerId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetOfferInput(offerId);
@@ -94,7 +94,6 @@ public class DocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vygenerování dokumentu ukončení žádosti o úvěr ze šablony podle CustomerOnSAId na vstupu. <br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=91D71957-A737-4ee8-9EFC-A3B62878153C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="customerOnSAId">Customer on SA ID</param>
     [HttpGet("cancel-confirmation/customer-on-sa/{customerOnSAId}")]
@@ -104,6 +103,7 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Obsolete]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=91D71957-A737-4ee8-9EFC-A3B62878153C")]
     public async Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
     {
         var request = new CancelConfirmation.GetSalesArrangementCancelConfirmationRequest
@@ -126,7 +126,6 @@ public class DocumentController : ControllerBase
     /// </summary>
     /// <remarks>
     /// Vrací se steam binárních dat.<br /><br />
-    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=258EEA87-9394-42ec-B51F-C13F091686E0"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [SwaggerOperation(Tags = ["Dokument"])]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
@@ -134,6 +133,7 @@ public class DocumentController : ControllerBase
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpGet("sales-arrangement/{salesArrangementId:int}/document-type/{documentTypeId:int}/preview")]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=258EEA87-9394-42ec-B51F-C13F091686E0")]
     public Task<IActionResult> GetDocumentPreview(int salesArrangementId, int documentTypeId, [FromQuery] int? customerOnSaId, CancellationToken cancellationToken)
     {
         var input = _documentManager.GetSalesArrangementInput(salesArrangementId, customerOnSaId);
