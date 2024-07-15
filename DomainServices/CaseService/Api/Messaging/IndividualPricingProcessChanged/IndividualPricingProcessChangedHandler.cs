@@ -18,7 +18,7 @@ internal class IndividualPricingProcessChangedHandler(
     public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
     {
         var (taskIdSB, taskId, caseId, isValid) = initialValidations(message);
-        if (isValid)
+        if (!isValid)
         {
             return;
         }
