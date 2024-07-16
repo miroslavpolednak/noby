@@ -31,7 +31,7 @@ internal sealed class SimulateMortgageRefixationHandler(
             throw new NobyValidationException("FixedRatePeriod cant be validated");
         }
 
-        var validFrom = ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.MinValue).AddDays(1);
+        var validFrom = ((DateOnly?)product.Mortgage.FixedRateValidTo ?? DateOnly.MinValue).AddDays(1);
 
         // aktivni IC
         decimal? currentInterestRateDiscount = request.ProcessId.HasValue ? (await _refinancingDataService.GetActivePriceException(request.CaseId, request.ProcessId.Value, cancellationToken))?.LoanInterestRate?.LoanInterestRateDiscount : null;
@@ -76,7 +76,7 @@ internal sealed class SimulateMortgageRefixationHandler(
         return response;
     }
 
-    private async Task<Dictionary<int, decimal>> GetInterestRates(long caseId, DateTime validFrom, List<int> fixedRatePeriods, decimal? currentInterestRateDiscount, CancellationToken cancellationToken)
+    private async Task<Dictionary<int, decimal>> GetInterestRates(long caseId, DateOnly validFrom, List<int> fixedRatePeriods, decimal? currentInterestRateDiscount, CancellationToken cancellationToken)
     {
         var interestRates = new Dictionary<int, decimal>(fixedRatePeriods.Count);
 

@@ -8,8 +8,14 @@ using _Ca = DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.LinkModelation;
 
-internal sealed class LinkModelationHandler
-    : IRequestHandler<OfferLinkModelationRequest>
+internal sealed class LinkModelationHandler(
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization,
+    IWorkflowTaskServiceOld _workflowTaskService,
+    InterestRatesValidFromService _interestRatesValidFromService)
+        : IRequestHandler<OfferLinkModelationRequest>
 {
     private static readonly SalesArrangementStates[] _allowedStates = [
         SalesArrangementStates.InProgress,
@@ -188,35 +194,12 @@ internal sealed class LinkModelationHandler
         if (salesArrangement.Retention.ManagedByRC2 == true)
             throw new NobyValidationException(90032);
 
-        var interestRateValidFrom = (DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom;
+        var interestRateValidFrom = (DateOnly)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom;
         var (date1, date2) = await _interestRatesValidFromService.GetValidityDates(salesArrangement.CaseId, cancellationToken);
 
         if (date1 == interestRateValidFrom || date2 == interestRateValidFrom)
             return;
 
         throw new NobyValidationException(90032);
-    }
-
-    private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
-    private readonly IWorkflowTaskServiceOld _workflowTaskService;
-    private readonly InterestRatesValidFromService _interestRatesValidFromService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-
-    public LinkModelationHandler(
-        DomainServices.CaseService.Clients.v1.ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization,
-        IWorkflowTaskServiceOld workflowTaskService,
-        InterestRatesValidFromService interestRatesValidFromService)
-    {
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _salesArrangementAuthorization = salesArrangementAuthorization;
-        _workflowTaskService = workflowTaskService;
-        _interestRatesValidFromService = interestRatesValidFromService;
     }
 }

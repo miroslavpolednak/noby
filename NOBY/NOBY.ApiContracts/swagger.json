@@ -3747,12 +3747,10 @@
         }
       }
     },
-	
-	"/api/v1/document/offer/sales-arrangement/{salesArrangementId}": {
+
+    "/api/v1/document/offer/sales-arrangement/{salesArrangementId}": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Vygenerování dokumentu nabídka ze šablony",
         "description": "Vygenerování dokumentu nabídka ze šablony k dané SalesArrangement. Pokud dokument pro tuto nabídku byl již vygenerován a byl uložen do eArchiv-u, tak je dokument načten z eArchiv-u.<br />Výstup je bez vodoznaku<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=01EE50D6-556E-47e8-ADD8-673A844864C2\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
         "operationId": "GetOffer",
@@ -3786,11 +3784,9 @@
         }
       }
     },
-	"/api/v1/document/calculation/offer/{offerId}": {
+    "/api/v1/document/calculation/offer/{offerId}": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Vygenerování dokumentu kalkulace ze šablony",
         "description": "Vygenerování dokumentu kalkulace ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5BA041DC-7D58-4d1d-8E00-DFD8C42B2B4C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
         "operationId": "GetCalculation",
@@ -3824,11 +3820,9 @@
         }
       }
     },
-	"/api/v1/document/payment-schedule/offer/{offerId}": {
+    "/api/v1/document/payment-schedule/offer/{offerId}": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Vygenerování dokumentu splátkový kalendář ze šablony",
         "description": "Vygenerování dokumentu splátkový kalendář ze šablony k dané Offer.<br />Výstup je bez vodoznaku<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=67D55B92-E47A-47ab-8BEC-AE377E5AA56F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
         "operationId": "GetPaymentSchedule",
@@ -3862,11 +3856,9 @@
         }
       }
     },
-	"/api/v1/document/cancel-confirmation/customer-on-sa/{customerOnSAId}": {
+    "/api/v1/document/cancel-confirmation/customer-on-sa/{customerOnSAId}": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Vygenerování dokumentu ukončení žádosti o úvěr",
         "description": "Vygenerování dokumentu ukončení žádosti o úvěr ze šablony podle CustomerOnSAId na vstupu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=91D71957-A737-4ee8-9EFC-A3B62878153C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
         "operationId": "GetCancelConfirmationDocument",
@@ -3901,11 +3893,9 @@
         "deprecated": true
       }
     },
-	"/api/v1/document/sales-arrangement/{salesArrangementId}/document-type/{documentTypeId}/preview": {
+    "/api/v1/document/sales-arrangement/{salesArrangementId}/document-type/{documentTypeId}/preview": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Vygenerování náhledu dokumentu",
         "description": "Vrací se steam binárních dat.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=258EEA87-9394-42ec-B51F-C13F091686E0\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
         "operationId": "GetDocumentPreview",
@@ -3955,12 +3945,10 @@
         }
       }
     },
-    
-	"/api/v1/general-documents": {
+
+    "/api/v1/general-documents": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Seznam obecných dokumentů ke stažení",
         "description": "Načtení seznamu obecných dokumentů, které je možné stáhnout a vyplnit. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EA4655D8-5314-469b-8C92-5D2324EF1824\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
         "operationId": "GetGeneralDocuments",
@@ -3981,12 +3969,10 @@
         }
       }
     },
-	
-	"/api/v1/sales-arrangement/{salesArrangementId}/signing/document-list": {
+
+    "/api/v1/sales-arrangement/{salesArrangementId}/signing/document-list": {
       "get": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Dokumenty Sales Arrangement-u k podpisu / v podepisovacím procesu.",
         "description": "Vrací seznam rozpodepsaných a podepsaných dokumentů.<br /><br /><br />Řadí dokumenty primárně podle documentTypeId a sekundárně podle customerOnSAId.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=294380C5-4F9D-4dce-9D32-C1AD842ED84B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" /> Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
         "operationId": "GetDocumentsSignList",
@@ -4019,11 +4005,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/signing/start": {
+    "/api/v1/sales-arrangement/{salesArrangementId}/signing/start": {
       "post": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Začít podepisování dokumentu",
         "description": "Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C65CE06A-6702-4d2d-ADCF-A8DC7F1902A4\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>DOCUMENT_SIGNING_Manage <font color=\"lightgrey\">[AND]</font> SALES_ARRANGEMENT_Access",
         "operationId": "StartSigning",
@@ -4087,11 +4071,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview": {
+    "/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview": {
       "post": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Odeslání náhledu klientovi",
         "description": "Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
         "operationId": "SendDocumentOnSAPreview",
@@ -4125,11 +4107,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop": {
+    "/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop": {
       "post": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Zrušit podepisování dokumentu",
         "description": "Zkontroluje, zda je pro daný dokument zahájen podepisovací proces a pokud ano, tak ho ukončí.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=AA714DE2-ACD8-48ed-B146-41D50B7D3BE1\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>DOCUMENT_SIGNING_Manage <font color=\"lightgrey\">[AND]</font> SALES_ARRANGEMENT_Access<br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
         "operationId": "StopSigning",
@@ -4165,11 +4145,9 @@
         }
       }
     },
-	"/api/v1/document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview": {
+    "/api/v1/document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Vygenerování náhledu rozpodepsaného dokumentu",
         "description": "Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A1B54B66-9AF8-4e5c-A240-93FEF635449F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
         "operationId": "GetDocumentOnSAPreview",
@@ -4211,11 +4189,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually": {
+    "/api/v1/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually": {
       "post": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Manuální podpis DocumentOnSA",
         "description": "Označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
         "operationId": "SignDocumentManually",
@@ -4252,11 +4228,9 @@
         }
       }
     },
-	"/api/v1/document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}": {
+    "/api/v1/document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}": {
       "get": {
-        "tags": [
-          "Dokument"
-        ],
+        "tags": ["Dokument"],
         "summary": "Stažení dokumentu k fyzickému podepisování",
         "description": "Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F950B198-2C67-48e5-B1FE-C091131E6A63\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
         "operationId": "GetDocumentOnSA",
@@ -4300,11 +4274,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}": {
+    "/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}": {
       "get": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Detail podepisovaného dokumentu",
         "description": "Vrátí informace o podepisovaném dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
         "operationId": "GetDocumentOnSaDetail",
@@ -4357,11 +4329,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/document-on-sa/search": {
+    "/api/v1/sales-arrangement/{salesArrangementId}/document-on-sa/search": {
       "post": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Vyhledání dokumentů na základě hlavního hesla (eArchivu)",
         "description": "Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0C28E9E5-7AC1-4265-8342-FCE63B33967F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br /><br />",
         "operationId": "SearchDocumentsOnSa",
@@ -4439,11 +4409,9 @@
         }
       }
     },
-	"/api/v1/case/{caseId}/document-on-sa/search": {
+    "/api/v1/case/{caseId}/document-on-sa/search": {
       "post": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Vyhledání dokumentů na všech žádostech daného Case dle EACode",
         "description": "Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br /><br />",
         "operationId": "SearchDocumentsOnSaOnCase",
@@ -4518,11 +4486,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh": {
+    "/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh": {
       "post": {
-        "tags": [
-          "Podepisování"
-        ],
+        "tags": ["Podepisování"],
         "summary": "Aktualizace stavu dokumentu",
         "description": "Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=73549CB9-547D-4b15-BEED-BE2E563459D9\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
         "operationId": "RefreshElectronicDocument",
@@ -4572,11 +4538,9 @@
         }
       }
     },
-	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status": {
-		"get": {
-        "tags": [
-          "Podepisování"
-        ],
+    "/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status": {
+      "get": {
+        "tags": ["Podepisování"],
         "summary": "Stav podepisovaného dokumentu",
         "description": "Zjistí stav aktuálně podepisovaného dokumentu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A3D2BB37-E844-4117-B316-A649C39D82F6 \"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
         "operationId": "GetDocumentOnSAStatus",
@@ -4628,9 +4592,8 @@
           }
         }
       }
-    },
-	
-	},
+    }
+  },
   "components": {
     "schemas": {
       "OfferSimulateMortgageRetentionResponse": {
@@ -4694,7 +4657,7 @@
           "interestRateValidFrom": {
             "type": "string",
             "description": "Platnost nové úrokové sazby od.",
-            "format": "date-time"
+            "format": "date"
           },
           "interestRateDiscount": {
             "type": "number",
@@ -5280,9 +5243,8 @@
           "expectedDateOfDrawing": {
             "type": "string",
             "description": "Předpokládané datum čerpání",
-            "format": "date-time",
-            "nullable": true,
-            "example": ""
+            "format": "date",
+            "nullable": true
           },
           "financialResourcesOwn": {
             "type": "number",
@@ -5415,7 +5377,7 @@
           },
           "loanDueDate": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "loanDuration": {
@@ -5451,16 +5413,16 @@
           },
           "contractSignedDate": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "drawingDateTo": {
             "type": "string",
-            "format": "date-time"
+            "format": "date"
           },
           "annuityPaymentsDateFrom": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "annuityPaymentsCount": {
@@ -5613,7 +5575,7 @@
           },
           "accountDateFrom": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           }
         },
@@ -5877,7 +5839,7 @@
           "expectedDateOfDrawing": {
             "type": "string",
             "description": "Předpokládané datum čerpání",
-            "format": "date-time",
+            "format": "date",
             "nullable": true,
             "example": ""
           },
@@ -6083,7 +6045,7 @@
           "dateOfBirth": {
             "type": "string",
             "description": "Datum narozeni klienta, pokud neni identifikovan.",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "offerContacts": {
@@ -6274,7 +6236,7 @@
           },
           "dateOfBirth": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "customerRoleId": {
@@ -6648,7 +6610,7 @@
           "newExpectedDateOfDrawing": {
             "type": "string",
             "description": "Nový předpokládaný termín prvního čerpání",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           }
         },
@@ -6685,7 +6647,7 @@
           "riskBusinesscaseExpirationDate": {
             "type": "string",
             "description": "Datum expirace obchodního případu",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "assessmentResult": {
@@ -6901,13 +6863,13 @@
           "contractDate": {
             "type": "string",
             "description": "Datum poskytnutí",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "maturityDate": {
             "type": "string",
             "description": "Datum splatnosti",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "cbcbDataLastUpdate": {
@@ -7189,12 +7151,14 @@
           "offerGuaranteeDateFrom": {
             "type": "string",
             "description": "Rozhodný den sazby (datum založení = datum garance)",
-            "format": "date-time"
+            "format": "date",
+            "nullable": true
           },
           "offerGuaranteeDateTo": {
             "type": "string",
             "description": "Datum, kdy končí garance pro danou simulaci",
-            "format": "date-time"
+            "format": "date",
+            "nullable": true
           },
           "offerId": {
             "type": "integer",
@@ -7525,7 +7489,7 @@
           "newLoanDueDate": {
             "type": "string",
             "description": "Nový datum splatnosti",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "connectionExtraordinaryPayment": {
@@ -7544,7 +7508,7 @@
           "actualLoanDueDate": {
             "type": "string",
             "description": "Aktuální datum splatnosti",
-            "format": "date-time"
+            "format": "date"
           }
         },
         "additionalProperties": false,
@@ -7710,7 +7674,8 @@
           "drawingDate": {
             "type": "string",
             "description": "Datum čerpání",
-            "format": "date-time"
+            "nullable": true,
+            "format": "date"
           },
           "isImmediateDrawing": {
             "type": "boolean",
@@ -7876,7 +7841,7 @@
           "agreedDrawingDateTo": {
             "type": "string",
             "description": "Sjednaný termín čerpání do",
-            "format": "date-time"
+            "format": "date"
           },
           "extensionDrawingDateToByMonths": {
             "type": "integer",
@@ -7901,12 +7866,12 @@
           "agreedExpectedDateOfDrawing": {
             "type": "string",
             "description": "Sjednaný termín prvního čerpání",
-            "format": "date-time"
+            "format": "date"
           },
           "newExpectedDateOfDrawing": {
             "type": "string",
             "description": "Nový předpokládaný termín prvního čerpání",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           }
         },
@@ -7977,7 +7942,7 @@
           "agreedLoanDueDate": {
             "type": "string",
             "description": "Sjednaná splatnost do",
-            "format": "date-time"
+            "format": "date"
           },
           "agreedLoanPaymentAmount": {
             "type": "number",
@@ -7992,7 +7957,7 @@
         "properties": {
           "expectedDateOfDrawing": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "incomeCurrencyCode": {
@@ -9267,7 +9232,8 @@
           "birthDate": {
             "type": "string",
             "description": "Datum narození",
-            "format": "date-time",
+            "format": "date",
+            "nullable": true,
             "example": "2000-02-01"
           },
           "documentId": {
@@ -9882,7 +9848,7 @@
         "properties": {
           "firstAnnuityPaymentDate": {
             "type": "string",
-            "format": "date-time",
+            "format": "date",
             "nullable": true
           },
           "productType": {
@@ -11254,7 +11220,7 @@
         "additionalProperties": false
       },
 
-	  "GeneralDocumentGetGeneralDocumentsDocument": {
+      "GeneralDocumentGetGeneralDocumentsDocument": {
         "type": "object",
         "properties": {
           "id": {
@@ -11296,7 +11262,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSAStartSigningRequest": {
+      "DocumentOnSAStartSigningRequest": {
         "type": "object",
         "properties": {
           "documentTypeId": {
@@ -11320,7 +11286,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaStartSigningResponse": {
+      "DocumentOnSaStartSigningResponse": {
         "type": "object",
         "properties": {
           "documentOnSAId": {
@@ -11367,7 +11333,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaGetDocumentOnSADetailResponse": {
+      "DocumentOnSaGetDocumentOnSADetailResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -11380,7 +11346,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaSearchDocumentsOnSaRequest": {
+      "DocumentOnSaSearchDocumentsOnSaRequest": {
         "type": "object",
         "properties": {
           "eaCodeMainId": {
@@ -11391,7 +11357,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaSearchDocumentsOnSaResponse": {
+      "DocumentOnSaSearchDocumentsOnSaResponse": {
         "type": "object",
         "properties": {
           "formIds": {
@@ -11403,7 +11369,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaSearchDocumentsOnSaOnCaseRequest": {
+      "DocumentOnSaSearchDocumentsOnSaOnCaseRequest": {
         "type": "object",
         "properties": {
           "eaCodeMainId": {
@@ -11414,7 +11380,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaSearchDocumentsOnSaOnCaseResponse": {
+      "DocumentOnSaSearchDocumentsOnSaOnCaseResponse": {
         "type": "object",
         "properties": {
           "formIds": {
@@ -11426,7 +11392,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaRefreshElectronicDocumentResponse": {
+      "DocumentOnSaRefreshElectronicDocumentResponse": {
         "type": "object",
         "properties": {
           "data": {
@@ -11439,7 +11405,7 @@
         },
         "additionalProperties": false
       },
-	  "DocumentOnSaGetDocumentOnSAStatusResponse": {
+      "DocumentOnSaGetDocumentOnSAStatusResponse": {
         "type": "object",
         "properties": {
           "documentOnSAId": {
@@ -11456,7 +11422,7 @@
         },
         "additionalProperties": false
       },
-	  
+
       "SharedTypesCustomerIdentity": {
         "type": "object",
         "properties": {
@@ -12509,9 +12475,9 @@
           }
         },
         "additionalProperties": false
-      }, 
-	
-	  "SharedTypesSigningCustomerOnSa": {
+      },
+
+      "SharedTypesSigningCustomerOnSa": {
         "type": "object",
         "properties": {
           "customerOnSAId": {
@@ -12530,7 +12496,7 @@
         },
         "additionalProperties": false
       },
-	  "SharedTypesSearchResponseItem": {
+      "SharedTypesSearchResponseItem": {
         "type": "object",
         "properties": {
           "formId": {
@@ -12539,7 +12505,7 @@
         },
         "additionalProperties": false
       },
-	  
+
       "EnumCustomerRoles": {
         "enum": [0, 1, 2, 8],
         "type": "integer",
@@ -12697,7 +12663,7 @@
         "x-enum-varnames": ["EArchive", "SbDocument", "SbAttachment"],
         "x-enumNames": ["EArchive", "SbDocument", "SbAttachment"]
       },
-	  "EnumSigningSource": {
+      "EnumSigningSource": {
         "enum": [0, 1, 2],
         "type": "integer",
         "description": "<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Noby</li><li>2 - Workflow</li></ul>",

@@ -2,7 +2,7 @@
 
 namespace NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom;
 
-internal sealed class GetInterestRatesValidFromHandler
+internal sealed class GetInterestRatesValidFromHandler(InterestRatesValidFromService _ratesValidFromService)
     : IRequestHandler<GetInterestRatesValidFromRequest, GetInterestRatesValidFromResponse>
 {
     public async Task<GetInterestRatesValidFromResponse> Handle(GetInterestRatesValidFromRequest request, CancellationToken cancellationToken)
@@ -13,16 +13,16 @@ internal sealed class GetInterestRatesValidFromHandler
         {
             InterestRatesValidFrom = 
             [
-                new GetInterestRatesValidFromResponseItem { InterestRateValidFrom = result.Date1 },
-                new GetInterestRatesValidFromResponseItem { InterestRateValidFrom = result.Date2, IsDefault = true }
+                new GetInterestRatesValidFromResponseItem 
+                { 
+                    InterestRateValidFrom = result.Date1.ToDateTime(new TimeOnly())
+                },
+                new GetInterestRatesValidFromResponseItem 
+                { 
+                    InterestRateValidFrom = result.Date2.ToDateTime(new TimeOnly()), 
+                    IsDefault = true 
+                }
             ]
         };
-    }
-
-    private readonly InterestRatesValidFromService _ratesValidFromService;
-
-    public GetInterestRatesValidFromHandler(InterestRatesValidFromService ratesValidFromService)
-    {
-        _ratesValidFromService = ratesValidFromService;
     }
 }

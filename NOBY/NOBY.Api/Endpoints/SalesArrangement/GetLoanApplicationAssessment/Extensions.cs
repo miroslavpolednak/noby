@@ -177,8 +177,8 @@ internal static class Extensions
             {
                 IsExternal = isExternal
             },
-            ContractDate = contractDate,
-            MaturityDate = maturityDate
+            ContractDate = contractDate.HasValue ? DateOnly.FromDateTime(contractDate.Value) : null,
+            MaturityDate = maturityDate.HasValue ? DateOnly.FromDateTime(maturityDate.Value) : null,
         };
     }
 

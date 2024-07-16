@@ -43,7 +43,7 @@ internal sealed class GetLoanApplicationAssessmentResultService(
         // vytvoreni response
         SalesArrangementGetLoanApplicationAssessmentResponse response = new()
         {
-            RiskBusinesscaseExpirationDate = assessment!.RiskBusinessCaseExpirationDate,
+            RiskBusinesscaseExpirationDate = assessment!.RiskBusinessCaseExpirationDate.HasValue ? DateOnly.FromDateTime(assessment!.RiskBusinessCaseExpirationDate.Value) : null,
             AssessmentResult = assessment.AssessmentResult,
             Application = assessment.ToLoanApplicationApiResponse(offer),
             Reasons = assessment.ToReasonsApiResponse(),

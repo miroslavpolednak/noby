@@ -55,7 +55,7 @@ public interface IOfferServiceClient
 
     Task UpdateOffer(UpdateOfferRequest request, CancellationToken cancellationToken = default);
 
-    Task<decimal> GetInterestRate(long caseId, DateTime futureInterestRateValidTo, int? fixedRatePeriod = default, CancellationToken cancellationToken = default);
+    Task<decimal> GetInterestRate(long caseId, DateOnly futureInterestRateValidTo, int? fixedRatePeriod = default, CancellationToken cancellationToken = default);
 
     Task<int> CreateResponseCode(CreateResponseCodeRequest request, CancellationToken cancellationToken = default);
 

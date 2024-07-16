@@ -5,7 +5,7 @@ namespace DomainServices.OfferService.Clients.v1;
 internal sealed class OfferService 
     : IOfferServiceClient
 {
-    public async Task<decimal> GetInterestRate(long caseId, DateTime futureInterestRateValidTo, int? fixedRatePeriod = default, CancellationToken cancellationToken = default)
+    public async Task<decimal> GetInterestRate(long caseId, DateOnly futureInterestRateValidTo, int? fixedRatePeriod = default, CancellationToken cancellationToken = default)
         => (await _service.GetInterestRateAsync(new GetInterestRateRequest
         {
             CaseId = caseId,

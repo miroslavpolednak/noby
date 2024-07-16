@@ -97,7 +97,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRateValidFrom")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime InterestRateValidFrom { get; set; } = default!;
+        public DateOnly InterestRateValidFrom { get; set; } = default!;
 
         /// <summary>
         /// Sleva ze sazby
@@ -773,7 +773,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("expectedDateOfDrawing")]
-        public System.DateTime? ExpectedDateOfDrawing { get; set; } = default!;
+        public DateOnly? ExpectedDateOfDrawing { get; set; } = default!;
 
         /// <summary>
         /// Vlastní zdroje
@@ -887,7 +887,7 @@ namespace NOBY.ApiContracts
         public decimal? LoanAmount { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("loanDueDate")]
-        public System.DateTime? LoanDueDate { get; set; } = default!;
+        public DateOnly? LoanDueDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("loanDuration")]
         public int? LoanDuration { get; set; } = default!;
@@ -911,13 +911,13 @@ namespace NOBY.ApiContracts
         public decimal LoanInterestRateProvided { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("contractSignedDate")]
-        public System.DateTime? ContractSignedDate { get; set; } = default!;
+        public DateOnly? ContractSignedDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("drawingDateTo")]
-        public System.DateTime DrawingDateTo { get; set; } = default!;
+        public DateOnly DrawingDateTo { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("annuityPaymentsDateFrom")]
-        public System.DateTime? AnnuityPaymentsDateFrom { get; set; } = default!;
+        public DateOnly? AnnuityPaymentsDateFrom { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("annuityPaymentsCount")]
         public int? AnnuityPaymentsCount { get; set; } = default!;
@@ -1023,7 +1023,7 @@ namespace NOBY.ApiContracts
         public string? Periodicity { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("accountDateFrom")]
-        public System.DateTime? AccountDateFrom { get; set; } = default!;
+        public DateOnly? AccountDateFrom { get; set; } = default!;
 
     }
 
@@ -1297,7 +1297,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("expectedDateOfDrawing")]
-        public System.DateTime? ExpectedDateOfDrawing { get; set; } = default!;
+        public DateOnly? ExpectedDateOfDrawing { get; set; } = default!;
 
         /// <summary>
         /// Vlastní zdroje
@@ -1505,7 +1505,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("offerContacts")]
         public SharedTypesContacts? OfferContacts { get; set; } = default!;
@@ -1704,7 +1704,7 @@ namespace NOBY.ApiContracts
         public string? LastName { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("customerRoleId")]
         public int CustomerRoleId { get; set; } = default!;
@@ -2094,7 +2094,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("newExpectedDateOfDrawing")]
-        public System.DateTime? NewExpectedDateOfDrawing { get; set; } = default!;
+        public DateOnly? NewExpectedDateOfDrawing { get; set; } = default!;
 
     }
 
@@ -2139,7 +2139,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinesscaseExpirationDate")]
-        public System.DateTime? RiskBusinesscaseExpirationDate { get; set; } = default!;
+        public DateOnly? RiskBusinesscaseExpirationDate { get; set; } = default!;
 
         /// <summary>
         /// Výsledek vyhodnocení&lt;br /&gt;501 - v pořádku&lt;br /&gt;502 - zamítnuto
@@ -2379,14 +2379,14 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("contractDate")]
-        public System.DateTime? ContractDate { get; set; } = default!;
+        public DateOnly? ContractDate { get; set; } = default!;
 
         /// <summary>
         /// Datum splatnosti
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("maturityDate")]
-        public System.DateTime? MaturityDate { get; set; } = default!;
+        public DateOnly? MaturityDate { get; set; } = default!;
 
         /// <summary>
         /// Datum aktualizace dat v CBCB
@@ -2692,14 +2692,14 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("offerGuaranteeDateFrom")]
-        public System.DateTime OfferGuaranteeDateFrom { get; set; } = default!;
+        public DateOnly? OfferGuaranteeDateFrom { get; set; } = default!;
 
         /// <summary>
         /// Datum, kdy končí garance pro danou simulaci
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("offerGuaranteeDateTo")]
-        public System.DateTime OfferGuaranteeDateTo { get; set; } = default!;
+        public DateOnly? OfferGuaranteeDateTo { get; set; } = default!;
 
         /// <summary>
         /// ID nalinkované Offer.
@@ -3066,7 +3066,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("newLoanDueDate")]
-        public System.DateTime? NewLoanDueDate { get; set; } = default!;
+        public DateOnly? NewLoanDueDate { get; set; } = default!;
 
         /// <summary>
         /// V souvislosti s mimořádnou splátkou
@@ -3089,7 +3089,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("actualLoanDueDate")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime ActualLoanDueDate { get; set; } = default!;
+        public DateOnly ActualLoanDueDate { get; set; } = default!;
 
     }
 
@@ -3286,8 +3286,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("drawingDate")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime DrawingDate { get; set; } = default!;
+        public DateOnly? DrawingDate { get; set; } = default!;
 
         /// <summary>
         /// Čerpání bezodkladně
@@ -3486,7 +3485,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("agreedDrawingDateTo")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime AgreedDrawingDateTo { get; set; } = default!;
+        public DateOnly AgreedDrawingDateTo { get; set; } = default!;
 
         /// <summary>
         /// Prodloužení konce lhůty čerpání o kolik měsíců
@@ -3516,14 +3515,14 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("agreedExpectedDateOfDrawing")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime AgreedExpectedDateOfDrawing { get; set; } = default!;
+        public DateOnly AgreedExpectedDateOfDrawing { get; set; } = default!;
 
         /// <summary>
         /// Nový předpokládaný termín prvního čerpání
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("newExpectedDateOfDrawing")]
-        public System.DateTime? NewExpectedDateOfDrawing { get; set; } = default!;
+        public DateOnly? NewExpectedDateOfDrawing { get; set; } = default!;
 
     }
 
@@ -3605,7 +3604,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("agreedLoanDueDate")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime AgreedLoanDueDate { get; set; } = default!;
+        public DateOnly AgreedLoanDueDate { get; set; } = default!;
 
         /// <summary>
         /// Sjednaná měsíční splátka
@@ -3621,7 +3620,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("expectedDateOfDrawing")]
-        public System.DateTime? ExpectedDateOfDrawing { get; set; } = default!;
+        public DateOnly? ExpectedDateOfDrawing { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("incomeCurrencyCode")]
         public string? IncomeCurrencyCode { get; set; } = default!;
@@ -5015,7 +5014,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("birthDate")]
-        public System.DateTime BirthDate { get; set; } = default!;
+        public DateOnly? BirthDate { get; set; } = default!;
 
         /// <summary>
         /// eArchiv ID dokumentu s potvrzení pro daného klienta
@@ -5709,7 +5708,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("firstAnnuityPaymentDate")]
-        public System.DateTime? FirstAnnuityPaymentDate { get; set; } = default!;
+        public DateOnly? FirstAnnuityPaymentDate { get; set; } = default!;
 
         /// <summary>
         /// Typ úvěru (číselník).
