@@ -3,10 +3,10 @@ using NOBY.Api.Endpoints.DocumentOnSA.Search;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
 
-public class SearchDocumentsOnSaOnCaseValidator : AbstractValidator<SearchDocumentsOnSaOnCaseRequest>
+public class SearchDocumentsOnSaOnCaseValidator : AbstractValidator<DocumentOnSaSearchDocumentsOnSaOnCaseRequest>
 {
     public SearchDocumentsOnSaOnCaseValidator()
     {
-        RuleFor(e => e.EACodeMainId).NotNull().WithMessage($"{nameof(SearchDocumentsOnSaRequest.EACodeMainId)} is required");
+        RuleFor(e => e.EaCodeMainId).NotNull().WithMessage($"{nameof(DocumentOnSaSearchDocumentsOnSaOnCaseRequest.EaCodeMainId)} is required");
     }
 }

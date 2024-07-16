@@ -1043,46 +1043,6 @@
             Checkform 
             </summary>
         </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.DocumentTypeId">
-            <summary>
-            Typ dokumentu. Číselník DocumentType.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.SignatureTypeId">
-            <summary>
-            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningRequest.CustomerOnSAId">
-            <summary>
-            For CRS only
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.DocumentOnSAId">
-            <summary>
-            Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.DocumentTypeId">
-            <summary>
-            Typ dokumentu. Číselník DocumentOnSAType.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.FormId">
-            <summary>
-            Businessové modré ID
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.IsSigned">
-            <summary>
-            Příznak, zda byl dokument již podepsán.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningResponse.SignatureTypeId">
-            <summary>
-            Metoda podpisu (manuální/elektronický). Číselník SignatureType.
-            </summary>
-        </member>
         <member name="M:NOBY.Api.Endpoints.Document.DocumentController.GetOffer(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Vygenerování dokumentu nabídka ze šablony
