@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using CIS.Core.Exceptions;
-using Confluent.SchemaRegistry;
 using KafkaFlow;
 using Microsoft.Extensions.Logging;
 
@@ -24,13 +23,6 @@ internal sealed class ConsumerErrorHandlingMiddleware : IMessageMiddleware
         catch (BaseCisException ex)
         {
             _logger.ConsumingMessageFailed(GetMessageId(context), context.ConsumerContext.Topic, ex);
-        }
-        catch (SchemaRegistryException ex)
-        {
-            _logger.SchemaRegistryError(ex);
-
-            //Return to not mark message as completed
-            return;
         }
         catch (Exception ex)
         {

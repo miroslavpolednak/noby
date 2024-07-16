@@ -37,7 +37,8 @@ internal sealed class KafkaFlowConfiguratorSettings
         return kafkaConfiguration.RetryPolicy switch
         {
             RetryPolicy.Durable => new DurableKafkaRetryStrategy(kafkaConfiguration, configuration.GetConnectionString("default")!),
-            _ => new DefaultKafkaRetryStrategy(kafkaConfiguration)
+            RetryPolicy.SimpleRetry => new SimpleRetryKafkaRetryStrategy(kafkaConfiguration),
+            _ => new NoneRetryStrategy()
         };
     }
 }

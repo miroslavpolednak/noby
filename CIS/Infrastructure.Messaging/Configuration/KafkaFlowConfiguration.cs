@@ -10,7 +10,8 @@ public enum SchemaIdentificationType
 
 public enum RetryPolicy
 {
-    Default,
+    None,
+    SimpleRetry,
     Durable
 }
 
@@ -22,11 +23,11 @@ public class KafkaFlowConfiguration
 
     public SchemaRegistryConfiguration? SchemaRegistry { get; set; }
 
-    public RetryPolicy RetryPolicy { get; set; } = RetryPolicy.Default;
+    public RetryPolicy RetryPolicy { get; set; } = RetryPolicy.None;
 
-    public int RetryTimes { get; set; } = 10;
+    public int RetryTimes { get; set; } = 5;
 
-    public int TimeBetweenTriesMs { get; set; } = 1000;
+    public int TimeBetweenTriesMs { get; set; } = 500;
 
     public int BufferSize { get; set; } = 2;
 
