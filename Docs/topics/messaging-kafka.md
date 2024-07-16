@@ -118,7 +118,7 @@ Messaging, tj. i Kafka implementace, má svou vlastní konfiguraci v *appsetting
       "SchemaRegistryUrl": "<!-- Schema registry URL (https://test.schema-registry.kbcloud) -->",
       "SchemaIdentificationType": "ContentId"
     },
-    "RetryPolicy": "Default",
+    "RetryPolicy": "None",
     "LogConsumingMessagePayload": true,
     "Admin": {
       "Broker": "<!-- Kafka server pro telemetry a správu Kafky přes Dashboard (pouze non-PROD) - primárně kafkabc-test-broker.service.ist.consul-nprod.kb.cz:9443 -->",
