@@ -3,7 +3,6 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Extensions;
-using NOBY.Dto.Signing;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 

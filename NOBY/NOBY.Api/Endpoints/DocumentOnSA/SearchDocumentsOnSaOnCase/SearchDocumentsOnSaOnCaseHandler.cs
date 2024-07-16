@@ -1,6 +1,5 @@
 ﻿using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using NOBY.Dto.Signing;
 using NOBY.Services.EaCodeMain;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
