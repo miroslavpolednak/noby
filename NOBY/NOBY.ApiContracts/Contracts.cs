@@ -7108,6 +7108,153 @@ namespace NOBY.ApiContracts
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSAGetDocumentsSignListResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("data")]
+        public List<SharedTypesSigningDocumentData> Data { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSAStartSigningRequest
+    {
+        /// <summary>
+        /// Typ dokumentu. Číselník DocumentType.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentTypeId")]
+        public int? DocumentTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureTypeId")]
+        public int? SignatureTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// For CRS only
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerOnSAId")]
+        public int? CustomerOnSAId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaStartSigningResponse
+    {
+        /// <summary>
+        /// Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentOnSAId")]
+        public int? DocumentOnSAId { get; set; } = default!;
+
+        /// <summary>
+        /// Typ dokumentu. Číselník DocumentOnSAType.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentTypeId")]
+        public int? DocumentTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Businessové modré ID
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("formId")]
+        public string? FormId { get; set; } = default!;
+
+        /// <summary>
+        /// Příznak, zda byl dokument již podepsán.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSigned")]
+        public bool IsSigned { get; set; } = default!;
+
+        /// <summary>
+        /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureTypeId")]
+        public int? SignatureTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureState")]
+        public SharedTypesSigningSignatureState SignatureState { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainItem")]
+        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaGetDocumentOnSADetailResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("data")]
+        public SharedTypesSigningDocumentData Data { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaSearchDocumentsOnSaRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainId")]
+        public int? EaCodeMainId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaSearchDocumentsOnSaResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("formIds")]
+        public List<SharedTypesSearchResponseItem> FormIds { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaSearchDocumentsOnSaOnCaseRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainId")]
+        public int? EaCodeMainId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaSearchDocumentsOnSaOnCaseResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("formIds")]
+        public List<SharedTypesSearchResponseItem> FormIds { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaRefreshElectronicDocumentResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("data")]
+        public SharedTypesSigningDocumentData Data { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class DocumentOnSaGetDocumentOnSAStatusResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentOnSAId")]
+        public int DocumentOnSAId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureState")]
+        public SharedTypesSigningSignatureState SignatureState { get; set; } = default!;
+
+    }
+
     /// <summary>
     /// Identita klienta
     /// </summary>
@@ -8169,6 +8316,103 @@ namespace NOBY.ApiContracts
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesSigningDocumentData
+    {
+        /// <summary>
+        /// Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentOnSAId")]
+        public int? DocumentOnSAId { get; set; } = default!;
+
+        /// <summary>
+        /// Typ dokumentu. Číselník DocumentOnSAType.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentTypeId")]
+        public int? DocumentTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Businessové modré ID
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("formId")]
+        public string? FormId { get; set; } = default!;
+
+        /// <summary>
+        /// Metoda podpisu (manuální/elektronický). Číselník SignatureType.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureTypeId")]
+        public int? SignatureTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Timestamp, kdy došlo k podpisu celého dokumentu.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureDateTime")]
+        public System.DateTime? SignatureDateTime { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureState")]
+        public SharedTypesSigningSignatureState SignatureState { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainItem")]
+        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = default!;
+
+        /// <summary>
+        /// Only for CRS
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerOnSa")]
+        public SharedTypesSigningCustomerOnSa CustomerOnSa { get; set; } = default!;
+
+        /// <summary>
+        /// Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isPreviewSentToCustomer")]
+        public bool IsPreviewSentToCustomer { get; set; } = default!;
+
+        /// <summary>
+        /// Id elektronicky podepisovaného dokumentu nahraného v ePodpisech
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("externalId")]
+        public string? ExternalId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("source")]
+        public EnumSigningSource Source { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("isCustomerPreviewSendingAllowed")]
+        public bool IsCustomerPreviewSendingAllowed { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesSigningCustomerOnSa
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerOnSAId")]
+        public int? CustomerOnSAId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SharedTypesSearchResponseItem
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("formId")]
+        public string FormId { get; set; } = default!;
+
+    }
+
     /// <summary>
     /// Druhy příjmu
     /// <br/>
@@ -8420,6 +8664,21 @@ namespace NOBY.ApiContracts
         SbDocument = 1,
 
         SbAttachment = 2,
+
+    }
+
+    /// <summary>
+    /// &lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Noby&lt;/li&gt;&lt;li&gt;2 - Workflow&lt;/li&gt;&lt;/ul&gt;
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public enum EnumSigningSource
+    {
+
+        Unknown = 0,
+
+        Noby = 1,
+
+        Workflow = 2,
 
     }
 

@@ -5,7 +5,7 @@ using NOBY.Api.Extensions;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAStatus;
 
-public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatusRequest, GetDocumentOnSAStatusResponse>
+public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatusRequest, DocumentOnSaGetDocumentOnSAStatusResponse>
 {
     private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
@@ -24,7 +24,7 @@ public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatu
         _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 
-    public async Task<GetDocumentOnSAStatusResponse> Handle(GetDocumentOnSAStatusRequest request, CancellationToken cancellationToken)
+    public async Task<DocumentOnSaGetDocumentOnSAStatusResponse> Handle(GetDocumentOnSAStatusRequest request, CancellationToken cancellationToken)
     {
         // validace prav
         await _salesArrangementAuthorization.ValidateSaAccessBySaType213And248BySAId(request.SalesArrangementId, cancellationToken);
@@ -37,12 +37,12 @@ public class GetDocumentOnSAStatusHandler : IRequestHandler<GetDocumentOnSAStatu
         return new()
         {
             DocumentOnSAId = docOnSaStatusData.DocumentOnSAId,
-            SignatureState = DocumentOnSaMetadataManagerOld.GetSignatureState(new()
+            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
                 IsValid = docOnSaStatusData.IsValid,
                 DocumentOnSAId = docOnSaStatusData.DocumentOnSAId,
                 IsSigned = docOnSaStatusData.IsSigned,
-                Source = docOnSaStatusData.Source.MapToCisEnum(),
+                Source = docOnSaStatusData.Source.MapToDocOnSaEnum(),
                 SalesArrangementTypeId = salesArrangement.SalesArrangementTypeId,
                 EArchivIdsLinked = docOnSaStatusData.EArchivIdsLinked,
                 SignatureTypeId = docOnSaStatusData.SignatureTypeId,

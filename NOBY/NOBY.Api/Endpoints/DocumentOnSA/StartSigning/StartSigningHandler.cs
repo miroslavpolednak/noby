@@ -14,7 +14,7 @@ using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 
-internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSigningResponse>
+internal sealed class StartSigningHandler : IRequestHandler<DocumentOnSAStartSigningRequest, DocumentOnSaStartSigningResponse>
 {
     private const string _signatureAnchorOne = "X_SIG_1";
     private const string _signatureAnchorTwo = "X_SIG_2";
@@ -45,7 +45,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         _householdClient = householdClient;
     }
 
-    public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
+    public async Task<DocumentOnSaStartSigningResponse> Handle(DocumentOnSAStartSigningRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
 
@@ -179,7 +179,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         return signingIdentity;
     }
 
-    private async Task<StartSigningResponse> MapToResponse(_DocOnSA.StartSigningResponse result, int salesArrangementTypeId, CancellationToken cancellationToken)
+    private async Task<DocumentOnSaStartSigningResponse> MapToResponse(_DocOnSA.StartSigningResponse result, int salesArrangementTypeId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(result.DocumentOnSa, nameof(result.DocumentOnSa));
 
@@ -187,26 +187,26 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
         var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
 
-        return new StartSigningResponse
+        return new DocumentOnSaStartSigningResponse
         {
             DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
             DocumentTypeId = result.DocumentOnSa.DocumentTypeId,
             FormId = result.DocumentOnSa.FormId,
             IsSigned = result.DocumentOnSa.IsSigned,
             SignatureTypeId = result.DocumentOnSa.SignatureTypeId,
-            SignatureState = DocumentOnSaMetadataManagerOld.GetSignatureState(new()
+            SignatureState = DocumentOnSaMetadataManager.GetSignatureState(new()
             {
                 IsValid = result.DocumentOnSa.IsValid,
                 DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
                 IsSigned = result.DocumentOnSa.IsSigned,
-                Source = result.DocumentOnSa.Source.MapToCisEnum(),
+                Source = result.DocumentOnSa.Source.MapToDocOnSaEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = Array.Empty<string>(),
                 SignatureTypeId = result.DocumentOnSa.SignatureTypeId ?? 0,
                 EaCodeMainId = result.DocumentOnSa.EACodeMainId
             },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManagerOld.GetEaCodeMainItem(
+            EaCodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
                 new() { DocumentTypeId = result.DocumentOnSa.DocumentTypeId, EACodeMainId = result.DocumentOnSa.EACodeMainId }, documentTypes, eACodeMains)
         };
     }

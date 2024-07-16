@@ -3980,7 +3980,655 @@
           }
         }
       }
-    }
+    },
+	
+	"/api/v1/sales-arrangement/{salesArrangementId}/signing/document-list": {
+      "get": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Dokumenty Sales Arrangement-u k podpisu / v podepisovacím procesu.",
+        "description": "Vrací seznam rozpodepsaných a podepsaných dokumentů.<br /><br /><br />Řadí dokumenty primárně podle documentTypeId a sekundárně podle customerOnSAId.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=294380C5-4F9D-4dce-9D32-C1AD842ED84B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" /> Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetDocumentsSignList",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID Sales Arrangement",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSAGetDocumentsSignListResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/signing/start": {
+      "post": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Začít podepisování dokumentu",
+        "description": "Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C65CE06A-6702-4d2d-ADCF-A8DC7F1902A4\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>DOCUMENT_SIGNING_Manage <font color=\"lightgrey\">[AND]</font> SALES_ARRANGEMENT_Access",
+        "operationId": "StartSigning",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "ID Sales Arrangement",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSAStartSigningRequest"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSAStartSigningRequest"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSAStartSigningRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaStartSigningResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview": {
+      "post": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Odeslání náhledu klientovi",
+        "description": "Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "SendDocumentOnSAPreview",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/stop": {
+      "post": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Zrušit podepisování dokumentu",
+        "description": "Zkontroluje, zda je pro daný dokument zahájen podepisovací proces a pokud ano, tak ho ukončí.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=AA714DE2-ACD8-48ed-B146-41D50B7D3BE1\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>DOCUMENT_SIGNING_Manage <font color=\"lightgrey\">[AND]</font> SALES_ARRANGEMENT_Access<br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "StopSigning",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/preview": {
+      "get": {
+        "tags": [
+          "Dokument"
+        ],
+        "summary": "Vygenerování náhledu rozpodepsaného dokumentu",
+        "description": "Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A1B54B66-9AF8-4e5c-A240-93FEF635449F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "GetDocumentOnSAPreview",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually": {
+      "post": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Manuální podpis DocumentOnSA",
+        "description": "Označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "SignDocumentManually",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+	"/api/v1/document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}": {
+      "get": {
+        "tags": [
+          "Dokument"
+        ],
+        "summary": "Stažení dokumentu k fyzickému podepisování",
+        "description": "Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F950B198-2C67-48e5-B1FE-C091131E6A63\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetDocumentOnSA",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}": {
+      "get": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Detail podepisovaného dokumentu",
+        "description": "Vrátí informace o podepisovaném dokumentu.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "GetDocumentOnSaDetail",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaGetDocumentOnSADetailResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaGetDocumentOnSADetailResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaGetDocumentOnSADetailResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/document-on-sa/search": {
+      "post": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Vyhledání dokumentů na základě hlavního hesla (eArchivu)",
+        "description": "Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0C28E9E5-7AC1-4265-8342-FCE63B33967F\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br /><br />",
+        "operationId": "SearchDocumentsOnSa",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaRequest"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaRequest"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+	"/api/v1/case/{caseId}/document-on-sa/search": {
+      "post": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Vyhledání dokumentů na všech žádostech daného Case dle EACode",
+        "description": "Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br /><br />",
+        "operationId": "SearchDocumentsOnSaOnCase",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaOnCaseRequest"
+                  }
+                ]
+              }
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaOnCaseRequest"
+                  }
+                ]
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaOnCaseRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaOnCaseResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaOnCaseResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaSearchDocumentsOnSaOnCaseResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh": {
+      "post": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Aktualizace stavu dokumentu",
+        "description": "Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=73549CB9-547D-4b15-BEED-BE2E563459D9\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "RefreshElectronicDocument",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSaId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaRefreshElectronicDocumentResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaRefreshElectronicDocumentResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaRefreshElectronicDocumentResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+	"/api/v1/sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status": {
+		"get": {
+        "tags": [
+          "Podepisování"
+        ],
+        "summary": "Stav podepisovaného dokumentu",
+        "description": "Zjistí stav aktuálně podepisovaného dokumentu. <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A3D2BB37-E844-4117-B316-A649C39D82F6 \"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:#61affe;\">Permission check middleware attributes:</strong><br/>NobySkipCaseOwnerStateAndProductSAValidation",
+        "operationId": "GetDocumentOnSAStatus",
+        "parameters": [
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "documentOnSAId",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaGetDocumentOnSAStatusResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaGetDocumentOnSAStatusResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentOnSaGetDocumentOnSAStatusResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
 	
 	},
   "components": {
@@ -10636,6 +11284,179 @@
         "additionalProperties": false
       },
 
+      "DocumentOnSAGetDocumentsSignListResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesSigningDocumentData"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSAStartSigningRequest": {
+        "type": "object",
+        "properties": {
+          "documentTypeId": {
+            "type": "integer",
+            "description": "Typ dokumentu. Číselník DocumentType.",
+            "format": "int32",
+            "nullable": true
+          },
+          "signatureTypeId": {
+            "type": "integer",
+            "description": "Metoda podpisu (manuální/elektronický). Číselník SignatureType.",
+            "format": "int32",
+            "nullable": true
+          },
+          "customerOnSAId": {
+            "type": "integer",
+            "description": "For CRS only",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaStartSigningResponse": {
+        "type": "object",
+        "properties": {
+          "documentOnSAId": {
+            "type": "integer",
+            "description": "Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.",
+            "format": "int32",
+            "nullable": true
+          },
+          "documentTypeId": {
+            "type": "integer",
+            "description": "Typ dokumentu. Číselník DocumentOnSAType.",
+            "format": "int32",
+            "nullable": true
+          },
+          "formId": {
+            "type": "string",
+            "description": "Businessové modré ID",
+            "nullable": true
+          },
+          "isSigned": {
+            "type": "boolean",
+            "description": "Příznak, zda byl dokument již podepsán."
+          },
+          "signatureTypeId": {
+            "type": "integer",
+            "description": "Metoda podpisu (manuální/elektronický). Číselník SignatureType.",
+            "format": "int32",
+            "nullable": true
+          },
+          "signatureState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningSignatureState"
+              }
+            ]
+          },
+          "eaCodeMainItem": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningEACodeMainItem"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaGetDocumentOnSADetailResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningDocumentData"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaSearchDocumentsOnSaRequest": {
+        "type": "object",
+        "properties": {
+          "eaCodeMainId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaSearchDocumentsOnSaResponse": {
+        "type": "object",
+        "properties": {
+          "formIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesSearchResponseItem"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaSearchDocumentsOnSaOnCaseRequest": {
+        "type": "object",
+        "properties": {
+          "eaCodeMainId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaSearchDocumentsOnSaOnCaseResponse": {
+        "type": "object",
+        "properties": {
+          "formIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesSearchResponseItem"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaRefreshElectronicDocumentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningDocumentData"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+	  "DocumentOnSaGetDocumentOnSAStatusResponse": {
+        "type": "object",
+        "properties": {
+          "documentOnSAId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "signatureState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningSignatureState"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+	  
       "SharedTypesCustomerIdentity": {
         "type": "object",
         "properties": {
@@ -11617,7 +12438,108 @@
         "additionalProperties": false,
         "description": "Účel úvěru"
       },
-
+      "SharedTypesSigningDocumentData": {
+        "type": "object",
+        "properties": {
+          "documentOnSAId": {
+            "type": "integer",
+            "description": "Id dokumentu. Vrací se pouze pro dokumenty se zahájeným podepisovacím procesem.",
+            "format": "int32",
+            "nullable": true
+          },
+          "documentTypeId": {
+            "type": "integer",
+            "description": "Typ dokumentu. Číselník DocumentOnSAType.",
+            "format": "int32",
+            "nullable": true
+          },
+          "formId": {
+            "type": "string",
+            "description": "Businessové modré ID",
+            "nullable": true
+          },
+          "signatureTypeId": {
+            "type": "integer",
+            "description": "Metoda podpisu (manuální/elektronický). Číselník SignatureType.",
+            "format": "int32",
+            "nullable": true
+          },
+          "signatureDateTime": {
+            "type": "string",
+            "description": "Timestamp, kdy došlo k podpisu celého dokumentu.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "signatureState": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningSignatureState"
+              }
+            ]
+          },
+          "eaCodeMainItem": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningEACodeMainItem"
+              }
+            ]
+          },
+          "customerOnSa": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesSigningCustomerOnSa"
+              }
+            ],
+            "description": "Only for CRS"
+          },
+          "isPreviewSentToCustomer": {
+            "type": "boolean",
+            "description": "Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta."
+          },
+          "externalId": {
+            "type": "string",
+            "description": "Id elektronicky podepisovaného dokumentu nahraného v ePodpisech",
+            "nullable": true
+          },
+          "source": {
+            "$ref": "#/components/schemas/EnumSigningSource"
+          },
+          "isCustomerPreviewSendingAllowed": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }, 
+	
+	  "SharedTypesSigningCustomerOnSa": {
+        "type": "object",
+        "properties": {
+          "customerOnSAId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+	  "SharedTypesSearchResponseItem": {
+        "type": "object",
+        "properties": {
+          "formId": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+	  
       "EnumCustomerRoles": {
         "enum": [0, 1, 2, 8],
         "type": "integer",
@@ -11774,6 +12696,14 @@
         "format": "int32",
         "x-enum-varnames": ["EArchive", "SbDocument", "SbAttachment"],
         "x-enumNames": ["EArchive", "SbDocument", "SbAttachment"]
+      },
+	  "EnumSigningSource": {
+        "enum": [0, 1, 2],
+        "type": "integer",
+        "description": "<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Noby</li><li>2 - Workflow</li></ul>",
+        "format": "int32",
+        "x-enum-varnames": ["Unknown", "Noby", "Workflow"],
+        "x-enumNames": ["Unknown", "Noby", "Workflow"]
       }
     }
   }

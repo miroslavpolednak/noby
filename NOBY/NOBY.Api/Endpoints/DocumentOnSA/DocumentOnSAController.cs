@@ -42,9 +42,9 @@ public class DocumentOnSAController : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
-    [ProducesResponseType(typeof(GetDocumentsSignListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DocumentOnSAGetDocumentsSignListResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetDocumentsSignListResponse> GetDocumentsSignList(
+    public async Task<DocumentOnSAGetDocumentsSignListResponse> GetDocumentsSignList(
         [FromRoute] int salesArrangementId,
         CancellationToken cancellationToken)
     => await _mediator.Send(new GetDocumentsSignListRequest(salesArrangementId), cancellationToken);
@@ -61,11 +61,11 @@ public class DocumentOnSAController : ControllerBase
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
-    [ProducesResponseType(typeof(StartSigningResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DocumentOnSaStartSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<StartSigningResponse> StartSigning(
+    public async Task<DocumentOnSaStartSigningResponse> StartSigning(
          [FromRoute] int salesArrangementId,
-         [FromBody] StartSigningRequest request)
+         [FromBody] DocumentOnSAStartSigningRequest request)
     => await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId));
 
     /// <summary>
@@ -181,7 +181,7 @@ public class DocumentOnSAController : ControllerBase
     [SwaggerOperation(Tags = [ "Podepisování" ])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetDocumentOnSADetailResponse> GetDocumentOnSaDetail(
+    public async Task<DocumentOnSaGetDocumentOnSADetailResponse> GetDocumentOnSaDetail(
         [FromRoute] int salesArrangementId,
         [FromRoute] int documentOnSAId,
         CancellationToken cancellationToken)
@@ -198,12 +198,12 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="request"></param>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
-    [ProducesResponseType(typeof(SearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DocumentOnSaSearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SearchDocumentsOnSa(
              [FromRoute] int salesArrangementId,
-             [FromBody] SearchDocumentsOnSaRequest request,
+             [FromBody] DocumentOnSaSearchDocumentsOnSaRequest request,
              CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(request.InfuseSalesArrangementId(salesArrangementId), cancellationToken);
@@ -224,11 +224,11 @@ public class DocumentOnSAController : ControllerBase
     /// <param name="request"></param>
     [HttpPost("case/{caseId:long}/document-on-sa/search")]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
-    [ProducesResponseType(typeof(SearchDocumentsOnSaOnCaseResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DocumentOnSaSearchDocumentsOnSaOnCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> SearchDocumentsOnSaOnCase(
          [FromRoute] long caseId,
-         [FromBody] SearchDocumentsOnSaOnCaseRequest request,
+         [FromBody] DocumentOnSaSearchDocumentsOnSaOnCaseRequest request,
          CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(request.InfuseCaseId(caseId), cancellationToken);
@@ -250,8 +250,8 @@ public class DocumentOnSAController : ControllerBase
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh")]
     [NobySkipCaseStateAndProductSAValidation]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
-    [ProducesResponseType(typeof(RefreshElectronicDocumentResponse), StatusCodes.Status200OK)]
-    public async Task<RefreshElectronicDocumentResponse> RefreshElectronicDocument(
+    [ProducesResponseType(typeof(DocumentOnSaRefreshElectronicDocumentResponse), StatusCodes.Status200OK)]
+    public async Task<DocumentOnSaRefreshElectronicDocumentResponse> RefreshElectronicDocument(
           [FromRoute] int salesArrangementId,
           [FromRoute] int documentOnSaId,
           CancellationToken cancellationToken)
@@ -270,9 +270,9 @@ public class DocumentOnSAController : ControllerBase
     [HttpGet("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/status")]
     [SwaggerOperation(Tags = [ "Podepisování" ])]
     [NobySkipCaseStateAndProductSAValidation]
-    [ProducesResponseType(typeof(GetDocumentOnSAStatusResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DocumentOnSaGetDocumentOnSAStatusResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(
+    public async Task<DocumentOnSaGetDocumentOnSAStatusResponse> GetDocumentOnSAStatus(
           [FromRoute] int salesArrangementId,
           [FromRoute] int documentOnSAId,
           CancellationToken cancellationToken

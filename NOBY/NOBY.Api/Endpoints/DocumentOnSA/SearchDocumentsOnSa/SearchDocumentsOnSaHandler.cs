@@ -1,10 +1,9 @@
 ﻿using DomainServices.DocumentOnSAService.Clients;
-using NOBY.Dto.Signing;
 using NOBY.Services.EaCodeMain;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.Search;
 
-public class SearchDocumentsOnSaHandler : IRequestHandler<SearchDocumentsOnSaRequest, SearchDocumentsOnSaResponse>
+public class SearchDocumentsOnSaHandler : IRequestHandler<DocumentOnSaSearchDocumentsOnSaRequest, DocumentOnSaSearchDocumentsOnSaResponse>
 {
     private readonly Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
@@ -20,12 +19,12 @@ public class SearchDocumentsOnSaHandler : IRequestHandler<SearchDocumentsOnSaReq
         _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 
-    public async Task<SearchDocumentsOnSaResponse> Handle(SearchDocumentsOnSaRequest request, CancellationToken cancellationToken)
+    public async Task<DocumentOnSaSearchDocumentsOnSaResponse> Handle(DocumentOnSaSearchDocumentsOnSaRequest request, CancellationToken cancellationToken)
     {
         // validace prav
         await _salesArrangementAuthorization.ValidateSaAccessBySaType213And248BySAId(request.SalesArrangementId, cancellationToken);
 
-        await _eaCodeMainHelper.ValidateEaCodeMain(request.EACodeMainId!.Value, cancellationToken);
+        await _eaCodeMainHelper.ValidateEaCodeMain(request.EaCodeMainId!.Value, cancellationToken);
 
         var documentsOnSaResponse = await _documentOnSAService.GetDocumentsOnSAList(request.SalesArrangementId, cancellationToken);
 
@@ -34,11 +33,11 @@ public class SearchDocumentsOnSaHandler : IRequestHandler<SearchDocumentsOnSaReq
             throw new CisNotFoundException(90100, $"No items found for SalesArrangement {request.SalesArrangementId}");
         }
 
-        var documentTypesForEaCodeMain = await _eaCodeMainHelper.GetDocumentTypeIdsAccordingEaCodeMain(request.EACodeMainId.Value, cancellationToken);
+        var documentTypesForEaCodeMain = await _eaCodeMainHelper.GetDocumentTypeIdsAccordingEaCodeMain(request.EaCodeMainId.Value, cancellationToken);
 
         if (documentTypesForEaCodeMain.Count == 0)
         {
-            return new SearchDocumentsOnSaResponse { FormIds = Array.Empty<SearchResponseItem>() };
+            return new DocumentOnSaSearchDocumentsOnSaResponse { FormIds = [] };
         }
 
         var documentsOnSaFiltered = documentsOnSaResponse.DocumentsOnSA
@@ -47,9 +46,9 @@ public class SearchDocumentsOnSaHandler : IRequestHandler<SearchDocumentsOnSaReq
                             && !f.IsFinal
                             && f.IsSigned);
 
-        return new SearchDocumentsOnSaResponse
+        return new DocumentOnSaSearchDocumentsOnSaResponse
         {
-            FormIds = documentsOnSaFiltered.Select(s => new SearchResponseItem
+            FormIds = documentsOnSaFiltered.Select(s => new SharedTypesSearchResponseItem
             {
                 FormId = s.FormId
             }).ToList()
