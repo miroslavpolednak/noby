@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Types;
 using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
+using SharedTypes.GrpcTypes;
 
 namespace DomainServices.CaseService.Clients.v1;
 
@@ -138,4 +139,5 @@ public interface ICaseServiceClient
     Task<CaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default);
 
     Task UpdateTask(UpdateTaskRequest request, CancellationToken cancellationToken = default);
+    Task<ICollection<Case>> GetCasesByIdentity(Identity identity, CancellationToken cancellationToken = default);
 }

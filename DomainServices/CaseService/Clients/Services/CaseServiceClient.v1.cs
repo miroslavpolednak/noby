@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Types;
 using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
+using SharedTypes.GrpcTypes;
 
 namespace DomainServices.CaseService.Clients.v1;
 
@@ -192,6 +193,13 @@ internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClie
     public async Task UpdateTask(UpdateTaskRequest request, CancellationToken cancellationToken = default)
     {
         await _service.UpdateTaskAsync(request, cancellationToken: cancellationToken);
+    }
+
+    public async Task<ICollection<Case>> GetCasesByIdentity(Identity identity, CancellationToken cancellationToken = default)
+    {
+        var response = await _service.GetCasesByIdentityAsync(new GetCasesByIdentityRequest { CustomerIdentity = identity }, cancellationToken: cancellationToken);
+
+        return response.Cases;
     }
 
     // kesovani vysledku validateCase

@@ -44,6 +44,8 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
         };
 
         var customerOnSas = await _customerOnSaClient.GetCustomersByIdentity(identity);
+        var cases = await _caseClient.GetCasesByIdentity(identity);
+        var casesDict = cases.ToDictionary(c => c.CaseId);
 
         foreach (var customerOnSa in customerOnSas)
         {
@@ -54,7 +56,16 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
             if (customerOnSa.CustomerRoleId == 1)
             {
                 var salesArrangement = await _salesArrangementClient.GetSalesArrangement(customerOnSa.SalesArrangementId);
-                var @case = await _caseClient.GetCaseDetail(salesArrangement.CaseId);
+
+                if (casesDict.TryGetValue(salesArrangement.CaseId, out var @case))
+                {
+                    cases.Remove(@case);
+                }
+                else
+                {
+                    @case = await _caseClient.GetCaseDetail(salesArrangement.CaseId);
+                }
+
                 var customerData = new CustomerData
                 {
                     Cin = @case.Customer.Cin,
@@ -80,6 +91,19 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
             };
 
             await _customerOnSaClient.UpdateCustomer(updateCustomer);
+        }
+
+        foreach (var @case in cases)
+        {
+            var customerData = new CustomerData
+            {
+                Cin = @case.Customer.Cin,
+                Identity = @case.Customer.Identity,
+                FirstNameNaturalPerson = party.NaturalPersonAttributes.FirstName,
+                Name = party.NaturalPersonAttributes.Surname,
+                DateOfBirthNaturalPerson = party.NaturalPersonAttributes.BirthDate.Date
+            };
+            await _caseClient.UpdateCustomerData(@case.CaseId, customerData);
         }
     }
 

@@ -33,8 +33,8 @@ public sealed class CreateCaseFromExternalSourcesService(
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
 
         // instance uzivatele
-        var customerIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
-        var customer = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);
+        var mpIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
+        var customer = await _customerService.GetCustomerDetail(mpIdentity, cancellationToken);
 
 		// prioritne chceme pouzit customera z CM
         var kbIdentity = customer.Identities.GetKbIdentityOrDefault();
@@ -72,7 +72,7 @@ public sealed class CreateCaseFromExternalSourcesService(
                 DateOfBirthNaturalPerson = customer.NaturalPerson?.DateOfBirth,
                 FirstNameNaturalPerson = customer.NaturalPerson?.FirstName,
                 Name = customer.NaturalPerson?.LastName,
-                Identity = customerIdentity,
+                Identity = kbIdentity ?? mpIdentity,
                 Cin = customer.NaturalPerson?.BirthNumber
             }
         };
