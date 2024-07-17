@@ -1670,11 +1670,8 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SalesArrangementUpdateCommentRequest
+    public partial class SalesArrangementUpdateCommentRequest : SalesArrangementSharedComment
     {
-
-        [System.Text.Json.Serialization.JsonPropertyName("comment")]
-        public SalesArrangementSharedComment Comment { get; set; } = default!;
 
     }
 

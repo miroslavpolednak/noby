@@ -2715,7 +2715,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SalesArrangementSharedComment"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SalesArrangementSharedComment"
+                    }
+                  ]
                 }
               }
             }
@@ -6200,11 +6204,13 @@
       },
       "SalesArrangementUpdateCommentRequest": {
         "type": "object",
-        "properties": {
-          "comment": {
+
+        "allOf": [
+          {
             "$ref": "#/components/schemas/SalesArrangementSharedComment"
           }
-        },
+        ],
+
         "additionalProperties": false
       },
       "SalesArrangementSharedComment": {

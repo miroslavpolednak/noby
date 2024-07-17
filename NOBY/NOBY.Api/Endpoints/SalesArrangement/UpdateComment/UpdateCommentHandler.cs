@@ -16,7 +16,7 @@ internal sealed  class UpdateCommentHandler(ISalesArrangementServiceClient _sale
         }
 
         salesArrangement.Mortgage ??= new SalesArrangementParametersMortgage();
-        salesArrangement.Mortgage.Comment = request.Comment.Text ?? string.Empty;
+        salesArrangement.Mortgage.Comment = request.Text ?? string.Empty;
 
         var updateParametersRequest = new UpdateSalesArrangementParametersRequest
         {

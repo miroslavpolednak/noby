@@ -11,7 +11,7 @@ internal sealed class UpdateCommentRequestValidator
             .GreaterThan(0)
             .WithMessage("SalesArrangementId must be > 0");
 
-        RuleFor(t => t.Comment.Text)
+        RuleFor(t => t.Text)
             .MaximumLength(500);
     }
 }
