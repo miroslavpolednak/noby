@@ -53,6 +53,7 @@ internal sealed class CommunicateMortgageRefixationHandler(
             CaseId = offer.Data.CaseId ?? 0,
             ResponseCodeCategory = ResponseCodeCategories.NewFixedRatePeriod,
             Data = offer.MortgageRefixation.SimulationInputs.FixedRatePeriod.ToString(CultureInfo.InvariantCulture),
+            ValidTo = DateTime.Now.AddYears(3) //??? co sem za platnost?
         };
 
         await _offerService.CreateResponseCode(serviceRequest, cancellationToken);
