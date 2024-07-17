@@ -11,10 +11,6 @@ internal sealed class LoanExtraPaymentProcessChangedHandler(
 {
     public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanExtraPaymentProcessChanged message)
     {
-        if (message.state is not (cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED
-            or cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.TERMINATED))
-            return;
-
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(LoanExtraPaymentProcessChangedHandler), message.@case.caseId.id);
@@ -27,6 +23,13 @@ internal sealed class LoanExtraPaymentProcessChangedHandler(
             return;
         }
 
+        if (message.state is not (cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED
+            or cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.TERMINATED))
+        {
+            _logger.KafkaHandlerSkippedDueToState(nameof(LoanExtraPaymentProcessChangedHandler), caseId, processId, message.state.ToString());
+            return;
+        }
+
         SalesArrangement? sa;
         try
         {
@@ -36,7 +39,6 @@ internal sealed class LoanExtraPaymentProcessChangedHandler(
         catch (CisNotFoundException)
         {
             _logger.KafkaCaseIdNotFound(nameof(LoanExtraPaymentProcessChangedHandler), caseId);
-
             return;
         }
 

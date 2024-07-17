@@ -18,7 +18,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, string, Exception> _kafkaConsumerStarted;
     private static readonly Action<ILogger, string, long, decimal, Exception> _kafkaMortgageChangedFinished;
     private static readonly Action<ILogger, long, int, int, Exception> _kafkaIndividualPricingProcessChangedSkipped;
-    private static readonly Action<ILogger, long, int, string, Exception> _kafkaIndividualPricingProcessChangedSkippedState;
+    private static readonly Action<ILogger, string, long, long, string, Exception> _kafkaHandlerSkippedDueToState;
     private static readonly Action<ILogger, long, long, Exception> _kafkaLoanRetentionProcessChangedSkipped;
 
     static LoggerExtensions()
@@ -108,10 +108,10 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.KafkaIndividualPricingProcessChangedSkipped, nameof(KafkaIndividualPricingProcessChangedSkipped)),
             "IndividualPricingProcessChanged skipped for Case {CaseId} and Task {TaskId} because of ProcessTypeId={ProcessTypeId}");
 
-        _kafkaIndividualPricingProcessChangedSkippedState = LoggerMessage.Define<long, int, string>(
+        _kafkaHandlerSkippedDueToState = LoggerMessage.Define<string, long, long, string>(
             LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.KafkaIndividualPricingProcessChangedSkippedState, nameof(KafkaIndividualPricingProcessChangedSkippedState)),
-            "IndividualPricingProcessChanged skipped for Case {CaseId} and Task {TaskId} because of state={State}");
+            new EventId(LoggerEventIdCodes.KafkaHandlerSkippedDueToState, nameof(KafkaHandlerSkippedDueToState)),
+            "Kafka message processing in {Consumer} skipped for Case {CaseId} and Task {TaskId} because of state={State}");
     }
 
     public static void KafkaLoanRetentionProcessChangedSkipped(this ILogger logger, long caseId, long processId)
@@ -165,6 +165,6 @@ internal static class LoggerExtensions
     public static void KafkaIndividualPricingProcessChangedSkipped(this ILogger logger, long caseId, int taskId, int processTypeId)
         => _kafkaIndividualPricingProcessChangedSkipped(logger, caseId, taskId, processTypeId, null!);
 
-    public static void KafkaIndividualPricingProcessChangedSkippedState(this ILogger logger, long caseId, int taskId, string state)
-        => _kafkaIndividualPricingProcessChangedSkippedState(logger, caseId, taskId, state, null!);
+    public static void KafkaHandlerSkippedDueToState(this ILogger logger, string consumerTypeName, long caseId, long taskId, string state)
+        => _kafkaHandlerSkippedDueToState(logger, consumerTypeName, caseId, taskId, state, null!);
 }

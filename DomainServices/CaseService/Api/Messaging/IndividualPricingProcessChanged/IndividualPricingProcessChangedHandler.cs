@@ -105,7 +105,7 @@ internal class IndividualPricingProcessChangedHandler(
 
         if (message.state is not (ProcessStateEnum.ACTIVE or ProcessStateEnum.TERMINATED or ProcessStateEnum.COMPLETED))
         {
-            _logger.KafkaIndividualPricingProcessChangedSkippedState(caseId, taskIdSB, message.state.ToString());
+            _logger.KafkaHandlerSkippedDueToState(nameof(IndividualPricingProcessChangedHandler), caseId, taskIdSB, message.state.ToString());
             return (0, 0, 0, false);
         }
 
