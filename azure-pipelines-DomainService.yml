@@ -22,7 +22,7 @@ steps:
       $file = '$(Build.SourcesDirectory)\$(projectFile)'
       $regex = '(?<=<Version>)[^<]*'
       
-      $finalVersion = "$(versionMajor).$(versionMinor).$(versionPatch).$(Rev:r)"
+      $finalVersion = "$(versionMajor).$(versionMinor).$(versionPatch)"
      
       (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
 
