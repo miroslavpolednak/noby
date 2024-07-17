@@ -1829,22 +1829,22 @@ namespace NOBY.ApiContracts
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
-        public SalesArrangementSharedParametersMortgage Mortgage { get; set; } = default!;
+        public SalesArrangementSharedParametersMortgage? Mortgage { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("hubn")]
-        public SalesArrangementUpdateParametersHubn Hubn { get; set; } = default!;
+        public SalesArrangementUpdateParametersHubn? Hubn { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("drawing")]
-        public SalesArrangementSharedParametersDrawing Drawing { get; set; } = default!;
+        public SalesArrangementSharedParametersDrawing? Drawing { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("generalChange")]
-        public SalesArrangementUpdateParametersGeneralChange GeneralChange { get; set; } = default!;
+        public SalesArrangementUpdateParametersGeneralChange? GeneralChange { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("customerChange")]
-        public SalesArrangementUpdateParametersCustomerChange CustomerChange { get; set; } = default!;
+        public SalesArrangementUpdateParametersCustomerChange? CustomerChange { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("customerChange3602")]
-        public SalesArrangementUpdateParametersCustomerChange3602 CustomerChange3602 { get; set; } = default!;
+        public SalesArrangementUpdateParametersCustomerChange3602? CustomerChange3602 { get; set; } = default!;
 
     }
 
@@ -3085,8 +3085,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("actualLoanDueDate")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public DateOnly ActualLoanDueDate { get; set; } = default!;
+        public DateOnly? ActualLoanDueDate { get; set; } = default!;
 
     }
 
@@ -3130,7 +3129,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("actualLoanPaymentAmount")]
-        public decimal ActualLoanPaymentAmount { get; set; } = default!;
+        public decimal? ActualLoanPaymentAmount { get; set; } = default!;
 
     }
 
@@ -3481,8 +3480,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("agreedDrawingDateTo")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public DateOnly AgreedDrawingDateTo { get; set; } = default!;
+        public DateOnly? AgreedDrawingDateTo { get; set; } = default!;
 
         /// <summary>
         /// Prodloužení konce lhůty čerpání o kolik měsíců
@@ -3600,8 +3598,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("agreedLoanDueDate")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public DateOnly AgreedLoanDueDate { get; set; } = default!;
+        public DateOnly? AgreedLoanDueDate { get; set; } = default!;
 
         /// <summary>
         /// Sjednaná měsíční splátka
@@ -7554,15 +7551,14 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("identificationDocumentTypeId")]
-        public int IdentificationDocumentTypeId { get; set; } = default!;
+        public int? IdentificationDocumentTypeId { get; set; } = default!;
 
         /// <summary>
         /// Číslo osobního dokladu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Number { get; set; } = default!;
+        public string? Number { get; set; } = default!;
 
     }
 

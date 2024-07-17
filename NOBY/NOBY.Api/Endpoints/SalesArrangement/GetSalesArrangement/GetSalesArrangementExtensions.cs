@@ -169,13 +169,13 @@ internal static class GetSalesArrangementExtensions
             {
                 Id = t.LoanPurposeId,
                 Sum = t.Sum
-            }).ToList(),
+            }).ToList() ?? [],
             LoanRealEstates = model.LoanRealEstates?.Select(t => new SalesArrangementSharedParametersLoanRealEstate
             {
                 IsCollateral = t.IsCollateral,
                 RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
                 RealEstateTypeId = t.RealEstateTypeId
-            }).ToList(),
+            }).ToList() ?? [],
             ExpectedDateOfDrawing = new()
             {
                 IsActive = model.ExpectedDateOfDrawing?.IsActive ?? false,
@@ -202,7 +202,7 @@ internal static class GetSalesArrangementExtensions
             Applicants = model.Applicants?.Select(t => new SalesArrangementSharedCustomerChangeDetailApplicant
             {
                 Identity = t.Identity?.Select(t => (SharedTypesCustomerIdentity)t!).ToList(),
-                IdentificationDocument = t.IdentificationDocument is null ? null : new()
+                IdentificationDocument = t.IdentificationDocument?.IdentificationDocumentTypeId is null ? null : new()
                 {
                     IdentificationDocumentTypeId = t.IdentificationDocument.IdentificationDocumentTypeId,
                     Number = t.IdentificationDocument.Number
@@ -213,7 +213,7 @@ internal static class GetSalesArrangementExtensions
                     LastName = t.NaturalPerson.LastName,
                     DateOfBirth = t.NaturalPerson.DateOfBirth
                 }
-            }).ToList(),
+            }).ToList() ?? [],
             Release = new()
             {
                 IsActive = model.Release?.IsActive ?? false,

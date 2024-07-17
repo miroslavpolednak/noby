@@ -6400,27 +6400,33 @@
           "discriminator": { "type": "string", "nullable": false },
           "mortgage": {
             "type": "object",
-            "$ref": "#/components/schemas/SalesArrangementSharedParametersMortgage"
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersMortgage",
+            "nullable": true
           },
           "hubn": {
             "type": "object",
-            "$ref": "#/components/schemas/SalesArrangementUpdateParametersHubn"
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersHubn",
+            "nullable": true
           },
           "drawing": {
             "type": "object",
-            "$ref": "#/components/schemas/SalesArrangementSharedParametersDrawing"
+            "$ref": "#/components/schemas/SalesArrangementSharedParametersDrawing",
+            "nullable": true
           },
           "generalChange": {
             "type": "object",
-            "$ref": "#/components/schemas/SalesArrangementUpdateParametersGeneralChange"
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersGeneralChange",
+            "nullable": true
           },
           "customerChange": {
             "type": "object",
-            "$ref": "#/components/schemas/SalesArrangementUpdateParametersCustomerChange"
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersCustomerChange",
+            "nullable": true
           },
           "customerChange3602": {
             "type": "object",
-            "$ref": "#/components/schemas/SalesArrangementUpdateParametersCustomerChange3602"
+            "$ref": "#/components/schemas/SalesArrangementUpdateParametersCustomerChange3602",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7514,7 +7520,8 @@
           "actualLoanDueDate": {
             "type": "string",
             "description": "Aktuální datum splatnosti",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -7550,7 +7557,8 @@
           "actualLoanPaymentAmount": {
             "type": "number",
             "description": "Aktuální výše měsíční splátky",
-            "format": "decimal"
+            "format": "decimal",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -7847,7 +7855,8 @@
           "agreedDrawingDateTo": {
             "type": "string",
             "description": "Sjednaný termín čerpání do",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "extensionDrawingDateToByMonths": {
             "type": "integer",
@@ -7948,7 +7957,8 @@
           "agreedLoanDueDate": {
             "type": "string",
             "description": "Sjednaná splatnost do",
-            "format": "date"
+            "format": "date",
+            "nullable": true
           },
           "agreedLoanPaymentAmount": {
             "type": "number",
@@ -11703,10 +11713,12 @@
         "properties": {
           "identificationDocumentTypeId": {
             "type": "integer",
+            "nullable": true,
             "description": "Typ osobního dokladu - číselník IdentificationDocumentType - (CIS_TYPY_DOKLADOV)",
             "format": "int32"
           },
           "number": {
+            "nullable": true,
             "minLength": 1,
             "type": "string",
             "description": "Číslo osobního dokladu"

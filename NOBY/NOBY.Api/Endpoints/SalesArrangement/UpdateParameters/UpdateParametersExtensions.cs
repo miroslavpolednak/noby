@@ -59,10 +59,10 @@ internal static class UpdateParametersExtensions
                 DateOfBirth = parameters.Agent?.DateOfBirth,
                 FirstName = parameters.Agent?.FirstName,
                 LastName = parameters.Agent?.LastName,
-                IdentificationDocument = parameters.Agent?.IdentificationDocument is null ? null : new()
+                IdentificationDocument = parameters.Agent?.IdentificationDocument?.IdentificationDocumentTypeId is null ? null : new()
                 {
                     Number = parameters.Agent.IdentificationDocument.Number,
-                    IdentificationDocumentTypeId = parameters.Agent.IdentificationDocument.IdentificationDocumentTypeId
+                    IdentificationDocumentTypeId = parameters.Agent.IdentificationDocument.IdentificationDocumentTypeId.Value
                 }
             }
         };
