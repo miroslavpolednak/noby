@@ -12,7 +12,7 @@ variables:
   - template: azure-pipelines-vars.yml
 
 # custom BuildNumber
-name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(versionMajor).$(versionMinor).$(versionPatch).$(Build.BuildId)
+name: $(Build.DefinitionName)_$(SourceBranchName)_$(versionMajor).$(versionMinor).$(versionPatch).$(Rev:r)
 
 steps:
 - task: InlinePowershell@1
@@ -22,12 +22,10 @@ steps:
       $file = '$(Build.SourcesDirectory)\$(projectFile)'
       $regex = '(?<=<Version>)[^<]*'
       
-      $finalVersion = "$(versionMajor).$(versionMinor).$(versionPatch).$(Build.BuildId)"
+      $finalVersion = "$(versionMajor).$(versionMinor).$(versionPatch).$(Rev:r)"
      
       (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
- 
-      Write-Host "Build.BuildId - " -NoNewline
-      Write-Host $(Build.BuildId)
+
       Write-Host "Final version - " -NoNewline
       Write-Host $finalVersion
 
