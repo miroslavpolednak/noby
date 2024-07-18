@@ -919,8 +919,7 @@
              </summary>
              <remarks>
             Vrací seznam rozpodepsaných a podepsaných dokumentů.<br /><br />
-            Řadí dokumenty primárně podle documentTypeId a sekundárně podle customerOnSAId.<br /><br />
-            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=294380C5-4F9D-4dce-9D32-C1AD842ED84B" ><img src= "https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width= "20" height= "20" /> Diagram v EA</a>
+            Řadí dokumenty primárně podle documentTypeId a sekundárně podle customerOnSAId.
              </remarks>
              <param name="salesArrangementId">ID Sales Arrangement</param>
         </member>
@@ -929,8 +928,7 @@
             Začít podepisování dokumentu
             </summary>
             <remarks>
-            Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=C65CE06A-6702-4d2d-ADCF-A8DC7F1902A4"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Provede checkform pro vybrané žádosti a spustí podepisovací proces pro zvolený typ dokumentu.
             </remarks>
             <param name="salesArrangementId"> ID Sales Arrangement </param>
         </member>
@@ -939,8 +937,7 @@
             Odeslání náhledu klientovi
             </summary>
             <remarks>
-            Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Odešle klientovi náhled podepisovaného dokumentu v případě elektronického podepisování
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.StopSigning(System.Int32,System.Int32)">
@@ -948,8 +945,7 @@
             Zrušit podepisování dokumentu
             </summary>
             <remarks>
-            Zkontroluje, zda je pro daný dokument zahájen podepisovací proces a pokud ano, tak ho ukončí.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=AA714DE2-ACD8-48ed-B146-41D50B7D3BE1"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Zkontroluje, zda je pro daný dokument zahájen podepisovací proces a pokud ano, tak ho ukončí.
             </remarks>
             <param name="salesArrangementId"></param>
             <param name="documentOnSAId"></param>
@@ -959,8 +955,7 @@
             Vygenerování náhledu rozpodepsaného dokumentu
             </summary>
             <remarks>
-            Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A1B54B66-9AF8-4e5c-A240-93FEF635449F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Dle zdroje podepisovaného dokumentu, typu podepisování a stavu podepisování dojde k vrácení PDF pro náhled dokumentu.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SignDocumentManually(System.Int32,System.Int32)">
@@ -968,8 +963,7 @@
             Manuální podpis DocumentOnSA
             </summary>
             <remarks>
-            Označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Označí daný DocumentOnSA jako manuálně podepsaný a provede aktualizaci dat v KB CM.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSA(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -978,32 +972,23 @@
             </summary>
             <remarks>
             Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br />
-            <a href = "https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=F950B198-2C67-48e5-B1FE-C091131E6A63"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-            <param name="salesArrangementId"></param>
-            <param name="documentOnSAId"></param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSaDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Detail podepisovaného dokumentu
             </summary>
             <remarks>
-            Vrátí informace o podepisovaném dokumentu.<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=FA259E3F-5B8D-4ade-9F1A-7C1A943F1029"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Vrátí informace o podepisovaném dokumentu.
             </remarks>
-            <param name="salesArrangementId"></param>
-            <param name="documentOnSAId"></param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSa(System.Int32,NOBY.ApiContracts.DocumentOnSaSearchDocumentsOnSaRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhledání dokumentů na základě hlavního hesla (eArchivu)
             </summary>
             <remarks>
-            Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=0C28E9E5-7AC1-4265-8342-FCE63B33967F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
+            Vyhledání formId (businessovém identifikátoru dokumentů) na sales arrangementu dle hlavního hesla (eArchivu).
             </remarks>
-            <param name="salesArrangementId"></param>
-            <param name="request"></param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.SearchDocumentsOnSaOnCase(System.Int64,NOBY.ApiContracts.DocumentOnSaSearchDocumentsOnSaOnCaseRequest,System.Threading.CancellationToken)">
             <summary>
@@ -1011,10 +996,7 @@
             </summary>
             <remarks>
             Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
-            <param name="caseId"></param>
-            <param name="request"></param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.RefreshElectronicDocument(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -1022,21 +1004,15 @@
             </summary>
             <remarks>
              Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br />
-             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=73549CB9-547D-4b15-BEED-BE2E563459D9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
-            <param name="salesArrangementId"></param>
-            <param name="documentOnSaId"></param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSAStatus(System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
             Stav podepisovaného dokumentu 
             </summary>
             <remarks>
-            Zjistí stav aktuálně podepisovaného dokumentu. <br /><br />
-            <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A3D2BB37-E844-4117-B316-A649C39D82F6 "><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
+            Zjistí stav aktuálně podepisovaného dokumentu.
             </remarks>
-            <param name="salesArrangementId"></param>
-            <param name="documentOnSAId"></param>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.StartSigning.StartSigningHandler.ValidateSalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>
