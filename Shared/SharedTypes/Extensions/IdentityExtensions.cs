@@ -15,16 +15,16 @@ public static class IdentityExtensions
         identities.GetKbIdentityOrDefault() ?? throw new InvalidOperationException("Missing KB identity");
 
     public static Identity? GetKbIdentityOrDefault(this IEnumerable<Identity> identities) =>
-        identities.SingleOrDefault(KbIdentityCondition);
+        identities.FirstOrDefault(KbIdentityCondition);
 
     public static Identity GetMpIdentity(this IEnumerable<Identity> identities) =>
         identities.GetMpIdentityOrDefault() ?? throw new InvalidOperationException("Missing MP identity");
 
     public static Identity? GetMpIdentityOrDefault(this IEnumerable<Identity> identities) =>
-        identities.SingleOrDefault(MpIdentityCondition);
+        identities.FirstOrDefault(MpIdentityCondition);
 
     public static Identity GetIdentity(this IEnumerable<Identity> identities, Identity.Types.IdentitySchemes preferredScheme) =>
-        identities.SingleOrDefault(t => t.IdentityScheme == preferredScheme, identities.First());
+        identities.FirstOrDefault(t => t.IdentityScheme == preferredScheme, identities.First());
 
 
     private static bool KbIdentityCondition(Identity identity) => identity is { IdentityScheme: Identity.Types.IdentitySchemes.Kb, IdentityId: > 0 };
