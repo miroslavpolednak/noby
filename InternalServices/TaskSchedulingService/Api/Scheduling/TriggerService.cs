@@ -23,7 +23,7 @@ internal sealed class TriggerService(
             if (trigger.IsDisabled)
             {
                 _logger.TriggerIsDisabled(trigger.ScheduleTriggerId);
-                break;
+                continue;
             }
 
             try
