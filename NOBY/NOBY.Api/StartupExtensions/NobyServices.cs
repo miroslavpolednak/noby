@@ -52,6 +52,7 @@ internal static class NobyServices
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
                 //TODO ODSTRANIT az FE bude reflektovat rozdil mezi datetime a date !!!!!!!!!!!!!!!!!!!!!!!
                 options.JsonSerializerOptions.Converters.Add(new TempJsonConverterForDateOnly());
+                options.JsonSerializerOptions.Converters.Add(new TempJsonConverterForNullableDateOnly());
             });
 
         // dbcontext
@@ -75,6 +76,34 @@ internal static class NobyServices
 }
 
 public sealed class TempJsonConverterForDateOnly
+    : System.Text.Json.Serialization.JsonConverter<DateOnly>
+{
+    public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null)
+        {
+            return DateOnly.MaxValue;
+        }
+        else
+        {
+            return reader.TryGetDateTime(out DateTime d) ? DateOnly.FromDateTime(d) : DateOnly.MaxValue;
+        }
+    }
+
+    public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
+    {
+        if (value == DateOnly.MinValue)
+        {
+            writer.WriteStringValue("");
+        }
+        else
+        {
+            writer.WriteStringValue($"{value:yyyy-MM-dd}");
+        }
+    }
+}
+
+public sealed class TempJsonConverterForNullableDateOnly
     : System.Text.Json.Serialization.JsonConverter<DateOnly?>
 {
     public override DateOnly? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -89,8 +118,6 @@ public sealed class TempJsonConverterForDateOnly
         }
     }
 
-    // This method will be ignored on serialization, and the default typeof(DateTime) converter is used instead.
-    // This is a bug: https://github.com/dotnet/corefx/issues/41070#issuecomment-560949493
     public override void Write(Utf8JsonWriter writer, DateOnly? value, JsonSerializerOptions options)
     {
         if (!value.HasValue)
