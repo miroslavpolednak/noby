@@ -21,6 +21,9 @@ public class OfferService
     public override async Task<GetMortgageDetailResponse> GetMortgageDetail(GetMortgageDetailRequest request, ServerCallContext context)
        => await _mediator.Send(request);
 
+    public override async Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, ServerCallContext context) => 
+        await _mediator.Send(request);
+
     public override async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, ServerCallContext context)
         => await _mediator.Send(request);
 

@@ -14,6 +14,9 @@ public partial class GetMortgageDetailRequest
     : MediatR.IRequest<GetMortgageDetailResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class SimulateBuildingSavingsRequest : MediatR.IRequest<SimulateBuildingSavingsResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
 public partial class SimulateMortgageRequest
     : MediatR.IRequest<SimulateMortgageResponse>, CIS.Core.Validation.IValidatableRequest
 { }

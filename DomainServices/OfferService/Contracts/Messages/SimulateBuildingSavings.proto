@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Parameters/BuildingSavings.proto";
+
+message SimulateBuildingSavingsRequest {
+	BuildingSavingsSimulationInputs SimulationInputs = 1;
+}
+
+message SimulateBuildingSavingsResponse {
+	int32 OfferId = 1;
+	BuildingSavingsSimulationResults SimulationResults = 2;
+}

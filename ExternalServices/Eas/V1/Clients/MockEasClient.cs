@@ -1,4 +1,5 @@
-﻿using ExternalServices.Eas.V1.EasWrapper;
+﻿using ExternalServices.Eas.Dto;
+using ExternalServices.Eas.V1.EasWrapper;
 
 namespace ExternalServices.Eas.V1;
 
@@ -62,5 +63,10 @@ internal sealed class MockEasClient
     public Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData, CancellationToken cancellationToken)
     {
         return null!;
+    }
+
+    public Task<BuildingSavingsResponse> SimulateBuildingSavings(BuildingSavingsRequest request, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
     }
 }

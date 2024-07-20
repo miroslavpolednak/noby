@@ -62,4 +62,5 @@ public interface IOfferServiceClient
     Task<List<Contracts.GetResponseCodeListResponse.Types.GetResponseCodeItem>> GetResponseCodeList(long caseId, CancellationToken cancellationToken = default);
 
     Task DeleteOfferList(IEnumerable<int> offerIds, CancellationToken cancellationToken = default);
+    Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default);
 }
