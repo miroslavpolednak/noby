@@ -61,9 +61,7 @@ steps:
   condition: and(succeeded(), ne(variables.testsFile, ''))
   inputs:
     command: 'build'
-    projects: |
-      $(projectFile)
-      $(testsFile)
+    projects: '$(testsFile)'
     arguments: '--output $(Build.BinariesDirectory)'
 
 - task: DotNetCoreCLI@2
