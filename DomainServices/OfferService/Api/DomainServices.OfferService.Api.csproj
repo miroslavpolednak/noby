@@ -28,6 +28,7 @@
     <ProjectReference Include="..\..\..\CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
+    <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
     <ProjectReference Include="..\..\..\Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj" />
     <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />

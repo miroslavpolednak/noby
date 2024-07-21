@@ -49,6 +49,9 @@ internal sealed class OfferService
             OfferId = offerId 
         }, cancellationToken: cancellationToken);
 
+    public async Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default)
+        => await _service.SimulateBuildingSavingsAsync(request, cancellationToken: cancellationToken);
+
     public async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default)
         =>  await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
 

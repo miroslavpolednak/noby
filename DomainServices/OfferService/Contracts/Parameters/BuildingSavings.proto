@@ -1,0 +1,41 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
+import "GrpcDecimal.proto";
+
+message BuildingSavingsSimulationInputs {
+	google.protobuf.Int32Value MarketingActionCode = 1;
+	cis.types.GrpcDecimal TargetAmount = 2;
+	cis.types.GrpcDecimal MinimumMonthlyDeposit = 3;
+	cis.types.GrpcDate ContractStartDate = 4;
+	bool SimulateUntilBindingPeriod = 5;
+	cis.types.NullableGrpcDate ContractTerminationDate = 6;
+	bool AnnualStatementRequired = 7;
+	bool StateSubsidyRequired = 8;
+	bool IsClientSVJ = 9;
+	bool IsClientJuridicalPerson = 10;
+	cis.types.GrpcDate ClientDateOfBirth = 11;
+	repeated BuildingSavingsExtraDeposit ExtraDeposits = 12;
+}
+
+message BuildingSavingsSimulationResults {
+	int32 SavingsLengthInMonths = 1;
+	cis.types.GrpcDecimal InterestRate = 2;
+	cis.types.GrpcDecimal SavingsSum = 3;
+	cis.types.GrpcDecimal DepositsSum = 4;
+	cis.types.GrpcDecimal InterestsSum = 5;
+	cis.types.GrpcDecimal FeesSum = 6;
+	cis.types.GrpcDecimal BonusInterestRate = 7;
+	cis.types.GrpcDecimal StateSubsidySum = 8;
+	cis.types.GrpcDecimal InterestBenefitAmount = 9;
+	cis.types.GrpcDecimal InterestBenefitTax = 10;
+}
+
+message BuildingSavingsExtraDeposit {
+	cis.types.GrpcDecimal Amount = 1;
+	cis.types.GrpcDate Date = 2;
+}

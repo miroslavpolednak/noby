@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using ExternalServices.Eas.Dto;
 using ExternalServices.Eas.V1.EasWrapper;
 
 namespace ExternalServices.Eas.V1;
@@ -34,4 +35,5 @@ public interface IEasClient
     /// </summary>
     Task<CheckFormV2.Response> CheckFormV2(CheckFormData formData, CancellationToken cancellationToken);
 
+    Task<BuildingSavingsResponse> SimulateBuildingSavings(BuildingSavingsRequest request, CancellationToken cancellationToken);
 }

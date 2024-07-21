@@ -102,6 +102,28 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
         => await _mediator.Send(request ?? new());
 
     /// <summary>
+    /// Simulace stavebního spoření.
+    /// </summary>
+    /// <remarks>
+    /// Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů.
+    /// V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br />
+    /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8F390B54-39D7-496d-9F1B-C40BDC60EFB2"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br/><br/>
+    /// Formuláře simulace: <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=877723682">Confluence</a><br/><br/>
+    /// Výsledek simulace: <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=876943329">Confluence</a>
+    /// </remarks>
+    /// <returns>ID vytvořené simulace a její výsledky.</returns>
+    [HttpPost("offer/building-savings")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [ProducesResponseType(typeof(OfferSimulateMortgageResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8F390B54-39D7-496d-9F1B-C40BDC60EFB2")]
+    public async Task<OfferSimulateBuildingSavingsResponse> SimulateMortgage([FromBody] OfferSimulateBuildingSavingsRequest request)
+        => await _mediator.Send(request ?? new());
+
+    /// <summary>
     /// Detail provedené simulace dle ID Sales Arrangement.
     /// </summary>
     /// <remarks>

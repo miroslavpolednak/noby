@@ -19,6 +19,7 @@ enum OfferTypes {
 	MortgageRefixation = 2;
 	MortgageRetention = 3;
 	MortgageExtraPayment = 4;
+	BuildingSavings = 5;
 }
 
 enum OfferOrigins {

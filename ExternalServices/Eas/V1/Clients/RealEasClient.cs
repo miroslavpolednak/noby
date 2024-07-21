@@ -106,6 +106,16 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
         });
     }
 
+    public async Task<BuildingSavingsResponse> SimulateBuildingSavings(BuildingSavingsRequest request, CancellationToken cancellationToken)
+    {
+        return await callMethod(async () =>
+        {
+            var result = await Client.SimulationAsync(request.ToEasRequest()).WithCancellation(cancellationToken);
+
+            return BuildingSavingsResponse.CreateInstance(result);
+        });
+    }
+
     protected override Binding CreateBinding()
     {
         var basicHttpBinding = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
