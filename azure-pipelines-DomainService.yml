@@ -56,6 +56,16 @@ steps:
     arguments: '--output $(Build.BinariesDirectory)'
 
 - task: DotNetCoreCLI@2
+  displayName: DotNet - Build
+  condition: and(succeeded(), eq(variables.testsFile, ''))
+  inputs:
+    command: 'build'
+    projects: |
+      $(projectFile)
+      $(projectFile)
+    arguments: '--output $(Build.BinariesDirectory)'
+
+- task: DotNetCoreCLI@2
   displayName: DotNet - Tests
   condition: and(succeeded(), ne(variables.testsFile, ''))
   inputs:
