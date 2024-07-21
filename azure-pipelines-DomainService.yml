@@ -63,7 +63,7 @@ steps:
     command: 'build'
     projects: |
       $(projectFile)
-      $(projectFile)
+      $(testsFile)
     arguments: '--output $(Build.BinariesDirectory)'
 
 - task: DotNetCoreCLI@2
