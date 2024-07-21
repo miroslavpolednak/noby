@@ -1403,6 +1403,18 @@
             <param name="request">Nastaveni simulace.</param>
             <returns>ID vytvořené simulace a její výsledky.</returns>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SimulateBuildingSavings(NOBY.ApiContracts.OfferSimulateBuildingSavingsRequest)">
+            <summary>
+            Simulace stavebního spoření.
+            </summary>
+            <remarks>
+            Provolá simulační službu Starbuildu. Kromě výsledků simulace se vrací i kolekce warningů.
+            V případě chyby simulace na straně StarBuildu se chyby zpropagují až do error response.<br /><br />
+            Formuláře simulace: <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=877723682">Confluence</a><br/><br/>
+            Výsledek simulace: <a href="https://wiki.kb.cz/pages/viewpage.action?pageId=876943329">Confluence</a>
+            </remarks>
+            <returns>ID vytvořené simulace a její výsledky.</returns>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.GetMortgageBySalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Detail provedené simulace dle ID Sales Arrangement.
