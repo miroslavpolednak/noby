@@ -50,18 +50,9 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: DotNet - Build
-  condition: and(succeeded(), eq(variables.testsFile, ''))
   inputs:
     command: 'build'
     projects: '$(projectFile)'
-    arguments: '--output $(Build.BinariesDirectory)'
-
-- task: DotNetCoreCLI@2
-  displayName: DotNet - Build with tests
-  condition: and(succeeded(), ne(variables.testsFile, ''))
-  inputs:
-    command: 'build'
-    projects: '$(testsFile)'
     arguments: '--output $(Build.BinariesDirectory)'
 
 - task: DotNetCoreCLI@2
@@ -70,7 +61,7 @@ steps:
   inputs:
     command: test
     projects: '$(testsFile)'
-    arguments: '--no-build --configuration debug'
+    arguments: '--configuration debug'
     publishTestResults: true
     testRunTitle: '$(System.TeamProject)_$(Build.DefinitionName) on $(Build.SourceBranch)'
   env:
