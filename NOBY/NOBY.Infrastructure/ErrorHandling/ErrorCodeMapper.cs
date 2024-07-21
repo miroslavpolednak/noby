@@ -74,7 +74,8 @@ public sealed class ErrorCodeMapper
             { 90062, new("Nelze generovat dokument - blíží se termín refixace", "Není povoleno generovat dokument ve lhůtě 14 dní do nadcházející refixace.") },
             { 90064, new("Vložte alespoň jeden soubor") },
             { 90065, new("Vložte povinnou přílohu, tj. 2x fotografie nemovitosti (1x interiér + 1x exteriér) a doklad o výměře bytové jednotky") },
-            { 90066, new("Výše mimořádné splátky je větší než zbývající jistina, vyberte celkové splacení nebo upravte částku.") }
+            { 90066, new("Výše mimořádné splátky je větší než zbývající jistina, vyberte celkové splacení nebo upravte částku.") },
+            { 90067, new("Modré produkty jsou zakázány.") }
         };
 
         Messages = messages.AsReadOnly();
