@@ -38,11 +38,11 @@ internal sealed class SimulateBuildingSavingsHandler : IRequestHandler<OfferSimu
                 SimulateUntilBindingPeriod = request.SimulateUntilBindingPeriod,
                 ExtraDeposits =
                 {
-                    request.ExtraDeposits.Select(x => new BuildingSavingsExtraDeposit
+                    request.ExtraDeposits?.Select(x => new BuildingSavingsExtraDeposit
                     {
                         Date = x.Date,
                         Amount = x.Amount
-                    })
+                    }) ?? []
                 }
             }
         };

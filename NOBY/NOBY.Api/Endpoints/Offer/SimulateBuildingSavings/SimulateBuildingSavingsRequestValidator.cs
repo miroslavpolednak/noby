@@ -20,7 +20,7 @@ internal sealed class SimulateBuildingSavingsRequestValidator : AbstractValidato
                                                       request.MinimumMonthlyDeposit >= request.TargetAmount / 100 * p.MinimumMonthlyDeposit);
         }).WithErrorCode(90032);
 
-        RuleFor(t => t.ContractStartDate).LessThan(DateOnly.FromDateTime(DateTime.Now)).WithErrorCode(90032);
+        RuleFor(t => t.ContractStartDate).GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now)).WithErrorCode(90032);
         RuleFor(t => t).Must(t => !t.IsClientJuridicalPerson || !t.StateSubsidyRequired).WithErrorCode(90032);
         RuleFor(t => t).Must(t => !t.SimulateUntilBindingPeriod || t.ContractTerminationDate == null).WithErrorCode(90032);
         RuleFor(t => t).Must(t => !t.IsClientSVJ || t.IsClientJuridicalPerson).WithErrorCode(90032);
