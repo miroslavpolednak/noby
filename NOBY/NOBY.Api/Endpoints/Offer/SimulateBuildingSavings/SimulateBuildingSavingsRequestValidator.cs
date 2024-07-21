@@ -25,11 +25,14 @@ internal sealed class SimulateBuildingSavingsRequestValidator : AbstractValidato
         RuleFor(t => t).Must(t => !t.SimulateUntilBindingPeriod || t.ContractTerminationDate == null).WithErrorCode(90032);
         RuleFor(t => t).Must(t => !t.IsClientSVJ || t.IsClientJuridicalPerson).WithErrorCode(90032);
 
-        RuleFor(t => t).Must(t => t.ExtraDeposits.All(e => e.Date > t.ContractStartDate)).WithErrorCode(90032);
-
-        RuleForEach(t => t.ExtraDeposits).ChildRules(t =>
+        When(t => t.ExtraDeposits is not null, () =>
         {
-            t.RuleFor(x => x.Amount).Must(amount => amount % 1000 == 0).WithErrorCode(90032);
-        }).WithErrorCode(90032);
+            RuleFor(t => t).Must(t => t.ExtraDeposits.All(e => e.Date > t.ContractStartDate)).WithErrorCode(90032);
+
+            RuleForEach(t => t.ExtraDeposits).ChildRules(t =>
+            {
+                t.RuleFor(x => x.Amount).Must(amount => amount % 1000 == 0).WithErrorCode(90032);
+            }).WithErrorCode(90032);
+        });
     }
 }
