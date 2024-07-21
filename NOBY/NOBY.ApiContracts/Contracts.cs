@@ -859,6 +859,187 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSimulateBuildingSavingsRequest
+    {
+        /// <summary>
+        /// ID Sales Arrangementu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int? SalesArrangementId { get; set; } = default!;
+
+        /// <summary>
+        /// Cílová částka
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("targetAmount")]
+        [System.ComponentModel.DataAnnotations.Range(50000D, double.MaxValue)]
+        public decimal? TargetAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Minimální měsíční vklad (hodnota musí být alespoň 0,5 % z Cílové částky)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("minimumMonthlyDeposit")]
+        public decimal MinimumMonthlyDeposit { get; set; } = default!;
+
+        /// <summary>
+        /// Kód zvolené marketingové akce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("marketingActionCode")]
+        public int? MarketingActionCode { get; set; } = default!;
+
+        /// <summary>
+        /// Předpokládané datum uzavření smlouvy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractStartDate")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public DateOnly ContractStartDate { get; set; } = default!;
+
+        /// <summary>
+        /// Státní podpora
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateSubsidyRequired")]
+        public bool StateSubsidyRequired { get; set; } = default!;
+
+        /// <summary>
+        /// Datum výpovědi
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractTerminationDate")]
+        public DateOnly? ContractTerminationDate { get; set; } = default!;
+
+        /// <summary>
+        /// Poplatek za roční výpis
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("annualStatementRequired")]
+        public bool AnnualStatementRequired { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("ExtraDeposits")]
+        public List<ExtraDeposits> ExtraDeposits { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud je klientem SVJ (Společenství vlastníků jednotek)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isClientSVJ")]
+        public bool IsClientSVJ { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud jde o klienta právnickou osobu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isClientJuridicalPerson")]
+        public bool IsClientJuridicalPerson { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narození klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("clientDateOfBirth")]
+        public DateOnly ClientDateOfBirth { get; set; } = default!;
+
+        /// <summary>
+        /// Simulovat do konce vázací lhůty/marketingové akce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("simulateUntilBindingPeriod")]
+        public bool SimulateUntilBindingPeriod { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerIdentities")]
+        public List<SharedTypesCustomerIdentity>? CustomerIdentities { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class OfferSimulateBuildingSavingsResponse
+    {
+        /// <summary>
+        /// Vklady
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("depositsSum")]
+        public decimal DepositsSum { get; set; } = default!;
+
+        /// <summary>
+        /// Státní podpora
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateSubsidySum")]
+        public decimal? StateSubsidySum { get; set; } = default!;
+
+        /// <summary>
+        /// Úroková sazba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
+        public decimal InterestRate { get; set; } = default!;
+
+        /// <summary>
+        /// Bonusová úroková sazba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("bonusInterestRate")]
+        public decimal? BonusInterestRate { get; set; } = default!;
+
+        /// <summary>
+        /// Celkem naspořeno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("savingsSum")]
+        public decimal SavingsSum { get; set; } = default!;
+
+        /// <summary>
+        /// Délka spoření v měsících
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("savingsLengthInMonths")]
+        public int SavingsLengthInMonths { get; set; } = default!;
+
+        /// <summary>
+        /// Úroky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestsSum")]
+        public decimal InterestsSum { get; set; } = default!;
+
+        /// <summary>
+        /// Poplatky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("feesSum")]
+        public decimal? FeesSum { get; set; } = default!;
+
+        /// <summary>
+        /// Úrokový benefit - výše
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestBenefitAmount")]
+        public decimal InterestBenefitAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Úrokový benefit - daň
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestBenefitTax")]
+        public decimal InterestBenefitTax { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class OfferSharedMarketingActionInputItem
     {
 
@@ -8683,6 +8864,34 @@ namespace NOBY.ApiContracts
         Success = 1,
 
         Failed = 2,
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ExtraDeposits
+    {
+        /// <summary>
+        /// Datum mimořádného vkladu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("date")]
+        public DateOnly Date { get; set; } = default!;
+
+        /// <summary>
+        /// Částka mimořádného vkladu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("amount")]
+        public decimal Amount { get; set; } = default!;
+
+        private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
 
     }
 
