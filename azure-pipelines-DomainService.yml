@@ -61,7 +61,7 @@ steps:
   inputs:
     command: test
     projects: '$(testsFile)'
-    arguments: '--configuration debug'
+    arguments: '--no-build --configuration debug'
     publishTestResults: true
     testRunTitle: '$(System.TeamProject)_$(Build.DefinitionName) on $(Build.SourceBranch)'
   env:
