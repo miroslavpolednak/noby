@@ -9,14 +9,14 @@ internal sealed class GetCustomerDetailWithChangesHandler : IRequestHandler<GetC
 {
     public async Task<GetCustomerDetailWithChangesResponse> Handle(GetCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
-        var customerInfo = await _changedDataService.GetCustomerInfo(request.CustomerOnSAId, cancellationToken);
+        var customerInfo = await _changedDataService.GetCustomerWithChangedData(request.CustomerOnSAId, cancellationToken);
 
         // SA instance
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(customerInfo.CustomerOnSA.SalesArrangementId, cancellationToken);
 
         await checkProductTypeMandant(salesArrangement.CaseId, cancellationToken);
 
-        return CustomerMapper.MapCustomerToResponseDto<GetCustomerDetailWithChangesResponse>(customerInfo.CustomerDetail, customerInfo.CustomerOnSA);
+        return CustomerMapper.MapCustomerToResponseDto<GetCustomerDetailWithChangesResponse>(customerInfo.CustomerWithChangedData, customerInfo.CustomerOnSA);
     }
 
     private async Task checkProductTypeMandant(long caseId, CancellationToken cancellationToken)
