@@ -8,7 +8,7 @@ namespace CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
 public class WsseSoapPasswordDigestSecurityHeader(string username, string password) : MessageHeader
 {
-    private const string _swuNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
+    private const string _wsuNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
 
     private readonly string _nonce = GenerateNonce();
     private readonly string _created = GenerateTimestamp();
@@ -21,13 +21,13 @@ public class WsseSoapPasswordDigestSecurityHeader(string username, string passwo
         writer.WriteStartElement("wsse", Name, Namespace);
         writer.WriteAttributeString("soapenv", "mustUnderstand", "http://schemas.xmlsoap.org/soap/envelope/", "1");
         writer.WriteXmlnsAttribute("wsse", Namespace);
-        writer.WriteXmlnsAttribute("swu", _swuNamespace);
+        writer.WriteXmlnsAttribute("wsu", _wsuNamespace);
     }
 
     protected override void OnWriteHeaderContents(XmlDictionaryWriter writer, MessageVersion messageVersion)
     {
         writer.WriteStartElement("wsse", "UsernameToken", Namespace);
-        writer.WriteAttributeString("wsu", "Id", _swuNamespace, $"UsernameToken-{Guid.NewGuid():N}");
+        writer.WriteAttributeString("wsu", "Id", _wsuNamespace, $"UsernameToken-{Guid.NewGuid():N}");
 
         // Username
         writer.WriteElementString("wsse", "Username", Namespace, username);
@@ -45,7 +45,7 @@ public class WsseSoapPasswordDigestSecurityHeader(string username, string passwo
         writer.WriteEndElement();
 
         // Created
-        writer.WriteElementString("wsu", "Created", Namespace, _created);
+        writer.WriteElementString("wsu", "Created", _wsuNamespace, _created);
 
         writer.WriteEndElement(); // UsernameToken
     }
