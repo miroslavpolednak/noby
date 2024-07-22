@@ -39,19 +39,11 @@ public class LinkEArchivIdToDocumentOnSAHandler : IRequestHandler<LinkEArchivIdT
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSaEntity.SalesArrangementId, cancellationToken);
         // SA state
-        if (!_disallowedSaTypesForStateChange.Contains(salesArrangement.SalesArrangementTypeId)
-            && salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
+        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
         {
             await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
         }
 
         return new Empty();
     }
-
-    private static readonly int[] _disallowedSaTypesForStateChange =
-    [
-        (int)SalesArrangementTypes.MortgageRefixation,
-        (int)SalesArrangementTypes.MortgageRetention,
-        (int)SalesArrangementTypes.MortgageExtraPayment
-    ];
 }

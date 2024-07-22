@@ -32,6 +32,8 @@ public class SalesArrangementStateManager : ISalesArrangementStateManager
 
     public async Task SetSalesArrangementStateAccordingDocumentsOnSa(int salesArrangementId, CancellationToken cancellationToken)
     {
+        var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(salesArrangementId, cancellationToken);
+
         var documentsToSign = await _mediator.Send(new GetDocumentsToSignListRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
 
         var documentOnSaIds = documentsToSign.DocumentsOnSAToSign.Where(w => w.DocumentOnSAId != null)
@@ -42,7 +44,8 @@ public class SalesArrangementStateManager : ISalesArrangementStateManager
                                           .Select(s => s.DocumentOnSAId)
                                           .ToListAsync(cancellationToken);
 
-        if (documentsToSign.DocumentsOnSAToSign.All(d =>
+        if (!_disallowedSaTypesForStateChange.Contains(salesArrangement.SalesArrangementTypeId) 
+            && documentsToSign.DocumentsOnSAToSign.All(d =>
                                                     d.DocumentOnSAId is not null
                                                     && d.IsSigned
                                                     && (
@@ -63,4 +66,11 @@ public class SalesArrangementStateManager : ISalesArrangementStateManager
             await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, SalesArrangementStates.InSigning.ToByte(), cancellationToken); // 7
         }
     }
+
+    private static readonly int[] _disallowedSaTypesForStateChange =
+    [
+        (int)SalesArrangementTypes.MortgageRefixation,
+        (int)SalesArrangementTypes.MortgageRetention,
+        (int)SalesArrangementTypes.MortgageExtraPayment
+    ];
 }
