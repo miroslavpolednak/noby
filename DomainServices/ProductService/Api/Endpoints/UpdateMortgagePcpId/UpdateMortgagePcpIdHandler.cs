@@ -20,6 +20,7 @@ internal sealed class UpdateMortgagePcpIdHandler(
         {
             ExternalServices.Pcp.IPcpClient.Version => productTypes.First(t => t.Id == request.ProductTypeId).PcpProductId,
             ExternalServices.Pcp.IPcpClient.Version2 => productTypes.First(t => t.Id == request.ProductTypeId).PcpObjectCode,
+            ExternalServices.Pcp.IPcpClient.Version3 => productTypes.First(t => t.Id == request.ProductTypeId).PcpObjectCode,
             _ => throw new ArgumentException("Not implemented version")
         };
 
