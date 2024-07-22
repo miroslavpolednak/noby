@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
-public class WsseSoapSecurityHeader(string username, string password, string nonce, DateTime created) : MessageHeader
+public class WsseSoapPasswordTextSecurityHeader(string username, string password, string nonce, DateTime created) : MessageHeader
 {
     private const string _swuNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
     private readonly string _username = username;

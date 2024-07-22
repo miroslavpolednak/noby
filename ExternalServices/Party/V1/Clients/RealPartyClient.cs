@@ -32,7 +32,7 @@ internal class RealPartyClient : SoapClientBase<PartyGeneralBEServiceClient, Par
             using (new OperationContextScope(Client.InnerChannel))
             {
                 OperationContext.Current.OutgoingMessageHeaders.Add(
-                     new WsseSoapSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
+                     new WsseSoapPasswordTextSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
 
                 return await Client.suggestJuridicalPersonsAsync(systemIdentity, userIdentity, traceContext, suggestJuridicalPersonsRequest).WithCancellation(cancellationToken);
             }
@@ -51,7 +51,7 @@ internal class RealPartyClient : SoapClientBase<PartyGeneralBEServiceClient, Par
             using (new OperationContextScope(Client.InnerChannel))
             {
                 OperationContext.Current.OutgoingMessageHeaders.Add(
-                     new WsseSoapSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
+                     new WsseSoapPasswordTextSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
 
                 return await Client.getRESInfoAsync(systemIdentity, userIdentity, traceContext, restInfoRequest).WithCancellation(cancellationToken);
             }

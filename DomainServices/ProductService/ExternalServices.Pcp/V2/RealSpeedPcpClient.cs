@@ -34,8 +34,7 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
 
             using (new OperationContextScope(Client.InnerChannel))
             {
-                OperationContext.Current.OutgoingMessageHeaders.Add(
-                     new WsseSoapSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
+                AddSecurityHeader();
 
                 var result = await Client.createAsync(systemIdetity, traceContext, request).WithCancellation(cancellationToken);
                 return result.createResponse.productInstanceReference.referentialMktItemInstanceId.id;
@@ -54,9 +53,8 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
 			var request = UpdateRequest(pcpId, customerKbId);
 
 			using (new OperationContextScope(Client.InnerChannel))
-			{
-				OperationContext.Current.OutgoingMessageHeaders.Add(
-					 new WsseSoapSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
+            {
+                AddSecurityHeader();
 
 				await Client.updateAsync(systemIdetity, traceContext, request).WithCancellation(cancellationToken);
                 return "";
@@ -75,6 +73,19 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
         binding.SendTimeout = TimeSpan.FromSeconds(Configuration.RequestTimeout!.Value!);
         binding.ReceiveTimeout = TimeSpan.FromSeconds(Configuration.RequestTimeout!.Value!);
         return binding;
+    }
+
+    private void AddSecurityHeader()
+    {
+        if (Configuration.Authentication == ExternalServicesAuthenticationTypes.PasswordDigest)
+        {
+            OperationContext.Current.OutgoingMessageHeaders.Add(new WsseSoapPasswordDigestSecurityHeader(Configuration.Username!, Configuration.Password!));
+        }
+        else
+        {
+            OperationContext.Current.OutgoingMessageHeaders.Add(
+                new WsseSoapPasswordTextSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
+        }
     }
 
 	private static updateRequest UpdateRequest(string pcpId, long customerKbId)

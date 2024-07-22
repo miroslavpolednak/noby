@@ -13,5 +13,10 @@ public enum ExternalServicesAuthenticationTypes
     /// <summary>
     /// HTTP Basic Authentication
     /// </summary>
-    Basic = 2
+    Basic = 2,
+
+    /// <summary>
+    /// SOAP Password Digest
+    /// </summary>
+    PasswordDigest = 3
 }
