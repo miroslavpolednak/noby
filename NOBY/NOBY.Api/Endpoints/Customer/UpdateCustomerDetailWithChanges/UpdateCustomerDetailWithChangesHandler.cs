@@ -77,12 +77,12 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
             };
         }
 
-        var delta = await PrepareDelta(request, originalModel, cancellationToken);
+        var (delta, deltaResult) = await PrepareDelta(request, originalModel, cancellationToken);
 
         var updateRequest = new UpdateCustomerDetailRequest
         {
             CustomerOnSAId = customerInfo.CustomerOnSA.CustomerOnSAId,
-            CustomerChangeMetadata = createMetadata(originalModel, request, delta),
+            CustomerChangeMetadata = createMetadata(originalModel, request, delta, deltaResult),
             CustomerAdditionalData = createAdditionalData(customerInfo.CustomerOnSA, request)
         };
 
@@ -154,7 +154,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         }
     }
 
-    private async Task<CustomerChangeData?> PrepareDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest originalModel, CancellationToken cancellationToken)
+    private async Task<(CustomerChangeData? delta, DeltaComparerResult result)> PrepareDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest originalModel, CancellationToken cancellationToken)
     {
         request.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
         RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(originalModel, request);
@@ -162,7 +162,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
 
         // ----- update naseho detailu instance customera
         // updatujeme CustomerChangeData a CustomerAdditionalData na nasi entite CustomerOnSA
-        var delta = CreateDelta(request, originalModel);
+        var (delta, result) = CreateDelta(request, originalModel);
 
         //Update SingleLine address if address was changed
         if (delta?.Addresses is not null)
@@ -173,7 +173,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
             }
         }
 
-        return delta;
+        return (delta, result);
     }
 
     private async Task cancelSigning(
@@ -238,7 +238,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
     /// <summary>
     /// Vytvori metadata CustomerOnSA
     /// </summary>
-    private static CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request, CustomerChangeData? delta)
+    private static CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request,
+        CustomerChangeData? delta, DeltaComparerResult deltaResult)
     {
         var metadata = new CustomerChangeMetadata
         {
@@ -249,21 +250,9 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         if (metadata.WasCRSChanged && request.NaturalPerson?.TaxResidences?.ResidenceCountries?.Count > 8)
             throw new NobyValidationException(90042);
 
-        if (delta?.NaturalPerson?.TaxResidences is not null)
+        if (delta is not null && deltaResult.ClientDataWereChanged)
         {
-
-
             metadata.WereClientDataChanged = true;
-
-            var dict = (IDictionary<string, Object>)delta;
-            if (dict.Count > 0 &&
-                (dict.Count > 1
-                || !dict.ContainsKey("NaturalPerson")
-                || (dict.ContainsKey("NaturalPerson") && ((IDictionary<string, Object>)dict["NaturalPerson"]).Any(t => t.Key != "TaxResidences"))
-                || !metadata.WasCRSChanged))
-            {
-                metadata.WereClientDataChanged = true;
-            }
         }
 
         return metadata;
@@ -272,14 +261,16 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
     /// <summary>
     /// Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
     /// </summary>
-    private static CustomerChangeData? CreateDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest? originalModel)
+    private static (CustomerChangeData? delta, DeltaComparerResult result) CreateDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest? originalModel)
     {
         var requestCustomerChangeData = CustomerMapper.MapCustomerDtoToChangeData(request);
         var originalCustomerChangeData = CustomerMapper.MapCustomerDtoToChangeData(originalModel);
 
         var delta = new CustomerChangeData();
 
-        var hasDifferences = ModelComparers.ComparePerson(requestCustomerChangeData?.NaturalPerson, originalCustomerChangeData?.NaturalPerson, delta);
+        var result = ModelComparers.ComparePerson(requestCustomerChangeData?.NaturalPerson, originalCustomerChangeData?.NaturalPerson, delta);
+
+        var hasDifferences = false;
         ModelComparers.CompareObjects(requestCustomerChangeData?.IdentificationDocument, originalCustomerChangeData?.IdentificationDocument, ref hasDifferences, obj => delta.IdentificationDocument = obj);
         ModelComparers.CompareObjects(requestCustomerChangeData?.CustomerIdentification, originalCustomerChangeData?.CustomerIdentification, ref hasDifferences, obj => delta.CustomerIdentification = obj);
         ModelComparers.CompareObjects(requestCustomerChangeData?.Addresses, originalCustomerChangeData?.Addresses, ref hasDifferences, obj => delta.Addresses = obj);
@@ -291,10 +282,14 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         if (!(originalModel?.MobilePhone?.IsConfirmed ?? false))
             ModelComparers.CompareObjects(requestCustomerChangeData?.MobilePhone, originalCustomerChangeData?.MobilePhone, ref hasDifferences, obj => delta.MobilePhone = obj);
 
-        if (hasDifferences)
-            return delta;
+        result.ClientDataWereChanged = result.ClientDataWereChanged || hasDifferences;
 
-        return default;
+        if (result.CrsWasChanged || result.ClientDataWereChanged)
+        {
+            return (delta, result);
+        }
+
+        return (default, result);
     }
 
     /// <summary>
