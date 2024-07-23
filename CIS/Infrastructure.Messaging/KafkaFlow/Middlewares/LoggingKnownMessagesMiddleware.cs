@@ -6,18 +6,12 @@ using CIS.Infrastructure.Messaging.Configuration;
 
 namespace CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 
-internal sealed class LoggingKnownMessagesMiddleware : IMessageMiddleware
+internal sealed class LoggingKnownMessagesMiddleware(
+    KafkaFlowConfiguration _configuration, 
+    ILogger<LoggingKnownMessagesMiddleware> _logger) 
+    : IMessageMiddleware
 {
-    private readonly KafkaFlowConfiguration _configuration;
-    private readonly ILogger<LoggingKnownMessagesMiddleware> _logger;
-
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { IgnoreReadOnlyProperties = true, IgnoreReadOnlyFields = true };
-
-    public LoggingKnownMessagesMiddleware(KafkaFlowConfiguration configuration, ILogger<LoggingKnownMessagesMiddleware> logger)
-    {
-        _configuration = configuration;
-        _logger = logger;
-    }
 
     public Task Invoke(IMessageContext context, MiddlewareDelegate next)
     {
