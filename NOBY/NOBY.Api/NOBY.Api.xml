@@ -706,7 +706,7 @@
             (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,DomainServices.HouseholdService.Contracts.Model.CustomerChangeData)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,DomainServices.HouseholdService.Contracts.Model.CustomerChangeData,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.DeltaComparerResult)">
             <summary>
             Vytvori metadata CustomerOnSA
             </summary>
@@ -1437,14 +1437,6 @@
             </remarks>
             <param name="request">Identifikace klienta a ID simulace.</param>
             <returns>ID nově vytvořeného Case</returns>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.LinkModelation(System.Int32,NOBY.ApiContracts.OfferLinkModelationRequest)">
-            <summary>
-            Nalinkuje novou modelaci na stávající SA.
-            </summary>
-            <remarks>
-            Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.
-            </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.OfferController.SetOfferFlags(System.Int64,System.Int32,NOBY.ApiContracts.OfferSetOfferFlagsRequest)">
             <summary>

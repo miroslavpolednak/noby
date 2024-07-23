@@ -162,21 +162,6 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
         => await _mediator.Send(request ?? new());
 
     /// <summary>
-    /// Nalinkuje novou modelaci na stávající SA.
-    /// </summary>
-    /// <remarks>
-    /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.
-    /// </remarks>
-    [HttpPut("offer/mortgage/sales-arrangement/{salesArrangementId:int}/link")]
-    [Produces(MediaTypeNames.Application.Json)]
-    [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [Obsolete("Use LinkMortgageOffer endpoint")]
-    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8996A9D6-2732-4011-9152-0EAE7FEECE07")]
-    public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] OfferLinkModelationRequest request)
-        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new ());
-
-    /// <summary>
     /// Nastavuje příznaky na modelaci.
     /// </summary>
     [HttpPut("case/{caseId:long}/offer/{offerId:int}/flags")]
