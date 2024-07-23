@@ -47,7 +47,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
 
         await GenerateRetentionDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
     private async Task ValidateSignatureTypeDetailId(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken)

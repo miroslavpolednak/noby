@@ -24,7 +24,7 @@ internal sealed class CustomerChange3602BBuilder
         // vytvorit klienta
         var createCustomerResult = await customerOnSAService.CreateCustomer(new CreateCustomerRequest
         {
-            CustomerRoleId = (int)CustomerRoles.Codebtor,
+            CustomerRoleId = (int)SharedTypes.Enums.EnumCustomerRoles.Codebtor,
             SalesArrangementId = salesArrangementId
         }, cancellationToken);
 

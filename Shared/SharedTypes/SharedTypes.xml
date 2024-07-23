@@ -14,19 +14,9 @@
             Druhy adres
             </summary>
         </member>
-        <member name="T:SharedTypes.Enums.CaseStates">
-            <summary>
-            Stavy Case
-            </summary>
-        </member>
         <member name="T:SharedTypes.Enums.ContactTypes">
             <summary>
             Typy kontaktů
-            </summary>
-        </member>
-        <member name="T:SharedTypes.Enums.CustomerIncomeTypes">
-            <summary>
-            Druhy příjmu
             </summary>
         </member>
         <member name="T:SharedTypes.Enums.CustomerProfiles">
@@ -34,9 +24,54 @@
             
             </summary>
         </member>
-        <member name="T:SharedTypes.Enums.CustomerRoles">
+        <member name="T:SharedTypes.Enums.EnumCaseStates">
+            <summary>
+            Stavy Case
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.EnumCustomerRoles">
             <summary>
             Role klienta v obchodu
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.EnumIncomeTypes">
+            <summary>
+            Druhy příjmu
+            </summary>
+        </member>
+        <member name="T:SharedTypes.Enums.EnumOfferFlagTypes">
+            <summary>
+            Položky označené * není možné měnit pomocí API SetOfferFlags
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.EnumOfferFlagTypes.Current">
+            <summary>
+            * Aktuální nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.EnumOfferFlagTypes.Communicated">
+            <summary>
+            * Komunikovaná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.EnumOfferFlagTypes.LegalNotice">
+            <summary>
+            * Zákonné oznámení
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.EnumOfferFlagTypes.Liked">
+            <summary>
+            Likovaná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.EnumOfferFlagTypes.Selected">
+            <summary>
+            Vybraná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.EnumOfferFlagTypes.LegalNoticeDefault">
+            <summary>
+            * Výchozí nabídka
             </summary>
         </member>
         <member name="F:SharedTypes.Enums.FlowSwitches.IsOfferGuaranteed">
@@ -97,41 +132,6 @@
         <member name="F:SharedTypes.Enums.FlowSwitches.IsRealEstateValuationAllowed">
             <summary>
             Je možné oceňovat nemovitost
-            </summary>
-        </member>
-        <member name="T:SharedTypes.Enums.OfferFlagTypes">
-            <summary>
-            Položky označené * není možné měnit pomocí API SetOfferFlags
-            </summary>
-        </member>
-        <member name="F:SharedTypes.Enums.OfferFlagTypes.Current">
-            <summary>
-            * Aktuální nabídka
-            </summary>
-        </member>
-        <member name="F:SharedTypes.Enums.OfferFlagTypes.Communicated">
-            <summary>
-            * Komunikovaná nabídka
-            </summary>
-        </member>
-        <member name="F:SharedTypes.Enums.OfferFlagTypes.LegalNotice">
-            <summary>
-            * Zákonné oznámení
-            </summary>
-        </member>
-        <member name="F:SharedTypes.Enums.OfferFlagTypes.Liked">
-            <summary>
-            Likovaná nabídka
-            </summary>
-        </member>
-        <member name="F:SharedTypes.Enums.OfferFlagTypes.Selected">
-            <summary>
-            Vybraná nabídka
-            </summary>
-        </member>
-        <member name="F:SharedTypes.Enums.OfferFlagTypes.LegalNoticeDefault">
-            <summary>
-            * Výchozí nabídka
             </summary>
         </member>
         <member name="F:SharedTypes.FeatureFlagsConstants.BlueBang">

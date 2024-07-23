@@ -44,9 +44,9 @@ internal sealed class DeleteSalesArrangementHandler(
 
     private static readonly int[] _allowedStates =
     [
-        (int)SalesArrangementStates.NewArrangement,
-        (int)SalesArrangementStates.InProgress,
-        (int)SalesArrangementStates.ToSend,
-        (int)SalesArrangementStates.InSigning
+        (int)EnumSalesArrangementStates.NewArrangement,
+        (int)EnumSalesArrangementStates.InProgress,
+        (int)EnumSalesArrangementStates.ToSend,
+        (int)EnumSalesArrangementStates.InSigning
     ];
 }

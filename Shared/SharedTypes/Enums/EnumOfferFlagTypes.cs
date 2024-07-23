@@ -4,7 +4,7 @@
 /// Položky označené * není možné měnit pomocí API SetOfferFlags
 /// </summary>
 [Flags]
-public enum OfferFlagTypes : int
+public enum EnumOfferFlagTypes : int
 {
     None = 0,
 

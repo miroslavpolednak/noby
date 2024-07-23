@@ -45,9 +45,9 @@ internal sealed class GetMortgageRefixationHandler(
             .OrderBy(t => t.FixedRatePeriod)
             .ToList();
 
-        response.Document.IsGenerateDocumentEnabled = response.Document.IsGenerateDocumentEnabled && (offers?.Any(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Selected)) ?? false);
-        response.CommunicatedOffersValidTo = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Communicated))?.Data.ValidTo;
-        response.LegalNoticeGeneratedDate = offers?.FirstOrDefault(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice))?.MortgageRefixation?.BasicParameters?.LegalNoticeGeneratedDate;
+        response.Document.IsGenerateDocumentEnabled = response.Document.IsGenerateDocumentEnabled && (offers?.Any(t => ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Selected)) ?? false);
+        response.CommunicatedOffersValidTo = offers?.FirstOrDefault(t => ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Communicated))?.Data.ValidTo;
+        response.LegalNoticeGeneratedDate = offers?.FirstOrDefault(t => ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.LegalNotice))?.MortgageRefixation?.BasicParameters?.LegalNoticeGeneratedDate;
         response.ContainsInconsistentIndividualPriceData = !(response.Offers?.All(t => t.IsLegalNotice || t.InterestRateDiscount == icRate) ?? true);
 
         return response;

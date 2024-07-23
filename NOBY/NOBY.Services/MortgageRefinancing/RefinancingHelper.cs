@@ -67,25 +67,25 @@ public static class RefinancingHelper
             : (DateTime?)default;
     }
 
-    public static RefinancingStates GetRefinancingState(in SalesArrangementStates salesArrangementState, in bool managedByRC2, ProcessTask process)
+    public static RefinancingStates GetRefinancingState(in EnumSalesArrangementStates salesArrangementState, in bool managedByRC2, ProcessTask process)
     {
-        if (salesArrangementState != SalesArrangementStates.Unknown && !managedByRC2)
+        if (salesArrangementState != EnumSalesArrangementStates.Unknown && !managedByRC2)
         {
             return salesArrangementState switch
             {
-                SalesArrangementStates.InSigning => RefinancingStates.PodpisNOBY,
-                SalesArrangementStates.Finished => RefinancingStates.Dokonceno,
-                SalesArrangementStates.Cancelled => RefinancingStates.Zruseno,
+                EnumSalesArrangementStates.InSigning => RefinancingStates.PodpisNOBY,
+                EnumSalesArrangementStates.Finished => RefinancingStates.Dokonceno,
+                EnumSalesArrangementStates.Cancelled => RefinancingStates.Zruseno,
                 _ => RefinancingStates.RozpracovanoVNoby
             };
         }
-        else if (salesArrangementState == SalesArrangementStates.Unknown || (salesArrangementState != SalesArrangementStates.Unknown && managedByRC2))
+        else if (salesArrangementState == EnumSalesArrangementStates.Unknown || (salesArrangementState != EnumSalesArrangementStates.Unknown && managedByRC2))
         {
-            if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 2 && salesArrangementState == SalesArrangementStates.Unknown)
+            if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 2 && salesArrangementState == EnumSalesArrangementStates.Unknown)
             {
                 return RefinancingStates.RozpracovanoVSB;
             }
-            else if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 2 && salesArrangementState != SalesArrangementStates.Unknown)
+            else if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 2 && salesArrangementState != EnumSalesArrangementStates.Unknown)
             {
                 return RefinancingStates.PredanoRC2;
             }
@@ -114,10 +114,10 @@ public static class RefinancingHelper
 
     private static readonly int[] _activeSalesArrangementStates = 
     [
-        (int)SalesArrangementStates.InProgress,
+        (int)EnumSalesArrangementStates.InProgress,
         //(int)SalesArrangementStates.NewArrangement, tmp HACH-11963
-        (int)SalesArrangementStates.InSigning,
-        (int)SalesArrangementStates.ToSend,
-        (int)SalesArrangementStates.RC2,
+        (int)EnumSalesArrangementStates.InSigning,
+        (int)EnumSalesArrangementStates.ToSend,
+        (int)EnumSalesArrangementStates.RC2,
     ];
 }

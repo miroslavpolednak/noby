@@ -37,7 +37,7 @@ internal sealed class CreateRealEstateValuationHandler(
             IsOnlineDisqualified = false
         };
 
-        if (caseInstance.State == (int)CaseStates.InProgress)
+        if (caseInstance.State == (int)EnumCaseStates.InProgress)
         {
             var saInstance = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
 

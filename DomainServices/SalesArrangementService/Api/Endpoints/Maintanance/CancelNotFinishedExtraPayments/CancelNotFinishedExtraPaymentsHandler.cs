@@ -17,7 +17,7 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
     {
         var newExtraPaymentsSA = await _dbContext.SalesArrangements
                                     .Where(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageExtraPayment
-                                                && s.State == (int)SalesArrangementStates.NewArrangement)
+                                                && s.State == (int)EnumSalesArrangementStates.NewArrangement)
                                     .Select(s => new
                                     {
                                         s.SalesArrangementId,
@@ -43,7 +43,7 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
                     await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
 
                     await _mediator.Send(new UpdateSalesArrangementStateRequest(
-                        new() { SalesArrangementId = epSa.SalesArrangementId, State = (int)SalesArrangementStates.Cancelled }),
+                        new() { SalesArrangementId = epSa.SalesArrangementId, State = (int)EnumSalesArrangementStates.Cancelled }),
                         cancellationToken);
                 }
             }

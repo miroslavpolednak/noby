@@ -64,7 +64,7 @@ internal class EasProductForm : EasForm<ProductFormData>
             },
             EmployementIncomes =
             {
-                _formData.HouseholdData.Incomes.Where(i => i.Value.IncomeTypeId == (int)CustomerIncomeTypes.Employement).Select(x => new ProductEmployementIncome
+                _formData.HouseholdData.Incomes.Where(i => i.Value.IncomeTypeId == (int)EnumIncomeTypes.Employement).Select(x => new ProductEmployementIncome
                 {
                     IncomeId = x.Value.IncomeId,
                     IsInProbationaryPeriodHasValue = (x.Value.Employement?.Job?.IsInProbationaryPeriod).HasValue,

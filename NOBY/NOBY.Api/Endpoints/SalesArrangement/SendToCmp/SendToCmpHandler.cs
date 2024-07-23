@@ -65,7 +65,7 @@ internal sealed class SendToCmpHandler(
 			await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
 
             // update case state
-            await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
+            await _caseService.UpdateCaseState(saInstance.CaseId, (int)EnumCaseStates.InApproval, cancellationToken);
         }
         else
         {
@@ -211,10 +211,10 @@ internal sealed class SendToCmpHandler(
             return;
         }
 
-        var relationshipTypeId = (CustomerRoles)customerOnSa.Customer.CustomerRoleId switch
+        var relationshipTypeId = (SharedTypes.Enums.EnumCustomerRoles)customerOnSa.Customer.CustomerRoleId switch
         {
-            CustomerRoles.Debtor => 1,
-            CustomerRoles.Codebtor => 2,
+            SharedTypes.Enums.EnumCustomerRoles.Debtor => 1,
+            SharedTypes.Enums.EnumCustomerRoles.Codebtor => 2,
             _ => 0
         };
         await RunTaskAndIgnoreMpHomeErrors(_productService.CreateContractRelationship(customerOnSa.IdentityMp.IdentityId, caseId, relationshipTypeId, cancellationToken));

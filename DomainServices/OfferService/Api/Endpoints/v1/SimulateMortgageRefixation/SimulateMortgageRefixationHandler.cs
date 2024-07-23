@@ -73,7 +73,7 @@ internal sealed class SimulateMortgageRefixationHandler(
             CaseId = caseId,
             OfferType = (int)OfferTypes.MortgageRefixation,
             Origin = (int)OfferOrigins.OfferService,
-            Flags = (int)OfferFlagTypes.Current,
+            Flags = (int)EnumOfferFlagTypes.Current,
             ValidTo = validTo
         };
         _dbContext.Offers.Add(entity);

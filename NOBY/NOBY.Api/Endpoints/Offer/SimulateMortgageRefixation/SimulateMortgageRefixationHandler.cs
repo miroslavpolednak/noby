@@ -16,7 +16,7 @@ internal sealed class SimulateMortgageRefixationHandler(
     {
         // validace zda na Case jiz neexistuje simulace se stejnou delkou fixace
         var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
-        if (existingOffers.Any(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Current) && request.FixedRatePeriods.Any(x => x == t.MortgageRefixation.SimulationInputs.FixedRatePeriod)))
+        if (existingOffers.Any(t => ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Current) && request.FixedRatePeriods.Any(x => x == t.MortgageRefixation.SimulationInputs.FixedRatePeriod)))
         {
             throw new NobyValidationException("Offer with the same fixed period already exist");
         }

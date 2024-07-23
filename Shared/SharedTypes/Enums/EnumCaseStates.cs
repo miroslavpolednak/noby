@@ -8,7 +8,7 @@ namespace SharedTypes.Enums;
 /// Stavy Case
 /// </summary>
 [DataContract]
-public enum CaseStates : byte
+public enum EnumCaseStates : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]

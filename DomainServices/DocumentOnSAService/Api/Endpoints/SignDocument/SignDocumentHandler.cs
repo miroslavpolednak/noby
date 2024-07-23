@@ -126,7 +126,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
-        if (documentOnSa.Source != Source.Workflow && salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
+        if (documentOnSa.Source != Source.Workflow && salesArrangement.State != EnumSalesArrangementStates.InSigning.ToByte())
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
 
         var signatureDate = _dateTime.GetLocalNow().DateTime;

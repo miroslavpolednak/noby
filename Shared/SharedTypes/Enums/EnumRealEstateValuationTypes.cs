@@ -1,6 +1,6 @@
 ﻿namespace SharedTypes.Enums;
 
-public enum RealEstateValuationTypes : int
+public enum EnumRealEstateValuationTypes : int
 {
     Unknown = 0,
     Online = 1,

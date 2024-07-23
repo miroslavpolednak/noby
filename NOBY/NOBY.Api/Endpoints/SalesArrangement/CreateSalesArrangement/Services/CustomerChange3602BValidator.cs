@@ -18,7 +18,7 @@ internal sealed class CustomerChange3602BValidator
         var productService = GetRequiredService<IProductServiceClient>();
 
         var caseInstance = await caseService.GetCaseDetail(Request.CaseId, cancellationToken);
-        if (caseInstance.State == (int)CaseStates.InProgress)
+        if (caseInstance.State == (int)EnumCaseStates.InProgress)
         {
             throw new NobyValidationException(90040);
         }

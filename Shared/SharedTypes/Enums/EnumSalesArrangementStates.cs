@@ -5,7 +5,7 @@ using CIS.Core.Attributes;
 namespace SharedTypes.Enums;
 
 [DataContract]
-public enum SalesArrangementStates : byte
+public enum EnumSalesArrangementStates : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]

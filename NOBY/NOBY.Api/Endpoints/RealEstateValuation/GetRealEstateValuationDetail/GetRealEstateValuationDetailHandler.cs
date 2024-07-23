@@ -36,7 +36,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
             RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
             RealEstateValuationDetail = new()
             {
-                CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
+                CaseInProgress = caseInstance.State == (int)EnumCaseStates.InProgress,
                 RealEstateVariant = getRealEstateVariant(valuationDetail.RealEstateTypeId),
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new RealEstateValuationSharedLoanPurposeDetail 
@@ -144,7 +144,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
             RealEstateTypeId = valuationDetail.RealEstateTypeId,
             RealEstateTypeIcon = RealEstateValuationHelpers.GetRealEstateTypeIcon(valuationDetail.RealEstateTypeId),
             ValuationStateId = valuationDetail.ValuationStateId,
-            ValuationStateIndicator = (EnumRealEstateValuationStateIndicators)state.Indicator,
+            ValuationStateIndicator = (EnumStateIndicators)state.Indicator,
             ValuationStateName = state.Name,
             IsLoanRealEstate = valuationDetail.IsLoanRealEstate,
             RealEstateStateId = valuationDetail.RealEstateStateId,

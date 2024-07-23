@@ -65,5 +65,5 @@ public class IncomeBaseData
     /// Typ prijmu
     /// </summary>
     /// <example>1</example>
-    public SharedTypes.Enums.CustomerIncomeTypes IncomeTypeId { get; set; }
+    public SharedTypes.Enums.EnumIncomeTypes IncomeTypeId { get; set; }
 }

@@ -27,7 +27,7 @@ internal sealed class CreateIncomeRequestValidator
         RuleFor(t => t.IncomeTypeId)
             .MustAsync(async (request, incomeTypeId, cancellationToken) =>
             {
-                CustomerIncomeTypes incomeType = (CustomerIncomeTypes)incomeTypeId;
+                EnumIncomeTypes incomeType = (EnumIncomeTypes)incomeTypeId;
 
                 var incomes = await documentDataStorage.GetList<Database.DocumentDataEntities.Income, int>(request.CustomerOnSAId, cancellationToken);
                 int totalIncomesOfType = incomes.Count(t => t.Data?.IncomeTypeId == incomeType);

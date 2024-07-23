@@ -27,9 +27,9 @@ internal sealed class CreateCustomerHandler
         var saInstance = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
         var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
 
-        if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest && customerOnSA.CustomerRoleId != (int)CustomerRoles.Debtor)
+        if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest && customerOnSA.CustomerRoleId != (int)SharedTypes.Enums.EnumCustomerRoles.Debtor)
         {
-            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
+            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
                 throw new NobyValidationException(90001, "Main customer is not identified");
         }
 
@@ -97,7 +97,7 @@ internal sealed class CreateCustomerHandler
         // vytvorit response z API
         var model = customerKb.ToResponseDto(isVerified, resultCode);
 
-        if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
+        if (customerOnSA.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor)
         {
             await _createProductTrain.RunAll(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers, cancellationToken);
         }
@@ -106,7 +106,7 @@ internal sealed class CreateCustomerHandler
             // pokud je vse OK, zalozit customera v konsDb
             await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
 
-            var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
+            var relationshipTypeId = customerOnSA.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Codebtor ? 2 : 0;
             var partnerId = updateResponse.CustomerIdentifiers.GetMpIdentity().IdentityId;
             await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
         }

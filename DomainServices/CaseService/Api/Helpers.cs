@@ -14,7 +14,7 @@ internal static class Helpers
 
     public static readonly int[] DisallowedStates = 
     [
-        (int)CaseStates.ToBeCancelledConfirmed,
-        (int)CaseStates.Cancelled
+        (int)EnumCaseStates.ToBeCancelledConfirmed,
+        (int)EnumCaseStates.Cancelled
     ];
 }

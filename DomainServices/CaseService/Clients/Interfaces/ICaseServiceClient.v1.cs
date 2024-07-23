@@ -136,7 +136,7 @@ public interface ICaseServiceClient
 
     Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 
-    Task<CaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default);
+    Task<EnumCaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default);
 
     Task UpdateTask(UpdateTaskRequest request, CancellationToken cancellationToken = default);
     Task<ICollection<Case>> GetCasesByIdentity(Identity identity, CancellationToken cancellationToken = default);

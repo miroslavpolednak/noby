@@ -45,8 +45,8 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
 
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
-        if (salesArrangement.State != (int)SalesArrangementStates.InSigning // 7
-            && salesArrangement.State != (int)SalesArrangementStates.ToSend // 8
+        if (salesArrangement.State != (int)EnumSalesArrangementStates.InSigning // 7
+            && salesArrangement.State != (int)EnumSalesArrangementStates.ToSend // 8
             && !request.SkipValidations)
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);

@@ -14,7 +14,7 @@ internal sealed class CustomerOnSA
     
     public long CaseId { get; set; }
 
-    public CustomerRoles CustomerRoleId { get; set; }
+    public EnumCustomerRoles CustomerRoleId { get; set; }
 
     public string? FirstNameNaturalPerson { get; set; }
 

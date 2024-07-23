@@ -130,7 +130,7 @@ internal sealed class OrderAggregate
 
     public async Task<GetProductPropertiesResult> GetProductProperties(int caseState, long caseId, CancellationToken cancellationToken)
     {
-        if (caseState == (int)CaseStates.InProgress)
+        if (caseState == (int)EnumCaseStates.InProgress)
         {
             var offerId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().OfferId;
             var offer = await _offerService.GetOffer(offerId!.Value, cancellationToken);

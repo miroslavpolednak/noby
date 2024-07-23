@@ -85,7 +85,7 @@ public sealed class CreateCaseFromExternalSourcesService(
             ContractNumber = mortgageInstance.ContractNumber,
             SalesArrangementTypeId = 1,
             PcpId = pcpId,
-            State = (int)SalesArrangementStates.InApproval
+            State = (int)EnumSalesArrangementStates.InApproval
         };
         await _salesArrangementService.CreateSalesArrangement(saRequest, cancellationToken);
 

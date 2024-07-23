@@ -26,7 +26,7 @@ internal sealed class GetCustomersOnCaseHandler(
 
         List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, string RoleName, bool Agent, bool IsKYCSuccessful)> customerIdentities;
 
-        if (caseInstance.State == (int)SharedTypes.Enums.CaseStates.InProgress)
+        if (caseInstance.State == (int)SharedTypes.Enums.EnumCaseStates.InProgress)
         {
             var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
             // z parameters nacist Agent
@@ -42,7 +42,7 @@ internal sealed class GetCustomersOnCaseHandler(
                     t.CustomerIdentifiers?.GetKbIdentityOrDefault(),
                     (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
-                    ((SharedTypes.Enums.CustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
+                    ((SharedTypes.Enums.EnumCustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
                     saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId,
                     false
                 ))

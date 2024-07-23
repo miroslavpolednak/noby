@@ -34,7 +34,7 @@ internal sealed class SetValuationTypeIdHandler(IRealEstateValuationServiceClien
             throw new NobyValidationException(90032, "PossibleValuationTypeId check failed");
         }
 
-        if (request.ValuationTypeId == EnumRealEstateValuationTypes.DTS && (instance.PossibleValuationTypeId?.Contains((int)RealEstateValuationTypes.Online) ?? false))
+        if (request.ValuationTypeId == EnumRealEstateValuationTypes.Dts && (instance.PossibleValuationTypeId?.Contains((int)SharedTypes.Enums.EnumRealEstateValuationTypes.Online) ?? false))
         {
             throw new NobyValidationException(90032, "PossibleValuationTypeId for DTS check failed");
         }
@@ -47,6 +47,6 @@ internal sealed class SetValuationTypeIdHandler(IRealEstateValuationServiceClien
         await _realEstateValuationService.UpdateValuationTypeByRealEstateValuation(request.RealEstateValuationId, (int)request.ValuationTypeId, cancellationToken);
     }
 
-    private static readonly int[] _possibleValuationTypeId = [(int)RealEstateValuationTypes.Unknown, (int)RealEstateValuationTypes.Online];
+    private static readonly int[] _possibleValuationTypeId = [(int)SharedTypes.Enums.EnumRealEstateValuationTypes.Unknown, (int)SharedTypes.Enums.EnumRealEstateValuationTypes.Online];
     private static readonly int[] _possibleValuationStateId = [(int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano];
 }

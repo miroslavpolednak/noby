@@ -23,7 +23,7 @@ internal sealed class WorkflowMapperService(
             ProcessNameLong = task.ProcessNameLong,
             StateName = task.StateName,
             ProcessTypeId = task.ProcessTypeId,
-            StateIndicator = task.StateIndicator.HasValue ? (EnumWorkflowTaskStateIndicators)task.StateIndicator : EnumWorkflowTaskStateIndicators.Unknown //TODO co je default stav?
+            StateIndicator = task.StateIndicator.HasValue ? (EnumStateIndicators)task.StateIndicator : EnumStateIndicators.Unknown //TODO co je default stav?
         };
     }
 
@@ -45,7 +45,7 @@ internal sealed class WorkflowMapperService(
             StateId = taskState.Id,
             StateName = taskState.Name,
             StateFilter = (EnumWorkflowTaskStateFilters)taskState.Filter,
-            StateIndicator = (EnumWorkflowTaskStateIndicators)taskState.Indicator
+            StateIndicator = (EnumStateIndicators)taskState.Indicator
         };
     }
 

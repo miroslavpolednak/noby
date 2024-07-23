@@ -25,5 +25,6 @@
 		<ProjectReference Include="..\..\DomainServices\OfferService\Contracts\DomainServices.OfferService.Contracts.csproj" />
 		<ProjectReference Include="..\..\Shared\SharedTypes\SharedTypes.csproj" />
 		<ProjectReference Include="..\..\DomainServices\RealEstateValuationService\Contracts\DomainServices.RealEstateValuationService.Contracts.csproj" />
+		<ProjectReference Include="..\NOBY.ApiContracts\NOBY.ApiContracts.csproj" />
 	</ItemGroup>
 </Project>

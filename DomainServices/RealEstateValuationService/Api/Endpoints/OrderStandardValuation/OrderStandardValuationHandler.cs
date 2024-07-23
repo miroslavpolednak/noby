@@ -33,7 +33,7 @@ internal sealed class OrderStandardValuationHandler
         orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
         orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
         
-        entity.ValuationTypeId = (int)RealEstateValuationTypes.Standard;
+        entity.ValuationTypeId = (int)EnumRealEstateValuationTypes.Standard;
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
         // ulozeni vysledku

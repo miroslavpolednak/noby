@@ -61,7 +61,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
 
         await GenerateCalculationDocuments(request, salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.Finished, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished, cancellationToken);
     }
 
     private async Task ValidateHandoverTypeDetail(GenerateExtraPaymentDocumentRequest request, CancellationToken cancellationToken)

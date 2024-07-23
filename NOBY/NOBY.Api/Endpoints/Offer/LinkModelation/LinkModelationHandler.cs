@@ -17,11 +17,11 @@ internal sealed class LinkModelationHandler(
     InterestRatesValidFromService _interestRatesValidFromService)
         : IRequestHandler<OfferLinkModelationRequest>
 {
-    private static readonly SalesArrangementStates[] _allowedStates = [
-        SalesArrangementStates.InProgress,
-        SalesArrangementStates.NewArrangement,
-        SalesArrangementStates.InSigning,
-        SalesArrangementStates.ToSend
+    private static readonly SharedTypes.Enums.EnumSalesArrangementStates[] _allowedStates = [
+        SharedTypes.Enums.EnumSalesArrangementStates.InProgress,
+        SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement,
+        SharedTypes.Enums.EnumSalesArrangementStates.InSigning,
+        SharedTypes.Enums.EnumSalesArrangementStates.ToSend
     ];
 
     public async Task Handle(OfferLinkModelationRequest request, CancellationToken cancellationToken)
@@ -33,7 +33,7 @@ internal sealed class LinkModelationHandler(
         // validace prav
         _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
         
-        if ((offer.Data.CaseId.HasValue && saInstance.CaseId != offer.Data.CaseId) || !_allowedStates.Contains((SalesArrangementStates)saInstance.State))
+        if ((offer.Data.CaseId.HasValue && saInstance.CaseId != offer.Data.CaseId) || !_allowedStates.Contains((SharedTypes.Enums.EnumSalesArrangementStates)saInstance.State))
             throw new NobyValidationException(90032);
         
         switch ((SalesArrangementTypes)saInstance.SalesArrangementTypeId)

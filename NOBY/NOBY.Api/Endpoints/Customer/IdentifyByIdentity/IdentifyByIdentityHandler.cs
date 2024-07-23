@@ -35,8 +35,8 @@ internal sealed class IdentifyByIdentityHandler
 
         //Debtor has to be identified first
         if (saInstance.IsProductSalesArrangement()
-            && customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor 
-            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
+            && customerOnSaInstance.CustomerRoleId is not (int)SharedTypes.Enums.EnumCustomerRoles.Debtor 
+            && !customerDetails.Any(c => c.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
         {
             throw new NobyValidationException("Main customer has to be identified first.");
         }
@@ -55,7 +55,7 @@ internal sealed class IdentifyByIdentityHandler
         if (saInstance.IsProductSalesArrangement())
         {
             // hlavni klient
-            if (customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
+            if (customerOnSaInstance.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor)
             {
                 await _createProductTrain.RunAll(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers, cancellationToken);
             }
@@ -66,7 +66,7 @@ internal sealed class IdentifyByIdentityHandler
                 try
                 {
                     var partnerId = updateResult.CustomerIdentifiers.GetMpIdentity().IdentityId;
-                    var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
+                    var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Codebtor ? 2 : 0;
 
                     await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
                 }

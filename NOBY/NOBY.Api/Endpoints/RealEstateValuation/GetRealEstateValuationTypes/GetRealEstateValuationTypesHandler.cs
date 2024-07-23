@@ -38,7 +38,7 @@ internal sealed class GetRealEstateValuationTypesHandler(
             RealEstateValuationId = request.RealEstateValuationId
         };
 
-        if (caseInstance.State!.Value == (int)CaseStates.InProgress)
+        if (caseInstance.State!.Value == (int)EnumCaseStates.InProgress)
         {
             var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
             var offerInstance = await _offerService.GetOffer(productSA.OfferId!.Value, cancellationToken);

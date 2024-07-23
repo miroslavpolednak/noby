@@ -21,7 +21,7 @@ internal sealed class GetSalesArrangementsHandler(
         var saTypeList = await _codebookService.SalesArrangementTypes(cancellationToken);
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
 
-        var query = result.SalesArrangements.Where(t => t.State != (int)SalesArrangementStates.NewArrangement);
+        var query = result.SalesArrangements.Where(t => t.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement);
         // refinancing
         if (!_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess))
         {
@@ -39,7 +39,7 @@ internal sealed class GetSalesArrangementsHandler(
                 SalesArrangementId = t.SalesArrangementId,
                 SalesArrangementTypeId = t.SalesArrangementTypeId,
                 State = (EnumSalesArrangementStates)t.State,
-                StateText = ((SalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
+                StateText = ((EnumSalesArrangementStates)t.State).GetAttribute<DisplayAttribute>()?.Name ?? "",
                 OfferId = t.OfferId,
                 CreatedBy = t.Created.UserName,
                 CreatedTime = t.Created.DateTime

@@ -25,7 +25,7 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
 
         // periody pouzite v ulozenych offers
         List<int> usedPeriods = offers
-            ?.Where(t => ((OfferFlagTypes)t.Data.Flags).HasFlag(OfferFlagTypes.Current))
+            ?.Where(t => ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Current))
             .Select(t => t.MortgageRefixation.SimulationInputs.FixedRatePeriod)
             .ToList() ?? [];
 

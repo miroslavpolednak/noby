@@ -43,7 +43,7 @@ internal sealed class WorkflowMapperServiceOld
             StateId = taskState.Id,
             StateName = taskState.Name,
             StateFilter = (_Dto.StateFilters)taskState.Filter,
-            StateIndicator = (StateIndicators)taskState.Indicator
+            StateIndicator = (ApiContracts.EnumStateIndicators)taskState.Indicator
         };
     }
 

@@ -28,7 +28,7 @@ public class NonWFLProductSalesArrangementAccess : INonWFLProductSalesArrangemen
         var caseValidationResult = await _caseService.ValidateCaseId(sa.CaseId!.Value, true, cancellationToken);
 
         // State > 1 (není ve stavu tvorby žádosti)
-        if (caseValidationResult.State > (int)CaseStates.InProgress && sa.SalesArrangementTypeId!.Value == (int)SalesArrangementTypes.Mortgage)
+        if (caseValidationResult.State > (int)EnumCaseStates.InProgress && sa.SalesArrangementTypeId!.Value == (int)SalesArrangementTypes.Mortgage)
         {
             throw new CisAuthorizationException("Cannot access endpoint, if Case.State > 1 and Sales Arrangement Type is for Mortgage");
         }

@@ -34,7 +34,7 @@ internal sealed class CreateCustomerHandler(
             DateOfBirthNaturalPerson = request.Customer?.DateOfBirthNaturalPerson,
             SalesArrangementId = request.SalesArrangementId,
             CaseId = salesArrangement.CaseId,
-            CustomerRoleId = (CustomerRoles)request.CustomerRoleId,
+            CustomerRoleId = (EnumCustomerRoles)request.CustomerRoleId,
             LockedIncomeDateTime = request.Customer?.LockedIncomeDateTime,
             MaritalStatusId = request.Customer?.MaritalStatusId,
             Identities = request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
@@ -68,7 +68,7 @@ internal sealed class CreateCustomerHandler(
         await saveDocumentData(entity.CustomerOnSAId, cancellationToken);
 
         // update case detailu
-        if (kbIdentity is not null && entity.CustomerRoleId == CustomerRoles.Debtor)
+        if (kbIdentity is not null && entity.CustomerRoleId == EnumCustomerRoles.Debtor)
         {
             await updateCase(salesArrangement.CaseId, entity, kbIdentity, cancellationToken);
         }

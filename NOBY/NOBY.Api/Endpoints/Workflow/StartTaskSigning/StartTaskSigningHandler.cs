@@ -74,8 +74,8 @@ internal sealed class StartTaskSigningHandler(
         else if (process.RefinancingType == (int)RefinancingTypes.MortgageRetention)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention
-                                                                                      && s.State != (int)SalesArrangementStates.Cancelled
-                                                                                      && s.State != (int)SalesArrangementStates.Finished);
+                                                                                      && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled
+                                                                                      && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished);
 
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
 
@@ -83,8 +83,8 @@ internal sealed class StartTaskSigningHandler(
         else if (process.RefinancingType == (int)RefinancingTypes.MortgageRefixation)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation
-                                                                                     && s.State != (int)SalesArrangementStates.Cancelled
-                                                                                     && s.State != (int)SalesArrangementStates.Finished);
+                                                                                     && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled
+                                                                                     && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished);
 
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
         }

@@ -26,7 +26,7 @@ internal sealed class CancelCaseBySalesArrangementConditionsHandler(
                 {
                     _logger.CancelCaseJobSkipped(caseId, "Case does not exist");
                 }
-                else if (caseInstance.State != (int)CaseStates.InProgress)
+                else if (caseInstance.State != (int)EnumCaseStates.InProgress)
                 {
                     _logger.CancelCaseJobSkipped(caseId, $"CaseState is {caseInstance.State}");
                 }

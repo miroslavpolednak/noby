@@ -11,7 +11,7 @@ internal static class Extensions
         var model = new _HO.CreateCustomerRequest
         {
             SalesArrangementId = salesArrangementId,
-            CustomerRoleId = (int)SharedTypes.Enums.CustomerRoles.Debtor,
+            CustomerRoleId = (int)SharedTypes.Enums.EnumCustomerRoles.Debtor,
             Customer = new _HO.CustomerOnSABase
             {
                 DateOfBirthNaturalPerson = request.DateOfBirth,

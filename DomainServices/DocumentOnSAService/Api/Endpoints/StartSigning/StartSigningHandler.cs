@@ -170,10 +170,10 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
     {
         switch (salesArrangement.State)
         {
-            case (int)SalesArrangementStates.InSigning://(7 Podepisování)
+            case (int)EnumSalesArrangementStates.InSigning://(7 Podepisování)
                 break; // Skip state change
-            case (int)SalesArrangementStates.InProgress://(1 Rozpracováno)
-                await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
+            case (int)EnumSalesArrangementStates.InProgress://(1 Rozpracováno)
+                await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)EnumSalesArrangementStates.InSigning, cancellationToken);
                 break;
             default:
                 throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);

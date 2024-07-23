@@ -13,9 +13,9 @@ internal sealed class UpdateSalesArrangementHandler(Database.SalesArrangementSer
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
 
         // pokud je zadost NEW, zmenit na InProgress
-        if (entity.State == (int)SalesArrangementStates.NewArrangement)
+        if (entity.State == (int)EnumSalesArrangementStates.NewArrangement)
         {
-            entity.State = (int)SalesArrangementStates.InProgress;
+            entity.State = (int)EnumSalesArrangementStates.InProgress;
         }
 
         // kontrola na stav
@@ -46,7 +46,7 @@ internal sealed class UpdateSalesArrangementHandler(Database.SalesArrangementSer
 
     private static readonly int[] _allowedStates = 
     [ 
-        (int)SalesArrangementStates.InSigning, 
-        (int)SalesArrangementStates.InProgress 
+        (int)EnumSalesArrangementStates.InSigning, 
+        (int)EnumSalesArrangementStates.InProgress 
     ];
 }

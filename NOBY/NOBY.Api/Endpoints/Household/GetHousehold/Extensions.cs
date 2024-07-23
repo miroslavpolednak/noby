@@ -34,7 +34,7 @@ internal static class Extensions
                 IncomeId = x.IncomeId,
                 IncomeSource = x.IncomeSource,
                 HasProofOfIncome = x.HasProofOfIncome,
-                IncomeTypeId = (SharedTypes.Enums.CustomerIncomeTypes)x.IncomeTypeId
+                IncomeTypeId = (SharedTypes.Enums.EnumIncomeTypes)x.IncomeTypeId
             }).ToList(),
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()
         };

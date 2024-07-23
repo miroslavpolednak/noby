@@ -110,7 +110,7 @@ public sealed class CaseOwnerValidationMiddleware(RequestDelegate _next)
 
                 // pokud endpoint vyzaduje specificky stav Case
                 var requiredCaseStates = endpoint?.Metadata.OfType<NobyRequiredCaseStatesAttribute>().FirstOrDefault();
-                if ((requiredCaseStates?.CaseStates.Length ?? 0) > 0 && !requiredCaseStates!.CaseStates.Contains((CaseStates)caseInstance.CaseState))
+                if ((requiredCaseStates?.CaseStates.Length ?? 0) > 0 && !requiredCaseStates!.CaseStates.Contains((EnumCaseStates)caseInstance.CaseState))
                 {
                     throw new NobyValidationException(90032, $"Case is in forbidden State: {caseInstance.CaseState}; required states: {string.Join(",", requiredCaseStates.CaseStates)}");
                 }

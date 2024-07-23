@@ -34,7 +34,7 @@ public sealed class RefinancingDocument
     /// Indikátor barvy Noby stavu
     /// </summary>
     /// <example>1</example>
-    public SharedTypes.Enums.StateIndicators StateIndicator { get; set; }
+    public ApiContracts.EnumStateIndicators StateIndicator { get; set; }
 
     public int? SignatureTypeDetailId { get; set; }
 

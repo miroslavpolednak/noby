@@ -68,7 +68,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         else
             await GenerateInterestRateNotificationDocument(salesArrangement, offer, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
     private async Task ValidateSignatureTypeDetailId(GenerateRefixationDocumentRequest request, GetMortgageResponse product, CancellationToken cancellationToken)
@@ -98,7 +98,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
     {
         var offers = await _offerService.GetOfferList(caseId, OfferTypes.MortgageRefixation, cancellationToken: cancellationToken);
 
-        var selectedOffer = offers.FirstOrDefault(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Selected))
+        var selectedOffer = offers.FirstOrDefault(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Selected))
                             ?? throw new NobyValidationException(90032, "No offer was selected");
 
         if ((DateTime)selectedOffer.MortgageRefixation.SimulationInputs.InterestRateValidFrom < DateTime.UtcNow.ToLocalTime().Date || (DateTime?)selectedOffer.Data.ValidTo < DateTime.UtcNow.ToLocalTime().Date)

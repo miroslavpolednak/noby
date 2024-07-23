@@ -50,7 +50,7 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
             //Delete all non Communicated refixation offer from datalake (only where is intersection of sets)
             await connection.QueryFirstOrDefaultAsync<int>(
                 "dbo.DeleteRefixationOffer",
-                new { FlagState = (int)OfferFlagTypes.Communicated, BatchId = batchId }, // Gonna delete all refixation offer which are not in FlagState
+                new { FlagState = (int)EnumOfferFlagTypes.Communicated, BatchId = batchId }, // Gonna delete all refixation offer which are not in FlagState
                 commandType: CommandType.StoredProcedure,
                 commandTimeout: _technicalTimeout
                 );

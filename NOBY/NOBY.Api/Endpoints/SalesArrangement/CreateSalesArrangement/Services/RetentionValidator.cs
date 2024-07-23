@@ -19,7 +19,7 @@ internal sealed class RetentionValidator
         if (salesArrangements
             .SalesArrangements
             .Any(t => t.SalesArrangementTypeId is (int)SalesArrangementTypes.MortgageRetention or (int)SalesArrangementTypes.MortgageRefixation && 
-                      t.State is not (int)SalesArrangementStates.Finished and not (int)SalesArrangementStates.Cancelled))
+                      t.State is not (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished and not (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled))
         {
             throw new NobyValidationException(90052);
         }

@@ -35,22 +35,22 @@ internal sealed class GetCaseMenuFlagsHandler(
             TasksMenuItem = new() { IsActive = true },
             ChangeRequestsMenuItem = new CasesGetCaseMenuFlagsItem
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)EnumCaseStates.InProgress && caseInstance.State != (int)EnumCaseStates.ToBeCancelled
             },
             RealEstatesMenuItem = new CasesGetCaseMenuFlagsItem
             {
                 Flag = CasesGetCaseMenuFlagsItemFlag.NoFlag,
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)EnumCaseStates.InProgress && caseInstance.State != (int)EnumCaseStates.ToBeCancelled
             },
             DocumentsMenuItem = await getDocuments(documentsInQueue, cancellationToken),
             CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
             RefinancingMenuItem = new()
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)EnumCaseStates.InDisbursement or (int)EnumCaseStates.InAdministration)
             },
             ExtraPaymentMenuItem = new()
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)EnumCaseStates.InDisbursement or (int)EnumCaseStates.InAdministration)
             }
         };
     }

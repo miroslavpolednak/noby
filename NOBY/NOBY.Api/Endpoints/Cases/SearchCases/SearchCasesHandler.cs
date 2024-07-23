@@ -20,7 +20,7 @@ internal sealed class SearchCasesHandler(
 
         if (filterStates is not null && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
         {
-            filterStates.Remove((int)CaseStates.InAdministration);
+            filterStates.Remove((int)EnumCaseStates.InAdministration);
         }
 
         DomainServices.CaseService.Contracts.SearchCasesResponse result;

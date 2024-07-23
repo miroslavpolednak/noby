@@ -31,10 +31,10 @@ internal sealed class UpdateCustomersHandler
         var allCustomers = await checkDoubledCustomers(householdInstance.SalesArrangementId, request, cancellationToken);
 
         // process customer1
-        var c1 = await crudCustomer(request.Customer1, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId1, CustomerRoles.Debtor, allCustomers, cancellationToken);
+        var c1 = await crudCustomer(request.Customer1, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId1, SharedTypes.Enums.EnumCustomerRoles.Debtor, allCustomers, cancellationToken);
 
         // process customer2
-        var c2 = await crudCustomer(request.Customer2, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId2, CustomerRoles.Codebtor, allCustomers, cancellationToken);
+        var c2 = await crudCustomer(request.Customer2, salesArrangement.SalesArrangementId, isProductSA, salesArrangement.CaseId, householdInstance.CustomerOnSAId2, SharedTypes.Enums.EnumCustomerRoles.Codebtor, allCustomers, cancellationToken);
 
         // linkovani novych nebo zmenenych CustomerOnSAId na household
         if (householdInstance.CustomerOnSAId1 != c1.OnHouseholdCustomerOnSAId || householdInstance.CustomerOnSAId2 != c2.OnHouseholdCustomerOnSAId)
@@ -119,7 +119,7 @@ internal sealed class UpdateCustomersHandler
         bool isProductSA,
         long caseId,
         int? customerOnSAId,
-        CustomerRoles customerRole,
+        SharedTypes.Enums.EnumCustomerRoles customerRole,
         List<__HO.CustomerOnSA> allCustomers,
         CancellationToken cancellationToken)
     {

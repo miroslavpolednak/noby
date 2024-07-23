@@ -60,7 +60,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                 }, cancellationToken);
                 break;
 
-            case EnumRealEstateValuationTypes.DTS:
+            case EnumRealEstateValuationTypes.Dts:
                 if (revInstance.OrderId.HasValue 
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
                 {

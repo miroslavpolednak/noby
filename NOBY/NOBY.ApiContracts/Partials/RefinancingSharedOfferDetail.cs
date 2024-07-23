@@ -22,13 +22,13 @@ public partial class RefinancingSharedOfferDetail
 
     public static void SetFlags(RefinancingSharedOfferDetail instance, int offerFlags)
     {
-        var flags = (OfferFlagTypes)offerFlags;
+        var flags = (EnumOfferFlagTypes)offerFlags;
 
-        instance.IsCommunicated = flags.HasFlag(OfferFlagTypes.Communicated);
-        instance.IsCurrent = flags.HasFlag(OfferFlagTypes.Current);
-        instance.IsLegalNotice = flags.HasFlag(OfferFlagTypes.LegalNotice);
-        instance.IsLiked = flags.HasFlag(OfferFlagTypes.Liked);
-        instance.IsSelected = flags.HasFlag(OfferFlagTypes.Selected);
-        instance.IsLegalNoticeDefault = flags.HasFlag(OfferFlagTypes.LegalNoticeDefault);
+        instance.IsCommunicated = flags.HasFlag(EnumOfferFlagTypes.Communicated);
+        instance.IsCurrent = flags.HasFlag(EnumOfferFlagTypes.Current);
+        instance.IsLegalNotice = flags.HasFlag(EnumOfferFlagTypes.LegalNotice);
+        instance.IsLiked = flags.HasFlag(EnumOfferFlagTypes.Liked);
+        instance.IsSelected = flags.HasFlag(EnumOfferFlagTypes.Selected);
+        instance.IsLegalNoticeDefault = flags.HasFlag(EnumOfferFlagTypes.LegalNoticeDefault);
     }
 }

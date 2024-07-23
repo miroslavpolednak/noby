@@ -9,7 +9,7 @@ namespace SharedTypes.Enums;
 /// Role klienta v obchodu
 /// </summary>
 [DataContract]
-public enum CustomerRoles : byte
+public enum EnumCustomerRoles : byte
 {
     [Display(Name = "unknown")]
     [EnumMember]

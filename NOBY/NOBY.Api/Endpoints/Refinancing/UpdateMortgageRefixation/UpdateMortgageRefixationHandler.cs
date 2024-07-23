@@ -53,7 +53,7 @@ internal sealed class UpdateMortgageRefixationHandler(
         foreach (var offer in offers)
         {
             // mame ulozenou jinou slevu ze sazby nez je v requestu
-            if (!((OfferFlagTypes)offer.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice)
+            if (!((EnumOfferFlagTypes)offer.Data.Flags).HasFlag(EnumOfferFlagTypes.LegalNotice)
                 && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != interestRateDiscount)
             {
                 var simulationRequest = new SimulateMortgageRefixationRequest

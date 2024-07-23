@@ -7,7 +7,7 @@ namespace SharedTypes.Enums;
 /// Druhy příjmu
 /// </summary>
 [DataContract]
-public enum CustomerIncomeTypes : int
+public enum EnumIncomeTypes : int
 {
     [Display(Name = "unknown")]
     [EnumMember]

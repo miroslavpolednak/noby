@@ -100,7 +100,7 @@ internal sealed class PreorderOnlineValuationHandler
         CancellationToken cancellationToken)
     {
         entity.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
-        entity.ValuationTypeId = (int)RealEstateValuationTypes.Online;
+        entity.ValuationTypeId = (int)EnumRealEstateValuationTypes.Online;
         entity.PreorderId = kbmodelReponse.ValuationId;
         entity.IsRevaluationRequired = revaluationRequired;
         entity.Prices = new(1)

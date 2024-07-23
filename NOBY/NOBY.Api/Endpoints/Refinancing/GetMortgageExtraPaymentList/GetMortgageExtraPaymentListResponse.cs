@@ -47,7 +47,7 @@ public sealed class GetMortgageExtraPaymentListResponse
 	/// <summary>
 	/// Indikátor barvy stavu
 	/// </summary>
-	public StateIndicators StateIndicator { get; set; }
+	public EnumStateIndicators StateIndicator { get; set; }
 
 	/// <summary>
 	/// Název stavu procesu Refinancí

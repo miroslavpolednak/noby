@@ -37,7 +37,7 @@ public class MortgageRefinancingDocumentService
         if (GetManagedByRC2(salesArrangement) == true)
             throw new NobyValidationException(90032, "ManagedByRC2 is true or SA is not retention SA");
 
-        if (salesArrangement.State is not ((int)SalesArrangementStates.InProgress or (int)SalesArrangementStates.NewArrangement))
+        if (salesArrangement.State is not ((int)EnumSalesArrangementStates.InProgress or (int)EnumSalesArrangementStates.NewArrangement))
             throw new NobyValidationException(90032, "SA has to be in state InProgress(1) or NewArrangement(5)");
 
         return salesArrangement;

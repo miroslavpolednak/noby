@@ -17,8 +17,8 @@ internal sealed class CommunicateMortgageRefixationHandler(
 
 		var offerList = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken: cancellationToken);
 
-        var currentOffers = offerList.Where(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Current)).ToList();
-        var communicatedOffers = offerList.Where(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Communicated)).ToList();
+        var currentOffers = offerList.Where(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Current)).ToList();
+        var communicatedOffers = offerList.Where(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Communicated)).ToList();
 
         await _offerService.DeleteOfferList(communicatedOffers.Except(currentOffers).Select(o => o.Data.OfferId), cancellationToken);
 
@@ -28,7 +28,7 @@ internal sealed class CommunicateMortgageRefixationHandler(
             {
                 OfferId = offer.Data.OfferId,
                 ValidTo = new[] { DateTime.UtcNow.AddDays(45), (DateTime)offer.MortgageRefixation.BasicParameters.FixedRateValidTo }.Min(),
-                Flags = (int)OfferFlagTypes.Current | (int)OfferFlagTypes.Communicated
+                Flags = (int)EnumOfferFlagTypes.Current | (int)EnumOfferFlagTypes.Communicated
             };
 
             if (offer.Data.Origin is not OfferOrigins.BigDataPlatform)

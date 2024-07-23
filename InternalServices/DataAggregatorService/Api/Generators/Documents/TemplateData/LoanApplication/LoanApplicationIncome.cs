@@ -4,22 +4,22 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.Te
 
 public class LoanApplicationIncome
 {
-    private readonly ILookup<CustomerIncomeTypes, IncomeInList> _incomesByType;
+    private readonly ILookup<EnumIncomeTypes, IncomeInList> _incomesByType;
 
     public LoanApplicationIncome(CustomerOnSA customerOnSa)
     {
-        _incomesByType = customerOnSa.Incomes.ToLookup(i => (CustomerIncomeTypes)i.IncomeTypeId);
+        _incomesByType = customerOnSa.Incomes.ToLookup(i => (EnumIncomeTypes)i.IncomeTypeId);
     }
 
-    public decimal? IncomeEmployment => IncomeSum(CustomerIncomeTypes.Employement);
+    public decimal? IncomeEmployment => IncomeSum(EnumIncomeTypes.Employement);
 
-    public decimal? IncomeEnterprise => IncomeSum(CustomerIncomeTypes.Entrepreneur);
+    public decimal? IncomeEnterprise => IncomeSum(EnumIncomeTypes.Entrepreneur);
 
-    public decimal? IncomeRent => IncomeSum(CustomerIncomeTypes.Rent);
+    public decimal? IncomeRent => IncomeSum(EnumIncomeTypes.Rent);
 
-    public decimal? IncomeOther => IncomeSum(CustomerIncomeTypes.Other);
+    public decimal? IncomeOther => IncomeSum(EnumIncomeTypes.Other);
 
-    private decimal? IncomeSum(CustomerIncomeTypes incomeType)
+    private decimal? IncomeSum(EnumIncomeTypes incomeType)
     {
         var result = _incomesByType[incomeType].Select(i => (decimal?)i.Sum).Where(income => income.HasValue).Sum();
 

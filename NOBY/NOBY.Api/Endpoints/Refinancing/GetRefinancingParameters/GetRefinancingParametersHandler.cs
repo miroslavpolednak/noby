@@ -21,7 +21,7 @@ internal sealed class GetRefinancingParametersHandler(
     {
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
 
-        if (caseInstance.State is not (int)CaseStates.InDisbursement and not (int)CaseStates.InAdministration)
+        if (caseInstance.State is not (int)EnumCaseStates.InDisbursement and not (int)EnumCaseStates.InAdministration)
         {
             throw new NobyValidationException(90032);
         }
@@ -132,7 +132,7 @@ internal sealed class GetRefinancingParametersHandler(
         List<DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes,
         List<DomainServices.CodebookService.Contracts.v1.RefinancingStatesResponse.Types.RefinancingStatesItem> refinancingStates)
     {
-        var state = RefinancingHelper.GetRefinancingState((SalesArrangementStates)(sa?.State ?? 0), sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process);
+        var state = RefinancingHelper.GetRefinancingState((SharedTypes.Enums.EnumSalesArrangementStates)(sa?.State ?? 0), sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process);
 
         ProcessDetail detail = new()
         {

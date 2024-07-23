@@ -7,6 +7,7 @@
 #nullable enable
 
 using System.Collections.Generic;
+using SharedTypes.Enums;
 
 #pragma warning disable 108 // Disable "CS0108 '{derivedDto}.ToJson()' hides inherited member '{dtoBase}.ToJson()'. Use the new keyword if hiding was intended."
 #pragma warning disable 114 // Disable "CS0114 '{derivedDto}.RaisePropertyChanged(String)' hides inherited member 'dtoBase.RaisePropertyChanged(String)'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
@@ -3967,7 +3968,7 @@ namespace NOBY.ApiContracts
         public int State { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("stateIndicator")]
-        public EnumWorkflowTaskStateIndicators StateIndicator { get; set; } = default!;
+        public EnumStateIndicators StateIndicator { get; set; } = default!;
 
     }
 
@@ -4268,7 +4269,7 @@ namespace NOBY.ApiContracts
         public int ValuationStateId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("valuationStateIndicator")]
-        public EnumRealEstateValuationStateIndicators ValuationStateIndicator { get; set; } = default!;
+        public EnumStateIndicators ValuationStateIndicator { get; set; } = default!;
 
         /// <summary>
         /// Název stavu Ocenění nemovitosti
@@ -7991,7 +7992,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateIndicator")]
-        public EnumWorkflowTaskStateIndicators StateIndicator { get; set; } = default!;
+        public EnumStateIndicators StateIndicator { get; set; } = default!;
 
     }
 
@@ -8101,7 +8102,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateIndicator")]
-        public EnumWorkflowTaskStateIndicators StateIndicator { get; set; } = default!;
+        public EnumStateIndicators StateIndicator { get; set; } = default!;
 
         /// <summary>
         /// ID typu procesu. 1 - Hlavní úvěrový proces, 2 - Změnový proces, 3 - Retenční proces
@@ -8587,104 +8588,6 @@ namespace NOBY.ApiContracts
     }
 
     /// <summary>
-    /// Druhy příjmu
-    /// <br/>
-    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Employement&lt;/li&gt;&lt;li&gt;2 - Entrepreneur&lt;/li&gt;&lt;li&gt;3 - Rent&lt;/li&gt;&lt;li&gt;4 - Other&lt;/li&gt;&lt;/ul&gt;
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumCustomerRoles
-    {
-
-        Unknown = 0,
-
-        Debtor = 1,
-
-        Codebtor = 2,
-
-        Garantor = 8,
-
-    }
-
-    /// <summary>
-    /// Druhy příjmu
-    /// <br/>
-    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Employement&lt;/li&gt;&lt;li&gt;2 - Entrepreneur&lt;/li&gt;&lt;li&gt;3 - Rent&lt;/li&gt;&lt;li&gt;4 - Other&lt;/li&gt;&lt;/ul&gt;
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumIncomeTypes
-    {
-
-        Unknown = 0,
-
-        Employement = 1,
-
-        Entrepreneur = 2,
-
-        Rent = 3,
-
-        Other = 4,
-
-    }
-
-    /// <summary>
-    /// Stavy Case
-    /// <br/>
-    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;1 - InProgress&lt;/li&gt;&lt;li&gt;2 - InApproval&lt;/li&gt;&lt;li&gt;3 - InSigning&lt;/li&gt;&lt;li&gt;4 - InDisbursement&lt;/li&gt;&lt;li&gt;5 - InAdministration&lt;/li&gt;&lt;li&gt;6 - Finished&lt;/li&gt;&lt;li&gt;7 - Cancelled&lt;/li&gt;&lt;li&gt;8 - InApprovalConfirmed&lt;/li&gt;&lt;li&gt;9 - ToBeCancelled&lt;/li&gt;&lt;li&gt;10 - ToBeCancelledConfirmed&lt;/li&gt;&lt;/ul&gt;
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumCaseStates
-    {
-
-        InProgress = 1,
-
-        InApproval = 2,
-
-        InSigning = 3,
-
-        InDisbursement = 4,
-
-        InAdministration = 5,
-
-        Finished = 6,
-
-        Cancelled = 7,
-
-        InApprovalConfirmed = 8,
-
-        ToBeCancelled = 9,
-
-        ToBeCancelledConfirmed = 10,
-
-    }
-
-    /// <summary>
-    /// &lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - InProgress&lt;/li&gt;&lt;li&gt;2 - InApproval&lt;/li&gt;&lt;li&gt;3 - Cancelled&lt;/li&gt;&lt;li&gt;5 - NewArrangement&lt;/li&gt;&lt;li&gt;6 - Disbursed&lt;/li&gt;&lt;li&gt;7 - InSigning&lt;/li&gt;&lt;li&gt;8 - ToSend&lt;/li&gt;&lt;li&gt;9 - Finished&lt;/li&gt;&lt;li&gt;10 - RC2&lt;/li&gt;&lt;/ul&gt;
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumSalesArrangementStates
-    {
-
-        InProgress = 1,
-
-        InApproval = 2,
-
-        Cancelled = 3,
-
-        NewArrangement = 5,
-
-        Disbursed = 6,
-
-        InSigning = 7,
-
-        ToSend = 8,
-
-        Finished = 9,
-
-        RC2 = 10,
-
-    }
-
-    /// <summary>
     /// Filter Noby stavu úkolu
     /// <br/>
     /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Active&lt;/li&gt;&lt;li&gt;2 - Finished&lt;/li&gt;&lt;/ul&gt;
@@ -8707,7 +8610,7 @@ namespace NOBY.ApiContracts
     /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Active&lt;/li&gt;&lt;li&gt;2 - Cancelled&lt;/li&gt;&lt;li&gt;3 - Ok&lt;/li&gt;&lt;li&gt;4 - Passive&lt;/li&gt;&lt;li&gt;5 - Warning&lt;/li&gt;&lt;li&gt;6 - Initial&lt;/li&gt;&lt;/ul&gt;
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumWorkflowTaskStateIndicators
+    public enum EnumStateIndicators
     {
 
         Unknown = 0,
@@ -8742,73 +8645,6 @@ namespace NOBY.ApiContracts
         Custom = 3,
 
         Domain = 4,
-
-    }
-
-    /// <summary>
-    /// Indikátor stavu Ocenění nemovitosti, 0 - Unknown, 1 - Active, 2 - Cancelled, 3 - OK, 4 - Passive, 5 - Warning, 6 - Initial
-    /// <br/>
-    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Active&lt;/li&gt;&lt;li&gt;2 - Cancelled&lt;/li&gt;&lt;li&gt;3 - OK&lt;/li&gt;&lt;li&gt;4 - Passive&lt;/li&gt;&lt;li&gt;5 - Warning&lt;/li&gt;&lt;li&gt;6 - Initial&lt;/li&gt;&lt;/ul&gt;
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumRealEstateValuationStateIndicators
-    {
-
-        Unknown = 0,
-
-        Active = 1,
-
-        Cancelled = 2,
-
-        OK = 3,
-
-        Passive = 4,
-
-        Warning = 5,
-
-        Initial = 6,
-
-    }
-
-    /// <summary>
-    /// Název typu Ocenění nemovitosti. 0 - Unknown, 1 - Online, 2 - DTS, 3 - Standard
-    /// <br/>
-    /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Online&lt;/li&gt;&lt;li&gt;2 - Dts&lt;/li&gt;&lt;li&gt;3 - Standard&lt;/li&gt;&lt;/ul&gt;
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumRealEstateValuationTypes
-    {
-
-        Unknown = 0,
-
-        Online = 1,
-
-        DTS = 2,
-
-        Standard = 3,
-
-    }
-
-    /// <summary>
-    /// Položky označené * není možné měnit pomocí API SetOfferFlags
-    /// </summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum EnumOfferFlagTypes
-    {
-
-        None = 0,
-
-        Current = 1,
-
-        Communicated = 2,
-
-        LegalNotice = 4,
-
-        Liked = 8,
-
-        Selected = 16,
-
-        LegalNoticeDefault = 32,
 
     }
 

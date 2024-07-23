@@ -41,7 +41,7 @@ internal sealed class CreateHouseholdHandler
         var customerResponse = await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
         {
             SalesArrangementId = request.SalesArrangementId,
-            CustomerRoleId = (int)(request.HouseholdTypeId == (int)HouseholdTypes.Main ? CustomerRoles.Debtor : CustomerRoles.Codebtor),
+            CustomerRoleId = (int)(request.HouseholdTypeId == (int)HouseholdTypes.Main ? SharedTypes.Enums.EnumCustomerRoles.Debtor : SharedTypes.Enums.EnumCustomerRoles.Codebtor),
             Customer = new _HO.CustomerOnSABase()
         }, cancellationToken);
 

@@ -29,7 +29,7 @@ internal sealed class UpdateMortgageHandler(
         var mortgageRequest = new MortgageRequest
         {
             PartnerId = customers
-                .FirstOrDefault(t => t.CustomerRoleId == (int)CustomerRoles.Debtor)
+                .FirstOrDefault(t => t.CustomerRoleId == (int)EnumCustomerRoles.Debtor)
                 ?.CustomerIdentifiers
                 .GetMpIdentityOrDefault()?.IdentityId ?? 0,
             ConsultantId = caseInstance.OwnerUserId,

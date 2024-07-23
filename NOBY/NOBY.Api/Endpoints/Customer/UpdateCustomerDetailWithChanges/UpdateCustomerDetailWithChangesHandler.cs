@@ -139,7 +139,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
             await _customerOnSAService.UpdateCustomer(updateBaseRequest, cancellationToken);
 
             // update na CASE, pokud se jedna o hlavniho dluznika
-            if (customerOnSa.CustomerRoleId == (int)CustomerRoles.Debtor)
+            if (customerOnSa.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor)
             {
                 var caseId = (await _salesArrangementService.GetSalesArrangement(customerOnSa.SalesArrangementId, cancellationToken)).CaseId;
 

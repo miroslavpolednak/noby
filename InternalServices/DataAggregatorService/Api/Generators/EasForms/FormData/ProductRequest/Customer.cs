@@ -9,14 +9,14 @@ internal class Customer
 {
     private readonly CustomerDetailResponse _customerDetail;
 
-    private readonly ILookup<CustomerIncomeTypes, IncomeInList> _customerIncomes;
+    private readonly ILookup<EnumIncomeTypes, IncomeInList> _customerIncomes;
 
     public Customer(CustomerOnSA customerOnSa, CustomerDetailResponse customerDetail)
     {
         CustomerOnSA = customerOnSa;
         _customerDetail = customerDetail;
 
-        _customerIncomes = CustomerOnSA.Incomes.OrderBy(i => i.IncomeId).ToLookup(i => (CustomerIncomeTypes)i.IncomeTypeId);
+        _customerIncomes = CustomerOnSA.Incomes.OrderBy(i => i.IncomeId).ToLookup(i => (EnumIncomeTypes)i.IncomeTypeId);
     }
 
     public required int HouseholdNumber { get; init; }
@@ -79,26 +79,26 @@ internal class Customer
     public bool IsResident => NaturalPerson.TaxResidence?.ResidenceCountries.Any(r => r.CountryId == 16) ?? false;
 
     public IEnumerable<IncomeEmployment> IncomesEmployment => 
-        _customerIncomes[CustomerIncomeTypes.Employement].Select(i => new IncomeEmployment(i, Incomes[i.IncomeId])
+        _customerIncomes[EnumIncomeTypes.Employement].Select(i => new IncomeEmployment(i, Incomes[i.IncomeId])
         {
             Number = CustomerOnSA.Incomes.IndexOf(i),
             FirstEmploymentTypeId = FirstEmploymentTypeId
         });
 
     public IncomeEntrepreneur? IncomeEntrepreneur =>
-        _customerIncomes[CustomerIncomeTypes.Entrepreneur].Select(i => new IncomeEntrepreneur(i, Incomes[i.IncomeId])
+        _customerIncomes[EnumIncomeTypes.Entrepreneur].Select(i => new IncomeEntrepreneur(i, Incomes[i.IncomeId])
         {
             Number = CustomerOnSA.Incomes.IndexOf(i)
         }).FirstOrDefault(); 
     
     public IncomeBase? IncomeRent =>
-        _customerIncomes[CustomerIncomeTypes.Rent].Select(i => new IncomeBase(i)
+        _customerIncomes[EnumIncomeTypes.Rent].Select(i => new IncomeBase(i)
         {
             Number = CustomerOnSA.Incomes.IndexOf(i)
         }).FirstOrDefault();
 
     public IEnumerable<IncomeOther> IncomesOther =>
-        _customerIncomes[CustomerIncomeTypes.Other].Select(i => new IncomeOther(i, Incomes[i.IncomeId])
+        _customerIncomes[EnumIncomeTypes.Other].Select(i => new IncomeOther(i, Incomes[i.IncomeId])
         {
             Number = CustomerOnSA.Incomes.IndexOf(i)
         });

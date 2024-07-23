@@ -18,11 +18,11 @@ public static class SecurityHelpers
         }
 
         // zakazane stavy Case
-        if (caseState is (int)CaseStates.Finished or (int)CaseStates.Cancelled)
+        if (caseState is (int)EnumCaseStates.Finished or (int)EnumCaseStates.Cancelled)
         {
             throw new NobyValidationException(90032);
         }
-        else if (caseState is (int)CaseStates.InAdministration && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
+        else if (caseState is (int)EnumCaseStates.InAdministration && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: CASE_ViewAfterDrawing missing");
         }

@@ -162,7 +162,7 @@ public sealed class MortgageRefinancingDataService(
         DomainServices.SalesArrangementService.Contracts.SalesArrangement? currentProcessSADetail = null;
         var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
 
-        SalesArrangementStates helperState = SalesArrangementStates.Unknown;
+        EnumSalesArrangementStates helperState = EnumSalesArrangementStates.Unknown;
         bool helperManagedByRC2 = false;
 
         var currentProcessSA = allSalesArrangements.SalesArrangements.FirstOrDefault(t => t.ProcessId == process.ProcessId);
@@ -170,7 +170,7 @@ public sealed class MortgageRefinancingDataService(
         {
             currentProcessSADetail = await _salesArrangementService.GetSalesArrangement(currentProcessSA.SalesArrangementId, cancellationToken);
 
-            helperState = (SalesArrangementStates)currentProcessSA.State;
+            helperState = (EnumSalesArrangementStates)currentProcessSA.State;
             helperManagedByRC2 = currentProcessSADetail.Retention?.ManagedByRC2 ?? currentProcessSADetail.Refixation?.ManagedByRC2 ?? false;
         }
 

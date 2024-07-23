@@ -13,7 +13,7 @@ internal sealed class ExtraPaymentValidator(BuilderValidatorAggregate aggregate)
 
         var salesArrangements = (await salesArrangementService.GetSalesArrangementList(Request.CaseId, cancellationToken)).SalesArrangements;
 
-        if (salesArrangements.Any(sa => sa.SalesArrangementTypeId == Request.SalesArrangementTypeId && sa.State is not (int)SalesArrangementStates.Finished and not (int)SalesArrangementStates.Cancelled))
+        if (salesArrangements.Any(sa => sa.SalesArrangementTypeId == Request.SalesArrangementTypeId && sa.State is not (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished and not (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled))
         {
             throw new NobyValidationException(90052);
         }

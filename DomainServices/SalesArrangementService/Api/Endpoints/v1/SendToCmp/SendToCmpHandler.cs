@@ -21,7 +21,7 @@ internal sealed class SendToCmpHandler(
         await ProcessEasFormIfNeeded(salesArrangement, request.IsCancelled, cancellationToken);
 
         if (!request.IsCancelled)
-            await _formsService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, SalesArrangementStates.InApproval, cancellationToken);
+            await _formsService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, EnumSalesArrangementStates.InApproval, cancellationToken);
 
         AuditLog(salesArrangement);
 
@@ -35,7 +35,7 @@ internal sealed class SendToCmpHandler(
 
         var salesArrangement = await _formsService.LoadSalesArrangement(salesArrangementId, cancellationToken);
 
-        if (!isCancelled && salesArrangement.State != (int)SalesArrangementStates.ToSend)
+        if (!isCancelled && salesArrangement.State != (int)EnumSalesArrangementStates.ToSend)
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CannotBeSent, salesArrangement.State);
 
         return salesArrangement;
