@@ -44,7 +44,7 @@ internal static class ModelComparers
         return 0;
     }
 
-    public static bool ComparePerson(NaturalPersonDelta? request, NaturalPersonDelta? original, CustomerChangeData delta)
+    public static DeltaComparerResult ComparePerson(NaturalPersonDelta? request, NaturalPersonDelta? original, CustomerChangeData delta)
     {
         var deltaPerson = new NaturalPersonDelta();
         var hasDifferences = false;
@@ -60,10 +60,14 @@ internal static class ModelComparers
         {
             delta.NaturalPerson = deltaPerson;
 
-            return true;
+            return new DeltaComparerResult
+            {
+                ClientDataWereChanged = differencesCount > 0 || hasDifferences,
+                CrsWasChanged = crsIsDifferent
+            };
         }
 
-        return false;
+        return new DeltaComparerResult();
     }
 
     public static bool AreObjectsEqual<T>(T? request, T? original)
