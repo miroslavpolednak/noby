@@ -32,7 +32,7 @@ internal class DeleteBinaryDataFromArchiveQueueHandler(IConnectionProvider<IXxvD
 
         var parameters = new DynamicParameters();
         parameters.Add("@BatchSize", _batchSize, DbType.Int32, ParameterDirection.Input);
-        parameters.Add("@DateTime", DateTime.Now.AddDays(_olderThanDays), DbType.DateTime, ParameterDirection.Input);
+        parameters.Add("@DateTime", DateTime.Now.AddDays(-_olderThanDays), DbType.DateTime, ParameterDirection.Input);
 
         await _provider.ExecuteDapperQueryAsync(async c => await c.ExecuteAsync(_sql, parameters), cancellationToken);
 
