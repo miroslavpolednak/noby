@@ -3,7 +3,7 @@ using CIS.Core.Security;
 using SharedTypes.Enums;
 using SharedAudit;
 using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
@@ -35,6 +35,8 @@ using static DomainServices.HouseholdService.Contracts.GetCustomerChangeMetadata
 using _CustomerService = DomainServices.CustomerService.Contracts;
 using Source = DomainServices.DocumentOnSAService.Api.Database.Enums.Source;
 using DomainServices.DocumentOnSAService.Api.Extensions;
+using DomainServices.HouseholdService.Contracts.Model;
+using SharedTypes.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
@@ -207,14 +209,17 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         {
             try
             {
-                var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
-                _customerChangeDataMerger.MergeTaxResidence(customerDetail?.NaturalPerson!, customerOnSa);
-                var updateCustomerRequest = MapUpdateCustomerRequest((int)SharedTypes.Enums.Mandants.Kb, customerDetail!);
+                var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
+                _customerChangeDataMerger.MergeTaxResidence(customerDetail.NaturalPerson!, customerOnSa);
+                var updateCustomerRequest = MapUpdateCustomerRequest((int)SharedTypes.Enums.Mandants.Kb, customerDetail);
                 await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
+
                 // Throw away locally stored CRS data (keep client changes) 
-                var jsonCustomerChangeDataWithoutCrs = _customerChangeDataMerger.TrowAwayLocallyStoredCrsData(customerOnSa);
+                var customerChangeData = customerOnSa.GetCustomerChangeDataObject();
+                customerChangeData!.NaturalPerson!.TaxResidences = null;
                 customerOnSa.CustomerChangeMetadata.WasCRSChanged = false;
-                await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithoutCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
+
+                await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, customerOnSa.CustomerChangeMetadata, customerChangeData), cancellationToken);
             }
             catch (Exception exp) when (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
             {
@@ -245,7 +250,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
             {
                 try
                 {
-                    var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+                    var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
                     _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
 
                     //Do not update TaxResidence (event do not send TaxResidence already set in CM)
@@ -254,9 +259,16 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                     var updateCustomerRequest = MapUpdateCustomerRequest(mandantId.Value, customerDetail);
                     await _customerService.UpdateCustomer(updateCustomerRequest, cancellationToken);
                     //Throw away locally stored Client data (keep CRS changes) 
-                    var jsonCustomerChangeDataWithCrs = _customerChangeDataMerger.TrowAwayLocallyStoredClientData(customerOnSa);
+                    var customerChangeData = customerOnSa.GetCustomerChangeDataObject()?.NaturalPerson?.TaxResidences is null ? null : new CustomerChangeData
+                    {
+                        NaturalPerson = new NaturalPersonDelta
+                        {
+                            TaxResidences = customerOnSa.GetCustomerChangeDataObject()!.NaturalPerson!.TaxResidences
+                        }
+                    };
+
                     customerOnSa.CustomerChangeMetadata.WereClientDataChanged = false;
-                    await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, jsonCustomerChangeDataWithCrs, customerOnSa.CustomerChangeMetadata), cancellationToken);
+                    await _customerOnSAService.UpdateCustomerDetail(MapUpdateCustomerOnSaRequest(customerOnSa, customerOnSa.CustomerChangeMetadata, customerChangeData), cancellationToken);
                 }
                 catch (Exception exp) when (!string.IsNullOrWhiteSpace(customerOnSa.CustomerChangeData))
                 {
@@ -351,15 +363,18 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         return customers;
     }
 
-    private static UpdateCustomerDetailRequest MapUpdateCustomerOnSaRequest(CustomerOnSA customerOnSa, string? customerChangeDataJson, CustomerChangeMetadata customerChangeMetadata)
+    private static UpdateCustomerDetailRequest MapUpdateCustomerOnSaRequest(CustomerOnSA customerOnSa, CustomerChangeMetadata customerChangeMetadata, CustomerChangeData? changeData)
     {
-        return new UpdateCustomerDetailRequest
+        var updateRequest = new UpdateCustomerDetailRequest
         {
             CustomerOnSAId = customerOnSa.CustomerOnSAId,
             CustomerAdditionalData = customerOnSa.CustomerAdditionalData,
-            CustomerChangeData = customerChangeDataJson,
             CustomerChangeMetadata = customerChangeMetadata
         };
+
+        updateRequest.UpdateCustomerChangeDataObject(changeData);
+
+        return updateRequest;
     }
 
     private static _CustomerService.UpdateCustomerRequest MapUpdateCustomerRequest(int mandantId, CustomerDetailResponse customerDetail)
@@ -420,7 +435,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
         CustomersOnSABuffer.Add(customerOnSa);
 
-        var kbIdentity = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        var kbIdentity = customerOnSa.CustomerIdentifiers.GetKbIdentity();
         await _sulmClientHelper.StartUse(kbIdentity.IdentityId, ISulmClient.PurposeMLAP, cancellationToken);
     }
 

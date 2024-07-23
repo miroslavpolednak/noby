@@ -3,12 +3,13 @@ using DomainServices.DocumentOnSAService.Contracts;
 using FastEnumUtility;
 using FluentValidation;
 using Microsoft.FeatureManagement;
+using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
 public class StartSigningValidator : AbstractValidator<StartSigningRequest>
 {
-    public StartSigningValidator(IFeatureManager featureManager)
+    public StartSigningValidator(IFeatureManager featureManager, ICodebookServiceClient codebookService)
     {
         RuleFor(e => e.SalesArrangementId).NotNull().WithErrorCode(ErrorCodeMapper.SalesArrangementIdIsRequired);
 
@@ -17,8 +18,16 @@ public class StartSigningValidator : AbstractValidator<StartSigningRequest>
             .WithErrorCode(ErrorCodeMapper.DocumentTypeIdDoesNotExist);
 
         RuleFor(t => t.SignatureTypeId)
-            .MustAsync(async (t, ct) => t != (int)SignatureTypes.Electronic || await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicSigning))
+            .MustAsync(async (t, _) => t != (int)SignatureTypes.Electronic || await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicSigning))
             .WithErrorCode(ErrorCodeMapper.ElectronicSigningFeatureIsDisabled);
+
+        RuleFor(t => t)
+            .MustAsync(async (request, _) => request.SignatureTypeId != (int)SignatureTypes.Electronic || request.TaskId is null || await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ElectronicWorkflowSigning))
+            .WithErrorCode(ErrorCodeMapper.ElectronicSigningFeatureIsDisabled);
+
+        RuleFor(t => t)
+          .MustAsync(async (request, ct) => request.SignatureTypeId != (int)SignatureTypes.Electronic || request.TaskId is not null || (await codebookService.DocumentTypes(ct)).Single(d => d.Id == request.DocumentTypeId).IsElectronicSigningEnabled)
+          .WithErrorCode(ErrorCodeMapper.ElectronicSigningFeatureIsDisabled);
     }
 
     private readonly Func<StartSigningRequest, bool> ValidateDocumentType = (request) =>

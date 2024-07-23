@@ -4,7 +4,7 @@ public class DocumentInterface
 {
     public string DocumentId { get; set; } = null!;
 
-    public byte[] DocumentData { get; set; } = null!;
+    public byte[]? DocumentData { get; set; }
 
     public string FileName { get; set; } = null!;
 

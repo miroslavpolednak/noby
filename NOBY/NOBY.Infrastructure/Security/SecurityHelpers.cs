@@ -1,5 +1,4 @@
 ﻿using CIS.Core.Security;
-using SharedTypes.Enums;
 using DomainServices.UserService.Clients.Authorization;
 using NOBY.Infrastructure.ErrorHandling;
 
@@ -23,7 +22,7 @@ public static class SecurityHelpers
         {
             throw new NobyValidationException(90032);
         }
-        else if (caseState is 5 && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
+        else if (caseState is (int)CaseStates.InAdministration && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: CASE_ViewAfterDrawing missing");
         }

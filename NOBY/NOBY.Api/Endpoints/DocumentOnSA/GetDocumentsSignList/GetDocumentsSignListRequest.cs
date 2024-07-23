@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentsSignList;
 
-public class GetDocumentsSignListRequest:IRequest<GetDocumentsSignListResponse>
+public class GetDocumentsSignListRequest:IRequest<DocumentOnSAGetDocumentsSignListResponse>
 {
 	public GetDocumentsSignListRequest(int salesArrangementId)
 	{

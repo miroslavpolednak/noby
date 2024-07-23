@@ -1,20 +1,25 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
 
-internal sealed class GetSalesArrangementHandler
-    : IRequestHandler<GetSalesArrangementRequest, GetSalesArrangementResponse>
+internal sealed class GetSalesArrangementHandler(
+    ICurrentUserAccessor _currentUser,
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization)
+        : IRequestHandler<GetSalesArrangementRequest, SalesArrangementGetSalesArrangementResponse>
 {
-    public async Task<GetSalesArrangementResponse> Handle(GetSalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task<SalesArrangementGetSalesArrangementResponse> Handle(GetSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         var caseInstance = await _caseService.GetCaseDetail(saInstance.CaseId, cancellationToken);
 
         // perm check
+        _salesArrangementAuthorization.ValidateSaAccessBySaType213And248(saInstance.SalesArrangementTypeId);
         if (caseInstance.CaseOwner.UserId != _currentUser.User!.Id && !_currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
         {
             throw new CisAuthorizationException("Case owner check failed");
@@ -22,7 +27,7 @@ internal sealed class GetSalesArrangementHandler
 
         var parameters = getParameters(saInstance);
 
-        return new GetSalesArrangementResponse()
+        return new()
         {
             ProductTypeId = caseInstance.Data.ProductTypeId,
             SalesArrangementId = saInstance.SalesArrangementId,
@@ -33,36 +38,52 @@ internal sealed class GetSalesArrangementHandler
             OfferGuaranteeDateFrom = saInstance.OfferGuaranteeDateFrom,
             OfferGuaranteeDateTo = saInstance.OfferGuaranteeDateTo,
             Parameters = parameters,
-            State = saInstance.State
+            State = saInstance.State,
+            OfferId = saInstance.OfferId,
+            ProcessId = saInstance.ProcessId
         };
     }
 
-    static object? getParameters(_SA.SalesArrangement saInstance)
+    static SalesArrangementGetSalesArrangementParameters? getParameters(_SA.SalesArrangement saInstance)
         => saInstance.ParametersCase switch
         {
-            _SA.SalesArrangement.ParametersOneofCase.Mortgage => saInstance.Mortgage.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.Drawing => saInstance.Drawing.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.GeneralChange => saInstance.GeneralChange.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.HUBN => saInstance.HUBN.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange => saInstance.CustomerChange.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602A => saInstance.CustomerChange3602A.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602B => saInstance.CustomerChange3602B.ToApiResponse(),
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602C => saInstance.CustomerChange3602C.ToApiResponse(),
+            _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangementGetSalesArrangementParameters
+            {
+                Mortgage = saInstance.Mortgage.ToApiResponse()
+            },
+            _SA.SalesArrangement.ParametersOneofCase.Drawing => new SalesArrangementGetSalesArrangementParameters
+            {
+                Drawing = saInstance.Drawing.ToApiResponse()
+            },
+            _SA.SalesArrangement.ParametersOneofCase.GeneralChange => new SalesArrangementGetSalesArrangementParameters
+            {
+                GeneralChange = saInstance.GeneralChange.ToApiResponse()
+            },
+            _SA.SalesArrangement.ParametersOneofCase.HUBN => new SalesArrangementGetSalesArrangementParameters
+            {
+                Hubn = saInstance.HUBN.ToApiResponse()
+            },
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange => new SalesArrangementGetSalesArrangementParameters
+            {
+                CustomerChange = saInstance.CustomerChange.ToApiResponse()
+            },
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602A => new SalesArrangementGetSalesArrangementParameters
+            {
+                CustomerChange3602 = saInstance.CustomerChange3602A.ToApiResponse()
+            },
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602B => new SalesArrangementGetSalesArrangementParameters
+            {
+                CustomerChange3602 = saInstance.CustomerChange3602B.ToApiResponse()
+            },
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602C => new SalesArrangementGetSalesArrangementParameters
+            {
+                CustomerChange3602 = saInstance.CustomerChange3602C.ToApiResponse()
+            },
+            //TODO tohle tu fakt ma byt?
+            //_SA.SalesArrangement.ParametersOneofCase.Retention => saInstance.Retention,
+            //_SA.SalesArrangement.ParametersOneofCase.Refixation => saInstance.Refixation,
+            //_SA.SalesArrangement.ParametersOneofCase.ExtraPayment => saInstance.ExtraPayment,
             _SA.SalesArrangement.ParametersOneofCase.None => null,
             _ => throw new NotImplementedException($"getParameters for {saInstance.ParametersCase} not implemented")
         };
-
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    
-    public GetSalesArrangementHandler(
-        ICurrentUserAccessor currentUser,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService)
-    {
-        _currentUser = currentUser;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-    }
 }

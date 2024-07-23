@@ -3,7 +3,8 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.GetCustomersByIdentity;
 
-internal sealed class GetCustomersByIdentityHandler : IRequestHandler<GetCustomersByIdentityRequest, GetCustomersByIdentityResponse>
+internal sealed class GetCustomersByIdentityHandler(HouseholdServiceDbContext _dbContext) 
+    : IRequestHandler<GetCustomersByIdentityRequest, GetCustomersByIdentityResponse>
 {
     public async Task<GetCustomersByIdentityResponse> Handle(GetCustomersByIdentityRequest request, CancellationToken cancellationToken)
     {
@@ -24,12 +25,5 @@ internal sealed class GetCustomersByIdentityHandler : IRequestHandler<GetCustome
         var response = new GetCustomersByIdentityResponse();
         response.Customers.AddRange(customers);
         return response;
-    }
-    
-    private readonly HouseholdServiceDbContext _dbContext;
-
-    public GetCustomersByIdentityHandler(HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

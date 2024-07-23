@@ -36,16 +36,13 @@ SharedComponents.GrpcServiceBuilder
             return new SqlQueryCollection(data);
         });
 
-        // background svc
-        builder.AddCisBackgroundService<DomainServices.CodebookService.Api.BackgroundServices.DownloadRdmCodebooksJob.DownloadRdmCodebooksJob>();
-
         builder.AddExternalService<IAcvEnumServiceClient>();
         builder.AddExternalService<IRDMClient>();
     })
     .MapGrpcServices((app, _) =>
     {
-        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.CodebookService>();
-        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.MaintananceService>();
+        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.v1.CodebookService>();
+        app.MapGrpcService<DomainServices.CodebookService.Api.Endpoints.Maintanance.MaintananceService>();
     })
     .Run();
 

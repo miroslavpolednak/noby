@@ -1,25 +1,18 @@
 ﻿using ExternalServices.RuianAddress.V1;
-using NOBY.Api.Endpoints.Address.KatuzSearch.Dto;
 
 namespace NOBY.Api.Endpoints.Address.KatuzSearch;
 
-internal class KatuzSearchHandler : IRequestHandler<KatuzSearchRequest, KatuzSearchResponse>
+internal sealed class KatuzSearchHandler(IRuianAddressClient _ruianAddressClient)
+        : IRequestHandler<AddressKatuzSearchRequest, AddressKatuzSearchResponse>
 {
-    private readonly IRuianAddressClient _ruianAddressClient;
-
-    public KatuzSearchHandler(IRuianAddressClient ruianAddressClient)
-    {
-        _ruianAddressClient = ruianAddressClient;
-    }
-
-    public async Task<KatuzSearchResponse> Handle(KatuzSearchRequest request, CancellationToken cancellationToken)
+    public async Task<AddressKatuzSearchResponse> Handle(AddressKatuzSearchRequest request, CancellationToken cancellationToken)
     {
         var result = await _ruianAddressClient.FindTerritory(request.SearchText, request.PageSize, cancellationToken);
 
-        return new KatuzSearchResponse
+        return new AddressKatuzSearchResponse
         {
             PageSize = result.Count,
-            Rows = result.Select(k => new KatuzLine
+            Rows = result.Select(k => new AddressKatuzSearchKatuzLine
             {
                 KatuzId = k.Id,
                 KatuzTitle = k.Name ?? string.Empty

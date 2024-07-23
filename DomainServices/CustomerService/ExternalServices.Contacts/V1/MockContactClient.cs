@@ -19,4 +19,15 @@ internal sealed class MockContactClient : IContactClient
             ValidationResult = ValidateContactResponseValidationResult.VALID
         });
     }
+
+    public Task<List<Contact>> LoadContacts(long customerId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task CreateOrUpdateContact(long customerId, int contactMethodCode, string contactValue, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
 }

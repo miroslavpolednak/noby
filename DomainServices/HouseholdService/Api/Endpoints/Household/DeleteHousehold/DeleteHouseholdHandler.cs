@@ -7,8 +7,12 @@ using FastEnumUtility;
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.DeleteHousehold;
 
 //TODO tady by asi mel byt nejaky rollback, kdyz se nepodari smazat customer? Co se ma mazat driv - customer nebo household?
-internal sealed class DeleteHouseholdHandler
-    : IRequestHandler<DeleteHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteHouseholdHandler(
+    HouseholdServiceDbContext _dbContext,
+    IMediator _mediator,
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    IDocumentOnSAServiceClient _documentOnSAServiceClient)
+        : IRequestHandler<DeleteHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -22,7 +26,9 @@ internal sealed class DeleteHouseholdHandler
 
         // kontrola ze to neni main household
         if (household.HouseholdTypeId == HouseholdTypes.Main && !request.HardDelete)
+        {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CantDeleteDebtorHousehold);
+        }
 
         //Invalidate DocumentOnSa (stop signing)
         var documentsOnSaToSing = await _documentOnSAServiceClient.GetDocumentsToSignList(household.SalesArrangementId, cancellationToken);
@@ -89,22 +95,5 @@ internal sealed class DeleteHouseholdHandler
                 SkipValidations = true
             }, cancellationToken);
         }
-    }
-
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAServiceClient;
-    private readonly IMediator _mediator;
-    private readonly HouseholdServiceDbContext _dbContext;
-
-    public DeleteHouseholdHandler(
-        HouseholdServiceDbContext dbContext,
-        IMediator mediator,
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        IDocumentOnSAServiceClient documentOnSAServiceClient)
-    {
-        _salesArrangementService = salesArrangementService;
-        _documentOnSAServiceClient = documentOnSAServiceClient;
-        _dbContext = dbContext;
-        _mediator = mediator;
     }
 }

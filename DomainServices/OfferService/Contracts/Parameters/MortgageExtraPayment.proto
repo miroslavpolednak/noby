@@ -1,0 +1,48 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
+import "GrpcDate.proto";
+
+message MortgageExtraPaymentBasicParameters {
+	cis.types.NullableGrpcDecimal FeeAmountDiscount = 1;
+}
+
+message MortgageExtraPaymentSimulationInputs {
+	cis.types.GrpcDate ExtraPaymentDate = 1;
+	cis.types.NullableGrpcDecimal ExtraPaymentAmount = 2;
+	int32 ExtraPaymentReasonId = 3;
+	bool IsExtraPaymentFullyRepaid = 4;
+}
+
+message MortgageExtraPaymentSimulationResults {
+	bool IsExtraPaymentFullyRepaid = 1;
+	cis.types.GrpcDecimal ExtraPaymentAmount = 2;
+	cis.types.GrpcDecimal FeeAmount = 3;
+	cis.types.GrpcDecimal PrincipalAmount = 4;
+	cis.types.GrpcDecimal InterestAmount = 5;
+	cis.types.GrpcDecimal OtherUnpaidFees = 6;
+	cis.types.GrpcDecimal InterestOnLate = 7;
+	cis.types.GrpcDecimal InterestCovid = 8;
+	bool IsLoanOverdue = 9;
+	bool IsInstallmentReduced = 10;
+	cis.types.GrpcDate NewMaturityDate = 11;
+	cis.types.GrpcDecimal NewPaymentAmount = 12;
+	int32 FeeTypeId = 13;
+	cis.types.GrpcDecimal FeeCalculationBase = 14;
+	cis.types.GrpcDecimal FeeAmountContracted = 15;
+	cis.types.GrpcDate FixedRateSanctionFreePeriodFrom = 16;
+	cis.types.GrpcDate FixedRateSanctionFreePeriodTo = 17;
+	cis.types.GrpcDate AnnualSanctionFreePeriodFrom = 18;
+	cis.types.GrpcDate AnnualSanctionFreePeriodTo = 19;
+	cis.types.GrpcDecimal SanctionFreeAmount = 20;
+	int32 ExtraPaymentReasonId = 21;
+}
+
+message MortgageExtraPaymentFullData {
+	MortgageExtraPaymentBasicParameters BasicParameters = 1;
+	MortgageExtraPaymentSimulationInputs SimulationInputs = 2;
+	MortgageExtraPaymentSimulationResults SimulationResults = 3;
+}

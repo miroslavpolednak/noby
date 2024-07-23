@@ -3,8 +3,8 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.UpdateHousehold;
 
-internal sealed class UpdateHouseholdHandler
-    : IRequestHandler<UpdateHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateHouseholdHandler(HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<UpdateHouseholdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -43,12 +43,5 @@ internal sealed class UpdateHouseholdHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly HouseholdServiceDbContext _dbContext;
-
-    public UpdateHouseholdHandler(HouseholdServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

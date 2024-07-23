@@ -2,8 +2,10 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementState;
 
-internal sealed class UpdateSalesArrangementStateHandler
-    : IRequestHandler<Contracts.UpdateSalesArrangementStateRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateSalesArrangementStateHandler(
+    Database.SalesArrangementServiceDbContext _dbContext, 
+    TimeProvider _timeProvider)
+		: IRequestHandler<Contracts.UpdateSalesArrangementStateRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementStateRequest request, CancellationToken cancellation)
     {
@@ -20,14 +22,5 @@ internal sealed class UpdateSalesArrangementStateHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly TimeProvider _timeProvider;
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-
-    public UpdateSalesArrangementStateHandler(Database.SalesArrangementServiceDbContext dbContext, TimeProvider timeProvider)
-    {
-        _dbContext = dbContext;
-        _timeProvider = timeProvider;
     }
 }

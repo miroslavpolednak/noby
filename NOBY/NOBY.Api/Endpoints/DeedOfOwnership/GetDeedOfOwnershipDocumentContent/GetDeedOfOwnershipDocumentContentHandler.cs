@@ -4,10 +4,12 @@ using ExternalServices.Crem.V1;
 
 namespace NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent;
 
-internal sealed class GetDeedOfOwnershipDocumentContentHandler
-    : IRequestHandler<GetDeedOfOwnershipDocumentContentRequest, GetDeedOfOwnershipDocumentContentResponse>
+internal sealed class GetDeedOfOwnershipDocumentContentHandler(
+    ICremClient _cremClient, 
+    IRealEstateValuationServiceClient _realEstateValuation)
+        : IRequestHandler<GetDeedOfOwnershipDocumentContentRequest, DeedOfOwnershipGetDeedOfOwnershipDocumentContentResponse>
 {
-    public async Task<GetDeedOfOwnershipDocumentContentResponse> Handle(GetDeedOfOwnershipDocumentContentRequest request, CancellationToken cancellationToken)
+    public async Task<DeedOfOwnershipGetDeedOfOwnershipDocumentContentResponse> Handle(GetDeedOfOwnershipDocumentContentRequest request, CancellationToken cancellationToken)
     {
         long documentId;
         int? deedOfOwnershipNumber = null;
@@ -55,34 +57,25 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler
         var realEstates = await _cremClient.GetRealEstates(documentId, cancellationToken);
         var owners = await _cremClient.GetOwners(documentId, cancellationToken);
         
-        return new GetDeedOfOwnershipDocumentContentResponse
+        return new DeedOfOwnershipGetDeedOfOwnershipDocumentContentResponse
         {
             CremDeedOfOwnershipDocumentId = documentId,
             DeedOfOwnershipNumber = deedOfOwnershipNumber.GetValueOrDefault() == 0 ? realEstates.FirstOrDefault()?.DeedOfOwnershipNumber : deedOfOwnershipNumber,
-            Owners = owners?.Select(t => new GetDeedOfOwnershipDocumentContentResponseOwners
+            Owners = owners?.Select(t => new DeedOfOwnershipGetDeedOfOwnershipDocumentContentOwners
             {
                 OwnerDescription = t.Description,
                 OwnershipRatio = t.OwnershipRatio
             }).ToList(),
-            LegalRelations = legalRelations?.Select(t => new GetDeedOfOwnershipDocumentContentResponseLegalRelations
+            LegalRelations = legalRelations?.Select(t => new DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations
             {
                 LegalRelationDescription = t.PlainText
             }).ToList(),
-            RealEstates = realEstates?.Select(t => new GetDeedOfOwnershipDocumentContentResponseRealEstates
+            RealEstates = realEstates?.Select(t => new DeedOfOwnershipGetDeedOfOwnershipDocumentContentRealEstates
             {
                 RealEstateDescription = t.PlainText,
                 RealEstateId = t.RealEstateId,
                 IsActive = isActiveRealEstateIds?.Contains(t.RealEstateId) ?? false
             }).ToList()
         };
-    }
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuation;
-    private readonly ICremClient _cremClient;
-
-    public GetDeedOfOwnershipDocumentContentHandler(ICremClient cremClient, IRealEstateValuationServiceClient realEstateValuation)
-    {
-        _realEstateValuation = realEstateValuation;
-        _cremClient = cremClient;
     }
 }

@@ -5,23 +5,14 @@ using ExternalServices.RuianAddress.V1;
 
 namespace NOBY.Api.Endpoints.Address.GetAddressDetail;
 
-internal sealed class GetAddressDetailHandler
-    : IRequestHandler<GetAddressDetailRequest, GetAddressDetailResponse>
+internal sealed class GetAddressDetailHandler(
+    IAddressWhispererClient _addressWhisperer, 
+    IRuianAddressClient _ruianAddress, 
+    ICodebookServiceClient _codebookService, 
+    ILogger<GetAddressDetailHandler> _logger)
+        : IRequestHandler<AddressGetAddressDetailRequest, AddressGetAddressDetailResponse>
 {
-    private readonly IAddressWhispererClient _addressWhisperer;
-    private readonly IRuianAddressClient _ruianAddress;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ILogger<GetAddressDetailHandler> _logger;
-
-    public GetAddressDetailHandler(IAddressWhispererClient addressWhisperer, IRuianAddressClient ruianAddress, ICodebookServiceClient codebookService, ILogger<GetAddressDetailHandler> logger)
-    {
-        _addressWhisperer = addressWhisperer;
-        _ruianAddress = ruianAddress;
-        _codebookService = codebookService;
-        _logger = logger;
-    }
-
-    public async Task<GetAddressDetailResponse> Handle(GetAddressDetailRequest request, CancellationToken cancellationToken)
+    public async Task<AddressGetAddressDetailResponse> Handle(AddressGetAddressDetailRequest request, CancellationToken cancellationToken)
     {
         try
         {
@@ -32,20 +23,20 @@ internal sealed class GetAddressDetailHandler
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "GetAddressDetail external service call failed: " + ex.Message);
+            _logger.LogError(ex, "GetAddressDetail external service call failed: {Message}", ex.Message);
             throw new NobyValidationException(90020);
         }
     }
 
-    private async Task<GetAddressDetailResponse> GetRuianAddressDetail(string addressId, CancellationToken cancellationToken)
+    private async Task<AddressGetAddressDetailResponse> GetRuianAddressDetail(string addressId, CancellationToken cancellationToken)
     {
         var detail = await _ruianAddress.GetAddressDetail(long.Parse(addressId, CultureInfo.InvariantCulture), cancellationToken);
 
-        return new GetAddressDetailResponse
+        return new AddressGetAddressDetailResponse
         {
             Street = detail.StreetName,
             StreetNumber = $"{detail.OrientationNumber}{detail.OrientationNumberEndChar}",
-            HouseNumber = detail.HouseNumber.ToString(),
+            HouseNumber = detail.HouseNumber?.ToString(CultureInfo.InvariantCulture),
             Postcode = detail.ZipCode.ToString(CultureInfo.InvariantCulture),
             City = detail.TownName,
             CityDistrict = detail.TownPartName,
@@ -57,7 +48,7 @@ internal sealed class GetAddressDetailHandler
         };
     }
 
-    private async Task<GetAddressDetailResponse> GetAddressWhispererDetail(GetAddressDetailRequest request, CancellationToken cancellationToken)
+    private async Task<AddressGetAddressDetailResponse> GetAddressWhispererDetail(AddressGetAddressDetailRequest request, CancellationToken cancellationToken)
     {
         // zeme z ciselniku
         string country = (await _codebookService.Countries(cancellationToken)).FirstOrDefault(t => t.Id == request.CountryId)?.ShortName
@@ -66,7 +57,7 @@ internal sealed class GetAddressDetailHandler
 
         var result = await _addressWhisperer.GetAddressDetail(request.SessionId, request.AddressId, request.Title, country, cancellationToken);
 
-        return result is null ? new GetAddressDetailResponse() : new GetAddressDetailResponse
+        return result is null ? new AddressGetAddressDetailResponse() : new AddressGetAddressDetailResponse
         {
             StreetNumber = result.StreetNumber,
             City = result.City,

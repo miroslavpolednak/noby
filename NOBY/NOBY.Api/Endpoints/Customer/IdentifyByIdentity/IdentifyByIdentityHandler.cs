@@ -3,7 +3,6 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
-using SharedTypes.Enums;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using SharedTypes.GrpcTypes;
 using DomainServices.ProductService.Clients;
@@ -20,7 +19,7 @@ internal sealed class IdentifyByIdentityHandler
         // customer On SA
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
 
-        if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Any())
+        if (customerOnSaInstance.CustomerIdentifiers is not null && customerOnSaInstance.CustomerIdentifiers.Count != 0)
         {
             throw new NobyValidationException("CustomerOnSA has been already identified");
         }
@@ -37,7 +36,7 @@ internal sealed class IdentifyByIdentityHandler
         //Debtor has to be identified first
         if (saInstance.IsProductSalesArrangement()
             && customerOnSaInstance.CustomerRoleId is not (int)CustomerRoles.Debtor 
-            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+            && !customerDetails.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
         {
             throw new NobyValidationException("Main customer has to be identified first.");
         }
@@ -58,7 +57,7 @@ internal sealed class IdentifyByIdentityHandler
             // hlavni klient
             if (customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
             {
-                await _createProductTrain.Run(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers, cancellationToken);
+                await _createProductTrain.RunAll(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers, cancellationToken);
             }
             else // vytvoreni klienta v konsDb. Pro dluznika se to dela v notification, pro ostatni se to dubluje tady
             {
@@ -66,7 +65,7 @@ internal sealed class IdentifyByIdentityHandler
 
                 try
                 {
-                    var partnerId = updateResult.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
+                    var partnerId = updateResult.CustomerIdentifiers.GetMpIdentity().IdentityId;
                     var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
 
                     await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
@@ -104,7 +103,7 @@ internal sealed class IdentifyByIdentityHandler
             return customerDetails
                 .First(t => t.CustomerOnSAId == secondCustomerOnHouseholdId)
                 .CustomerIdentifiers?
-                .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
+                .HasKbIdentity()
                 ?? false;
         }
     }

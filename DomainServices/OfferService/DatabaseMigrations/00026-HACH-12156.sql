@@ -1,0 +1,1 @@
+alter table [dbo].[ResponseCode] add ValidTo date null;

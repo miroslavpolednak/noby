@@ -6,7 +6,9 @@ using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.GetSalesArrangement;
 
-internal sealed class GetSalesArrangementHandler
+internal sealed class GetSalesArrangementHandler(
+    SalesArrangementServiceDbContext _dbContext, 
+    IDocumentDataStorage _documentDataStorage)
     : IRequestHandler<__SA.GetSalesArrangementRequest, __SA.SalesArrangement>
 {
     public async Task<__SA.SalesArrangement> Handle(__SA.GetSalesArrangementRequest request, CancellationToken cancellation)
@@ -62,9 +64,19 @@ internal sealed class GetSalesArrangementHandler
                 model.CustomerChange3602C = customerChange3602CData?.MapCustomerChange3602();
                 break;
 
-            case SalesArrangementTypes.Retention:
+            case SalesArrangementTypes.MortgageRetention:
                 var retentionData = await GetParametersData<RetentionData>(model.SalesArrangementId, cancellation);
                 model.Retention = retentionData?.MapRetention();
+                break;
+
+            case SalesArrangementTypes.MortgageRefixation:
+                var refixationData = await GetParametersData<RefixationData>(model.SalesArrangementId, cancellation);
+                model.Refixation = refixationData?.MapRefixation();
+                break;
+
+            case SalesArrangementTypes.MortgageExtraPayment:
+                var extraPaymentData = await GetParametersData<ExtraPaymentData>(model.SalesArrangementId, cancellation);
+                model.ExtraPayment = extraPaymentData?.MapExtraPayment();
                 break;
 
             default:
@@ -77,17 +89,8 @@ internal sealed class GetSalesArrangementHandler
     private async Task<TData?> GetParametersData<TData>(int salesArrangementId, CancellationToken cancellationToken) 
         where TData : class, IDocumentData
     {
-        var documentData = await _documentDataStorage.FirstOrDefaultByEntityId<TData>(salesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
+        var documentData = await _documentDataStorage.FirstOrDefaultByEntityId<TData, int>(salesArrangementId, SalesArrangementParametersConst.TableName, cancellationToken);
 
         return documentData?.Data;
-    }
-
-    private readonly SalesArrangementServiceDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public GetSalesArrangementHandler(SalesArrangementServiceDbContext dbContext, IDocumentDataStorage documentDataStorage)
-    {
-        _dbContext = dbContext;
-        _documentDataStorage = documentDataStorage;
     }
 }

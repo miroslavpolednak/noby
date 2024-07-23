@@ -1,0 +1,112 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.NotificationService.v2;
+option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
+
+import "UserIdentity.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+enum NotificationStates
+{
+    Unknown = 0;
+    InProgress = 1;
+    Unsent = 2;
+    Sent = 3;
+    Delivered = 4;
+    Invalid = 5;
+    Error = 6;
+}
+
+enum NotificationChannels
+{
+    UnknownChannel = 0;
+    Sms = 1;
+    Email = 2;
+}
+
+message Product
+{
+    string ProductId = 1;
+    ProductTypes ProductType = 2;
+
+    enum ProductTypes {
+        Unknown = 0;
+        MortgageCaseId = 1;
+        MortgageFormId = 2;
+        MortgageSalesArrangementId = 3;
+    }
+}
+
+message DocumentHash
+{
+    string Hash = 1;
+    HashAlgorithms HashAlgorithm = 2;
+
+    enum HashAlgorithms {
+        Unknown = 0;
+        SHA256 = 1;
+        SHA384 = 2;
+        SHA512 = 3;
+        SHA3 = 4;
+    }
+}
+
+message StatisticsData
+{
+    Status Email = 1;
+    Status SMS = 2;
+
+    message Status
+    {
+        google.protobuf.Int32Value Delivered = 1;
+        google.protobuf.Int32Value Error = 2;
+        google.protobuf.Int32Value InProgress = 3;
+        google.protobuf.Int32Value Sent = 4;
+        google.protobuf.Int32Value Unsent = 5;
+        google.protobuf.Int32Value Invalid = 6;
+    }
+}
+
+message ResultData
+{
+    string NotificationId = 1;
+    NotificationStates State = 2;
+    NotificationChannels Channel = 3;
+    repeated ResultError Errors = 4;
+    cis.types.UserIdentity Identifier = 5;
+	Product Product = 6;
+    google.protobuf.StringValue CustomId = 7;
+    google.protobuf.StringValue DocumentId = 8;
+    repeated DocumentHash DocumentHashes = 9;
+    google.protobuf.Timestamp RequestTimestamp = 10;
+    google.protobuf.Timestamp ResultTimestamp = 11;
+    string CreatedBy = 12;
+    
+    oneof RequestData {
+        SmsRequestData SmsData = 21;
+        EmailRequestData EmailData = 22;
+    }
+
+    message ResultError
+    {
+        string Code = 1;
+        string Message = 2;
+    }
+
+    message SmsRequestData
+    {
+        string Phone = 1;
+        string SmsType = 2;
+    }
+
+    message EmailRequestData { }
+}
+
+message StatisticsResultData
+{
+    string NotificationId = 1;
+    NotificationStates State = 2;
+    NotificationChannels Channel = 3;
+    google.protobuf.Timestamp RequestTimestamp = 4;
+    string Mandant = 5;
+}

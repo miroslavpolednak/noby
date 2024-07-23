@@ -4,7 +4,6 @@
 	  <TargetFramework>net8.0</TargetFramework>
 	  <Company>Wookiee.Apps s.r.o.</Company>
 	  <Product>Common Infrastructure Solution</Product>
-	  <LangVersion>preview</LangVersion>
 	  <Nullable>enable</Nullable>
 	  <Platforms>AnyCPU;x64</Platforms>
 	  <ImplicitUsings>enable</ImplicitUsings>
@@ -16,9 +15,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Google.Protobuf" Version="3.25.2" />
-		<PackageReference Include="Grpc.Net.Client" Version="2.60.0" />
-		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.60.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.27.2" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.63.0" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.63.0" />
 	</ItemGroup>
 
 	<ItemGroup>

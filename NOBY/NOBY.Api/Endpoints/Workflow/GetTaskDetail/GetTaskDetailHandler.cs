@@ -1,45 +1,47 @@
 ﻿using CIS.Core.Security;
-using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
+using NOBY.Services.WorkflowTask;
 
 namespace NOBY.Api.Endpoints.Workflow.GetTaskDetail;
 
-internal sealed class GetTaskDetailHandler
-    : IRequestHandler<GetTaskDetailRequest, GetTaskDetailResponse>
+internal sealed class GetTaskDetailHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    ICaseServiceClient _caseService,
+    IWorkflowTaskService _workflowTaskService)
+        : IRequestHandler<GetTaskDetailRequest, WorkflowGetTaskDetailResponse>
 {
-    public async Task<GetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
+    public async Task<WorkflowGetTaskDetailResponse> Handle(GetTaskDetailRequest request, CancellationToken cancellationToken)
     {
-        var taskList = await _caseService.GetTaskList(request.CaseId, cancellationToken);
-        var task = taskList.FirstOrDefault(t => t.TaskId == request.TaskId)
-            ?? throw new NobyValidationException($"Task {request.TaskId} not found.");
+        var taskResult = await _caseService.GetTaskByTaskId(request.CaseId, request.TaskId, cancellationToken);
+        var task = taskResult.Task;
 
         if (!_allowedTaskTypeIds.Contains(task.TaskTypeId))
         {
             throw new NobyValidationException(90032, "TaskTypeId not allowed");
         }
 
-        if (task.TaskTypeId is 6)
+        if (task.TaskTypeId is (int)WorkflowTaskTypes.Signing)
         {
             // ProcessTypeId: Hlavní úvěrový proces ==1, Změnový proces == 2
-            if (task.ProcessTypeId is 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningView))
+            if (task.ProcessTypeId is ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_SigningView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
             // zde by měl být jen Retenční proces == 3
-            else if (task.ProcessTypeId is not 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingSigningView))
+            else if (task.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingSigningView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
         }
-        else if (task.TaskTypeId is not 6)
+        else if (task.TaskTypeId is not (int)WorkflowTaskTypes.Signing)
         {
             // ProcessTypeId: Hlavní úvěrový proces ==1, Změnový proces == 2
-            if (task.ProcessTypeId is 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_OtherView))
+            if (task.ProcessTypeId is ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_OtherView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
             // zde by měl být jen Retenční proces == 3
-            else if (task.ProcessTypeId is not 1 or 2 && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherView))
+            else if (task.ProcessTypeId is not ((int)WorkflowProcesses.Main or (int)WorkflowProcesses.Change) && !_currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RefinancingOtherView))
             {
                 throw new CisAuthorizationException("Task detail view permission missing");
             }
@@ -47,7 +49,7 @@ internal sealed class GetTaskDetailHandler
 
         var (taskDto, taskDetailDto, documents) = await _workflowTaskService.GetTaskDetail(request.CaseId, task.TaskIdSb, cancellationToken);
 
-        return new GetTaskDetailResponse
+        return new WorkflowGetTaskDetailResponse
         {
             TaskDetail = taskDetailDto,
             Task = taskDto,
@@ -55,18 +57,12 @@ internal sealed class GetTaskDetailHandler
         };
     }
 
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly Services.WorkflowTask.IWorkflowTaskService _workflowTaskService;
-    private readonly ICaseServiceClient _caseService;
-    private static int[] _allowedTaskTypeIds = { 1, 2, 3, 6, 7 };
-
-    public GetTaskDetailHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        Services.WorkflowTask.IWorkflowTaskService workflowTaskService,
-        ICaseServiceClient caseService)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _workflowTaskService = workflowTaskService;
-        _caseService = caseService;
-    }
+    private static readonly int[] _allowedTaskTypeIds =
+        [
+            (int)WorkflowTaskTypes.Dozadani,
+            (int)WorkflowTaskTypes.PriceException,
+            (int)WorkflowTaskTypes.Consultation,
+            (int)WorkflowTaskTypes.Signing,
+            (int)WorkflowTaskTypes.PredaniNaSpecialitu
+        ];
 }

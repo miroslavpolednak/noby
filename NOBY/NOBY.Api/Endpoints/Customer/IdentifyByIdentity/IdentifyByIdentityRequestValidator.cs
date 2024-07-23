@@ -12,9 +12,9 @@ public class IdentifyByIdentityRequestValidator
             .NotNull()
             .ChildRules(x =>
             {
-                x.RuleFor(t => t.Id)
+                x.RuleFor(t => t!.Id)
                     .GreaterThan(0);
-                x.RuleFor(t => t.Scheme)
+                x.RuleFor(t => t!.Scheme)
                     .IsInEnum()
                     .Must(t => (int)t > 0);
             });

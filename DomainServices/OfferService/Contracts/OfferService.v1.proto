@@ -5,24 +5,51 @@ option csharp_namespace = "DomainServices.OfferService.Contracts.v1";
 import "google/protobuf/empty.proto";
 import "Messages/ValidateOfferId.proto";
 import "Messages/GetOffer.proto";
-import "Messages/GetOfferDetail.proto";
 import "Messages/SimulateMortgage.proto";
 import "Messages/GetMortgageOfferFPSchedule.proto";
 import "Messages/GetOfferDeveloper.proto";
 import "Messages/UpdateOffer.proto";
+import "Messages/SimulateBuildingSavings.proto";
+import "Messages/SimulateMortgageRetention.proto";
+import "Messages/SimulateMortgageRefixation.proto";
+import "Messages/GetInterestRate.proto";
+import "Messages/SimulateMortgageExtraPayment.proto";
+import "Messages/GetOfferList.proto";
+import "Messages/GetMortgageDetail.proto";
+import "Messages/CreateResponseCode.proto";
+import "Messages/GetResponseCodeList.proto";
+import "Messages/DeleteOfferList.proto";
 
 service OfferService {
 	rpc ValidateOfferId (ValidateOfferIdRequest) returns (ValidateOfferIdResponse);
 
 	rpc GetOffer (GetOfferRequest) returns (GetOfferResponse);
 
-	rpc GetOfferDetail (GetOfferDetailRequest) returns (GetOfferDetailResponse);
+	rpc SimulateBuildingSavings (SimulateBuildingSavingsRequest) returns (SimulateBuildingSavingsResponse);
 
 	rpc SimulateMortgage (SimulateMortgageRequest) returns (SimulateMortgageResponse);
+
+	rpc SimulateMortgageRetention (SimulateMortgageRetentionRequest) returns (SimulateMortgageRetentionResponse);
+
+	rpc SimulateMortgageRefixation (SimulateMortgageRefixationRequest) returns (SimulateMortgageRefixationResponse);
+
+	rpc SimulateMortgageExtraPayment (SimulateMortgageExtraPaymentRequest) returns (SimulateMortgageExtraPaymentResponse);
 
 	rpc GetMortgageOfferFPSchedule (GetMortgageOfferFPScheduleRequest) returns (GetMortgageOfferFPScheduleResponse);
 
 	rpc GetOfferDeveloper (GetOfferDeveloperRequest) returns (GetOfferDeveloperResponse);
 
 	rpc UpdateOffer (UpdateOfferRequest) returns (google.protobuf.Empty);
+
+	rpc GetInterestRate (GetInterestRateRequest) returns (GetInterestRateResponse);
+
+	rpc GetOfferList (GetOfferListRequest) returns (GetOfferListResponse);
+
+	rpc GetMortgageDetail (GetMortgageDetailRequest) returns (GetMortgageDetailResponse);
+
+	rpc CreateResponseCode (CreateResponseCodeRequest) returns (CreateResponseCodeResponse);
+
+	rpc GetResponseCodeList (GetResponseCodeListRequest) returns (GetResponseCodeListResponse);
+
+	rpc DeleteOfferList (DeleteOfferListRequest) returns (google.protobuf.Empty);
 }

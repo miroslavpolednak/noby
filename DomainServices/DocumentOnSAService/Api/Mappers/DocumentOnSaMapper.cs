@@ -1,7 +1,6 @@
 ﻿using CIS.Core.Attributes;
 using SharedTypes.Enums;
 using SharedTypes.GrpcTypes;
-using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Api.Extensions;
@@ -10,6 +9,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
+using SharedTypes.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Mappers;
 
@@ -17,7 +17,7 @@ public interface IDocumentOnSaMapper
 {
     IEnumerable<DocumentOnSAToSign> MapDocumentOnSaToSign(IEnumerable<DocumentOnSa> documentOnSas);
 
-    DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId);
+    DocumentOnSAToSign CreateDocumentOnSaToSign(int? documentTypeId, int salesArrangementId);
 
     /// <summary>
     /// For CRS
@@ -87,11 +87,11 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
         }
     }
 
-    public DocumentOnSAToSign CreateDocumentOnSaToSign(DocumentTypesResponse.Types.DocumentTypeItem documentTypeItem, int salesArrangementId)
+    public DocumentOnSAToSign CreateDocumentOnSaToSign(int? documentTypeId, int salesArrangementId)
     {
         return new DocumentOnSAToSign
         {
-            DocumentTypeId = documentTypeItem.Id,
+            DocumentTypeId = documentTypeId,
             SalesArrangementId = salesArrangementId,
             IsValid = true,
             IsSigned = false,
@@ -106,7 +106,7 @@ public class DocumentOnSaMapper : IDocumentOnSaMapper
         {
             // Merge customer with customerOnSa
             var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
-            var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.First(r => r.IdentityScheme == Identity.Types.IdentitySchemes.Kb), cancellationToken);
+            var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
             _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
             documentsToSignList.Add(new()
             {

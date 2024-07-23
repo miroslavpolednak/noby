@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi.Models;
-using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation;
@@ -12,7 +11,7 @@ internal sealed class ApplySwaggerRealEstateValuationAttributes
         bool reqPermSection = false;
 
         // case owner info
-        if (context.MethodInfo.GetCustomAttributes(typeof(RealEstateValuationStateValidationAttribute), false).Any())
+        if (context.MethodInfo.GetCustomAttributes(typeof(RealEstateValuationStateValidationAttribute), false).Length != 0)
         {
             if (!reqPermSection)
                 operation.Description += _requiredPermissionsLabel;

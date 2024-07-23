@@ -1,0 +1,20 @@
+syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+
+service MaintananceService{
+	rpc ImportOfferFromDatamart(ImportOfferFromDatamartRequest) returns (google.protobuf.Empty);
+	rpc DeleteRefixationOfferOlderThan(DeleteRefixationOfferOlderThanRequest) returns (google.protobuf.Empty);
+}
+
+message ImportOfferFromDatamartRequest {
+	google.protobuf.Int32Value BatchSize = 1;
+}
+
+message DeleteRefixationOfferOlderThanRequest {
+
+}

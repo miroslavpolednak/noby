@@ -51,7 +51,7 @@ public class CodebookServiceMock
             new() {Id = 7 , ShortName="ZADOOPCI", SalesArrangementTypeId=null,EACodeMainId=608578, FileName="Zadost_Flexi"},
             new() {Id = 8 , ShortName="ZAOZMPAR", SalesArrangementTypeId=7   ,EACodeMainId=608279, FileName="Zadost_obecna"},
             new() {Id = 9 , ShortName="ZAOZMDLU", SalesArrangementTypeId=9   ,EACodeMainId=608580, FileName="Zadost_dluznik"},
-            new() {Id = 10, ShortName="ZAODHUBN", SalesArrangementTypeId=8   ,EACodeMainId=608579, FileName="Zadost_bezNem"},
+            new() {Id = 10, ShortName="ZAODHUBN", SalesArrangementTypeId=8   ,EACodeMainId=608579, FileName="Zadost_bezNem", IsElectronicSigningEnabled = false},
             new() {Id = 11, ShortName="ZUSTAVSI", SalesArrangementTypeId=12  ,EACodeMainId=608524, FileName="Zustavajici_v_HU"},
             new() {Id = 12, ShortName="PRISTOUP", SalesArrangementTypeId=10  ,EACodeMainId=608524, FileName="Pristupujici_k_HU"},
             new() {Id = 13, ShortName="DANRESID", SalesArrangementTypeId=null,EACodeMainId=616578, FileName="Prohlaseni_dan"},

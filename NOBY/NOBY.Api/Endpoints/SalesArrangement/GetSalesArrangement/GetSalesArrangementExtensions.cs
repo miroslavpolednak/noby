@@ -1,19 +1,17 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
-using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
-using _SA = DomainServices.SalesArrangementService.Contracts;
+﻿using _SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangement;
 
 internal static class GetSalesArrangementExtensions
 {
-    public static SalesArrangementParametersCustomerChange3602 ToApiResponse(this _SA.SalesArrangementParametersCustomerChange3602 parameters)
+    public static SalesArrangementSharedParametersCustomerChange3602 ToApiResponse(this _SA.SalesArrangementParametersCustomerChange3602 parameters)
         => new()
         {
             HouseholdId = parameters.HouseholdId,
             IsSpouseInDebt = parameters.IsSpouseInDebt
         };
 
-    public static ParametersMortgage ToApiResponse(this _SA.SalesArrangementParametersMortgage mortgage)
+    public static SalesArrangementSharedParametersMortgage ToApiResponse(this _SA.SalesArrangementParametersMortgage mortgage)
         => new()
         {
             ContractSignatureTypeId = mortgage.ContractSignatureTypeId,
@@ -21,7 +19,7 @@ internal static class GetSalesArrangementExtensions
             IncomeCurrencyCode = mortgage.IncomeCurrencyCode,
             ResidencyCurrencyCode = mortgage.ResidencyCurrencyCode,
             Agent = mortgage.Agent,
-            LoanRealEstates = mortgage.LoanRealEstates is null ? null : mortgage.LoanRealEstates.Select(x => new LoanRealEstateDto
+            LoanRealEstates = mortgage.LoanRealEstates?.Select(x => new SalesArrangementSharedParametersLoanRealEstate
             {
                 IsCollateral = x.IsCollateral,
                 RealEstatePurchaseTypeId = x.RealEstatePurchaseTypeId,
@@ -29,13 +27,13 @@ internal static class GetSalesArrangementExtensions
             }).ToList()
         };
 
-    public static ParametersDrawing ToApiResponse(this _SA.SalesArrangementParametersDrawing model)
+    public static SalesArrangementSharedParametersDrawing ToApiResponse(this _SA.SalesArrangementParametersDrawing model)
         => new()
         {
             DrawingDate = model.DrawingDate,
             IsImmediateDrawing = model.IsImmediateDrawing,
-            Applicant = model.Applicant?.Select(t => (SharedTypes.Types.CustomerIdentity)t!)?.ToList(),
-            PayoutList = model.PayoutList?.Select(x => new ParametersDrawingPayout
+            Applicant = model.Applicant?.Select(t => (SharedTypesCustomerIdentity)t!)?.ToList(),
+            PayoutList = model.PayoutList?.Select(x => new SalesArrangementSharedDrawingPayout
             {
                 ProductObligationId = x.ProductObligationId,   
                 Order = x.Order,
@@ -55,7 +53,7 @@ internal static class GetSalesArrangementExtensions
                 AccountNumber = model.RepaymentAccount.Number,
                 AccountPrefix = model.RepaymentAccount.Prefix
             },
-            Agent = model.Agent is null ? new ParametersDrawingAgent() : new()
+            Agent = model.Agent is null ? new SalesArrangementSharedDrawingAgent() : new()
             {
                 IsActive = model.Agent.IsActive,
                 DateOfBirth = model.Agent.DateOfBirth,
@@ -69,11 +67,11 @@ internal static class GetSalesArrangementExtensions
             }
         };
 
-    public static Dto.GeneralChangeDetail ToApiResponse(this _SA.SalesArrangementParametersGeneralChange model)
+    public static SalesArrangementSharedParametersGeneralChange ToApiResponse(this _SA.SalesArrangementParametersGeneralChange model)
         => new()
         {
-            Applicant = model.Applicant?.Select(t => (SharedTypes.Types.CustomerIdentity)t!)?.ToList(),
-            Collateral = new Collateral
+            Applicant = model.Applicant?.Select(t => (SharedTypesCustomerIdentity)t!)?.ToList(),
+            Collateral = new()
             {
                 IsActive = model.Collateral?.IsActive ?? false,
                 AddLoanRealEstateCollateral = model.Collateral?.AddLoanRealEstateCollateral,
@@ -82,7 +80,7 @@ internal static class GetSalesArrangementExtensions
             PaymentDay = new()
             {
                 IsActive = model.PaymentDay?.IsActive ?? false,
-                AgreedPaymentDay = model.PaymentDay?.AgreedPaymentDay,
+                AgreedPaymentDay = model.PaymentDay?.AgreedPaymentDay ?? 0,
                 NewPaymentDay = model.PaymentDay?.NewPaymentDay
             },
             DrawingDateTo = new()
@@ -90,12 +88,13 @@ internal static class GetSalesArrangementExtensions
                 IsActive = model.DrawingDateTo?.IsActive ?? false,
                 AgreedDrawingDateTo = model.DrawingDateTo?.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = model.DrawingDateTo?.CommentToDrawingDateTo,
-                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = model.DrawingDateTo?.IsDrawingDateEarlier ?? false
             },
-            RepaymentAccount = new Dto.PaymentAccount()
+            RepaymentAccount = new()
             {
                 IsActive = model.RepaymentAccount?.IsActive ?? false,
-                AgreedBankAccount = model.RepaymentAccount is null ? null : new NOBY.Dto.BankAccount
+                AgreedBankAccount = model.RepaymentAccount is null ? null : new SharedTypesBankAccount
                 {
                     AccountPrefix = model.RepaymentAccount.AgreedPrefix,
                     AccountNumber = model.RepaymentAccount.AgreedNumber,
@@ -122,36 +121,36 @@ internal static class GetSalesArrangementExtensions
                 ConnectionExtraordinaryPayment = model.DueDate?.ConnectionExtraordinaryPayment ?? false,
                 NewLoanDueDate = model.DueDate?.NewLoanDueDate
             },
-            LoanRealEstate = new LoanRealEstate
+            LoanRealEstate = new()
             {
                 IsActive = model.LoanRealEstate?.IsActive ?? false,
-                LoanRealEstates = model.LoanRealEstate?.LoanRealEstates?.Select(t => new LoanRealEstateItem
+                LoanRealEstates = model.LoanRealEstate?.LoanRealEstates?.Select(t => new SalesArrangementSharedParametersLoanRealEstateBase
                 {
                     RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
                     RealEstateTypeId = t.RealEstateTypeId
                 }).ToList()
             },
-            LoanPurpose = new LoanPurpose
+            LoanPurpose = new()
             {
                 IsActive = model.LoanPurpose?.IsActive ?? false,
                 LoanPurposesComment = model.LoanPurpose?.LoanPurposesComment
             },
-            DrawingAndOtherConditions = new DrawingAndOtherConditions
+            DrawingAndOtherConditions = new()
             {
                 IsActive = model.DrawingAndOtherConditions?.IsActive ?? false,
                 CommentToChangeContractConditions = model.DrawingAndOtherConditions?.CommentToChangeContractConditions
             },
-            CommentToChangeRequest = new CommentToChangeRequest
+            CommentToChangeRequest = new()
             {
                 IsActive = model.CommentToChangeRequest?.IsActive ?? false,
                 GeneralComment = model.CommentToChangeRequest?.GeneralComment
             }
         };
 
-    public static Dto.HUBNDetail ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
+    public static SalesArrangementSharedParametersHubn ToApiResponse(this _SA.SalesArrangementParametersHUBN model)
         => new()
         {
-            Applicant = model.Applicant?.Select(t => (SharedTypes.Types.CustomerIdentity)t!)?.ToList(),
+            Applicant = model.Applicant?.Select(t => (SharedTypesCustomerIdentity)t!)?.ToList(),
             CollateralIdentification = new()
             {
                 RealEstateIdentification = model.CollateralIdentification?.RealEstateIdentification
@@ -162,21 +161,21 @@ internal static class GetSalesArrangementExtensions
                 RequiredLoanAmount = model.LoanAmount?.RequiredLoanAmount,
                 PreserveAgreedPaymentAmount = model.LoanAmount?.PreserveAgreedLoanPaymentAmount ?? false,
                 PreserveLoanDueDate = model.LoanAmount?.PreserveAgreedLoanDueDate ?? false,
-                AgreedLoanAmount = model.LoanAmount?.AgreedLoanAmount,
+                AgreedLoanAmount = model.LoanAmount?.AgreedLoanAmount ?? 0,
                 AgreedLoanDueDate = model.LoanAmount?.AgreedLoanDueDate,
-                AgreedLoanPaymentAmount = model.LoanAmount?.AgreedLoanPaymentAmount
+                AgreedLoanPaymentAmount = model.LoanAmount?.AgreedLoanPaymentAmount ?? 0
             },
-            LoanPurposes = model.LoanPurposes?.Select(t => new LoanPurposeItem
+            LoanPurposes = model.LoanPurposes?.Select(t => new SharedTypesLoanPurposeItem
             {
                 Id = t.LoanPurposeId,
                 Sum = t.Sum
-            }).ToList(),
-            LoanRealEstates = model.LoanRealEstates?.Select(t => new LoanRealEstateDto
+            }).ToList() ?? [],
+            LoanRealEstates = model.LoanRealEstates?.Select(t => new SalesArrangementSharedParametersLoanRealEstate
             {
                 IsCollateral = t.IsCollateral,
                 RealEstatePurchaseTypeId = t.RealEstatePurchaseTypeId,
                 RealEstateTypeId = t.RealEstateTypeId
-            }).ToList(),
+            }).ToList() ?? [],
             ExpectedDateOfDrawing = new()
             {
                 IsActive = model.ExpectedDateOfDrawing?.IsActive ?? false,
@@ -187,7 +186,8 @@ internal static class GetSalesArrangementExtensions
             {
                 IsActive = model.DrawingDateTo?.IsActive ?? false,
                 AgreedDrawingDateTo = model.DrawingDateTo?.AgreedDrawingDateTo,
-                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = model.DrawingDateTo?.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = model.DrawingDateTo?.IsDrawingDateEarlier ?? false
             },
             CommentToChangeRequest = new()
             {
@@ -196,13 +196,13 @@ internal static class GetSalesArrangementExtensions
             }
         };
 
-    public static Dto.CustomerChangeDetail ToApiResponse(this _SA.SalesArrangementParametersCustomerChange model)
+    public static SalesArrangementSharedParametersCustomerChange ToApiResponse(this _SA.SalesArrangementParametersCustomerChange model)
         => new()
         {
-            Applicants = model.Applicants is null ? null : model.Applicants.Select(t => new Dto.CustomerChangeDetailApplicant
+            Applicants = model.Applicants?.Select(t => new SalesArrangementSharedCustomerChangeDetailApplicant
             {
-                Identity = t.Identity?.Select(t => (SharedTypes.Types.CustomerIdentity)t!).ToList(),
-                IdentificationDocument = t.IdentificationDocument is null ? null : new()
+                Identity = t.Identity?.Select(t => (SharedTypesCustomerIdentity)t!).ToList(),
+                IdentificationDocument = t.IdentificationDocument?.IdentificationDocumentTypeId is null ? null : new()
                 {
                     IdentificationDocumentTypeId = t.IdentificationDocument.IdentificationDocumentTypeId,
                     Number = t.IdentificationDocument.Number
@@ -213,11 +213,11 @@ internal static class GetSalesArrangementExtensions
                     LastName = t.NaturalPerson.LastName,
                     DateOfBirth = t.NaturalPerson.DateOfBirth
                 }
-            }).ToList(),
-            Release = new Dto.CustomerChangeDetailRelease
+            }).ToList() ?? [],
+            Release = new()
             {
                 IsActive = model.Release?.IsActive ?? false,
-                Customers = model.Release?.Customers is null ? null : model.Release.Customers.Select(t => new Dto.CustomerChangeDetailReleaseCustomer
+                Customers = model.Release?.Customers is null ? null : model.Release.Customers.Select(t => new SalesArrangementSharedCustomerChangeDetailReleaseCustomer
                 {
                     Identity = t.Identity,
                     NaturalPerson = new()
@@ -228,25 +228,25 @@ internal static class GetSalesArrangementExtensions
                     }
                 }).ToList()
             },
-            Add = new Dto.CustomerChangeDetailAdd
+            Add = new()
             {
                 IsActive = model.Add?.IsActive ?? false,
-                Customers = model.Add?.Customers is null ? null : model.Add.Customers.Select(t => new Dto.CustomerChangeDetailAddCustomer
+                Customers = model.Add?.Customers is null ? null : model.Add.Customers.Select(t => new SalesArrangementSharedCustomerChangeDetailAddCustomer
                 {
                     DateOfBirth = t.DateOfBirth,
                     Name = t.Name
                 }).ToList()
             },
-            Agent = new Dto.CustomerChangeDetailAgent
+            Agent = new()
             {
                 IsActive = model.Agent?.IsActive ?? false,
                 ActualAgent = model.Agent?.ActualAgent ?? "",
                 NewAgent = model.Agent?.NewAgent
             },
-            RepaymentAccount = new Dto.PaymentAccount
+            RepaymentAccount = new()
             {
                 IsActive = model.RepaymentAccount?.IsActive ?? false,
-                AgreedBankAccount = model.RepaymentAccount is null ? null : new NOBY.Dto.BankAccount
+                AgreedBankAccount = model.RepaymentAccount is null ? null : new SharedTypesBankAccount
                 {
                     AccountPrefix = model.RepaymentAccount.Prefix,
                     AccountNumber = model.RepaymentAccount.Number,
@@ -259,7 +259,7 @@ internal static class GetSalesArrangementExtensions
                 OwnerLastName = model.RepaymentAccount?.OwnerLastName,
                 AccountPrefix = model.RepaymentAccount?.Prefix,
             },
-            CommentToChangeRequest = new CommentToChangeRequest
+            CommentToChangeRequest = new()
             {
                 IsActive = model.CommentToChangeRequest?.IsActive ?? false,
                 GeneralComment = model.CommentToChangeRequest?.GeneralComment

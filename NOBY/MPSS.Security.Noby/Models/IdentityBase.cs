@@ -2,6 +2,10 @@
 using System.Security.Principal;
 using System.Text;
 
+#pragma warning disable IDE0018 // Inline variable declaration
+#pragma warning disable CS0649
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable IDE0044 // Add readonly modifier
 #pragma warning disable CA1305 // Specify IFormatProvider
 #pragma warning disable CA2201 // Do not raise reserved exception types
 
@@ -58,7 +62,13 @@ internal sealed class IdentityBase : IIdentity
         internal set;
     }
 
-    public int m17ID
+	public int DistributionChannel
+	{
+		get;
+		internal set;
+	}
+
+	public int m17ID
     {
         get;
         internal set;
@@ -160,7 +170,7 @@ internal sealed class IdentityBase : IIdentity
     #region serializace
     public override string ToString()
     {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.AppendFormat("{0}{1}", CPM, SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", ICP, SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", Name, SecurityCookie.Separator[0]);
@@ -179,13 +189,14 @@ internal sealed class IdentityBase : IIdentity
         sb.AppendFormat("{0}{1}", _Switches, SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", m17ID, SecurityCookie.Separator[0]);
         sb.AppendFormat("{0}{1}", BrokerId, SecurityCookie.Separator[0]);
-        sb.AppendFormat("{0}", KbUid);
-        return sb.ToString();
+        sb.AppendFormat("{0}{1}", KbUid, SecurityCookie.Separator[0]);
+		sb.AppendFormat("{0}", DistributionChannel);
+		return sb.ToString();
     }
 
     internal static IdentityBase GetFromString(string value)
     {
-        IdentityBase ident = new IdentityBase(true);
+        IdentityBase ident = new(true);
         string[] arr = value.Split(SecurityCookie.Separator);
         ident.CPM = arr[0];
         ident.ICP = arr[1];
@@ -206,8 +217,9 @@ internal sealed class IdentityBase : IIdentity
         ident.m17ID = Convert.ToInt32(arr[16]);
         ident.BrokerId = Convert.ToInt32(arr[17]);
         ident.KbUid = arr[18];
+		ident.DistributionChannel = Convert.ToInt32(arr[19]);
 
-        try
+		try
         {
             ident._FirstLogin = Convert.ToDateTime(arr[14], System.Globalization.CultureInfo.InvariantCulture);
         }

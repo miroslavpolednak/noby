@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "Identity.proto";
+import "Messages/Case.proto";
+
+message GetCasesByIdentityRequest {
+	cis.types.Identity CustomerIdentity = 1;
+}
+
+message GetCasesByIdentityResponse {
+	repeated Case Cases = 1;
+}

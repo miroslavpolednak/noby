@@ -1,30 +1,46 @@
+using CIS.Infrastructure.Messaging;
 using CIS.Infrastructure.StartupExtensions;
+using DomainServices.OfferService.Api.Endpoints.v1;
+using DomainServices.OfferService.Api.Messaging.LoanRetentionProcessChanged;
 using ExternalServices;
 using SharedComponents.DocumentDataStorage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<DomainServices.OfferService.Api.Configuration.AppConfiguration>()
     .AddErrorCodeMapper(DomainServices.OfferService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
         services
+            .AddCaseService()
             .AddRiskIntegrationService()
             .AddCodebookService()
             .AddUserService();
     })
-    .Build(builder =>
+    .Build((builder, appConfig) =>
     {
+        appConfig.Validate();
+
         // EAS EasSimulationHT svc
-        builder.AddExternalService<ExternalServices.EasSimulationHT.V1.IEasSimulationHTClient>();
+        builder.AddExternalService<EasSimulationHT.IEasSimulationHTClient>();
+        builder.AddExternalService<ExternalServices.SbWebApi.V1.ISbWebApiClient>();
+        builder.AddExternalService<ExternalServices.Eas.V1.IEasClient>();
 
         builder.AddDocumentDataStorage();
 
         // dbcontext
         builder.AddEntityFramework<DomainServices.OfferService.Api.Database.OfferServiceDbContext>();
+
+        builder.AddCisMessaging()
+               .AddKafkaFlow(msg =>
+               {
+                   msg.AddConsumerAvro<LoanRetentionProcessChangedHandler>(appConfig.SbWorkflowProcessTopic!);
+               });
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
-        app.MapGrpcService<DomainServices.OfferService.Api.Endpoints.OfferService>();
+        app.MapGrpcService<OfferService>();
+        app.MapGrpcService<DomainServices.OfferService.Api.Endpoints.MaintananceService>();
     })
     .Run();
 

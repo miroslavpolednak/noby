@@ -32,12 +32,12 @@ internal sealed class CreateRiskBusinessCase
             }
             catch (CisValidationException ex)
             {
-                _logger.LogInformation($"CreateRBC failed: {ex.FirstExceptionCode}; {ex.Message}");
+                _logger.LogInformation(ex, "CreateRBC failed: {FirstExceptionCode}; {Message}", ex.FirstExceptionCode, ex.Message);
             }
         }
         else // RBCID je jiz zalozene, ukonci flow
         {
-            _logger.LogInformation($"SalesArrangement #{salesArrangementId} already contains RiskBusinessCaseId");
+            _logger.LogInformation("SalesArrangement #{SalesArrangementId} already contains RiskBusinessCaseId", salesArrangementId);
         }
     }
 

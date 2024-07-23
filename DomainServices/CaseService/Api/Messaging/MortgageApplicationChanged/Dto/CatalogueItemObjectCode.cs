@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageapplication
 {
 	using System;
 	using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				"ect code) se nemeni pri zmene verze Vice atributu je pouzito z duvodu ze neexist" +
 				"uje pouze jedina identifikace produktovych polozek banky (produktu, sluzeb), ale" +
 				" muze jich byt vice. CDM entity name(s): CatalogueItemObjectCode.\",\"namespace\":\"" +
-				"cz.kb.api.mortgageservicingevents.v2.mortgageapplication\",\"fields\":[{\"name\":\"obj" +
+				"cz.kb.api.mortgageservicingevents.v3.mortgageapplication\",\"fields\":[{\"name\":\"obj" +
 				"ectCode\",\"doc\":\"The identifier of the catalog item (product, service, offering, " +
 				"etc.) that does not change when the version of the item changes.For example, the" +
 				" Standard Tariff Offer has different settings in different versions (e.g. differ" +

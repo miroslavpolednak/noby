@@ -1,0 +1,64 @@
+{
+  "type": "record",
+  "name": "DocumentStateChanged",
+  "namespace": "cz.mpss.api.epodpisy.digitalsigning.documentsigningevents.v1",
+  "doc": "Schema belongs to API DocumentSigningEvents.v1. Schema represents an event of changing the state of document within ePodpisy application.",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String",
+        "pattern": "^.{0,100}$"
+      },
+      "doc": "Unique identifier of event."
+    },
+    {
+      "name": "occurredOn",
+      "type": {
+        "type": "long",
+        "logicalType": "local-timestamp-millis"
+      },
+      "doc": "Date and time when event occurred."
+    },
+    {
+      "name": "documentExternalId",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String",
+        "pattern": "^.{0,128}$"
+      },
+      "doc": "Externally defined unique identifier of document within ePodpisy."
+    },
+    {
+      "name": "state",
+      "type": {
+        "type": "enum",
+        "name": "DocumentStateEnum",
+        "doc": "",
+        "symbols": [
+          "NEW",
+          "IN_PROGRESS",
+          "APPROVED",
+          "DELETED",
+          "SIGNED",
+          "VERIFIED",
+          "SENT"
+        ]
+      },
+      "doc": "Current runtime state of the document within ePodpisy."
+    },
+    {
+      "name": "previousState",
+      "type": [
+        "null",
+        {
+          "type": "DocumentStateEnum"
+        }
+      ],
+      "default": null,
+      "doc": "Previous runtime state of the document within ePodpisy."
+    }
+  ],
+  "javaAnnotation": "cz.kb.api.common.annotation.ConfluentSchemaRegistryCompatible"
+}

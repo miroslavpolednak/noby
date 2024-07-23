@@ -39,7 +39,7 @@ public sealed class RealEstateValuationListItem
     /// </summary>
     /// <example>1</example>
     [Required]
-    public RealEstateTypeIcons RealEstateTypeIcon { get; set; }
+    public int RealEstateTypeIcon { get; set; }
 
     /// <summary>
     /// ID stavu Ocenění nemovitosti
@@ -93,20 +93,6 @@ public sealed class RealEstateValuationListItem
     /// </summary>
     /// <example>31.12.2023</example>
     public DateOnly? ValuationSentDate { get; set; }
-
-    /// <summary>
-    /// Současná cena nemovitosti v Kč
-    /// </summary>
-    /// <example>3000000</example>
-    [Obsolete("Replaced with Prices collection")]
-    public int? ValuationResultCurrentPrice { get; set; }
-
-    /// <summary>
-    /// Budoucí cena nemovitosti v Kč
-    /// </summary>
-    /// <example>3250000</example>
-    [Obsolete("Replaced with Prices collection")]
-    public int? ValuationResultFuturePrice { get; set; }
 
     /// <summary>
     /// True pokud je potřeba kontrolní ocenění

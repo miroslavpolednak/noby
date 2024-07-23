@@ -5,6 +5,7 @@ using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
+using System.Linq;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.LinkEArchivIdToDocumentOnSA;
 

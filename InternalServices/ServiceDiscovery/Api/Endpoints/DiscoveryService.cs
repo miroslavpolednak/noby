@@ -3,7 +3,7 @@ using CIS.InternalServices.ServiceDiscovery.Contracts;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Endpoints;
 
-internal sealed class DiscoveryService 
+internal sealed class DiscoveryService(IMediator _mediator)
     : Contracts.v1.DiscoveryService.DiscoveryServiceBase
 {
     /// <summary>
@@ -21,8 +21,4 @@ internal sealed class DiscoveryService
     /// <exception cref="RpcException">101, 102, 103</exception>
     public override async Task<GetServiceResponse> GetService(GetServiceRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
-
-    private readonly IMediator _mediator;
-    public DiscoveryService(IMediator mediator)
-        => _mediator = mediator;
 }

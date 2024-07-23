@@ -1,22 +1,32 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.CustomerService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
-internal sealed class CreateMortgageCaseHandler
-    : IRequestHandler<CreateMortgageCaseRequest, CreateMortgageCaseResponse>
+internal sealed class CreateMortgageCaseHandler(
+    IRollbackBag _bag,
+    Services.CreateProductTrain.ICreateProductTrainService _createProductTrain,
+    CIS.Core.Security.ICurrentUserAccessor _userAccessor,
+    ICustomerServiceClient _customerService,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IHouseholdServiceClient _householdService,
+    ICaseServiceClient _caseService,
+    ICodebookServiceClient _codebookService,
+    IOfferServiceClient _offerService,
+    ILogger<CreateMortgageCaseHandler> _logger)
+        : IRequestHandler<OfferCreateMortgageCaseRequest, OfferCreateMortgageCaseResponse>
 {
-    public async Task<CreateMortgageCaseResponse> Handle(CreateMortgageCaseRequest request, CancellationToken cancellationToken)
+    public async Task<OfferCreateMortgageCaseResponse> Handle(OfferCreateMortgageCaseRequest request, CancellationToken cancellationToken)
     {
         // detail simulace
         var offerInstance = await _offerService.GetOffer(request.OfferId, cancellationToken);
@@ -57,7 +67,7 @@ internal sealed class CreateMortgageCaseHandler
 
         // pokud je to KB klient, tak si stahni jeho data z CM a updatuj request
         var createCustomerRequest = request.ToDomainServiceRequest(salesArrangementId);
-        if (request.Identity?.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)
+        if (request.Identity?.Scheme == SharedTypesCustomerIdentityScheme.KB)
         {
             await updateCustomerFromCM(createCustomerRequest, cancellationToken);
         }
@@ -71,7 +81,7 @@ internal sealed class CreateMortgageCaseHandler
         // create household
         int householdId = await _householdService.CreateHousehold(new _HO.CreateHouseholdRequest
         {
-            HouseholdTypeId = (int)SharedTypes.Enums.HouseholdTypes.Main,
+            HouseholdTypeId = (int)HouseholdTypes.Main,
             CustomerOnSAId1 = createCustomerResult.CustomerOnSAId,
             SalesArrangementId = salesArrangementId
         }, cancellationToken);
@@ -79,7 +89,7 @@ internal sealed class CreateMortgageCaseHandler
         _logger.EntityCreated(nameof(Household), householdId);
 
         // mam identifikovaneho customera
-        await _createProductTrain.Run(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers, cancellationToken);
+        await _createProductTrain.RunAll(caseId, salesArrangementId, createCustomerResult.CustomerOnSAId, createCustomerResult.CustomerIdentifiers, cancellationToken);
 
         var identifiedFlowSwitch = new EditableFlowSwitch
         {
@@ -89,7 +99,7 @@ internal sealed class CreateMortgageCaseHandler
 
         await _salesArrangementService.SetFlowSwitches(salesArrangementId, new List<EditableFlowSwitch> { identifiedFlowSwitch }, cancellationToken);
 
-        return new CreateMortgageCaseResponse
+        return new OfferCreateMortgageCaseResponse
         {
             SalesArrangementId = salesArrangementId,
             CaseId = caseId,
@@ -129,43 +139,5 @@ internal sealed class CreateMortgageCaseHandler
         if (customer.NaturalPerson.DateOfBirth is not null)
             request.Customer.DateOfBirthNaturalPerson = customer.NaturalPerson.DateOfBirth;
         request.Customer.MaritalStatusId = customer.NaturalPerson.MaritalStatusStateId;
-    }
-
-    private readonly IRollbackBag _bag;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ILogger<CreateMortgageCaseHandler> _logger;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
-
-    public CreateMortgageCaseHandler(
-        IRollbackBag bag,
-        Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        ICustomerServiceClient customerService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IHouseholdServiceClient householdService,
-        ICaseServiceClient caseService,
-        ICodebookServiceClient codebookService, 
-        IOfferServiceClient offerService, 
-        ILogger<CreateMortgageCaseHandler> logger)
-    {
-        _bag = bag;
-        _customerService = customerService;
-        _customerOnSAService = customerOnSAService;
-        _createProductTrain = createProductTrain;
-        _userAccessor = userAccessor;
-        _caseService = caseService;
-        _householdService = householdService;
-        _salesArrangementService = salesArrangementService;
-        _codebookService = codebookService;
-        _logger = logger;
-        _offerService = offerService;
     }
 }

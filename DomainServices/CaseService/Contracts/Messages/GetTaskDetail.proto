@@ -60,14 +60,13 @@ message AmendmentConsultationData {
 
 message AmendmentPriceException {
 	cis.types.GrpcDate Expiration = 1;
-	google.protobuf.Int32Value DecisionId = 2;
 	PriceExceptionLoanInterestRateItem LoanInterestRate = 3;
 	repeated PriceExceptionFeesItem Fees = 4;
 }
 
 message PriceExceptionLoanInterestRateItem {
-	cis.types.GrpcDecimal LoanInterestRate = 1;
-	cis.types.GrpcDecimal LoanInterestRateProvided = 2;
+	cis.types.NullableGrpcDecimal LoanInterestRate = 1;
+	cis.types.NullableGrpcDecimal LoanInterestRateProvided = 2;
 	google.protobuf.Int32Value LoanInterestRateAnnouncedType = 3;
 	cis.types.NullableGrpcDecimal LoanInterestRateDiscount = 4;
 }

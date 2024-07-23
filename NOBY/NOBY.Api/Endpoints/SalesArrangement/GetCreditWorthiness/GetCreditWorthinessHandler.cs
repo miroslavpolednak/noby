@@ -4,10 +4,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
-internal sealed class GetCreditWorthinessHandler
-    : IRequestHandler<GetCreditWorthinessRequest, GetCreditWorthinessResponse>
+internal sealed class GetCreditWorthinessHandler(
+    CreditWorthinessHouseholdService _creditWorthinessHouseholdService,
+    DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient _creditWorthinessService,
+    CIS.Core.Security.ICurrentUserAccessor _userAccessor,
+    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
+    DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService,
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
+        : IRequestHandler<GetCreditWorthinessRequest, SalesArrangementGetCreditWorthinessResponse>
 {
-    public async Task<GetCreditWorthinessResponse> Handle(GetCreditWorthinessRequest request, CancellationToken cancellationToken)
+    public async Task<SalesArrangementGetCreditWorthinessResponse> Handle(GetCreditWorthinessRequest request, CancellationToken cancellationToken)
     {
         // SA instance
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
@@ -34,7 +41,7 @@ internal sealed class GetCreditWorthinessHandler
             {
                 ProductTypeId = caseInstance.Data.ProductTypeId,
                 LoanDuration = offerInstance.MortgageOffer.SimulationResults.LoanDuration,
-                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRate,
+                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateProvided,
                 LoanAmount = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanAmount),
                 LoanPaymentAmount = Convert.ToInt32((decimal?)offerInstance.MortgageOffer.SimulationResults.LoanPaymentAmount ?? 0M),
                 FixedRatePeriod = offerInstance.MortgageOffer.SimulationInputs.FixedRatePeriod!.Value
@@ -45,13 +52,13 @@ internal sealed class GetCreditWorthinessHandler
 
         var ripResult = await _creditWorthinessService.Calculate(ripRequest, cancellationToken);
 
-        return new GetCreditWorthinessResponse
+        return new SalesArrangementGetCreditWorthinessResponse
         {
             InstallmentLimit = Convert.ToInt32(ripResult.InstallmentLimit),
             MaxAmount = Convert.ToInt32(ripResult.MaxAmount),
             RemainsLivingAnnuity = Convert.ToInt32((decimal?)ripResult.RemainsLivingAnnuity ?? 0),
             RemainsLivingInst = Convert.ToInt32((decimal?)ripResult.RemainsLivingInst ?? 0),
-            WorthinessResult = (CreditWorthinessResults)(int)ripResult.WorthinessResult,
+            WorthinessResult = (SalesArrangementGetCreditWorthinessResponseWorthinessResult)(int)ripResult.WorthinessResult,
             ResultReasonCode = ripResult.ResultReason?.Code,
             ResultReasonDescription = ripResult.ResultReason?.Description,
             Dti = ripResult.Dti,
@@ -59,31 +66,5 @@ internal sealed class GetCreditWorthinessHandler
             LoanAmount = offerInstance.MortgageOffer.SimulationInputs.LoanAmount,
             LoanPaymentAmount = offerInstance.MortgageOffer.SimulationResults.LoanPaymentAmount
         };
-    }
-
-    private readonly CreditWorthinessHouseholdService _creditWorthinessHouseholdService;
-    private readonly DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient _creditWorthinessService;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
-    private readonly DomainServices.OfferService.Clients.IOfferServiceClient _offerService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-
-    public GetCreditWorthinessHandler(
-        CreditWorthinessHouseholdService creditWorthinessHouseholdService,
-        DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient creditWorthinessService,
-        CIS.Core.Security.ICurrentUserAccessor userAccessor,
-        DomainServices.UserService.Clients.IUserServiceClient userService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService,
-        DomainServices.OfferService.Clients.IOfferServiceClient offerService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService)
-    {
-        _creditWorthinessService = creditWorthinessService;
-        _userService = userService;
-        _caseService = caseService;
-        _userAccessor = userAccessor;
-        _offerService = offerService;
-        _salesArrangementService = salesArrangementService;
-        _creditWorthinessHouseholdService = creditWorthinessHouseholdService;
     }
 }

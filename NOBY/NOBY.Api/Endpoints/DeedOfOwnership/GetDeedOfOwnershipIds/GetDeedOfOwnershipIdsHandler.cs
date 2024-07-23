@@ -2,20 +2,20 @@
 
 namespace NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipIds;
 
-internal sealed class GetDeedOfOwnershipIdsHandler
-    : IRequestHandler<GetDeedOfOwnershipIdsRequest, GetDeedOfOwnershipIdsResponse>
+internal sealed class GetDeedOfOwnershipIdsHandler(ICremClient _cremClient)
+        : IRequestHandler<GetDeedOfOwnershipIdsRequest, DeedOfOwnershipGetDeedOfOwnershipIdsResponse>
 {
-    public async Task<GetDeedOfOwnershipIdsResponse> Handle(GetDeedOfOwnershipIdsRequest request, CancellationToken cancellationToken)
+    public async Task<DeedOfOwnershipGetDeedOfOwnershipIdsResponse> Handle(GetDeedOfOwnershipIdsRequest request, CancellationToken cancellationToken)
     {
         var response = await _cremClient.GetFlatsForAddress(request.AddressPointId, cancellationToken);
 
-        return new GetDeedOfOwnershipIdsResponse
+        return new DeedOfOwnershipGetDeedOfOwnershipIdsResponse
         {
             DeedOfOwnershipId = response.Building.IsknDeedOfOwnershipId,
             Flats = response
                 .Building
                 .Flats?
-                .Select(t => new GetDeedOfOwnershipIdsResponseFlat
+                .Select(t => new DeedOfOwnershipGetDeedOfOwnershipIdsFlat
                 {
                     MannerOfUseFlatShortName = t.MannerOfUseFlatShortName,
                     DeedOfOwnershipId = t.IsknDeedOfOwnershipId,
@@ -23,12 +23,5 @@ internal sealed class GetDeedOfOwnershipIdsHandler
                 })
                 .ToList()
         };
-    }
-
-    private readonly ICremClient _cremClient;
-
-    public GetDeedOfOwnershipIdsHandler(ICremClient cremClient)
-    {
-        _cremClient = cremClient;
     }
 }

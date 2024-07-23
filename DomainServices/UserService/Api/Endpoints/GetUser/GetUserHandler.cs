@@ -2,8 +2,10 @@
 
 namespace DomainServices.UserService.Api.Endpoints.GetUser;
 
-internal sealed class GetUserHandler
-    : IRequestHandler<Contracts.GetUserRequest, Contracts.User>
+internal sealed class GetUserHandler(
+    IConnectionProvider _db,
+    IDistributedCache _distributedCache)
+        : IRequestHandler<Contracts.GetUserRequest, Contracts.User>
 {
     public async Task<Contracts.User> Handle(Contracts.GetUserRequest request, CancellationToken cancellationToken)
     {
@@ -145,14 +147,4 @@ internal sealed class GetUserHandler
     }
 
     private const int _minutesInCache = 30;
-    private readonly IConnectionProvider _db;
-    private readonly IDistributedCache _distributedCache;
-
-    public GetUserHandler(
-        IConnectionProvider db,
-        IDistributedCache distributedCache)
-    {
-        _db = db;
-        _distributedCache = distributedCache;
-    }
 }

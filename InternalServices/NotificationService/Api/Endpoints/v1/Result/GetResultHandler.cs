@@ -1,11 +1,11 @@
-﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories.Abstraction;
+﻿using CIS.InternalServices.NotificationService.Api.Legacy;
 using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Result;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result;
 using MediatR;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Result;
 
-public class GetResultHandler : IRequestHandler<GetResultRequest, GetResultResponse>
+internal class GetResultHandler : IRequestHandler<GetResultRequest, GetResultResponse>
 {
     private readonly IUserAdapterService _userAdapterService;
     private readonly INotificationRepository _repository;

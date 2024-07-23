@@ -1,24 +1,23 @@
 using CIS.Infrastructure.Messaging;
-using CIS.Infrastructure.StartupExtensions;
 using DomainServices.CustomerService.ExternalServices;
 using ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
     .AddApplicationConfiguration<DomainServices.CustomerService.Api.Configuration.AppConfiguration>()
+    .AddErrorCodeMapper(DomainServices.CustomerService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
         services
             .AddCodebookService()
             .AddHouseholdService()
             .AddSalesArrangementService()
+            .AddUserService()
             .AddCaseService();
     })
     .Build((builder, appConfiguration) =>
     {
         appConfiguration.Validate();
-
-        builder.Services.AddDapper(builder.Configuration.GetConnectionString("KonsDb")!);
 
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.CustomerManagement.V2.ICustomerManagementClient>();
         builder.AddExternalService<DomainServices.CustomerService.ExternalServices.Contacts.V1.IContactClient>();
@@ -28,14 +27,18 @@ SharedComponents.GrpcServiceBuilder
         builder.AddExternalService<ExternalServices.MpHome.V1.IMpHomeClient>();
 
         builder.AddCisMessaging()
-            .AddKafka()
-            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyCreated.PartyCreatedConsumer>()
-            .AddConsumer<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedConsumer>()
-            .AddConsumerTopicJson<DomainServices.CustomerService.Api.Messaging.Abstraction.ICustomerManagementEvent>(appConfiguration.CustomerManagementEventTopic)
-            .Build();
+               .AddKafkaFlow(msg =>
+               {
+                   msg.AddConsumerJson(appConfiguration.CustomerManagementEventTopic,
+                                       handlers =>
+                                       {
+                                           handlers.AddHandler<DomainServices.CustomerService.Api.Messaging.PartyCreated.PartyCreatedHandler>();
+                                           handlers.AddHandler<DomainServices.CustomerService.Api.Messaging.PartyUpdated.PartyUpdatedHandler>();
+                                       });
+               });
     })
     .MapGrpcServices((app, _) =>
     {
-        app.MapGrpcService<DomainServices.CustomerService.Api.Endpoints.CustomerService>();
+        app.MapGrpcService<DomainServices.CustomerService.Api.Endpoints.v1.CustomerService>();
     })
     .Run();

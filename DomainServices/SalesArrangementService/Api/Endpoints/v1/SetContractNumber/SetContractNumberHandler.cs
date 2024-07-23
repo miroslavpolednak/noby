@@ -1,35 +1,22 @@
 ﻿using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
+using SharedTypes.Extensions;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SetContractNumber;
 
-internal sealed class SetContractNumberHandler : IRequestHandler<SetContractNumberRequest, SetContractNumberResponse>
+internal sealed class SetContractNumberHandler(
+    SalesArrangementServiceDbContext _dbContext,
+	ICustomerOnSAServiceClient _customerOnSAService,
+	Eas.IEasClient _easClient,
+	ICaseServiceClient _caseService,
+	IMediator _mediator) 
+    : IRequestHandler<SetContractNumberRequest, SetContractNumberResponse>
 {
-    private readonly SalesArrangementServiceDbContext _dbContext;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly Eas.IEasClient _easClient;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IMediator _mediator;
-
-    public SetContractNumberHandler(SalesArrangementServiceDbContext dbContext,
-                                    ICustomerOnSAServiceClient customerOnSAService,
-                                    Eas.IEasClient easClient,
-                                    ICaseServiceClient caseService,
-                                    IMediator mediator)
-    {
-        _dbContext = dbContext;
-        _customerOnSAService = customerOnSAService;
-        _easClient = easClient;
-        _caseService = caseService;
-        _mediator = mediator;
-    }
-
-    public async Task<SetContractNumberResponse> Handle(SetContractNumberRequest request, CancellationToken cancellationToken)
+	public async Task<SetContractNumberResponse> Handle(SetContractNumberRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
 
@@ -67,7 +54,7 @@ internal sealed class SetContractNumberHandler : IRequestHandler<SetContractNumb
     {
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
 
-        var identityMp = customerOnSa.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Mp) ??
+        var identityMp = customerOnSa.CustomerIdentifiers.GetMpIdentityOrDefault() ??
                          throw new InvalidOperationException($"CustomerOnSa {customerOnSaId} does not have MP ID");
 
         return await _easClient.GetContractNumber(identityMp.IdentityId, (int)caseId, cancellationToken);
@@ -78,8 +65,7 @@ internal sealed class SetContractNumberHandler : IRequestHandler<SetContractNumb
         await _mediator.Send(new UpdateSalesArrangementRequest
         {
             SalesArrangementId = salesArrangement.SalesArrangementId,
-            ContractNumber = contractNumber,
-            RiskBusinessCaseId = salesArrangement.RiskBusinessCaseId
+            ContractNumber = contractNumber
         }, cancellationToken);
 
         salesArrangement.ContractNumber = contractNumber;

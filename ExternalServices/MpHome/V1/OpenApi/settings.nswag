@@ -1,5 +1,5 @@
 {
-  "runtime": "Net70",
+  "runtime": "Net80",
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
@@ -14,7 +14,9 @@
       "clientBaseClass": null,
       "configurationClass": null,
       "generateClientClasses": false,
+      "suppressClientClassesOutput": false,
       "generateClientInterfaces": false,
+      "suppressClientInterfacesOutput": false,
       "clientBaseInterface": null,
       "injectHttpClient": true,
       "disposeHttpClient": true,
@@ -32,6 +34,8 @@
       "exposeJsonSerializerSettings": false,
       "clientClassAccessModifier": "public",
       "typeAccessModifier": "public",
+      "propertySetterAccessModifier": "",
+      "generateNativeRecords": false,
       "generateContractsOutput": true,
       "contractsNamespace": "ExternalServices.MpHome.V1.Contracts",
       "contractsOutputFilePath": "../Contracts.cs",
@@ -43,7 +47,9 @@
       "queryNullValue": "",
       "className": "{controller}Client",
       "operationGenerationMode": "MultipleClientsFromOperationId",
-      "additionalNamespaceUsages": [],
+      "additionalNamespaceUsages": [
+        "System.Collections.Generic"
+      ],
       "additionalContractNamespaceUsages": [
         "System.Text.Json.Serialization"
       ],
@@ -66,12 +72,12 @@
       "dateTimeType": "System.DateTime",
       "timeType": "System.TimeSpan",
       "timeSpanType": "System.TimeSpan",
-      "arrayType": "System.Collections.Generic.ICollection",
-      "arrayInstanceType": "System.Collections.ObjectModel.Collection",
-      "dictionaryType": "System.Collections.Generic.IDictionary",
-      "dictionaryInstanceType": "System.Collections.Generic.Dictionary",
-      "arrayBaseType": "System.Collections.ObjectModel.Collection",
-      "dictionaryBaseType": "System.Collections.Generic.Dictionary",
+      "arrayType": "List",
+      "arrayInstanceType": "List",
+      "dictionaryType": "System.Collections.Generic.Dictionary",
+      "dictionaryInstanceType": "Dictionary",
+      "arrayBaseType": "List",
+      "dictionaryBaseType": "Dictionary",
       "classStyle": "Poco",
       "jsonLibrary": "SystemTextJson",
       "generateDefaultValues": false,
@@ -90,9 +96,6 @@
       "generateOptionalPropertiesAsNullable": false,
       "generateNullableReferenceTypes": true,
       "templateDirectory": null,
-      "typeNameGeneratorType": null,
-      "propertyNameGeneratorType": null,
-      "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
       "output": "",

@@ -1,0 +1,1 @@
+ALTER TABLE [DocumentInterface] ALTER COLUMN [DOCUMENT_DATA] varbinary(max) NULL;

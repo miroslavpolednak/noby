@@ -1,8 +1,5 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Contracts;
+﻿using DomainServices.CaseService.Contracts;
 using FastEnumUtility;
-using Google.Protobuf.WellKnownTypes;
-using cz.kb.api.mortgageservicingevents.v2.mortgageinstance;
 
 namespace DomainServices.CaseService.Api;
 
@@ -23,7 +20,7 @@ internal static class CaseExtensions
             StateIdSb = taskData.GetInteger("ukol_stav_poz"),
             Cancelled = taskData.GetBoolean("ukol_stornovano"),
             PerformerLogin = taskData.GetValueOrDefault("ukol_op_zpracovatel") ?? "",
-            ProcessTypeId = taskData.GetInteger("ukol_top_proces_typ_noby")
+            ProcessTypeId = taskData.GetInteger("ukol_top_proces_typ_noby"),
         };
 
         task.PhaseTypeId = task.TaskTypeId switch
@@ -33,6 +30,7 @@ internal static class CaseExtensions
             6 => taskData.GetInteger("ukol_podpis_stav"),
             3 or 4 or 7 or 8 => 1,
             9 => taskData.GetInteger("ukol_faze_rt_procesu"),
+            10 => taskData.GetInteger("ukol_faze_mspl_procesu"),
             _ => throw new ArgumentOutOfRangeException(nameof(task.PhaseTypeId), "PhaseTypeId can not be set")
         };
 
@@ -40,20 +38,26 @@ internal static class CaseExtensions
         {
             (6, 1) => SignatureTypes.Paper.ToByte(),
             (6, 2) => SignatureTypes.Electronic.ToByte(),
+            (6, 3) => SignatureTypes.Paper.ToByte(),
             _ => null
         };
+
+        task.DecisionId = task.TaskTypeId == 2 ? taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni") : null;
 
         return task;
     }
 
     public static ProcessTask ToProcessTask(this IReadOnlyDictionary<string, string> taskData)
     {
-        return new ProcessTask
+        var taskType = taskData.GetInteger("ukol_proces_typ_noby");
+        var taskSubType = taskData.GetNInteger("ukol_retence_druh");
+
+        var result = new ProcessTask
         {
             ProcessIdSb = taskData.GetInteger("ukol_id"),
             ProcessId = taskData.GetLong("ukol_sada"),
             CreatedOn = taskData.GetDate("ukol_dat_start_proces"),
-            ProcessTypeId = taskData.GetInteger("ukol_proces_typ_noby"),
+            ProcessTypeId = taskType,
             ProcessNameLong = taskData.GetValueOrDefault("ukol_proces_nazev_noby") ?? "",
             StateName = getStateName(taskData),
             ProcessPhaseId = taskData.GetInteger("ukol_proces_typ_noby") switch
@@ -61,47 +65,136 @@ internal static class CaseExtensions
                 1 => taskData.GetInteger("ukol_faze_uv_procesu"),
                 2 => taskData.GetInteger("ukol_faze_zm_procesu"),
                 3 => taskData.GetInteger("ukol_faze_rt_procesu"),
+                4 => 1,
                 -1 => -1,
-                _ => throw new CisArgumentException(0, taskData["ukol_proces_typ_noby"], "ProcessPhaseId")
+                _ => throw new CisArgumentException(0, taskType.ToString(CultureInfo.InvariantCulture), "ProcessPhaseId")
             },
-            StateIndicator = taskData.GetInteger("ukol_proces_typ_noby") switch
+            StateIndicator = taskType switch
             {
-                1 or 2 or 3 => getStateIndicator(taskData),
+                1 or 2 or 3 or 4 => getStateIndicator(taskData),
                 _ => null
             },
             StateIdSB = taskData.GetInteger("ukol_stav_poz"),
-            Cancelled = taskData.GetBoolean("ukol_stornovano"),
-            RetentionProcess = taskData.GetInteger("ukol_proces_typ_noby") switch
-            {
-                3 => GetRetentionProcess(taskData),
-                _ => null
-            }
+            Cancelled = taskData.GetBoolean("ukol_stornovano")
         };
-    }
 
-    private static RetentionProcess GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
-    {
-        return new RetentionProcess()
+        
+        switch (taskType)
         {
-            RefinancingType = taskData.GetInteger("ukol_retence_druh"),
-            InterestRateValidFrom = taskData.GetDate("ukol_retence_sazba_dat_od"),
-            LoanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk"),
-            LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
-            LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
-            LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
-            FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
-            FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
-            RefinancingDocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
-            RefinancingDocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
-            EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
-        };
+            case 3 when taskSubType == 1:
+                result.RefinancingType = (int)RefinancingTypes.MortgageRetention;
+                result.MortgageRetention = GetRetentionProcess(taskData);
+                break;
+
+            case 3 when taskSubType == 2:
+                result.RefinancingType = (int)RefinancingTypes.MortgageRefixation;
+                result.MortgageRefixation = GetRefixationProcess(taskData);
+                break;
+
+            case 3 when taskSubType == 3:
+                result.RefinancingType = (int)RefinancingTypes.MortgageLegalNotice;
+                result.MortgageLegalNotice = GetLegalNoticeProcess(taskData);
+                break;
+
+            case 4:
+                result.RefinancingType = (int)RefinancingTypes.MortgageExtraPayment;
+                result.MortgageExtraPayment = GetExtraPaymentProcess(taskData);
+                break;
+        }
+
+        return result;
     }
 
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageLegalNotice GetLegalNoticeProcess(IReadOnlyDictionary<string, string> taskData)
+    {
+		var fixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace");
+
+		return new()
+		{
+			LoanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl"),
+			LoanPaymentAmountFinal = taskData.GetNDecimal("ukol_retence_splatka_vysl"),
+			FixedRatePeriod = fixedRatePeriod > 0 ? fixedRatePeriod : null,
+			DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+			DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod")
+		};
+	}
+        
+
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageExtraPayment GetExtraPaymentProcess(IReadOnlyDictionary<string, string> taskData)
+    {
+        var result = new Contracts.ProcessTask.Types.TaskAmendmentMortgageExtraPayment()
+        {
+            ExtraPaymentDate = taskData.GetDate("ukol_mspl_dat_spl"),
+            ExtraPaymentAmount = taskData.GetNDecimal("ukol_mspl_suma"),
+            ExtraPaymentAmountIncludingFee = taskData.GetNDecimal("ukol_mspl_suma_celkem"),
+            IsFinalExtraPayment = taskData.GetBool("ukol_mspl_typ"),
+            DocumentId = taskData.GetValueOrDefault("ukol_mspl_dokument_ea_cis") ?? "",
+            DocumentEACode = taskData.GetNInteger("ukol_mspl_dokument_ea_kod"),
+            PaymentState = taskData.GetInteger("ukol_mspl_stav_zauct_noby"),
+        };
+
+        var docs = taskData["ukol_mspl_souhlas_ea_cis"]?.Split(',', StringSplitOptions.RemoveEmptyEntries);
+        var docsEa = taskData["ukol_mspl_souhlas_ea_kod"]?.Split(',', StringSplitOptions.RemoveEmptyEntries);
+
+        if (docs is not null && docsEa is not null)
+        {
+            for (int i = 0; i < docs.Length; i++)
+            {
+                result.ExtraPaymentAgreements.Add(new ProcessTask.Types.ExtraPaymentAgreement
+                {
+                    AgreementDocumentId = docs[i],
+                    AgreementEACode = Convert.ToInt32(docsEa[i], CultureInfo.InvariantCulture)
+                });
+            }
+        }
+
+        return result;
+    }
+    
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageRetention GetRetentionProcess(IReadOnlyDictionary<string, string> taskData)
+    {
+        var loanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk");
+        var loanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl");
+
+		return new()
+		{
+			InterestRateValidFrom = taskData.GetDate("ukol_retence_sazba_dat_od"),
+			LoanInterestRate = loanInterestRate.GetValueOrDefault() > 0 ? loanInterestRate : null,
+			LoanInterestRateProvided = loanInterestRateProvided.GetValueOrDefault() > 0 ? loanInterestRateProvided : null,
+			LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
+			LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
+			FeeSum = taskData.GetNInteger("ukol_retence_popl_kalk"),
+			FeeFinalSum = taskData.GetNInteger("ukol_retence_popl_vysl"),
+			DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+			DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+			EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
+		};
+	}
+    
+    private static Contracts.ProcessTask.Types.TaskAmendmentMortgageRefixation GetRefixationProcess(IReadOnlyDictionary<string, string> taskData)
+    {
+		var loanInterestRate = taskData.GetNDecimal("ukol_retence_sazba_kalk");
+		var loanInterestRateProvided = taskData.GetNDecimal("ukol_retence_sazba_vysl");
+        var fixedRatePeriod = taskData.GetInteger("ukol_retence_perioda_fixace");
+
+		return new()
+		{
+			LoanInterestRate = loanInterestRate.GetValueOrDefault() > 0 ? loanInterestRate : null,
+			LoanInterestRateProvided = loanInterestRateProvided.GetValueOrDefault() > 0 ? loanInterestRateProvided : null,
+			LoanPaymentAmount = taskData.GetNInteger("ukol_retence_splatka_kalk"),
+			LoanPaymentAmountFinal = taskData.GetNInteger("ukol_retence_splatka_vysl"),
+			FixedRatePeriod = fixedRatePeriod > 0 ? fixedRatePeriod : null,
+			DocumentId = taskData.GetValueOrDefault("ukol_retence_dokument_ea_cis") ?? "",
+			DocumentEACode = taskData.GetNInteger("ukol_retence_dokument_ea_kod"),
+			EffectiveDate = taskData.GetDate("ukol_retence_dat_ucinnost")
+		};
+	}
+    
     public static TaskDetailItem ToTaskDetail(this IReadOnlyDictionary<string, string> taskData)
     {
         var taskDetail = new TaskDetailItem
         {
-            ProcessNameLong = taskData.GetValueOrDefault("ukol_typ_proces_noby_oznaceni") ?? "",
+            ProcessNameLong = taskData.GetValueOrDefault("ukol_top_proces_nazev_noby") ?? "",
             TaskDocumentIds = { (taskData.GetValueOrDefault("wfl_refobj_dokumenty") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries) }
         };
 
@@ -112,9 +205,18 @@ internal static class CaseExtensions
                 case 1:
                     taskDetail.Request = new()
                     {
-                        SentToCustomer = taskData.GetValueOrDefault("ukol_dozadani_prijemce_typ") == "1",
                         OrderId = taskData.GetValueOrDefault("ukol_dozadani_typ") == "5" ? taskData.GetNInteger("ukol_dozadani_order_id") : null
                     };
+
+                    switch (taskData.GetValueOrDefault("ukol_dozadani_prijemce_typ"))
+                    {
+                        case "0": 
+                            taskDetail.Request.SentToCustomer = false;
+                            break;
+                        case "1" or "2" or "3":
+							taskDetail.Request.SentToCustomer = true;
+							break;
+                    }
                     break;
 
                 // price exception
@@ -128,20 +230,22 @@ internal static class CaseExtensions
                             LoanInterestRateProvided = taskData.GetDecimal("ukol_overeni_ic_sazba_vysled"),
                             LoanInterestRateAnnouncedType = taskData.GetInteger("ukol_overeni_ic_sazba_typ"),
                             LoanInterestRateDiscount = taskData.GetDecimal("ukol_overeni_ic_sazba_sleva")
-                        },
-                        DecisionId = taskData.GetNInteger("ukol_overeni_ic_zpusob_reseni")
+                        }
                     };
                     for (int i = 1; i < 20; i++)
                     {
-                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")))
+                        if (string.IsNullOrEmpty(taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}")) ||
+                            taskData.GetValueOrDefault($"ukol_overeni_ic_popl_kodsb{i}") == "0")
+                        {
                             break;
+                        }
 
                         taskDetail.PriceException.Fees.Add(new PriceExceptionFeesItem
                         {
                             FeeId = taskData.GetInteger($"ukol_overeni_ic_popl_kodsb{i}"),
-                            TariffSum = taskData.GetInteger($"ukol_overeni_ic_popl_sazeb{i}"),
-                            FinalSum = taskData.GetInteger($"ukol_overeni_ic_popl_vysl{i}"),
-                            DiscountPercentage = taskData.GetInteger($"ukol_overeni_ic_popl_sleva_perc{i}")
+                            TariffSum = taskData.GetDecimal($"ukol_overeni_ic_popl_sazeb{i}"),
+                            FinalSum = taskData.GetDecimal($"ukol_overeni_ic_popl_vysl{i}"),
+                            DiscountPercentage = taskData.GetDecimal($"ukol_overeni_ic_popl_sleva_perc{i}")
                         });
                     }
                     break;
@@ -231,11 +335,11 @@ internal static class CaseExtensions
     {
         if (taskData.GetBoolean("ukol_stornovano"))
         {
-            return "ZRUŠENO";
+            return "Zrušeno";
         }
         else if (taskData.GetInteger("ukol_stav_poz") == 30)
         {
-            return "DOKONČENO";
+            return "Dokončeno";
         }
         else
         {
@@ -243,5 +347,5 @@ internal static class CaseExtensions
         }
     }
 
-    private static int[] _allowedConsultationTypes = new[] { 1, 7 };
+    private static readonly int[] _allowedConsultationTypes = [1, 7];
 }

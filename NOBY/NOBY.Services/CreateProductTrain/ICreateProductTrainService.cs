@@ -2,7 +2,7 @@
 
 public interface ICreateProductTrainService
 {
-    Task Run(
+    Task RunAll(
         long caseId,
         int salesArrangementId,
         int customerOnSAId,

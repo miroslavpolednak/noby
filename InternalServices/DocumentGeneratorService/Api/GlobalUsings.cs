@@ -8,3 +8,4 @@ global using CIS.Core.Attributes;
 global using CIS.InternalServices.DocumentGeneratorService.Contracts;
 global using Document = ceTe.DynamicPDF.Document;
 global using Pdf = ceTe.DynamicPDF;
+global using Contracts = CIS.InternalServices.DocumentGeneratorService.Contracts;

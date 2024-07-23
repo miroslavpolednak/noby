@@ -23,7 +23,7 @@ public interface IRealEstateValuationServiceClient
 
     Task UpdateStateByRealEstateValuation(int realEstateValuationId, RealEstateValuationStates valuationStateId, CancellationToken cancellationToken = default);
 
-    Task UpdateValuationTypeByRealEstateValuation(int realEstateValuationId, RealEstateValuationValuationTypes valuationTypeId, CancellationToken cancellationToken = default);
+    Task UpdateValuationTypeByRealEstateValuation(int realEstateValuationId, int valuationTypeId, CancellationToken cancellationToken = default);
 
     Task<int> CreateRealEstateValuationAttachment(CreateRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken = default);
 

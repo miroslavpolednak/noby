@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageapplication
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class FirstAnnuityLoanIndividualInstallment : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""FirstAnnuityLoanIndividualInstallment"",""doc"":""Individual/concrete repayment of loan - one loan installment. CDM entity name(s): LoanIndividualInstallment."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageapplication"",""fields"":[{""name"":""on"",""doc"":""Date of installment to be repaid/was repaid. CDM attribute class name: LoanIndividualInstallmentOn. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""FirstAnnuityLoanIndividualInstallment"",""doc"":""Individual/concrete repayment of loan - one loan installment. CDM entity name(s): LoanIndividualInstallment."",""namespace"":""cz.kb.api.mortgageservicingevents.v3.mortgageapplication"",""fields"":[{""name"":""on"",""doc"":""Date of installment to be repaid/was repaid. CDM attribute class name: LoanIndividualInstallmentOn. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."",""type"":{""type"":""int"",""logicalType"":""date""}}]}");
 		/// <summary>
 		/// Date of installment to be repaid/was repaid. CDM attribute class name: LoanIndividualInstallmentOn. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>

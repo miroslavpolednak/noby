@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using SharedTypes.GrpcTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
 using DomainServices.HouseholdService.Clients;
@@ -9,7 +8,7 @@ using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using NOBY.Api.Endpoints.Customer.SharedDto;
+using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -30,7 +29,7 @@ internal sealed class CreateCustomerHandler
 
         if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest && customerOnSA.CustomerRoleId != (int)CustomerRoles.Debtor)
         {
-            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)))
+            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)CustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
                 throw new NobyValidationException(90001, "Main customer is not identified");
         }
 
@@ -59,23 +58,23 @@ internal sealed class CreateCustomerHandler
         // Více klientů
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
         {
-            _logger.LogInformation("CreateCustomer: more clients found", ex);
+            _logger.LogInformation(ex, "CreateCustomer: more clients found");
             throw new NobyValidationException(90006, 409);
         }
         // Registry nefungují
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
         {
-            _logger.LogInformation("CreateCustomer: registry failed", ex);
+            _logger.LogInformation(ex, "CreateCustomer: registry failed");
             throw new NobyValidationException(90007);
         }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
-            _logger.LogInformation("CreateCustomer: registry failed", ex);
+            _logger.LogInformation(ex, "CreateCustomer: registry failed");
             throw new NobyValidationException(90008, 500);
         }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11035")
         {
-            _logger.LogInformation("CreateCustomer: Special handling of identification document type and issuing country combination", ex);
+            _logger.LogInformation(ex, "CreateCustomer: Special handling of identification document type and issuing country combination");
             throw new NobyValidationException(90044);
         }
         catch
@@ -100,23 +99,16 @@ internal sealed class CreateCustomerHandler
 
         if (customerOnSA.CustomerRoleId == (int)CustomerRoles.Debtor)
         {
-            await _createProductTrain.Run(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers, cancellationToken);
+            await _createProductTrain.RunAll(saInstance.CaseId, customerOnSA.SalesArrangementId, request.CustomerOnSAId, updateResponse.CustomerIdentifiers, cancellationToken);
         }
         else
         {
             // pokud je vse OK, zalozit customera v konsDb
-            try
-            {
-                await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
+            await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
 
-                var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
-                var partnerId = updateResponse.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId;
-                await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogInformation("Can not create customer in KonsDB", ex);
-            }
+            var relationshipTypeId = customerOnSA.CustomerRoleId == (int)CustomerRoles.Codebtor ? 2 : 0;
+            var partnerId = updateResponse.CustomerIdentifiers.GetMpIdentity().IdentityId;
+            await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
         }
 
         if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
@@ -151,7 +143,7 @@ internal sealed class CreateCustomerHandler
             return customerDetails
                    .First(t => t.CustomerOnSAId == secondCustomerOnHouseholdId)
                    .CustomerIdentifiers?
-                   .Any(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb && t.IdentityId > 0)
+                   .HasKbIdentity()
                    ?? false;
         }
     }

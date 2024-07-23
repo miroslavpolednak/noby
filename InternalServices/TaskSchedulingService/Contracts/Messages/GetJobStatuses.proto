@@ -1,0 +1,51 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.TaskSchedulingService;
+option csharp_namespace = "CIS.InternalServices.TaskSchedulingService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDateTime.proto";
+import "NullableGrpcDateTime.proto";
+
+message GetJobStatusesRequest {
+	// Počet vrácených statusů z historie
+	int32 PageSize = 1;
+
+	// Číslo stránky, která se má vracet
+	int32 Page = 2;
+
+	// Možnost vyhledávat podle TraceId konkrétního běhu
+	google.protobuf.StringValue TraceId = 3;
+
+	// Možnost vyhledávat podle ID statusu
+	google.protobuf.StringValue ScheduleJobStatusId = 4;
+}
+
+message GetJobStatusesResponse {
+	repeated GetJobStatuseItem Items = 1;
+
+	message GetJobStatuseItem {
+		// ID jobu
+		string JobId = 1;
+
+		// Název jobu
+		string JobName = 2;
+
+		// ID triggeru
+		google.protobuf.StringValue TriggerId = 3;
+
+		// Název triggeru
+		google.protobuf.StringValue TriggerName = 4;
+
+		// Status provádění jobu: InProgress, Finished, Failed, FailedBecauseOfLock, Stale
+		string Status = 5;
+
+		// Čas spuštění jobu
+		cis.types.GrpcDateTime StartedAt = 6;
+
+		// Čas změny statusu
+		cis.types.NullableGrpcDateTime StatusChangedAt = 7;
+
+		// Trace dané exekuce jobu pro hledání v logu
+		string TraceId = 8;
+	}
+}

@@ -1,11 +1,15 @@
 ﻿namespace NOBY.Api.Endpoints.Cases.GetCaseById;
 
-internal sealed class GetCaseByIdHandler
-    : IRequestHandler<GetCaseByIdRequest, SharedDto.CaseModel>
+internal sealed class GetCaseByIdHandler(
+    Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources,
+    CasesModelConverter _converter,
+    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService)
+        : IRequestHandler<GetCaseByIdRequest, CasesSharedCaseModel>
 {
-    public async Task<SharedDto.CaseModel> Handle(GetCaseByIdRequest request, CancellationToken cancellationToken)
+    public async Task<CasesSharedCaseModel> Handle(GetCaseByIdRequest request, CancellationToken cancellationToken)
     {
-        DomainServices.CaseService.Contracts.Case? caseInstance = null;
+        DomainServices.CaseService.Contracts.Case? caseInstance;
 
         try
         {
@@ -22,29 +26,12 @@ internal sealed class GetCaseByIdHandler
         
         // case owner
         var userInstance = await _userService.GetUser(caseInstance!.CaseOwner.UserId, cancellationToken);
-        model.CaseOwner = new SharedDto.CaseOwnerModel
+        model.CaseOwner = new CasesSharedCaseOwnerModel
         {
             Cpm = userInstance.UserInfo.Cpm,
             Icp = userInstance.UserInfo.Icp
         };
 
         return model;
-    }
-
-    private readonly Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources;
-    private readonly CasesModelConverter _converter;
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly DomainServices.CaseService.Clients.ICaseServiceClient _caseService;
-
-    public GetCaseByIdHandler(
-        Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService createCaseFromExternalSources,
-        CasesModelConverter converter,
-        DomainServices.UserService.Clients.IUserServiceClient userService,
-        DomainServices.CaseService.Clients.ICaseServiceClient caseService)
-    {
-        _createCaseFromExternalSources = createCaseFromExternalSources;
-        _userService = userService;
-        _converter = converter;
-        _caseService = caseService;
     }
 }

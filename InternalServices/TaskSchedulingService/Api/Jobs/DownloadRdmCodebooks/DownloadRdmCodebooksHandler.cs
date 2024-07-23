@@ -4,9 +4,9 @@ using DomainServices.CodebookService.Clients;
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.DownloadRdmCodebooks;
 
 /// <summary>
-/// JobData: [string] where value is codebook name
+/// JobData: [string] where values are codebook names
 /// </summary>
-internal sealed class DownloadRdmCodebooksHandler
+internal sealed class DownloadRdmCodebooksHandler(IMaintananceService _client)
     : IJob
 {
     public async Task Execute(string? jobData, CancellationToken cancellationToken)
@@ -23,12 +23,5 @@ internal sealed class DownloadRdmCodebooksHandler
         }
 
         await _client.DownloadRdmCodebooks(codebooks, cancellationToken);
-    }
-
-    private readonly IMaintananceService _client;
-
-    public DownloadRdmCodebooksHandler(IMaintananceService client)
-    {
-        _client = client;
     }
 }

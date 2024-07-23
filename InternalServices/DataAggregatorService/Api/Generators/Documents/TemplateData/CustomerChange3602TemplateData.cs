@@ -28,9 +28,9 @@ internal class CustomerChange3602TemplateData : LoanApplicationBaseTemplateData
 
     public string? AgentName { get; private set; }
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
-        await base.LoadAdditionalData(cancellationToken);
+        await base.LoadAdditionalData(parameters, cancellationToken);
 
         if (SalesArrangement.SalesArrangementTypeId != (int)SalesArrangementTypes.CustomerChange3602B)
             return;

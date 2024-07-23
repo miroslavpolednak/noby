@@ -1,17 +1,22 @@
 ﻿using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.DocumentArchiveService.Clients;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.WorkflowMapper;
 using NOBY.Infrastructure.ErrorHandling;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.WorkflowTask;
 
 [TransientService, AsImplementedInterfacesService]
-internal sealed class WorkflowTaskService
-    : IWorkflowTaskService
+internal sealed class WorkflowTaskService(
+        IWorkflowMapperService _mapper,
+        ICaseServiceClient _caseService,
+        IDocumentArchiveServiceClient _documentArchiveService,
+        IDocumentHelperService _documentHelper)
+        : IWorkflowTaskService
 {
-    public async Task<(Dto.Workflow.WorkflowTask Task, Dto.Workflow.WorkflowTaskDetail TaskDetail, List<Dto.Documents.DocumentsMetadata> Documents)> GetTaskDetail(
+    public async Task<(SharedTypesWorkflowTask Task, SharedTypesWorkflowTaskDetail TaskDetail, List<SharedTypesDocumentsMetadata> Documents)> GetTaskDetail(
         long caseId, 
         int taskIdSb, 
         CancellationToken cancellationToken = default)
@@ -30,11 +35,11 @@ internal sealed class WorkflowTaskService
         }
         else
         {
-            return (taskDto, taskDetailDto, new List<Dto.Documents.DocumentsMetadata>());
+            return (taskDto, taskDetailDto, new List<SharedTypesDocumentsMetadata>());
         }
     }
 
-    private async Task<List<Dto.Documents.DocumentsMetadata>> getDocuments(long caseId, string[] taskDocumentIds, CancellationToken cancellationToken)
+    private async Task<List<SharedTypesDocumentsMetadata>> getDocuments(long caseId, string[] taskDocumentIds, CancellationToken cancellationToken)
     {
         var documentListResponse = await _documentArchiveService.GetDocumentList(new()
         {
@@ -43,7 +48,7 @@ internal sealed class WorkflowTaskService
 
         // Get doc from queue 
         var getDocumentsInQueueRequest = new GetDocumentsInQueueRequest { CaseId = caseId };
-        getDocumentsInQueueRequest.StatusesInQueue.AddRange(new List<int> { 100, 110, 200, 300 });
+        getDocumentsInQueueRequest.StatusesInQueue.AddRange([100, 110, 200, 300]);
         var getDocumentsInQueueResult = await _documentArchiveService.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
         var documentListMetadata = _documentHelper.MapGetDocumentListMetadata(documentListResponse);
@@ -54,22 +59,5 @@ internal sealed class WorkflowTaskService
         return mergedDocumentMetadataFiltered
             .Where(m => taskDocumentIds.Contains(m.DocumentId))
             .ToList();
-    }
-
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IDocumentHelperService _documentHelper;
-    private readonly IWorkflowMapperService _mapper;
-
-    public WorkflowTaskService(
-            IWorkflowMapperService mapper,
-            ICaseServiceClient caseService,
-            IDocumentArchiveServiceClient documentArchiveService,
-            IDocumentHelperService documentHelper)
-    {
-        _mapper = mapper;
-        _caseService = caseService;
-        _documentArchiveService = documentArchiveService;
-        _documentHelper = documentHelper;
     }
 }

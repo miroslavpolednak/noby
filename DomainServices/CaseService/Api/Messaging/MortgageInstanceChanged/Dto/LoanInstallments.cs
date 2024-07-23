@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,14 +21,14 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"LoanInstallments\",\"doc\":\"One installment amount. It is i" +
 				"nformation entity. It can be used for any installment. CDM entity name(s): LoanI" +
-				"nstallments.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance" +
+				"nstallments.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance" +
 				"\",\"fields\":[{\"name\":\"dayInMonth\",\"doc\":\"Day within month when installment is due" +
 				" to be paid. CDM attribute class name: LoanInstallmentsDayInMonth. Codebook type" +
 				": CB_DayOfMonth.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":" +
 				"\"firstAnnuityLoanIndividualInstallment\",\"default\":null,\"type\":[\"null\",{\"type\":\"r" +
 				"ecord\",\"name\":\"FirstAnnuityLoanIndividualInstallment\",\"doc\":\"Individual/concrete" +
 				" repayment of loan - one loan installment. CDM entity name(s): LoanIndividualIns" +
-				"tallment.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"" +
+				"tallment.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"" +
 				"fields\":[{\"name\":\"on\",\"doc\":\"Date of installment to be repaid/was repaid. CDM at" +
 				"tribute class name: LoanIndividualInstallmentOn. Standard avro date represented " +
 				"by the number of days from the unix epoch, see avro specification: https://avro." +
@@ -38,7 +38,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"LoanIndividualInstallment" +
 				"\",\"doc\":\"Individual/concrete repayment of loan - one loan installment. CDM entit" +
 				"y name(s): LoanIndividualInstallment.\",\"namespace\":\"cz.kb.api.mortgageservicinge" +
-				"vents.v2.mortgageinstance\",\"fields\":[{\"name\":\"amount\",\"doc\":\"Total amount that h" +
+				"vents.v3.mortgageinstance\",\"fields\":[{\"name\":\"amount\",\"doc\":\"Total amount that h" +
 				"as to paid as one loan installment. CDM attribute class name: LoanIndividualInst" +
 				"allmentAmount. Attribute has simple type ST_AmountMoney with description: Castka" +
 				".Decimal number representing an amount of money.\",\"type\":{\"type\":\"bytes\",\"logica" +
@@ -46,7 +46,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"llment\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NextLoanIndividua" +
 				"lInstallment\",\"doc\":\"Individual/concrete repayment of loan - one loan installmen" +
 				"t. CDM entity name(s): LoanIndividualInstallment.\",\"namespace\":\"cz.kb.api.mortga" +
-				"geservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date of ins" +
+				"geservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date of ins" +
 				"tallment to be repaid/was repaid. CDM attribute class name: LoanIndividualInstal" +
 				"lmentOn. Standard avro date represented by the number of days from the unix epoc" +
 				"h, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Conside" +
@@ -57,9 +57,9 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 		/// Day within month when installment is due to be paid. CDM attribute class name: LoanInstallmentsDayInMonth. Codebook type: CB_DayOfMonth.
 		/// </summary>
 		private string _dayInMonth;
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.FirstAnnuityLoanIndividualInstallment _firstAnnuityLoanIndividualInstallment;
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanIndividualInstallment _loanIndividualInstallment;
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.NextLoanIndividualInstallment _nextLoanIndividualInstallment;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.FirstAnnuityLoanIndividualInstallment _firstAnnuityLoanIndividualInstallment;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanIndividualInstallment _loanIndividualInstallment;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.NextLoanIndividualInstallment _nextLoanIndividualInstallment;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -81,7 +81,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				this._dayInMonth = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.FirstAnnuityLoanIndividualInstallment firstAnnuityLoanIndividualInstallment
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.FirstAnnuityLoanIndividualInstallment firstAnnuityLoanIndividualInstallment
 		{
 			get
 			{
@@ -92,7 +92,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				this._firstAnnuityLoanIndividualInstallment = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanIndividualInstallment loanIndividualInstallment
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanIndividualInstallment loanIndividualInstallment
 		{
 			get
 			{
@@ -103,7 +103,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				this._loanIndividualInstallment = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.NextLoanIndividualInstallment nextLoanIndividualInstallment
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.NextLoanIndividualInstallment nextLoanIndividualInstallment
 		{
 			get
 			{
@@ -130,9 +130,9 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 			switch (fieldPos)
 			{
 			case 0: this.dayInMonth = (System.String)fieldValue; break;
-			case 1: this.firstAnnuityLoanIndividualInstallment = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.FirstAnnuityLoanIndividualInstallment)fieldValue; break;
-			case 2: this.loanIndividualInstallment = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanIndividualInstallment)fieldValue; break;
-			case 3: this.nextLoanIndividualInstallment = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.NextLoanIndividualInstallment)fieldValue; break;
+			case 1: this.firstAnnuityLoanIndividualInstallment = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.FirstAnnuityLoanIndividualInstallment)fieldValue; break;
+			case 2: this.loanIndividualInstallment = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanIndividualInstallment)fieldValue; break;
+			case 3: this.nextLoanIndividualInstallment = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.NextLoanIndividualInstallment)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

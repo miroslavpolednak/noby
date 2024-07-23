@@ -5,7 +5,7 @@ public sealed class EmailAddressConfirmedDto : IEmailAddressDto
     /// <summary>
     /// Emailová adresa
     /// </summary>
-    public string? EmailAddress { get; set; }
+    public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>
     /// Příznak potvrzeného kontaktu

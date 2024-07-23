@@ -1,9 +1,9 @@
-﻿{
+{
   "openapi": "3.0.1",
   "info": {
     "description": "Contact service, contains operations for customers contact maintenance",
     "title": "ContactService.v1",
-    "version": "1.8.2"
+    "version": "1.11.0"
   },
   "servers": [
     {
@@ -964,6 +964,89 @@
           }
         }
       }
+    },
+    "/public/v1/contacts/{contactId}": {
+      "delete": {
+        "summary": "The operation archives a contact by its identifier",
+        "operationId": "archiveContact",
+        "tags": [
+          "ContactService.v1"
+        ],
+        "parameters": [
+          {
+            "name": "contactId",
+            "in": "path",
+            "description": "primary key of archived contact",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "example": 123124122
+          },
+          {
+            "$ref": "#/components/parameters/X-B3-TraceId"
+          },
+          {
+            "$ref": "#/components/parameters/X-KB-Caller-System-Identity"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Operation archived contact"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Validation error - mostly invalid data in request is provided provided"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Authentication information is missing or is invalid"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "You are not authorized to run this operation"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Resource not found"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unexpected error occured"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1057,10 +1140,16 @@
                 "type": "integer",
                 "description": "primary key of stored contact",
                 "example": 123123132
+              },
+              "confirmed": {
+                "type": "boolean",
+                "description": "Flag indicating that contact is confirmed by client",
+                "example": true
               }
             },
             "required": [
-              "contactId"
+              "contactId",
+              "confirmed"
             ]
           },
           {

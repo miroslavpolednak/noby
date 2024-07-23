@@ -1,14 +1,18 @@
 ﻿using CIS.Core.Security;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
-internal sealed class SimulateMortgageHandler
-    : IRequestHandler<SimulateMortgageRequest, SimulateMortgageResponse>
+internal sealed class SimulateMortgageHandler(
+    ICurrentUserAccessor _userAccessor,
+    IOfferServiceClient _offerService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IUserServiceClient _userService)
+        : IRequestHandler<OfferSimulateMortgageRequest, OfferSimulateMortgageResponse>
 {
-    public async Task<SimulateMortgageResponse> Handle(SimulateMortgageRequest request, CancellationToken cancellationToken)
+    public async Task<OfferSimulateMortgageResponse> Handle(OfferSimulateMortgageRequest request, CancellationToken cancellationToken)
     {
         // HFICH-5024
         if ((request.Developer?.DeveloperId != null && request.Developer?.ProjectId != null && !string.IsNullOrEmpty(request.Developer?.Description))
@@ -36,10 +40,9 @@ internal sealed class SimulateMortgageHandler
             guaranteeDateFrom = saInstance.OfferGuaranteeDateFrom;
         }
 
-        var user = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
-
         // predelat na DS request
-        var model = request.ToDomainServiceRequest(guaranteeDateFrom, user.UserInfo.IsUserVIP);
+        bool vipFlag = await getVipFlag(request.SalesArrangementId, cancellationToken);
+		var model = request.ToDomainServiceRequest(guaranteeDateFrom, vipFlag);
 
         // zavolat DS
         var result = await _offerService.SimulateMortgage(model, cancellationToken);
@@ -54,20 +57,20 @@ internal sealed class SimulateMortgageHandler
         };
     }
 
-    private readonly ICurrentUserAccessor _userAccessor;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IUserServiceClient _userService;
-    private readonly IOfferServiceClient _offerService;
-    
-    public SimulateMortgageHandler(
-        ICurrentUserAccessor userAccessor,
-        IOfferServiceClient offerService, 
-        ISalesArrangementServiceClient salesArrangementService,
-        IUserServiceClient userService)
+    private async Task<bool> getVipFlag(int? salesArrangementId, CancellationToken cancellationToken)
     {
-        _userAccessor = userAccessor;
-        _salesArrangementService = salesArrangementService;
-        _userService = userService;
-        _offerService = offerService;
-    }
+        int? userId = null;
+        if (salesArrangementId.HasValue)
+        {
+			var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId.Value, cancellationToken);
+			userId = saInstance.Created?.UserId ?? _userAccessor.User!.Id;
+        }
+		else
+        {
+            userId = _userAccessor.User!.Id;
+		}
+
+		var user = await _userService.GetUser(userId.Value, cancellationToken);
+		return user.UserInfo.IsUserVIP;
+	}
 }

@@ -1,31 +1,38 @@
-﻿using SharedTypes.GrpcTypes;
-using _Cust = DomainServices.CustomerService.Contracts;
+﻿using _Cust = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Product.GetCustomersOnProduct;
 
-internal sealed class GetCustomersOnProductHandler
-    : IRequestHandler<GetCustomersOnProductRequest, List<GetCustomersOnProductCustomer>>
+internal sealed class GetCustomersOnProductHandler(
+    DomainServices.ProductService.Clients.IProductServiceClient _productService,
+    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService)
+        : IRequestHandler<GetCustomersOnProductRequest, List<ProductGetCustomersOnProductItem>>
 {
-    public async Task<List<GetCustomersOnProductCustomer>> Handle(GetCustomersOnProductRequest request, CancellationToken cancellationToken)
+    public async Task<List<ProductGetCustomersOnProductItem>> Handle(GetCustomersOnProductRequest request, CancellationToken cancellationToken)
     {
         // dostat seznam klientu z konsDb
-        var customers = await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken);
+        var customers = (await _productService.GetCustomersOnProduct(request.CaseId, cancellationToken))
+            .Customers
+            .Where(t => t.RelationshipCustomerProductTypeId is 1 or 2)
+            .ToList();
 
         // detail customeru z customerService
-        var identifiedCustomers = customers.Customers.Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Any(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).ToList();
+        var identifiedCustomers = customers
+            .Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.HasKbIdentity())
+            .ToList();
+
         var customerDetails = new List<_Cust.CustomerDetailResponse>();
-        if (identifiedCustomers.Any())
+        if (identifiedCustomers.Count != 0)
         {
-            customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb)), cancellationToken)).Customers.ToList();
+            customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.GetKbIdentity()), cancellationToken)).Customers.ToList();
         }
 
-        return customers.Customers.Select(t =>
+        return customers.Select(t =>
         {
-            var c = customerDetails.FirstOrDefault(x => x.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId == t.CustomerIdentifiers.FirstOrDefault(x2 => x2.IdentityScheme == Identity.Types.IdentitySchemes.Kb)?.IdentityId);
+            var c = customerDetails.FirstOrDefault(x => x.Identities.GetKbIdentity().IdentityId == t.CustomerIdentifiers.GetKbIdentityOrDefault()?.IdentityId);
 
-            return new GetCustomersOnProductCustomer
+            return new ProductGetCustomersOnProductItem
             {
-                Identities = t.CustomerIdentifiers.Select(x => (SharedTypes.Types.CustomerIdentity)x!).ToList(),
+                Identities = t.CustomerIdentifiers.Select(x => (SharedTypesCustomerIdentity)x!).ToList(),
                 FirstName = c?.NaturalPerson?.FirstName,
                 LastName = c?.NaturalPerson?.LastName,
                 DateOfBirth = c?.NaturalPerson?.DateOfBirth,
@@ -37,16 +44,5 @@ internal sealed class GetCustomersOnProductHandler
             };
         })
             .ToList();
-    }
-
-    private readonly DomainServices.ProductService.Clients.IProductServiceClient _productService;
-    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-
-    public GetCustomersOnProductHandler(
-        DomainServices.ProductService.Clients.IProductServiceClient productService, 
-        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService)
-    {
-        _productService = productService;
-        _customerService = customerService;
     }
 }

@@ -3,12 +3,16 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Income.GetIncomeList;
 
-internal sealed class GetIncomeListHandler
-    : IRequestHandler<Contracts.GetIncomeListRequest, Contracts.GetIncomeListResponse>
+internal sealed class GetIncomeListHandler(
+    IncomeMapper _incomeMapper,
+    Database.HouseholdServiceDbContext _dbContext,
+    IDocumentDataStorage _documentDataStorage,
+    ILogger<GetIncomeListHandler> _logger)
+        : IRequestHandler<Contracts.GetIncomeListRequest, Contracts.GetIncomeListResponse>
 {
     public async Task<Contracts.GetIncomeListResponse> Handle(Contracts.GetIncomeListRequest request, CancellationToken cancellationToken)
     {
-        var list = await _documentDataStorage.GetList<Database.DocumentDataEntities.Income>(request.CustomerOnSAId, cancellationToken);
+        var list = await _documentDataStorage.GetList<Database.DocumentDataEntities.Income, int>(request.CustomerOnSAId, cancellationToken);
 
         if (list.Count == 0 && !_dbContext.Customers.Any(t => t.CustomerOnSAId == request.CustomerOnSAId))
         {
@@ -22,22 +26,5 @@ internal sealed class GetIncomeListHandler
         var response = new Contracts.GetIncomeListResponse();
         response.Incomes.AddRange(incomes);
         return response;
-    }
-
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IncomeMapper _incomeMapper;
-    private readonly ILogger<GetIncomeListHandler> _logger;
-
-    public GetIncomeListHandler(
-        IncomeMapper incomeMapper,
-        Database.HouseholdServiceDbContext dbContext,
-        IDocumentDataStorage documentDataStorage,
-        ILogger<GetIncomeListHandler> logger)
-    {
-        _incomeMapper = incomeMapper;
-        _dbContext = dbContext;
-        _documentDataStorage = documentDataStorage;
-        _logger = logger;
     }
 }

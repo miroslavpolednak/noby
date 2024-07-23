@@ -67,7 +67,7 @@ Přidává do HTTP hlavičky correlation Id.
 
 **ErrorHandlingHttpHandler**  
 Middleware, který zachycuje standardní vyjímky a mění je na CIS exceptions.
-Zároveň vyhodnocuje HTTP status kódy a pokud je StatusCode>=500, tak vyvolává `CisServiceServerErrorException`.  
+Zároveň vyhodnocuje HTTP status kódy a pokud je StatusCode>=500, tak vyvolává `CisExternalServiceServerErrorException`.  
 Extension metoda `IHttpClientBuilder.AddExternalServicesErrorHandling()`.
 
 **KbHeadersHttpHandler**  
@@ -75,8 +75,13 @@ Přidává do HTTP hlavičky hodnoty vyžadované KB službami. X-B3-TraceId, X-
 Extension metoda `IHttpClientBuilder.AddExternalServicesKbHeaders()`.
 
 **KbPartyHeaderHttpHandler**  
-Přidává do HTTP hlavičku s aktuálním uživatelem vyžadovanou KB službami. X-KB-Party-Identity-In-Service.    
+Přidává do HTTP hlavičku s aktuálním uživatelem vyžadovanou KB službami. X-KB-Party-Identity-In-Service.
+Pokud v kontextu requestu není znám uživatel, hlavička se neposílá.  
 Extension metoda `IHttpClientBuilder.AddExternalServicesKbPartyHeaders()`.
+
+Některé služby v KB hlavičku vyžadují, proto existuje ještě možnost fallback na hardcoded username v případě, že není znám přihlášený uživatel. 
+Pro tento případ existuje metoda `AddExternalServicesKbPartyHeadersWithFallback(string username)`, která pošle hlavičku vždy.
+Jako parametr `username` se většinou používá technický uživatel pod kterým je dané API KB volané.
 
 **LoggingHttpHandler**  
 Přidává logování request a response (volitelně payloadu a hlavičky).

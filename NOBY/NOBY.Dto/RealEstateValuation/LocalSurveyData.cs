@@ -12,7 +12,7 @@ public class LocalSurveyData
     /// <example>PRODAV</example>
     [Required]
     [MinLength(1)]
-    public string FunctionCode { get; set; } = string.Empty;
+    public string? FunctionCode { get; set; } = string.Empty;
 
     /// <summary>
     /// Jméno
@@ -20,7 +20,7 @@ public class LocalSurveyData
     /// <example>Jidáš</example>
     [Required]
     [MinLength(1)]
-    public string FirstName { get; set; } = string.Empty;
+    public string? FirstName { get; set; } = string.Empty;
 
     /// <summary>
     /// Příjmení
@@ -28,11 +28,11 @@ public class LocalSurveyData
     /// <example>Skočdopole</example>
     [Required]
     [MinLength(1)]
-    public string LastName { get; set; } = string.Empty;
+    public string? LastName { get; set; } = string.Empty;
 
     [Required]
-    public EmailAddressDto EmailAddress { get; set; }
+    public EmailAddressDto? EmailAddress { get; set; }
 
     [Required]
-    public PhoneNumberDto MobilePhone { get; set; }
+    public PhoneNumberDto? MobilePhone { get; set; }
 }

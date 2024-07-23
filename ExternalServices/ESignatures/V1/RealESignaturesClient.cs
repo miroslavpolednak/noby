@@ -76,7 +76,8 @@ internal sealed class RealESignaturesClient
                 AttachmentsComplete = t.AttachmentsComplete,
                 ExternalId = t.ExternalId,
                 IsCancelled = t.IsCancelled,
-                NotCompletedReason = t.NotCompletedReason
+                NotCompletedReason = t.NotCompletedReason,
+                EaCode = t.EaCodeMainId?.ToString(CultureInfo.InvariantCulture),
             }).ToList()
         };
 
@@ -142,16 +143,18 @@ internal sealed class RealESignaturesClient
             },
             DocumentData = new()
             {
+                AllowSendPreview = true,
                 TypeCode = docType.ShortName,
                 TemplateVersion = docVersion.TemplateProcessingType,
                 Name = request.DocumentData.FileName,
                 FormId = request.DocumentData.FormId,
                 ContractNumber = request.DocumentData.ContractNumber
+                // EaCodeMain = docType.EACodeMainId?.ToString(CultureInfo.InvariantCulture) ToDo for Luboš testing 
             },
             ClientData = new()
             {
                 UniversalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Kb)?.Id.ToString(CultureInfo.InvariantCulture),
-                ExternalId = request.ClientData.Identities!.FirstOrDefault(t => t.Scheme == SharedTypes.Enums.IdentitySchemes.Mp)?.Id.ToString(CultureInfo.InvariantCulture) ?? "",
+                ExternalId = request.ExternalId,
                 Name = request.ClientData.FullName!,
                 BirthNumber_RegNumber = request.ClientData.BirthNumber,
                 PhoneNumber = request.ClientData.Phone,
@@ -166,7 +169,9 @@ internal sealed class RealESignaturesClient
                         Info3 = request.ClientData.Email
                     }
                 }
-            }
+            },
+            AdditionalData = request.AdditionalData,
+
         };
 
         if (request.OtherClients is not null)

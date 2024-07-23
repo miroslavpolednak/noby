@@ -1,4 +1,4 @@
-﻿using DomainServices.OfferService.Clients;
+﻿using DomainServices.OfferService.Clients.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
 
@@ -17,8 +17,8 @@ internal class OfferServiceWrapper : IServiceWrapper
     public async Task LoadData(InputParameters input, AggregatedData data, CancellationToken cancellationToken)
     {
         input.ValidateOfferId();
-
-        data.Offer = await _offerService.GetOfferDetail(input.OfferId!.Value, cancellationToken);
+        
+        data.Offer = await _offerService.GetMortgageDetail(input.OfferId!.Value, cancellationToken);
     }
 
     public async Task LoadPaymentSchedule(InputParameters input, AggregatedData data, CancellationToken cancellationToken)

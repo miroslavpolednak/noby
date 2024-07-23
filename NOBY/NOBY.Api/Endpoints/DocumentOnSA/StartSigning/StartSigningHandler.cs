@@ -1,22 +1,20 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using FastEnumUtility;
-using NOBY.Api.Endpoints.Customer;
-using NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
-using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _DocOnSA = DomainServices.DocumentOnSAService.Contracts;
 using ValidateSalesArrangementRequest = NOBY.Api.Endpoints.SalesArrangement.ValidateSalesArrangement.ValidateSalesArrangementRequest;
 using NOBY.Api.Extensions;
+using NOBY.Services.Customer;
+using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 
-internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSigningResponse>
+internal sealed class StartSigningHandler : IRequestHandler<DocumentOnSAStartSigningRequest, DocumentOnSaStartSigningResponse>
 {
     private const string _signatureAnchorOne = "X_SIG_1";
     private const string _signatureAnchorTwo = "X_SIG_2";
@@ -47,9 +45,15 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         _householdClient = householdClient;
     }
 
-    public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
+    public async Task<DocumentOnSaStartSigningResponse> Handle(DocumentOnSAStartSigningRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+
+        // nesmi se jedna o refinancovani
+        if (ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(salesArrangement.SalesArrangementTypeId))
+        {
+            throw new NobyValidationException(90032);
+        }
 
         if (salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Mortgage.ToByte() // 1
             || salesArrangement.SalesArrangementTypeId == SalesArrangementTypes.Drawing.ToByte() // 6
@@ -60,6 +64,13 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         {
             // CheckForm
             await ValidateSalesArrangement(request.SalesArrangementId!.Value, cancellationToken);
+        }
+
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.Drawing
+             && request.SignatureTypeId == (int)SignatureTypes.Electronic
+             && salesArrangement.Drawing.Agent.IsActive)
+        {
+            throw new NobyValidationException(90053);
         }
 
         int? customerOnSAId1 = null;
@@ -94,7 +105,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
             }
             else // Service request without households
             {
-                if (houseHolds.Any())
+                if (houseHolds.Count != 0)
                     throw new NobyValidationException($"Households should by empty for service request without household (DocumentTypeId: {request.DocumentTypeId})");
             }
         }
@@ -133,14 +144,14 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         }
     }
 
-    private static bool HasCategoryAnyError(ValidateCategory category) => category.ValidationMessages.Any(HasMessageError);
+    private static bool HasCategoryAnyError(SalesArrangementSharedValidateCategory category) => category.ValidationMessages.Any(HasMessageError);
 
-    private static bool HasMessageError(ValidateMessage message) => message.Severity == MessageSeverity.Error;
+    private static bool HasMessageError(SalesArrangementSharedValidateMessage message) => message.Severity == SalesArrangementSharedValidateMessageSeverity.Error;
 
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSAId, cancellationToken);
-        var detailWithChangedData = await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSa, cancellationToken);
+        var customerInfo = await _changedDataService.GetCustomerWithChangedData(customerOnSAId, cancellationToken);
 
         var signingIdentity = new _DocOnSA.SigningIdentity();
 
@@ -153,19 +164,22 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
 
         signingIdentity.CustomerOnSAId = customerOnSAId;
         signingIdentity.SignatureDataCode = signatureAnchor;
-        signingIdentity.FirstName = detailWithChangedData.NaturalPerson?.FirstName;
-        signingIdentity.LastName = detailWithChangedData.NaturalPerson?.LastName;
+        signingIdentity.FirstName = customerInfo.CustomerWithChangedData.NaturalPerson?.FirstName;
+        signingIdentity.LastName = customerInfo.CustomerWithChangedData.NaturalPerson?.LastName;
+
+        var mobile = customerInfo.CustomerWithChangedData.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Mobil)?.Mobile;
+
         signingIdentity.MobilePhone = new _DocOnSA.MobilePhone
         {
-            PhoneNumber = detailWithChangedData.MobilePhone?.PhoneNumber,
-            PhoneIDC = detailWithChangedData.MobilePhone?.PhoneIDC
+            PhoneNumber = mobile?.PhoneNumber,
+            PhoneIDC = mobile?.PhoneIDC
         };
-        signingIdentity.EmailAddress = detailWithChangedData.EmailAddress?.EmailAddress;
-        signingIdentity.BirthNumber = detailWithChangedData.NaturalPerson?.BirthNumber;
+        signingIdentity.EmailAddress = customerInfo.CustomerWithChangedData.Contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email)?.Email?.EmailAddress;
+        signingIdentity.BirthNumber = customerInfo.CustomerWithChangedData.NaturalPerson?.BirthNumber;
         return signingIdentity;
     }
 
-    private async Task<StartSigningResponse> MapToResponse(_DocOnSA.StartSigningResponse result, int salesArrangementTypeId, CancellationToken cancellationToken)
+    private async Task<DocumentOnSaStartSigningResponse> MapToResponse(_DocOnSA.StartSigningResponse result, int salesArrangementTypeId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(result.DocumentOnSa, nameof(result.DocumentOnSa));
 
@@ -173,7 +187,7 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
         var eACodeMains = await _codebookServiceClient.EaCodesMain(cancellationToken);
         var signatureStates = await _codebookServiceClient.SignatureStatesNoby(cancellationToken);
 
-        return new StartSigningResponse
+        return new DocumentOnSaStartSigningResponse
         {
             DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
             DocumentTypeId = result.DocumentOnSa.DocumentTypeId,
@@ -185,13 +199,14 @@ internal sealed class StartSigningHandler : IRequestHandler<StartSigningRequest,
                 IsValid = result.DocumentOnSa.IsValid,
                 DocumentOnSAId = result.DocumentOnSa.DocumentOnSAId,
                 IsSigned = result.DocumentOnSa.IsSigned,
-                Source = result.DocumentOnSa.Source.MapToCisEnum(),
+                Source = result.DocumentOnSa.Source.MapToDocOnSaEnum(),
                 SalesArrangementTypeId = salesArrangementTypeId,
                 EArchivIdsLinked = Array.Empty<string>(),
-                SignatureTypeId = result.DocumentOnSa.SignatureTypeId ?? 0
+                SignatureTypeId = result.DocumentOnSa.SignatureTypeId ?? 0,
+                EaCodeMainId = result.DocumentOnSa.EACodeMainId
             },
               signatureStates),
-            EACodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
+            EaCodeMainItem = DocumentOnSaMetadataManager.GetEaCodeMainItem(
                 new() { DocumentTypeId = result.DocumentOnSa.DocumentTypeId, EACodeMainId = result.DocumentOnSa.EACodeMainId }, documentTypes, eACodeMains)
         };
     }

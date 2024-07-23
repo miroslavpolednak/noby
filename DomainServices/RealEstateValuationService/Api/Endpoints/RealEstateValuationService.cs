@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.RealEstateValuationService.Api.Endpoints;
 
 [Authorize]
-internal sealed class RealEstateValuationService
-    : Contracts.v1.RealEstateValuationService.RealEstateValuationServiceBase
+internal sealed class RealEstateValuationService(IMediator _mediator)
+		: Contracts.v1.RealEstateValuationService.RealEstateValuationServiceBase
 {
     public override async Task<CreateRealEstateValuationResponse> CreateRealEstateValuation(CreateRealEstateValuationRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
@@ -75,8 +75,4 @@ internal sealed class RealEstateValuationService
 
     public override async Task<DeedOfOwnershipDocument> GetDeedOfOwnershipDocument(GetDeedOfOwnershipDocumentRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
-
-    private readonly IMediator _mediator;
-    public RealEstateValuationService(IMediator mediator)
-        => _mediator = mediator;
 }

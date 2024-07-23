@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using CIS.Core.Security;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentArchiveService.Clients;
@@ -17,12 +17,22 @@ using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.Cases.CancelCase;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, CancelCaseResponse>
+internal sealed class CancelCaseHandler(
+    TimeProvider _dateTime,
+    ICodebookServiceClient _codebookService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICaseServiceClient _caseService,
+    ICustomerOnSAServiceClient _customerOnSaService,
+    DocumentGenerator _documentGenerator,
+    IDocumentArchiveServiceClient _documentArchiveService,
+    ICurrentUserAccessor _currentUserAccessor,
+    IDocumentHelperServiceOld _documentHelper,
+    IUserServiceClient _userService) 
+    : IRequestHandler<CancelCaseRequest, CasesCancelCaseResponse>
 {
     const DocumentTypes _documentType = DocumentTypes.ODSTOUP;
     
-    public async Task<CancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
+    public async Task<CasesCancelCaseResponse> Handle(CancelCaseRequest request, CancellationToken cancellationToken)
     {
         var documentTypeItem = await getDocumentType(_documentType, cancellationToken);
         
@@ -31,11 +41,11 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
         var customerOnSas = await _customerOnSaService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
         var caseState = (await _codebookService.CaseStates(cancellationToken)).First(s => s.Id == caseDetail.State);
 
-        var responseModel = new CancelCaseResponse
+        var responseModel = new CasesCancelCaseResponse
         {
-            State = (CaseStates)caseDetail.State,
+            State = (EnumCaseStates)caseDetail.State,
             StateName = caseState.Name,
-            CustomersOnSa = new List<CustomerOnSAItem>(customerOnSas.Count)
+            CustomersOnSa = new List<CasesCancelCaseCustomerOnSAItem>(customerOnSas.Count)
         };
 
         foreach (var customerOnSa in customerOnSas.Where(t => (t.CustomerIdentifiers?.Any() ?? false)))
@@ -77,7 +87,7 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
             await _documentArchiveService.UploadDocument(uploadRequest, cancellationToken);
 
             // pridat do resonse modelu
-            responseModel.CustomersOnSa.Add(new CustomerOnSAItem
+            responseModel.CustomersOnSa.Add(new CasesCancelCaseCustomerOnSAItem
             {
                 CustomerOnSAId = customerOnSa.CustomerOnSAId,
                 BirthDate = customerOnSa.DateOfBirthNaturalPerson,
@@ -96,40 +106,5 @@ internal sealed class CancelCaseHandler : IRequestHandler<CancelCaseRequest, Can
     {
         var documentTypes = await _codebookService.DocumentTypes(cancellationToken);
         return documentTypes.First(t => t.Id == documentType.ToByte());
-    }
-
-    private readonly TimeProvider _dateTime;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly DocumentGenerator _documentGenerator;
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDocumentHelperService _documentHelper;
-    private readonly IUserServiceClient _userService;
-
-    public CancelCaseHandler(
-        TimeProvider dateTime,
-        ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICaseServiceClient caseService,
-        ICustomerOnSAServiceClient customerOnSaService,
-        DocumentGenerator documentGenerator,
-        IDocumentArchiveServiceClient documentArchiveService,
-        ICurrentUserAccessor currentUserAccessor,
-        IDocumentHelperService documentHelper,
-        IUserServiceClient userService)
-    {
-        _dateTime = dateTime;
-        _codebookService = codebookService;
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
-        _customerOnSaService = customerOnSaService;
-        _documentGenerator = documentGenerator;
-        _documentArchiveService = documentArchiveService;
-        _currentUserAccessor = currentUserAccessor;
-        _documentHelper = documentHelper;
-        _userService = userService;
     }
 }

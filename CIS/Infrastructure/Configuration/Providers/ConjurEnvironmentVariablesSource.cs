@@ -15,7 +15,7 @@ internal sealed class ConjurEnvironmentVariablesProvider : ConfigurationProvider
     public override void Load() => Data = _configDataFactory();
 }
 
-internal partial class ConjurEnvironmentVariablesSource : IConfigurationSource
+internal sealed partial class ConjurEnvironmentVariablesSource : IConfigurationSource
 {
     private readonly IConfiguration _configuration;
 
@@ -26,7 +26,7 @@ internal partial class ConjurEnvironmentVariablesSource : IConfigurationSource
 
     public IConfigurationProvider Build(IConfigurationBuilder builder) => new ConjurEnvironmentVariablesProvider(BuildConfigData);
 
-    private IDictionary<string, string?> BuildConfigData()
+    private ImmutableDictionary<string, string?> BuildConfigData()
     {
         var configData = ReplaceConjurPlaceholdersWithEnvironmentVariables();
 
@@ -62,7 +62,7 @@ internal partial class ConjurEnvironmentVariablesSource : IConfigurationSource
         }
     }
 
-    private static IDictionary<string, string?> GetEnvironmentVariables()
+    private static Dictionary<string, string?> GetEnvironmentVariables()
     {
         const string NobyEnvPrefix = "NOBY_";
 

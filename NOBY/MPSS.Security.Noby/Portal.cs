@@ -13,7 +13,8 @@ internal sealed class Portal
         int v03id, /* v03id uzivatele - 0 pokud se nejedna o agenturu */
         int m17id,
         int brokerId,
-        string kbuid)
+        string kbuid,
+		int distributionChannel)
     {
         IdentityBase dummyIdentity = new IdentityBase(true);
 
@@ -27,6 +28,7 @@ internal sealed class Portal
         dummyIdentity.m17ID = m17id;
         dummyIdentity.BrokerId = brokerId;
         dummyIdentity.KbUid = kbuid;
+        dummyIdentity.DistributionChannel = distributionChannel;
 
         // vytvorit guid session
         dummyIdentity.SessionId = Guid.NewGuid().ToString();

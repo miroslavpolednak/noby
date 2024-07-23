@@ -26,7 +26,7 @@ internal static class DatabaseExpressions
             RiskBusinessCaseExpirationDate = t.RiskBusinessCaseExpirationDate,
             FirstSignatureDate = t.FirstSignatureDate,
             LoanApplicationDataVersion = t.LoanApplicationDataVersion,
-            TaskProcessId = t.TaskProcessId
+            ProcessId = t.ProcessId
         };
     }
 }

@@ -1,13 +1,12 @@
-﻿using CIS.Infrastructure.WebApi.Validation;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace NOBY.Api.Endpoints.Cases.SearchCases;
 
 internal sealed class SearchCasesRequestValidator
-    : AbstractValidator<SearchCasesRequest>
+    : AbstractValidator<CasesSearchCasesRequest>
 {
     public SearchCasesRequestValidator()
     {
-        RuleFor(t => t.Pagination).SetValidator(new PaginationRequestValidator());
+        RuleFor(t => t.Pagination).SetValidator(new Validators.PaginationRequestValidator());
     }
 }

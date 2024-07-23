@@ -1,8 +1,10 @@
-﻿namespace NOBY.Services.WorkflowTask;
+﻿using NOBY.ApiContracts;
+
+namespace NOBY.Services.WorkflowTask;
 
 public interface IWorkflowTaskService
 {
-    Task<(Dto.Workflow.WorkflowTask Task, Dto.Workflow.WorkflowTaskDetail TaskDetail, List<Dto.Documents.DocumentsMetadata> Documents)> GetTaskDetail(
+    Task<(SharedTypesWorkflowTask Task, SharedTypesWorkflowTaskDetail TaskDetail, List<SharedTypesDocumentsMetadata> Documents)> GetTaskDetail(
         long caseId,
         int taskIdSb,
         CancellationToken cancellationToken = default);

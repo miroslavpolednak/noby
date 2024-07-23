@@ -14,7 +14,7 @@ internal static class CreateProductExtensions
             ExpectedDateOfDrawing = offerData.MortgageOffer.SimulationInputs.ExpectedDateOfDrawing,
             FixedRatePeriod = offerData.MortgageOffer.SimulationInputs.FixedRatePeriod,
             LoanAmount = offerData.MortgageOffer.SimulationInputs.LoanAmount,
-            LoanInterestRate = offerData.MortgageOffer.SimulationResults.LoanInterestRate,
+            LoanInterestRate = offerData.MortgageOffer.SimulationResults.LoanInterestRateProvided,
             ProductTypeId = offerData.MortgageOffer.SimulationInputs.ProductTypeId,
             LoanPaymentAmount = offerData.MortgageOffer.SimulationResults.LoanPaymentAmount,
             LoanKindId= offerData.MortgageOffer.SimulationInputs.LoanKindId,

@@ -4,6 +4,9 @@ option csharp_namespace = "DomainServices.OfferService.Contracts";
 
 import "Messages/Types.proto";
 import "Parameters/MortgageOffer.proto";
+import "Parameters/MortgageRetention.proto";
+import "Parameters/MortgageRefixation.proto";
+import "Parameters/MortgageExtraPayment.proto";
 
 message GetOfferRequest {
 	int32 OfferId = 1;
@@ -13,6 +16,9 @@ message GetOfferResponse {
 	CommonOfferData Data = 1;
 	
 	oneof Parameters {
-		MortgageOfferBaseData MortgageOffer = 20;
+		MortgageOfferFullData MortgageOffer = 20;
+		MortgageRetentionFullData MortgageRetention = 21;
+		MortgageRefixationFullData MortgageRefixation = 22;
+		MortgageExtraPaymentFullData MortgageExtraPayment = 23;
 	}
 }

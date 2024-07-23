@@ -2,8 +2,8 @@
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdatePcpId;
 
-internal sealed class UpdatePcpIdHandler
-    : IRequestHandler<Contracts.UpdatePcpIdRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdatePcpIdHandler(Database.SalesArrangementServiceDbContext _dbContext)
+		: IRequestHandler<Contracts.UpdatePcpIdRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdatePcpIdRequest request, CancellationToken cancellation)
     {
@@ -19,12 +19,5 @@ internal sealed class UpdatePcpIdHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-
-    public UpdatePcpIdHandler(Database.SalesArrangementServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

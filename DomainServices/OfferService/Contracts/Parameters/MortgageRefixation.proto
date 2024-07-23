@@ -1,0 +1,34 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
+import "GrpcDate.proto";
+import "NullableGrpcDate.proto";
+
+message MortgageRefixationBasicParameters {
+	cis.types.GrpcDate FixedRateValidTo = 1;
+	cis.types.GrpcDate LegalNoticeGeneratedDate = 2;
+}
+
+message MortgageRefixationSimulationInputs {
+	cis.types.GrpcDate InterestRateValidFrom = 1;
+	int32 FixedRatePeriod = 2;
+	cis.types.GrpcDecimal InterestRate = 3;
+	cis.types.NullableGrpcDecimal InterestRateDiscount = 4;
+}
+
+message MortgageRefixationSimulationResults {
+	cis.types.GrpcDecimal LoanPaymentAmount = 1;
+	cis.types.NullableGrpcDecimal LoanPaymentAmountDiscounted = 2;
+	google.protobuf.Int32Value LoanPaymentsCount = 3;
+	cis.types.NullableGrpcDate MaturityDate = 4;
+}
+
+message MortgageRefixationFullData {
+	MortgageRefixationBasicParameters BasicParameters = 1;
+	MortgageRefixationSimulationInputs SimulationInputs = 2;
+	MortgageRefixationSimulationResults SimulationResults = 3;
+}

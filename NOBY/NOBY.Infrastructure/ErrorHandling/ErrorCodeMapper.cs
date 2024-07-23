@@ -36,7 +36,7 @@ public sealed class ErrorCodeMapper
             { 90024, new("Chyba - pro klienta již existuje rozpracovaný obchodní případ", "Klient je účastníkem jiného obchodního případu čekajícího na schválení nebo zamítnutí. Pro více informací prosím kontaktujte tým zpracovatelů") },
             { 90025, new("Obchodní případ byl stornován.", "") },
             { 90026, new("Vámi hledaný obchodní případ byl vytvořen v jiném systému a není možné zde zobrazit jeho detail") },
-            { 90027, new("Diskvalifikace z online ocenění", "Pro danou nemovitost není možné dokončit Online ocenění. Je potřeba zvolit jiný typ ocenění.") },
+            { 90027, new("Nemovitost není vhodná pro online ocenění", "Pro danou nemovitost není možné dokončit Online ocenění. Je potřeba zvolit jiný typ ocenění.") },
             { 90028, new("Žádost v aktuální stavu nelze měnit.") },
             { 90029, new("Překročen počet objektů úvěru", "Maximální počet objektů úvěru je 3. Upravte počet objednávek ocenění s označením objekt úvěru.") },
             { 90030, new("Chyba - soubor s tímto typem dokumentu není povoleno vložit do eArchivu") },
@@ -56,7 +56,26 @@ public sealed class ErrorCodeMapper
             { 90044, new("Nepovolená hodnota pro Typ dokladu v rámci vybraného Státu vydání dokladu") },
             { 90045, new("Chyba migrace dat", "Nepodařilo se dozaložit obchodní případ z důvodu chyby v datech zdrojového systému") },
             { 90046, new("Nelze založit úkol", "Z důvodu aktuální nedostupnosti systému StarBuild nelze založit nový úkol. Opakujte prosím akci později.") },
-            { 90047, new("LV nenalezeno", "Dle zadaných kritérií nebylo nalezeno žádné LV.") }
+            { 90047, new("LV nenalezeno", "Dle zadaných kritérií nebylo nalezeno žádné LV.") },
+            { 90048, new("Sleva neodpovídá", "Výše slevy požadovaná v nabídce je odlišná od slevy zadané v úkolu Cenová výjimka. Zkontrolujte prosím kalkulaci nabídky a upravte výši slevy.") },
+            { 90049, new("Sleva není schválena", "V nabídce je požadována sleva, pro kterou není schválený úkol Cenová výjimka.") },
+            { 90050, new("Sleva zřejmě expirovala", "Úkol Cenové výjimky pro slevu požadovanou v nabídce je zrušený zřejmě z důvodu expirace platnosti.") },
+            { 90051, new("Platnost budoucí úrokové sazby v minulosti", "Požadované datum platnosti budoucí úrokové sazby je v minulosti.") },
+            { 90052, new("Není povolen souběh požadavků stejného typu. Zkontrolujte rozpracované požadavky.", "Není možné vytvořit nový požadavek, jelikož již existuje rozpracovaný požadavek z dřívějška.") },
+            { 90053, new("Nelze podepsat elektronicky, protože je podepisováno na základě plné moci.") },
+            { 90054, new("Soubor nelze stáhnout. Soubor neexistuje nebo je stále v procesu nahrávání do eArchivu, opakujte akci později.") },
+            { 90055, new("Neaktuální parametry mimořádné splátky")},
+            { 90056, new("Retence jsou zakázány") },
+            { 90057, new("Refixace jsou zakázány") },
+            { 90058, new("Mimořádná splátka je zakázaná") },
+            { 90059, new("Interní refinancování je zakázáno") },
+            { 90060, new("Sleva na úrokové sazbě je vyšší než úroková sazba.") },
+            { 90061, new("") },
+            { 90062, new("Nelze generovat dokument - blíží se termín refixace", "Není povoleno generovat dokument ve lhůtě 14 dní do nadcházející refixace.") },
+            { 90064, new("Vložte alespoň jeden soubor") },
+            { 90065, new("Vložte povinnou přílohu, tj. 2x fotografie nemovitosti (1x interiér + 1x exteriér) a doklad o výměře bytové jednotky") },
+            { 90066, new("Výše mimořádné splátky je větší než zbývající jistina, vyberte celkové splacení nebo upravte částku.") },
+            { 90067, new("Modré produkty jsou zakázány.") }
         };
 
         Messages = messages.AsReadOnly();

@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.CustomerObligation.CreateObligation;
 
 internal sealed class CreateObligationRequestValidator
-    : AbstractValidator<CreateObligationRequest>
+    : AbstractValidator<CustomerObligationCreateObligationRequest>
 {
     public CreateObligationRequestValidator()
     {

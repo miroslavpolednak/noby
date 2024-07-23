@@ -4,11 +4,19 @@ using __Offer = DomainServices.OfferService.Contracts;
 using __SA = DomainServices.SalesArrangementService.Contracts;
 using DomainServices.SalesArrangementService.Api.Database.DocumentDataEntities;
 using SharedComponents.DocumentDataStorage;
+using DomainServices.SalesArrangementService.Api.Database.Entities;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.LinkModelationToSalesArrangement;
 
-internal sealed class LinkModelationToSalesArrangementHandler
-    : IRequestHandler<__SA.LinkModelationToSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class LinkModelationToSalesArrangementHandler(
+	ProductService.Clients.IProductServiceClient _productService,
+	IRealEstateValuationServiceClient _realEstateValuationService,
+	IMediator _mediator,
+	CaseService.Clients.v1.ICaseServiceClient _caseService,
+	Database.SalesArrangementServiceDbContext _dbContext,
+	OfferService.Clients.v1.IOfferServiceClient _offerService,
+	IDocumentDataStorage _documentDataStorage)
+		: IRequestHandler<__SA.LinkModelationToSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(__SA.LinkModelationToSalesArrangementRequest request, CancellationToken cancellation)
     {
@@ -21,14 +29,48 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // kontrola zda SA uz neni nalinkovan na stejnou Offer na kterou je request
         if (salesArrangementInstance.OfferId == request.OfferId)
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
+            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.AlreadyLinkedToOffer, request.SalesArrangementId);
         }
-
-        // instance Case
-        var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
+        int? offerIdToRemoveSAId = salesArrangementInstance.OfferId;
 
         // validace na existenci offer
         var offerInstance = await _offerService.GetOffer(request.OfferId, cancellation);
+
+        // pouze pro hypoteku
+        if (salesArrangementInstance.SalesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
+        {
+            await linkToMortgage(request, salesArrangementInstance, offerInstance, cancellation);
+        }
+        else
+        {
+            await LinkOffer(salesArrangementInstance, offerInstance, cancellation);
+        }
+
+        // update IDs na Offer
+        await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
+        {
+            OfferId = request.OfferId,
+            CaseId = salesArrangementInstance.CaseId,
+            SalesArrangementId = salesArrangementInstance.SalesArrangementId
+        }, cancellation);
+
+        // odstranit SA ID ze stare Offer
+        if (offerIdToRemoveSAId.HasValue)
+        {
+            await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
+            {
+                OfferId = request.OfferId,
+                SalesArrangementId = 0
+            }, cancellation);
+        }
+
+        return new Google.Protobuf.WellKnownTypes.Empty();
+    }
+
+    private async Task linkToMortgage(__SA.LinkModelationToSalesArrangementRequest request, SalesArrangement salesArrangementInstance, __Offer.GetOfferResponse offerInstance, CancellationToken cancellation)
+    {
+        // instance Case
+        var caseInstance = await _caseService.GetCaseDetail(salesArrangementInstance.CaseId, cancellation);
 
         // instance puvodni Offer
         __Offer.GetOfferResponse? offerInstanceOld = null;
@@ -70,14 +112,6 @@ internal sealed class LinkModelationToSalesArrangementHandler
             IsEmployeeBonusRequested = offerInstance.MortgageOffer.SimulationInputs.IsEmployeeBonusRequested
         }, cancellation);
 
-        // update IDs na Offer
-        await _offerService.UpdateOffer(new __Offer.UpdateOfferRequest
-        {
-            OfferId = request.OfferId,
-            CaseId = salesArrangementInstance.CaseId,
-            SalesArrangementId = salesArrangementInstance.SalesArrangementId
-        }, cancellation);
-
         // nastavit flowSwitches
         await setFlowSwitches(salesArrangementInstance.CaseId, request.SalesArrangementId, offerInstance, offerInstanceOld, cancellation);
 
@@ -86,8 +120,13 @@ internal sealed class LinkModelationToSalesArrangementHandler
         {
             await _productService.UpdateMortgage(salesArrangementInstance.CaseId, cancellation);
         }
+    }
 
-        return new Google.Protobuf.WellKnownTypes.Empty();
+    private async Task LinkOffer(SalesArrangement salesArrangementInstance, __Offer.GetOfferResponse offerInstance, CancellationToken cancellationToken)
+    {
+        salesArrangementInstance.OfferId = offerInstance.Data.OfferId;
+        
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -198,7 +237,7 @@ internal sealed class LinkModelationToSalesArrangementHandler
         // parametry SA
         var hasChanged = false;
 
-        var saParametersDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData>(salesArrangementInstance.SalesArrangementId, SalesArrangementParametersConst.TableName, cancellation);
+        var saParametersDocument = await _documentDataStorage.FirstOrDefaultByEntityId<MortgageData, int>(salesArrangementInstance.SalesArrangementId, SalesArrangementParametersConst.TableName, cancellation);
 
         var parametersModel = saParametersDocument?.Data ?? new MortgageData();
 
@@ -218,31 +257,5 @@ internal sealed class LinkModelationToSalesArrangementHandler
 
         if (hasChanged) 
             await _documentDataStorage.AddOrUpdateByEntityId(salesArrangementInstance.SalesArrangementId, SalesArrangementParametersConst.TableName, parametersModel, cancellation);
-    }
-
-    private readonly ProductService.Clients.IProductServiceClient _productService;
-    private readonly CaseService.Clients.ICaseServiceClient _caseService;
-    private readonly OfferService.Clients.IOfferServiceClient _offerService;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly IMediator _mediator;
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public LinkModelationToSalesArrangementHandler(
-        ProductService.Clients.IProductServiceClient productService,
-        IRealEstateValuationServiceClient realEstateValuationService,
-        IMediator mediator,
-        CaseService.Clients.ICaseServiceClient caseService,
-        Database.SalesArrangementServiceDbContext dbContext,
-        OfferService.Clients.IOfferServiceClient offerService,
-        IDocumentDataStorage documentDataStorage)
-    {
-        _productService = productService;
-        _realEstateValuationService = realEstateValuationService;
-        _mediator = mediator;
-        _caseService = caseService;
-        _dbContext = dbContext;
-        _offerService = offerService;
-        _documentDataStorage = documentDataStorage;
     }
 }

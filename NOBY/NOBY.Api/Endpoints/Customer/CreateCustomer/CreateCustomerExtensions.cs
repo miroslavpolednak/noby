@@ -1,9 +1,9 @@
 ﻿using SharedTypes.GrpcTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using SharedTypes.Enums;
 using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
-using NOBY.Api.Extensions;
+using NOBY.Dto.Customer;
+using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
@@ -105,7 +105,7 @@ internal static class CreateCustomerExtensions
         };
         if (customerOnSA.CustomerIdentifiers is not null)
             model.Customer.CustomerIdentifiers.AddRange(customerOnSA.CustomerIdentifiers);
-        model.Customer.CustomerIdentifiers.Add(customerKb.Identities.First(x => x.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
+        model.Customer.CustomerIdentifiers.Add(customerKb.Identities.GetKbIdentity());
 
         return model;
     }
@@ -125,7 +125,7 @@ internal static class CreateCustomerExtensions
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
             Addresses = customer.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList(),
             Contacts = new(),
-            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new SharedDto.LegalCapacityItem
+            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new LegalCapacityItem
             {
                 RestrictionTypeId = customer.NaturalPerson.LegalCapacity.RestrictionTypeId,
                 RestrictionUntil = customer.NaturalPerson.LegalCapacity.RestrictionUntil

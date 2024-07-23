@@ -1,6 +1,6 @@
 ﻿using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using SharedTypes.GrpcTypes;
 using _Product = DomainServices.ProductService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
@@ -19,11 +19,11 @@ internal sealed class CreateProduct
         IEnumerable<Identity>? customerIdentifiers,
         CancellationToken cancellationToken)
     {
-        var mpIdentity = customerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        var mpIdentity = customerIdentifiers?.GetMpIdentityOrDefault();
         long? mpId = mpIdentity?.IdentityId;
         if (!mpId.HasValue)
         {
-            _logger.LogInformation($"CreateProductHandler for CaseId #{caseId} not proceeding / missing MP ID");
+            _logger.LogInformation("CreateProductHandler for CaseId #{CaseId} not proceeding / missing MP ID", caseId);
             return; // nema modre ID, nezajima me
         }
 
@@ -31,7 +31,7 @@ internal sealed class CreateProduct
         {
             // je to tady proto, ze produkt uz muze byt zalozeny, ale ja na instanci CustomerOnSA to nemam jak zjistit
             await _productService.GetMortgage(caseId, cancellationToken);
-            _logger.LogInformation($"Product already exist for CaseId #{caseId}");
+            _logger.LogInformation("Product already exist for CaseId #{CaseId}", caseId);
             return;
         }
         catch { }

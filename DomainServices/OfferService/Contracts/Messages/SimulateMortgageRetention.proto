@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Parameters/MortgageRetention.proto";
+import "ModificationStamp.proto";
+
+message SimulateMortgageRetentionRequest {
+	MortgageRetentionBasicParameters BasicParameters = 1;
+	MortgageRetentionSimulationInputs SimulationInputs = 2;
+	int64 CaseId = 3;
+}
+
+message SimulateMortgageRetentionResponse {
+	int32 OfferId = 1;
+	cis.types.ModificationStamp Created = 2;
+	MortgageRetentionBasicParameters BasicParameters = 3;
+	MortgageRetentionSimulationInputs SimulationInputs = 4;
+	MortgageRetentionSimulationResults SimulationResults = 5;
+}

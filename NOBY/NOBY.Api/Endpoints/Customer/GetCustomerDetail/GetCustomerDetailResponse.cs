@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail;
+﻿using NOBY.Dto.Customer;
+
+namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail;
 
 public sealed class GetCustomerDetailResponse
 {
@@ -6,9 +8,9 @@ public sealed class GetCustomerDetailResponse
     
     public Dto.NaturalPersonModel? NaturalPerson { get; set; }
     
-    public SharedDto.JuridicalPerson? JuridicalPerson { get; set; }
+    public JuridicalPerson? JuridicalPerson { get; set; }
     
-    public SharedDto.LegalCapacityItem? LegalCapacity { get; set; }
+    public LegalCapacityItem? LegalCapacity { get; set; }
     
     public List<SharedTypes.Types.Address>? Addresses { get; set; }
     

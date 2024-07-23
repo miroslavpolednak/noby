@@ -1,11 +1,11 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Configuration;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Clients.Services;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.Services;

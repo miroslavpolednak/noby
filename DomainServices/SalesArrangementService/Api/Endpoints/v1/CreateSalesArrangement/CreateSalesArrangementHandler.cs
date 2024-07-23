@@ -4,8 +4,16 @@ using DomainServices.UserService.Clients;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrangement;
 
-internal sealed class CreateSalesArrangementHandler
-    : IRequestHandler<CreateSalesArrangementRequest, CreateSalesArrangementResponse>
+internal sealed class CreateSalesArrangementHandler(
+	IRollbackBag _bag,
+	IUserServiceClient _userService,
+	IMediator _mediator,
+	CaseService.Clients.v1.ICaseServiceClient _caseService,
+	CodebookService.Clients.ICodebookServiceClient _codebookService,
+	Database.SalesArrangementServiceDbContext _dbContext,
+	ILogger<CreateSalesArrangementHandler> _logger,
+	TimeProvider _timeProvider)
+		: IRequestHandler<CreateSalesArrangementRequest, CreateSalesArrangementResponse>
 {
     public async Task<CreateSalesArrangementResponse> Handle(CreateSalesArrangementRequest request, CancellationToken cancellation)
     {
@@ -24,7 +32,7 @@ internal sealed class CreateSalesArrangementHandler
             ContractNumber = request.ContractNumber,
             ChannelId = user.UserInfo.ChannelId,
             PcpId = request.PcpId,
-            TaskProcessId = request.TaskProcessId
+            ProcessId = request.ProcessId
         };
 
         // get default SA state
@@ -74,7 +82,15 @@ internal sealed class CreateSalesArrangementHandler
                 case CreateSalesArrangementRequest.DataOneofCase.Retention:
                     data.Retention = request.Retention;
                     break;
+                case CreateSalesArrangementRequest.DataOneofCase.Refixation:
+                    data.Refixation = request.Refixation;
+                    break;
+
+                case CreateSalesArrangementRequest.DataOneofCase.ExtraPayment:
+                    data.ExtraPayment = request.ExtraPayment;
+                    break;
             }
+
             var updateMediatrRequest = new UpdateSalesArrangementParametersRequest(data);
 
             await _mediator.Send(updateMediatrRequest, cancellation);
@@ -106,39 +122,9 @@ internal sealed class CreateSalesArrangementHandler
             SalesArrangementTypes.CustomerChange3602A when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602A => true,
             SalesArrangementTypes.CustomerChange3602B when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602B => true,
             SalesArrangementTypes.CustomerChange3602C when dataCase == CreateSalesArrangementRequest.DataOneofCase.CustomerChange3602C => true,
-            SalesArrangementTypes.Retention when dataCase == CreateSalesArrangementRequest.DataOneofCase.Retention => true,
+            SalesArrangementTypes.MortgageRetention when dataCase == CreateSalesArrangementRequest.DataOneofCase.Retention => true,
+            SalesArrangementTypes.MortgageRefixation when dataCase == CreateSalesArrangementRequest.DataOneofCase.Refixation => true,
+            SalesArrangementTypes.MortgageExtraPayment when dataCase == CreateSalesArrangementRequest.DataOneofCase.ExtraPayment => true,
             _ => throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.DataObjectIsNotValid, salesArrangementTypeId)
         };
-
-    private readonly TimeProvider _timeProvider;
-    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly OfferService.Clients.IOfferServiceClient _offerService;
-    private readonly CaseService.Clients.ICaseServiceClient _caseService;
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly ILogger<CreateSalesArrangementHandler> _logger;
-    private readonly IMediator _mediator;
-    private readonly IUserServiceClient _userService;
-    private readonly IRollbackBag _bag;
-
-    public CreateSalesArrangementHandler(
-        IRollbackBag bag,
-        IUserServiceClient userService,
-        IMediator mediator,
-        OfferService.Clients.IOfferServiceClient offerService,
-        CaseService.Clients.ICaseServiceClient caseService,
-        CodebookService.Clients.ICodebookServiceClient codebookService,
-        Database.SalesArrangementServiceDbContext dbContext,
-        ILogger<CreateSalesArrangementHandler> logger,
-        TimeProvider timeProvider)
-    {
-        _bag = bag;
-        _userService = userService;
-        _mediator = mediator;
-        _offerService = offerService;
-        _caseService = caseService;
-        _codebookService = codebookService;
-        _dbContext = dbContext;
-        _logger = logger;
-        _timeProvider = timeProvider;
-    }
 }

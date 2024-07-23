@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.PreorderOnlineValuation;
 
-internal sealed class PreorderOnlineValuationHandler
-    : IRequestHandler<PreorderOnlineValuationRequest>
+internal sealed class PreorderOnlineValuationHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+    : IRequestHandler<RealEstateValuationPreorderOnlineValuationRequest>
 {
-    public async Task Handle(PreorderOnlineValuationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RealEstateValuationPreorderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
         var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
         if ((revInstance.PossibleValuationTypeId is null || !revInstance.PossibleValuationTypeId.Contains((int)RealEstateValuationTypes.Online))
@@ -26,12 +26,5 @@ internal sealed class PreorderOnlineValuationHandler
                 FlatArea = request.FlatArea
             }
         }, cancellationToken);
-    }
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public PreorderOnlineValuationHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
     }
 }

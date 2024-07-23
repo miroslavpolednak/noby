@@ -8,11 +8,23 @@ import "NullableGrpcDecimal.proto";
 import "NullableGrpcDate.proto";
 import "ModificationStamp.proto";
 
+enum ResponseCodeCategories {
+	BusinessResponseCode = 0;
+	NewFixedRatePeriod = 1;
+}
+
 enum OfferTypes {
 	None = 0;
 	Mortgage = 1;
 	MortgageRefixation = 2;
 	MortgageRetention = 3;
+	MortgageExtraPayment = 4;
+	BuildingSavings = 5;
+}
+
+enum OfferOrigins {
+	OfferService = 0;
+	BigDataPlatform = 1;
 }
 
 message CommonOfferData {
@@ -25,6 +37,9 @@ message CommonOfferData {
 	cis.types.ModificationStamp Created = 7;
 	OfferTypes OfferType = 8;
 	bool IsCreditWorthinessSimpleRequested = 9;
+	int32 Flags = 10;
+	OfferOrigins Origin = 11;
+
 }
 
 message SimulationResultWarning {

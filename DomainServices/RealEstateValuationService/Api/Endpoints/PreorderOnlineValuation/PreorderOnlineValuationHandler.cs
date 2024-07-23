@@ -36,7 +36,7 @@ internal sealed class PreorderOnlineValuationHandler
             ValuationType = "OCENENI",
             LeasibilityRequired = houseAndFlat?.FinishedHouseAndFlatDetails?.LeaseApplicable,
             RealEstateType = entity.ACVRealEstateTypeId,
-            TotalArea = Convert.ToDouble((decimal)request.OnlinePreorderDetails.FlatArea),
+            TotalArea = Convert.ToDouble((decimal)request.OnlinePreorderDetails.FlatArea!),
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,
             RealEstateIds = realEstateIds
         };
@@ -71,7 +71,7 @@ internal sealed class PreorderOnlineValuationHandler
             TechnicalState = request.OnlinePreorderDetails.BuildingTechnicalStateCode,
             MaterialStructure = request.OnlinePreorderDetails.BuildingMaterialStructureCode,
             FlatSchema = request.OnlinePreorderDetails.FlatSchemaCode,
-            FlatArea = Convert.ToDouble((decimal)request.OnlinePreorderDetails.FlatArea),
+            FlatArea = Convert.ToDouble((decimal)request.OnlinePreorderDetails.FlatArea!),
             AgeOfBuilding = ageCode,
             DealNumber = caseInstance.Data.ContractNumber,
             Leased = houseAndFlat?.FinishedHouseAndFlatDetails?.Leased,

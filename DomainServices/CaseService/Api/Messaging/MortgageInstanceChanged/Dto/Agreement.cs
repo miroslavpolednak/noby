@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -27,11 +27,11 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"nci sluzby, nabidku produktu a pozadovany kontext. O obchodu je mozne mluvit pou" +
 				"ze v pripade akce predeje (prodej, zmena nebo uzavreni produktu, potazmo instanc" +
 				"e sluzby). O obchodu se neda mluvit v pripade predprodeje. CDM entity name(s): A" +
-				"greement.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"" +
+				"greement.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"" +
 				"fields\":[{\"name\":\"agreementApproval\",\"default\":null,\"type\":[\"null\",{\"type\":\"reco" +
 				"rd\",\"name\":\"Approval\",\"doc\":\"General entity representing approval process E.g. a" +
 				"greement or exception approval. CDM entity name(s): Approval.\",\"namespace\":\"cz.k" +
-				"b.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":" +
+				"b.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":" +
 				"\"Time when overall approval was made. CDM attribute class name: ApprovalOn. Stan" +
 				"dard avro dateTime represented by the number of milliseconds from the unix epoch" +
 				", see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider" +
@@ -44,7 +44,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"er using converters to dateTime class in code generator (see KB Integration Plat" +
 				"form wiki for schema registry chapter).\",\"type\":{\"type\":\"long\",\"logicalType\":\"ti" +
 				"mestamp-millis\"}}]}]}]}");
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.Approval _agreementApproval;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.Approval _agreementApproval;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -52,7 +52,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				return Agreement._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.Approval agreementApproval
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.Approval agreementApproval
 		{
 			get
 			{
@@ -75,7 +75,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 		{
 			switch (fieldPos)
 			{
-			case 0: this.agreementApproval = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.Approval)fieldValue; break;
+			case 0: this.agreementApproval = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.Approval)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

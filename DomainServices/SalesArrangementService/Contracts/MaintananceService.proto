@@ -2,12 +2,34 @@
 package DomainServices.SalesArrangementService;
 option csharp_namespace = "DomainServices.SalesArrangementService.Contracts";
 
+import "google/protobuf/empty.proto";
+
 service MaintananceService {
 	rpc GetCancelCaseJobIds (GetCancelCaseJobIdsRequest) returns (GetCancelCaseJobIdsResponse);
+	rpc GetCancelServiceSalesArrangementsIds (GetCancelServiceSalesArrangementsIdsRequest) returns (GetCancelServiceSalesArrangementsIdsResponse);
+	rpc GetOfferGuaranteeDateToCheck (GetOfferGuaranteeDateToCheckRequest) returns (GetOfferGuaranteeDateToCheckResponse);
+	rpc CancelNotFinishedExtraPayments (CancelNotFinishedExtraPaymentsRequest)  returns (google.protobuf.Empty);
 }
 
+
+message CancelNotFinishedExtraPaymentsRequest { }
 message GetCancelCaseJobIdsRequest { }
+message GetCancelServiceSalesArrangementsIdsRequest { }
+message GetOfferGuaranteeDateToCheckRequest {}
 
 message GetCancelCaseJobIdsResponse {
 	repeated int64 CaseId = 1;
+}
+
+message GetCancelServiceSalesArrangementsIdsResponse {
+	repeated int32 SalesArrangementId = 1;
+}
+
+message GetOfferGuaranteeDateToCheckResponse {
+	repeated GetOfferGuaranteeDateToCheckItem Items = 1;
+
+	message GetOfferGuaranteeDateToCheckItem {
+		int32 SalesArrangementId = 1;
+		int64 CaseId = 2;
+	}
 }

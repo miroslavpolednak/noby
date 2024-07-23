@@ -3,8 +3,8 @@ using __SA = DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SetFlowSwitches;
 
-internal sealed class SetFlowSwitchesHandler
-    : IRequestHandler<__SA.SetFlowSwitchesRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class SetFlowSwitchesHandler(Database.SalesArrangementServiceDbContext _dbContext)
+		: IRequestHandler<__SA.SetFlowSwitchesRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(__SA.SetFlowSwitchesRequest request, CancellationToken cancellation)
     {
@@ -44,12 +44,5 @@ internal sealed class SetFlowSwitchesHandler
         await _dbContext.SaveChangesAsync(cancellation);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-
-    public SetFlowSwitchesHandler(Database.SalesArrangementServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

@@ -2,6 +2,11 @@
 
 public sealed class PrepareDocumentRequest
 {
+    /// <summary>
+    /// From Case indentity or GetCustomersOnProduct identity (this is a hack, should be corrected in feature)
+    /// </summary>
+    public string ExternalId { get; set; } = null!;
+
     public UserInfo CurrentUserInfo { get; set; } = null!;
     
     public UserInfo CreatorInfo { get; set; } = null!;
@@ -11,6 +16,8 @@ public sealed class PrepareDocumentRequest
     public ClientInfo ClientData { get; set; } = null!;
 
     public List<OtherClient>? OtherClients { get; set; } = null!;
+
+    public string? AdditionalData { get; set; }
 
     public sealed class DocumentInfo
     {

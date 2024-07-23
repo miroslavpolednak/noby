@@ -1,19 +1,21 @@
 ﻿using CIS.Core;
-using DomainServices.CustomerService.Clients;
 using _Rip = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _HO = DomainServices.HouseholdService.Contracts;
-using DomainServices.HouseholdService.Contracts;
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
-internal sealed class CreditWorthinessHouseholdService
+internal sealed class CreditWorthinessHouseholdService(
+    DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService,
+    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService)
 {
     public async Task<List<_Rip.CreditWorthinessHousehold>> CreateHouseholds(int salesArrangementId, CancellationToken cancellationToken)
     {
         // seznam domacnosti na SA
         var households = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
-        if (!households.Any())
+        if (households.Count == 0)
             throw new CisValidationException("There is no household bound for this SA");
 
         return (await households.Where(t => t.HouseholdTypeId == 1 || t.HouseholdTypeId == 2).SelectAsync(async household =>
@@ -29,7 +31,7 @@ internal sealed class CreditWorthinessHouseholdService
                     Insurance = household.Expenses?.InsuranceExpenseAmount,
                     Other = household.Expenses?.OtherExpenseAmount
                 },
-                Customers = new()
+                Customers = []
             };
 
             // get customers
@@ -65,7 +67,7 @@ internal sealed class CreditWorthinessHouseholdService
         {
             PrimaryCustomerId = customer
                 .CustomerIdentifiers
-                .FirstOrDefault(x => x.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
+                .GetKbIdentityOrDefault()
                 ?.IdentityId
                 .ToString(System.Globalization.CultureInfo.InvariantCulture),
             MaritalStateId = customer.MaritalStatusId
@@ -100,19 +102,5 @@ internal sealed class CreditWorthinessHouseholdService
             }).ToList();
 
         return c;
-    }
-
-    private readonly DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService;
-    private readonly DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly ICustomerServiceClient _customerService;
-
-    public CreditWorthinessHouseholdService(
-        DomainServices.HouseholdService.Clients.IHouseholdServiceClient householdService,
-        ICustomerServiceClient customerService,
-        DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient customerOnSaService)
-    {
-        _householdService = householdService;
-        _customerService = customerService;
-        _customerOnSaService = customerOnSaService;
     }
 }

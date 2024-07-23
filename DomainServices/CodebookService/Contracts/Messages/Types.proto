@@ -3,6 +3,111 @@ package DomainServices.CodebookService.v1;
 option csharp_namespace = "DomainServices.CodebookService.Contracts.v1";
 
 import "google/protobuf/wrappers.proto";
+import "GrpcDecimal.proto";
+
+message BuildingSavingsMarketingActionsResponse {
+	repeated BuildingSavingsMarketingActionsItem Items = 1;
+
+	message BuildingSavingsMarketingActionsItem {
+		int32 Id = 1;
+		string Code = 2;
+		string Name = 3;
+		string Description = 4;
+		int32 DurationInMonths  = 5;
+		bool IsValid = 6;
+	}
+}
+
+message BuildingSavingsPropertiesResponse {
+	repeated BuildingSavingsPropertiesItem Items = 1;
+
+	message BuildingSavingsPropertiesItem {
+		int32 Id = 1;
+		string Code = 2;
+		string Name = 3;
+		int32 MinimumTargetAmount = 4;
+		cis.types.GrpcDecimal MinimumMonthlyDeposit  = 5;
+		bool IsValid = 6;
+	}
+}
+
+message IdentificationSubjectMethodsResponse {
+	repeated IdentificationSubjectMethodsItem Items = 1;
+
+	message IdentificationSubjectMethodsItem {
+		int32 Id = 1;
+		string Name = 2;
+		bool IsValid = 3;
+		bool IsValidNoby = 4;
+	}
+}
+
+message FlowSwitchStatesResponse {
+	repeated FlowSwitchStatesItem Items = 1;
+
+	message FlowSwitchStatesItem {
+		int32 Id = 1;
+		string Name = 2;
+		int32 Indicator = 3;
+	}
+}
+
+message RefinancingStatesResponse {
+	repeated RefinancingStatesItem Items = 1;
+
+	message RefinancingStatesItem {
+		int32 Id = 1;
+		string Name = 2;
+		int32 Indicator = 3;
+	}
+}
+
+message ResponseCodeTypesResponse {
+	repeated ResponseCodeTypesItem Items = 1;
+
+	message ResponseCodeTypesItem {
+		int32 Id = 1;
+		string Name = 2;
+		ResponseCodesItemDataTypes DataType = 3;
+		bool IsAvailableForRetention = 4;
+		bool IsAvailableForRefixation = 5;
+		bool IsValid = 6;
+		int32 MandantId = 7;
+	}
+
+	enum ResponseCodesItemDataTypes {
+		String = 0;
+		Date = 1;
+		BankCode = 2;
+	}
+}
+
+message FeeChangeRequestsResponse {
+	repeated FeeChangeRequestsItem Items = 1;
+
+	message FeeChangeRequestsItem {
+		int32 Id = 1;
+		string ShortName = 2;
+		int32 Amount = 3;
+		bool IsValid = 4;
+		bool IsDefault = 5;
+	}
+}
+
+message SignatureTypeDetailResponse {
+	repeated SignatureTypeDetailItem Items = 1;
+
+	message SignatureTypeDetailItem {
+		int32 Id = 1;
+		string Name = 2;
+		bool IsRetentionDefault = 3;
+		bool IsRetentionAvailable = 4;
+		bool IsHedgeDefault = 5;
+		bool IsHedgeAvailable = 6;
+		bool IsIndividualDefault = 7;
+		bool IsIndividualAvailable = 8;
+	}
+}
 
 message AddressTypesResponse {
 	repeated AddressTypeItem Items = 1;
@@ -191,6 +296,7 @@ message DocumentTypesResponse {
 		google.protobuf.Int32Value SalesArrangementTypeId = 5;
 		bool IsValid = 6;
 		google.protobuf.Int32Value EACodeMainId = 7;
+		bool IsElectronicSigningEnabled = 8;
 	}
 }
 
@@ -202,6 +308,7 @@ message DrawingDurationsResponse {
 		int32 DrawingDuration = 2;
 		bool IsValid = 3;
 		bool IsDefault = 4;
+		google.protobuf.Int32Value MandantId = 5;
 	}
 }
 
@@ -350,15 +457,6 @@ message GetOperatorResponse {
 	int32 PerformerCode = 3;
 }
 
-message HashAlgorithmsResponse {
-	repeated HashAlgorithmItem Items = 1;
-
-	message HashAlgorithmItem {
-	   string Code = 1;
-	   google.protobuf.StringValue Description = 2;
-	}
-}
-
 message HouseholdTypesResponse {
 	repeated HouseholdTypeItem Items = 1;
 
@@ -505,6 +603,7 @@ message ProductTypesResponse {
 	   google.protobuf.Int32Value KonsDbLoanType = 13;
 	   google.protobuf.StringValue PcpProductId = 14;
 	   repeated int32 LoanKindIds = 15;
+	   google.protobuf.StringValue  PcpObjectCode = 16;
 	}
 }
 
@@ -621,6 +720,7 @@ message SalesArrangementTypesResponse {
 	   int32 SalesArrangementCategory = 3;
 	   google.protobuf.StringValue Description = 4;
 	   bool IsFormSentToCmp = 5;
+	   google.protobuf.Int32Value FeeId = 6;
 	}
 }
 

@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.ExternalServicesHelpers;
+using Microsoft.Extensions.Logging;
 
 namespace DomainServices.RealEstateValuationService.ExternalServices.LuxpiService.V1;
 
@@ -10,13 +11,13 @@ internal sealed class RealLuxpiServiceClient
         var response = await _httpClient
             .PostAsJsonAsync(getUrl(), request, cancellationToken)
             .ConfigureAwait(false);
-
+        
         var model = await response.EnsureSuccessStatusAndReadJson<Contracts.ValuationRequest>(StartupExtensions.ServiceName, cancellationToken);
-
+        
         return model.Status switch
         {
             "OK" => createResponse(),
-            "KNOCKED_OUT" or "NO_PRICE_AVAILABLE" => new Dto.CreateKbmodelFlatResponse
+            "KNOCKED_OUT" or "NO_PRICE_AVAILABLE" or "CHECK_LOAN_NOT_PASSED" => new Dto.CreateKbmodelFlatResponse
             {
                 NoPriceAvailable = true
             },
@@ -43,10 +44,12 @@ internal sealed class RealLuxpiServiceClient
         }
     }
 
+    private readonly ILogger<RealLuxpiServiceClient> _logger;
     private readonly HttpClient _httpClient;
-    
-    public RealLuxpiServiceClient(HttpClient httpClient)
+
+    public RealLuxpiServiceClient(HttpClient httpClient, ILogger<RealLuxpiServiceClient> logger)
     {
         _httpClient = httpClient;
+        _logger = logger;
     }
 }

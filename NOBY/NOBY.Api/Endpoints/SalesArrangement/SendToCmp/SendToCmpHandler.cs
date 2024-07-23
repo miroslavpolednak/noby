@@ -1,6 +1,5 @@
-﻿using SharedTypes.Enums;
-using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients;
+﻿using SharedTypes.GrpcTypes;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
@@ -17,43 +16,26 @@ using Mandants = SharedTypes.GrpcTypes.Mandants;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.SendToCmp;
 
-internal sealed class SendToCmpHandler
-    : IRequestHandler<SendToCmpRequest>
+internal sealed class SendToCmpHandler(
+    DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICustomerOnSAServiceClient _customerOnSaService,
+    IProductServiceClient _productService,
+    ICustomerServiceClient _customerService,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    IMediator _mediator)
+        : IRequestHandler<SendToCmpRequest>
 {
-
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly IProductServiceClient _productService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly IMediator _mediator;
-
-    public SendToCmpHandler(
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICustomerOnSAServiceClient customerOnSaService,
-        IProductServiceClient productService,
-        ICustomerServiceClient customerService,
-        IDocumentOnSAServiceClient documentOnSAService,
-        IMediator mediator)
-    {
-        _codebookService = codebookService;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _customerOnSaService = customerOnSaService;
-        _productService = productService;
-        _customerService = customerService;
-        _documentOnSAService = documentOnSAService;
-        _mediator = mediator;
-    }
-
     public async Task Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
         // instance SA
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
+
+        if (saInstance.SalesArrangementTypeId is ((int)SalesArrangementTypes.MortgageRetention or (int)SalesArrangementTypes.MortgageRefixation or (int)SalesArrangementTypes.MortgageExtraPayment))
+        {
+            throw new NobyValidationException(90032);
+        }
 
         // pokud je to produktovy SA, tak dal, jinak rovnou odeslat
         var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken)).First(t => t.Id == saInstance.SalesArrangementTypeId);
@@ -77,32 +59,32 @@ internal sealed class SendToCmpHandler
 
             await DeleteRedundantContractRelationship(saInstance.CaseId, customersData.RedundantCustomersOnProduct, cancellationToken);
 
-            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+			await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
 
-            // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
+			// odeslat do SB
+			await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
 
             // update case state
             await _caseService.UpdateCaseState(saInstance.CaseId, (int)CaseStates.InApproval, cancellationToken);
         }
         else
         {
-            await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
+			await ArchiveElectronicDocumets(saInstance.SalesArrangementId, cancellationToken);
 
-            // odeslat do SB
-            await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
+			// odeslat do SB
+			await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
         }
     }
 
-    private async Task ArchiveElectronicDocumets(int salesArrangementId, CancellationToken cancellationToken)
-    {
-        var digitallySignedDocuments = (await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, cancellationToken))
-                                       .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic);
-        
-        await Task.WhenAll(digitallySignedDocuments.Select(doc => _documentOnSAService.SetDocumentOnSAArchived(doc.DocumentOnSAId!.Value, cancellationToken)));
-    }
+	private async Task ArchiveElectronicDocumets(int salesArrangementId, CancellationToken cancellationToken)
+	{
+		var digitallySignedDocuments = (await _documentOnSAService.GetDocumentsOnSAList(salesArrangementId, cancellationToken))
+									   .DocumentsOnSA.Where(d => d.IsSigned && d.SignatureTypeId == (int)SignatureTypes.Electronic && !d.IsArchived);
 
-    private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
+		await Task.WhenAll(digitallySignedDocuments.Select(doc => _documentOnSAService.SetDocumentOnSAArchived(doc.DocumentOnSAId!.Value, cancellationToken)));
+	}
+
+	private async Task validateFlowSwitches(int salesArrangementId, int salesArrangementCategory, CancellationToken cancellationToken)
     {
         var flowSwitches = await _salesArrangementService.GetFlowSwitches(salesArrangementId, cancellationToken);
         var sections = await _mediator.Send(new GetFlowSwitchesRequest(salesArrangementId), cancellationToken);
@@ -152,8 +134,8 @@ internal sealed class SendToCmpHandler
         {
             ValidateCustomerIdentifiers(customerOnSa.CustomerIdentifiers, customerOnSa.CustomerOnSAId);
 
-            var identityMp = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
-            var identityKb = customerOnSa.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+            var identityMp = customerOnSa.CustomerIdentifiers.GetMpIdentity();
+            var identityKb = customerOnSa.CustomerIdentifiers.GetKbIdentity();
 
             return new CustomerOnSaExtended
             {
@@ -180,7 +162,7 @@ internal sealed class SendToCmpHandler
         {
             var customerMp = await _customerService.GetCustomerDetail(customerOnSa.IdentityMp, cancellationToken);
 
-            if (customerMp.Identities.All(c => c.IdentityScheme != Identity.Types.IdentitySchemes.Kb))
+            if (!customerMp.Identities.HasKbIdentity())
             {
                 var updateTask = _customerService.UpdateCustomerIdentifiers(new UpdateCustomerIdentifiersRequest
                 {
@@ -244,7 +226,7 @@ internal sealed class SendToCmpHandler
     {
         foreach (var redundantCustomerOnProduct in redundantCustomersOnProduct)
         {
-            await _productService.DeleteContractRelationship(redundantCustomerOnProduct.CustomerIdentifiers.First(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Mp).IdentityId, caseId, cancellationToken);
+            await _productService.DeleteContractRelationship(redundantCustomerOnProduct.CustomerIdentifiers.GetMpIdentity().IdentityId, caseId, cancellationToken);
         }
     }
 

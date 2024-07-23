@@ -6,7 +6,6 @@ internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
     public const int InstanceIsNotActive = 1;
-
     public const int DownloadRdmCodebooksNamesMissing = 100;
 
     public static IErrorCodesDictionary Init()

@@ -1,16 +1,16 @@
 using CIS.Infrastructure.StartupExtensions;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.UpdateDocumentStatus;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using ExternalServices;
 using ExternalServices.SbQueues;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using ExternalServices.ESignatures.V1;
+using CIS.Infrastructure.Messaging;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
-    .AddErrorCodeMapper(DomainServices.DocumentOnSAService.Api.ErrorCodeMapper.Init())
+	.AddApplicationConfiguration<DomainServices.DocumentOnSAService.Api.Configuration.AppConfiguration>()
+	.AddErrorCodeMapper(DomainServices.DocumentOnSAService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
         services
@@ -25,7 +25,7 @@ SharedComponents.GrpcServiceBuilder
             .AddUserService()
             .AddDocumentGeneratorService();
     })
-    .Build(builder =>
+    .Build((builder, appConfiguration) =>
     {
         // EAS svc
         builder.AddExternalService<IEasClient>();
@@ -39,17 +39,20 @@ SharedComponents.GrpcServiceBuilder
         // ePodpisy fronta
         builder.AddExternalService<ISbQueuesRepository>();
 
-        // registrace background jobu
-        builder.AddCisBackgroundService<CheckDocumentsArchivedJob>();
-        builder.AddCisBackgroundService<CheckDocumentsArchivedJob, CheckDocumentsArchivedJobConfiguration>();
-        builder.AddCisBackgroundService<UpdateDocumentStatusJob>();
-
         // dbcontext
         builder.AddEntityFramework<DomainServices.DocumentOnSAService.Api.Database.DocumentOnSAServiceDbContext>();
+
+		builder
+            .AddCisMessaging()
+            .AddKafkaFlow(msg =>
+            {
+                msg.AddConsumerAvro<DomainServices.DocumentOnSAService.Api.Messaging.DocumentStateChanged.DocumentStateChangedHandler>(appConfiguration.ESignatureDocumentStateChangedTopic);
+			});
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, appConfiguration) =>
     {
         app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.DocumentOnSAServiceGrpc>();
+        app.MapGrpcService<DomainServices.DocumentOnSAService.Api.Endpoints.MaintananceService>();
     })
     .Run();
 

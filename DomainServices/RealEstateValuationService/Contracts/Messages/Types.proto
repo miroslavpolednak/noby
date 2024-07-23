@@ -4,7 +4,7 @@ option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "google/protobuf/wrappers.proto";
 import "GrpcDateTime.proto";
-import "GrpcDecimal.proto";
+import "NullableGrpcDecimal.proto";
 
 message PriceDetail {
     int32 Price = 1;
@@ -54,17 +54,17 @@ message OnlinePreorderData {
     google.protobuf.StringValue BuildingTechnicalStateCode = 1;
     google.protobuf.StringValue BuildingMaterialStructureCode = 2;
     google.protobuf.StringValue FlatSchemaCode = 3;
-    cis.types.GrpcDecimal FlatArea = 4;
+    cis.types.NullableGrpcDecimal FlatArea = 4;
     google.protobuf.StringValue BuildingAgeCode = 5;
 }
 
 message LocalSurveyData {
-    string RealEstateValuationLocalSurveyFunctionCode = 1;
-    string FirstName = 2;
-    string LastName = 3;
-    string PhoneNumber = 4;
-    string PhoneIDC = 5;
-    string Email = 6;
+    google.protobuf.StringValue RealEstateValuationLocalSurveyFunctionCode = 1;
+    google.protobuf.StringValue FirstName = 2;
+    google.protobuf.StringValue LastName = 3;
+    google.protobuf.StringValue PhoneNumber = 4;
+    google.protobuf.StringValue PhoneIDC = 5;
+    google.protobuf.StringValue Email = 6;
 }
 
 message RealEstateValuationDocument {

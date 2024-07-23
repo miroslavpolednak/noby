@@ -1,6 +1,4 @@
-﻿using Google.Api;
-
-namespace NOBY.Infrastructure.ErrorHandling;
+﻿namespace NOBY.Infrastructure.ErrorHandling;
 
 public struct ApiErrorItem
 {
@@ -54,7 +52,7 @@ public struct ApiErrorItem
     /// </summary>
     public ErrorReason? Reason { get; set; }
 
-    public class ErrorReason
+    public sealed class ErrorReason
     {
         /// <summary>
         /// Typ problemu.

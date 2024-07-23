@@ -10,4 +10,12 @@ internal sealed class OfferServiceDbContext
         : base(aggregate) { }
 
     public DbSet<Entities.Offer> Offers { get; set; }
+    
+    public DbSet<Entities.ResponseCode> ResponseCodes { get; set; }
+
+    public DbSet<Entities.CaseIdAccountNumberKonstDb> CaseIdAccountNumbers { get; set; }
+
+    public DbSet<Entities.ApplicationEvent> ApplicationEvents { get; set; }
+    
+
 }

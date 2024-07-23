@@ -15,18 +15,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-    <PackageReference Include="dbup-core" Version="5.0.76" />
-    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="dbup-core" Version="5.0.87" />
+    <PackageReference Include="MediatR" Version="12.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
-	  <PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
-	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
+	  <PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
+	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\CIS\Infrastructure.Messaging\CIS.Infrastructure.Messaging.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\ExternalServices\EasSimulationHT\ExternalServices.EasSimulationHT.csproj" />
+    <ProjectReference Include="..\..\..\ExternalServices\Eas\ExternalServices.Eas.csproj" />
+    <ProjectReference Include="..\..\..\ExternalServices\SbWebApi\ExternalServices.SbWebApi.csproj" />
     <ProjectReference Include="..\..\..\Shared\DatabaseMigrationsSupport\DatabaseMigrationsSupport.csproj" />
     <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\Contracts\DomainServices.OfferService.Contracts.csproj" />

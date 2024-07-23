@@ -3,16 +3,10 @@ using DomainServices.ProductService.Contracts;
 
 namespace NOBY.Api.Endpoints.Product.GetCaseIdByPcpId;
 
-internal class GetCaseIdByPcpIdHandler : IRequestHandler<GetCaseIdByPcpIdRequest, GetCaseIdByPcpIdResponse>
+internal sealed class GetCaseIdByPcpIdHandler(IProductServiceClient _productService)
+        : IRequestHandler<GetCaseIdByPcpIdRequest, ProductGetCaseIdByPcpIdResponse>
 {
-    private readonly IProductServiceClient _productService;
-
-    public GetCaseIdByPcpIdHandler(IProductServiceClient productService)
-    {
-        _productService = productService;
-    }
-
-    public async Task<GetCaseIdByPcpIdResponse> Handle(GetCaseIdByPcpIdRequest request, CancellationToken cancellationToken)
+    public async Task<ProductGetCaseIdByPcpIdResponse> Handle(GetCaseIdByPcpIdRequest request, CancellationToken cancellationToken)
     {
         var dsRequest = new GetCaseIdRequest
         {
@@ -21,6 +15,6 @@ internal class GetCaseIdByPcpIdHandler : IRequestHandler<GetCaseIdByPcpIdRequest
 
         var response = await _productService.GetCaseId(dsRequest, cancellationToken);
 
-        return new GetCaseIdByPcpIdResponse(response.CaseId);
+        return new ProductGetCaseIdByPcpIdResponse { CaseId = response.CaseId };
     }
 }

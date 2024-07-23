@@ -1,24 +1,22 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.HouseholdService.Clients;
 using DomainServices.CodebookService.Clients;
+using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 
-internal sealed class GetCustomerDetailWithChangesHandler
-    : IRequestHandler<GetCustomerDetailWithChangesRequest, GetCustomerDetailWithChangesResponse>
+internal sealed class GetCustomerDetailWithChangesHandler : IRequestHandler<GetCustomerDetailWithChangesRequest, GetCustomerDetailWithChangesResponse>
 {
     public async Task<GetCustomerDetailWithChangesResponse> Handle(GetCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
-        // customer instance
-        var customerOnSA = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
+        var customerInfo = await _changedDataService.GetCustomerWithChangedData(request.CustomerOnSAId, cancellationToken);
 
         // SA instance
-        var salesArrangement = await _salesArrangementService.GetSalesArrangement(customerOnSA.SalesArrangementId, cancellationToken);
+        var salesArrangement = await _salesArrangementService.GetSalesArrangement(customerInfo.CustomerOnSA.SalesArrangementId, cancellationToken);
 
         await checkProductTypeMandant(salesArrangement.CaseId, cancellationToken);
 
-        return await _changedDataService.GetCustomerWithChangedData<GetCustomerDetailWithChangesResponse>(customerOnSA, cancellationToken);
+        return CustomerMapper.MapCustomerToResponseDto<GetCustomerDetailWithChangesResponse>(customerInfo.CustomerWithChangedData, customerInfo.CustomerOnSA);
     }
 
     private async Task checkProductTypeMandant(long caseId, CancellationToken cancellationToken)
@@ -36,20 +34,17 @@ internal sealed class GetCustomerDetailWithChangesHandler
     private readonly CustomerWithChangedDataService _changedDataService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
     private readonly ICaseServiceClient _caseService;
 
     public GetCustomerDetailWithChangesHandler(
         CustomerWithChangedDataService changedDataService,
         ICodebookServiceClient codebookService,
         ISalesArrangementServiceClient salesArrangementService,
-        ICustomerOnSAServiceClient customerOnSAService,
         ICaseServiceClient caseService)
     {
         _changedDataService = changedDataService;
         _codebookService = codebookService;
         _salesArrangementService = salesArrangementService;
-        _customerOnSAService = customerOnSAService;
         _caseService = caseService;
     }
 }

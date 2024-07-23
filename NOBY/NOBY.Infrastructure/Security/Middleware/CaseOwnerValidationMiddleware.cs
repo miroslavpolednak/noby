@@ -1,29 +1,27 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using NOBY.Infrastructure.ErrorHandling;
 using NOBY.Infrastructure.Security.Attributes;
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
 namespace NOBY.Infrastructure.Security.Middleware;
 
 /// <summary>
 /// Middleware pro kontrolu vlastníka Case.
 /// </summary>
-public sealed class CaseOwnerValidationMiddleware
+public sealed class CaseOwnerValidationMiddleware(RequestDelegate _next)
 {
     // klíče pod kterými jsou v route daná ID entit
     const string _caseIdKey = "caseId";
     const string _salesArrangementIdKey = "salesArrangementId";
     const string _customerOnSAIdKey = "customerOnSAId";
     const string _householdIdKey = "householdId";
-
-    private readonly RequestDelegate _next;
-
-    public CaseOwnerValidationMiddleware(RequestDelegate next) =>
-        _next = next;
 
     public async Task Invoke(
         HttpContext context,
@@ -33,7 +31,7 @@ public sealed class CaseOwnerValidationMiddleware
         var routeValues = context.GetRouteData().Values;
         var endpoint = context.GetEndpoint();
         var skipCheck = endpoint?.Metadata.OfType<NobySkipCaseOwnerValidationAttribute>().Any() ?? true;
-        var skipValidateCaseStateAndProductSA = endpoint?.Metadata.OfType<NobySkipCaseOwnerStateAndProductSAValidationAttribute>().Any() ?? true;
+        var skipValidateCaseStateAndProductSA = endpoint?.Metadata.OfType<NobySkipCaseStateAndProductSAValidationAttribute>().Any() ?? true;
 
         if (!skipCheck && (routeValues?.Any() ?? false))
         {
@@ -109,6 +107,13 @@ public sealed class CaseOwnerValidationMiddleware
                 };
 
                 SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, !skipValidateCaseStateAndProductSA, salesArrangementTypeId);
+
+                // pokud endpoint vyzaduje specificky stav Case
+                var requiredCaseStates = endpoint?.Metadata.OfType<NobyRequiredCaseStatesAttribute>().FirstOrDefault();
+                if ((requiredCaseStates?.CaseStates.Length ?? 0) > 0 && !requiredCaseStates!.CaseStates.Contains((CaseStates)caseInstance.CaseState))
+                {
+                    throw new NobyValidationException(90032, $"Case is in forbidden State: {caseInstance.CaseState}; required states: {string.Join(",", requiredCaseStates.CaseStates)}");
+                }
             }
 
             async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()

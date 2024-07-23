@@ -1,4 +1,6 @@
-﻿using CIS.Core.Exceptions;
+﻿#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+
+using CIS.Core.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.Logging;

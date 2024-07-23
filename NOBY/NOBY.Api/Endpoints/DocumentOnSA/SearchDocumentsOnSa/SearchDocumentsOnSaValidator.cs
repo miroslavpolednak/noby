@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.Search;
 
-public class SearchDocumentsOnSaValidator : AbstractValidator<SearchDocumentsOnSaRequest>
+public class SearchDocumentsOnSaValidator : AbstractValidator<DocumentOnSaSearchDocumentsOnSaRequest>
 {
 	public SearchDocumentsOnSaValidator()
 	{
-        RuleFor(e => e.EACodeMainId).NotNull().WithMessage($"{nameof(SearchDocumentsOnSaRequest.EACodeMainId)} is required");
+        RuleFor(e => e.EaCodeMainId).NotNull().WithMessage($"{nameof(DocumentOnSaSearchDocumentsOnSaRequest.EaCodeMainId)} is required");
     }
 }

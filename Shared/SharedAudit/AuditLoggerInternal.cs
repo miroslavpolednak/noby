@@ -73,6 +73,12 @@ internal sealed class AuditLoggerInternal
 
         // next seq no
         long? seqId = eventDescriptor.GenerateSequenceNumber ? context.SequenceId ?? _databaseWriter.GetSequenceId() : default(long?);
+        if (seqId.HasValue)
+        {
+            // tise failovat
+            return;
+        }
+
         string? hashId = null;
         var time = context.Timestamp.ToString("o", _culture);
 

@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Attributes;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.UserService.Clients;
@@ -56,6 +56,6 @@ internal sealed class PerformerProvider
     {
         var tasks = await _caseService.GetTaskList(caseId, cancellationToken);
 
-        return tasks.Where(t => t is { TaskTypeId: 7, Cancelled: false }).MaxBy(x => x.CreatedOn);
+        return tasks.Where(t => t is { TaskTypeId: 7, Cancelled: false }).MaxBy(x => (DateTime?)x.CreatedOn);
     }
 }

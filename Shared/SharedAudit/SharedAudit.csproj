@@ -21,7 +21,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Dapper" Version="2.1.28" />
+		<PackageReference Include="Dapper" Version="2.1.44" />
 		<PackageReference Include="FastEnum" Version="1.8.0" />
 	</ItemGroup>
 

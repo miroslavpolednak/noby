@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2
+namespace cz.kb.api.mortgageservicingevents.v3
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,22 +14,22 @@ namespace cz.kb.api.mortgageservicingevents.v2
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// Změny na produktu hypoteky. Schema belongs to API MortgageServicingEvents.v2. Root type description: General entity for any event. CDM entity name(s): Event.
+	/// Změny na produktu hypoteky. Schema belongs to API MortgageServicingEvents.v3. Root type description: General entity for any event. CDM entity name(s): Event.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class MortgageInstanceChanged : global::Avro.Specific.ISpecificRecord
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"MortgageInstanceChanged\",\"doc\":\"Změny na produktu hypote" +
-				"ky. Schema belongs to API MortgageServicingEvents.v2. Root type description: Gen" +
+				"ky. Schema belongs to API MortgageServicingEvents.v3. Root type description: Gen" +
 				"eral entity for any event. CDM entity name(s): Event.\",\"namespace\":\"cz.kb.api.mo" +
-				"rtgageservicingevents.v2\",\"fields\":[{\"name\":\"eventId\",\"doc\":\"Unique identifier o" +
+				"rtgageservicingevents.v3\",\"fields\":[{\"name\":\"eventId\",\"doc\":\"Unique identifier o" +
 				"f event. CDM attribute class name: EventId. Attribute has simple type ST_String1" +
 				"00 with description: General string of max length 100.\",\"type\":{\"type\":\"string\"," +
 				"\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}},{\"name\":\"New\",\"type\":{\"type" +
 				"\":\"record\",\"name\":\"MortgageInstance\",\"doc\":\"Specialization of product instance f" +
 				"or consumer loan business product.. ## Mortgage product instance. CDM entity nam" +
 				"e(s): ConsumerLoanInstance,MortgageInstance.\",\"namespace\":\"cz.kb.api.mortgageser" +
-				"vicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"activeExactlyFrom\",\"doc\":\"D" +
+				"vicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"activeExactlyFrom\",\"doc\":\"D" +
 				"ate from which the item is active#CZ#Datum od ktereho je polozka aktivni.  CDM a" +
 				"ttribute class name: ActiveExactlyFrom. Standard avro dateTime represented by th" +
 				"e number of milliseconds from the unix epoch, see avro specification: https://av" +
@@ -45,10 +45,10 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"t. O obchodu je mozne mluvit pouze v pripade akce predeje (prodej, zmena nebo uz" +
 				"avreni produktu, potazmo instance sluzby). O obchodu se neda mluvit v pripade pr" +
 				"edprodeje. CDM entity name(s): Agreement.\",\"namespace\":\"cz.kb.api.mortgageservic" +
-				"ingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"agreementApproval\",\"default\":n" +
+				"ingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"agreementApproval\",\"default\":n" +
 				"ull,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Approval\",\"doc\":\"General entity repr" +
 				"esenting approval process E.g. agreement or exception approval. CDM entity name(" +
-				"s): Approval.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstanc" +
+				"s): Approval.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstanc" +
 				"e\",\"fields\":[{\"name\":\"on\",\"doc\":\"Time when overall approval was made. CDM attrib" +
 				"ute class name: ApprovalOn. Standard avro dateTime represented by the number of " +
 				"milliseconds from the unix epoch, see avro specification: https://avro.apache.or" +
@@ -64,16 +64,16 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"esArrangement\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"SalesArran" +
 				"gement\",\"doc\":\"Entity representing any formal \'agreement\' within any sales relat" +
 				"ed area. CDM entity name(s): SalesArrangement.\",\"namespace\":\"cz.kb.api.mortgages" +
-				"ervicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"arrangementAcceptance\",\"d" +
+				"ervicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"arrangementAcceptance\",\"d" +
 				"efault\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"ArrangementAcceptance\",\"doc" +
 				"\":\"\'Root of\' acceptance of arrangement. I.e. covers all properties and relations" +
 				"hips regarding acceptance of arrangement.Example of acceptance of arrangement is" +
 				" signing of contract. CDM entity name(s): ArrangementAcceptance.\",\"namespace\":\"c" +
-				"z.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"Arrange" +
+				"z.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"Arrange" +
 				"mentAcceptanceByFirstApplicant\",\"type\":{\"type\":\"record\",\"name\":\"ArrangemenAccept" +
 				"anceByNaturalPerson\",\"doc\":\"Official agreement of one party to something(e.g. ag" +
 				"reement, application).E.g. signature of one person. CDM entity name(s): Arrangem" +
-				"entAcceptanceByNaturalPerson.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2" +
+				"entAcceptanceByNaturalPerson.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3" +
 				".mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date when party accepted the ar" +
 				"rangement. CDM attribute class name: ArrangementAcceptanceByNaturalPersonOn. Sta" +
 				"ndard avro date represented by the number of days from the unix epoch, see avro " +
@@ -86,7 +86,7 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"ll product groups, ids will not be united.Second reason is existence of public i" +
 				"d, sales arrangement identifier given to customer and therefore different from i" +
 				"nternal one. CDM entity name(s): SalesArrangementId.\",\"namespace\":\"cz.kb.api.mor" +
-				"tgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"id\",\"doc\":\"Multi at" +
+				"tgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"id\",\"doc\":\"Multi at" +
 				"tribute identifier value itself. CDM attribute class name: SalesArrangementIdId." +
 				" Attribute has simple type ST_IdString100Default with description: Standard data" +
 				" type to be used as ID, i.e. unique identifier. Longer vevrsion - 100 characters" +
@@ -95,12 +95,12 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"actSalesArrangement\",\"type\":{\"type\":\"record\",\"name\":\"ContractSalesArrangement\",\"" +
 				"doc\":\"Entity representing any formal \'agreement\' within any sales related area. " +
 				"CDM entity name(s): SalesArrangement.\",\"namespace\":\"cz.kb.api.mortgageservicinge" +
-				"vents.v2.mortgageinstance\",\"fields\":[{\"name\":\"ArrangementAcceptance\",\"type\":{\"ty" +
+				"vents.v3.mortgageinstance\",\"fields\":[{\"name\":\"ArrangementAcceptance\",\"type\":{\"ty" +
 				"pe\":\"record\",\"name\":\"ContractArrangementAcceptance\",\"doc\":\"\'Root of\' acceptance " +
 				"of arrangement. I.e. covers all properties and relationships regarding acceptanc" +
 				"e of arrangement.Example of acceptance of arrangement is signing of contract. CD" +
 				"M entity name(s): ArrangementAcceptance.\",\"namespace\":\"cz.kb.api.mortgageservici" +
-				"ngevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date when overall as" +
+				"ngevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date when overall as" +
 				"sent was reached. CDM attribute class name: ArrangementAcceptanceOn. Standard av" +
 				"ro date represented by the number of days from the unix epoch, see avro specific" +
 				"ation: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters t" +
@@ -111,7 +111,7 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"cause SalesArrangement is very large scope = across all product groups, ids will" +
 				" not be united.Second reason is existence of public id, sales arrangement identi" +
 				"fier given to customer and therefore different from internal one. CDM entity nam" +
-				"e(s): SalesArrangementId.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mor" +
+				"e(s): SalesArrangementId.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mor" +
 				"tgageinstance\",\"fields\":[{\"name\":\"id\",\"doc\":\"Multi attribute identifier value it" +
 				"self. CDM attribute class name: SalesArrangementIdId. Attribute has simple type " +
 				"ST_IdString100Default with description: Standard data type to be used as ID, i.e" +
@@ -121,7 +121,7 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"l,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"LoanWithdrawal\",\"doc\":\"One withdrawal " +
 				"from one sold loan\'s purpose.. ## Request for withdrawals (not necessarily by cu" +
 				"stomer). CDM entity name(s): LoanWithdrawal,WithdrawalRequest.\",\"namespace\":\"cz." +
-				"kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"date\",\"do" +
+				"kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"date\",\"do" +
 				"c\":\"Depends on state it has meaning: Planned date of withdrawal/ Date of perform" +
 				"ed withdrawal. CDM attribute class name: LoanWithdrawalDate. Standard avro dateT" +
 				"ime represented by the number of milliseconds from the unix epoch, see avro spec" +
@@ -133,7 +133,7 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"\":\"InstanceState\",\"doc\":\"State of any marketable item instance (agreement, produ" +
 				"ct instance, service instance,...).#CZ#Stav instance jakekoliv prodejne polozky " +
 				"(obchod, instance produktu, instance sluzby...). CDM entity name(s): InstanceSta" +
-				"te.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields" +
+				"te.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields" +
 				"\":[{\"name\":\"instanceStateCode\",\"type\":{\"type\":\"record\",\"name\":\"InstanceStateCode" +
 				"\",\"doc\":\"Multicodebook property of marketable item instance state (agreement, pr" +
 				"oduct instance, service instance,...) identifier.It is multicodebook because sta" +
@@ -143,7 +143,7 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				" vicehodnotou ciselnikovou promenou, protoze stav je obecna promenna. Ta ma indi" +
 				"vidualne definovane stavy v zavislosti na tom, zda jde o obchod, produkt... . CD" +
 				"M entity name(s): InstanceStateCode.\",\"namespace\":\"cz.kb.api.mortgageservicingev" +
-				"ents.v2.mortgageinstance\",\"fields\":[{\"name\":\"state\",\"doc\":\"Codebook value of sta" +
+				"ents.v3.mortgageinstance\",\"fields\":[{\"name\":\"state\",\"doc\":\"Codebook value of sta" +
 				"te itself.#CZ#Vlastni ciselnikova hodnota stavu. Attribute has specific codebook" +
 				" type: CB_MortgageLifeCyclePhase. CDM attribute class name: InstanceStateCodeSta" +
 				"te. Attribute has simple type CB_MultiCodebookValue with description: Represents" +
@@ -152,342 +152,349 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				"ern\":\"^.{0,100}$\"}}]}}]}]},{\"name\":\"LastLoanWithdrawal\",\"default\":null,\"type\":[\"" +
 				"null\",\"LoanWithdrawal\"]},{\"name\":\"LifeCycleInstanceState\",\"default\":null,\"type\":" +
 				"[\"null\",\"InstanceState\"]},{\"name\":\"LoanAccount\",\"type\":{\"type\":\"record\",\"name\":\"" +
-				"Account\",\"doc\":\"A representation of a product instance as implemented in bank\'s " +
-				"core systems, systems delivering product\'s functionality to customer.. ## This e" +
-				"ntity represents information about account as is used in payment landscape. For " +
-				"example has properties current balance, account number, iban, currency, availabl" +
-				"e balance,.. . If this entity represents multicurrency (MCY) master account (mul" +
-				"ticurrency=true):: the account is called master (parent) account; it acts as env" +
-				"elope for supported currencies subaccounts set; balances and limits attributes r" +
-				"epresent aggregated values from the currencies subaccounts (converted to base cu" +
-				"rrency); currency represents base (nominated) currency of master account.; payme" +
-				"nt domain systems work only with master account information or identification (s" +
-				"ingle master account number plus currency); transactions, holds and interests oc" +
-				"cure only on specific currency subaccounts.;In KB finance called \'aplikacni ucet" +
-				"\'.This is not product sales entity. Do not confuse with CurrentAccountProduct. A" +
-				"lso do not represents general ledger accounts. CDM entity name(s): TechnicalItem" +
-				"Instance,Account.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageins" +
-				"tance\",\"fields\":[{\"name\":\"accountNumber\",\"type\":{\"type\":\"record\",\"name\":\"Account" +
-				"Number\",\"doc\":\"AccountNumber: .AccountNumberPrefix; .AccountNumberCore; .Account" +
-				"NumberBankCode; .AccountNumberIban;. ## Account identification number defined by" +
-				" CNB for domestic paymentshttps://www.cnb.cz/export/sites/cnb/cs/legislativa/.ga" +
-				"lleries/vyhlasky/vyhlaska_169_2011.pdf. ## IBAN (International Bank Account Numb" +
-				"er) representation of the account number by ISO 13616 - for detail description s" +
-				"ee attribute notes. CDM entity name(s): AccountNumberCNB,AccountNumberIBAN.\",\"na" +
-				"mespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"nam" +
-				"e\":\"bankCode\",\"doc\":\"Bank code: 4 digits; contains values from \'Directory of pay" +
-				"ment system codes\' by CNB (https://www.cnb.cz/en/payments/accounts-bank-codes/);" +
-				" e.g.: for \'1234-567890/0100\' the bank code is \'0100\';. CDM attribute class name" +
-				": AccountNumberCNBBankCode. Attribute has simple type ST_BankCode with descripti" +
-				"on: Kod banky.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^" +
-				".{0,4}$\"}},{\"name\":\"core\",\"doc\":\"Core/base of account number (i.e. the number wi" +
-				"thout the bank code and without prefix): 2 to 10 digits; mandatory; e.g.: for \'1" +
-				"234-567890/0100\' the core is \'567890\';. CDM attribute class name: AccountNumberC" +
-				"NBCore. Attribute has simple type ST_AccountNumberCore with description: Cislo u" +
-				"ctu bez prefixu.An account number excluding a prefix.\",\"type\":{\"type\":\"string\",\"" +
-				"avro.java.string\":\"String\",\"pattern\":\"0*[1-9][0-9]*[1-9][0-9]*\"}},{\"name\":\"iban\"" +
-				",\"doc\":\"IBAN representation of the account number: up to 32 characters - XX## ##" +
-				"## #### #### #### #### #### ####; first 2 characters - country code; next 2 char" +
-				"acters are check digits; rest is country dependent - for CZ&amp;SK - 4 digits ba" +
-				"nk code, 6 digits prefix, 10 digits core/base account number; without blanks for" +
-				" electronic communication; grouped by 4 characters for user interfaces;. CDM att" +
-				"ribute class name: AccountNumberIBANIban. Attribute has simple type ST_IBAN with" +
-				" description: The International Bank Account Number (IBAN).\",\"type\":{\"type\":\"str" +
-				"ing\",\"avro.java.string\":\"String\",\"pattern\":\"[A-Z][A-Z][0-9][0-9][0-9A-Z]*\"}},{\"n" +
-				"ame\":\"prefix\",\"doc\":\"Account number prefix: up to 6 digits; optional - could be " +
-				"empty or contain zeroes \'000000\'; e.g.: for \'1234-567890/0100\' the prefix is \'12" +
-				"34\';. CDM attribute class name: AccountNumberCNBPrefix. Attribute has simple typ" +
-				"e ST_AccountNumberPrefix with description: Cislo uctu prefix.An account number p" +
-				"refix. \",\"default\":null,\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"Stri" +
-				"ng\",\"pattern\":\"[0-9]*\"}]}]}},{\"name\":\"AccountState\",\"default\":null,\"type\":[\"null" +
-				"\",{\"type\":\"record\",\"name\":\"TechnicalItemInstanceState\",\"doc\":\"Multicodebook prop" +
-				"erty of technical product instance state. As the name suggests, it defines state" +
-				" of product instance in its core system.It is multicodebook as state of technica" +
-				"l product instance is generic concept and will differ across technical product i" +
-				"nstance core systems. CDM entity name(s): TechnicalItemInstanceState.\",\"namespac" +
-				"e\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"cl" +
-				"ass\",\"doc\":\"Attribute that defines codebook that is used in attribute state. CDM" +
-				" attribute class name: TechnicalItemInstanceStateClass. Codebook type: CB_Techni" +
-				"calProductInstanceStateClass.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"Strin" +
-				"g\"}},{\"name\":\"state\",\"doc\":\"Multicodebook value of state itself. Attribute has s" +
-				"pecific codebook type: CB_Undefined. CDM attribute class name: TechnicalItemInst" +
-				"anceStateState. Attribute has simple type CB_MultiCodebookValue with description" +
-				": Represents information that value can be from more than one codebook. Codebook" +
-				" type: CB_Undefined.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"patte" +
-				"rn\":\"^.{0,100}$\"}}]}]}]}},{\"name\":\"loanAmount\",\"type\":{\"type\":\"record\",\"name\":\"L" +
-				"oanAmount\",\"doc\":\"Vyska uveruInformation about loan amount. This is static infor" +
-				"mation. Change only with sale or maintenance action. CDM entity name(s): LoanAmo" +
-				"unt.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"field" +
-				"s\":[{\"name\":\"limit\",\"doc\":\"Vyska uveru, ktora bola schvalena. (Pozor, nie je nut" +
-				"ne suma, ktoru si klient skutocne poziacia)Allowed loan limit. It is maximum amo" +
-				"unt that customer can borrow from bank.E.g. credit card limit, overdraft limit, " +
-				"or contracted consumer loan amount. CDM attribute class name: LoanAmountLimit. A" +
-				"ttribute has simple type ST_AmountMoney with description: Castka.Decimal number " +
-				"representing an amount of money.\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\"" +
-				",\"precision\":17,\"scale\":2}}]}},{\"name\":\"loanBalance\",\"type\":{\"type\":\"record\",\"na" +
-				"me\":\"LoanBalance\",\"doc\":\"Information entity with various loan/credit balance inf" +
-				"ormation on given date.. CDM entity name(s): LoanBalance.\",\"namespace\":\"cz.kb.ap" +
-				"i.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"amountNotYetWi" +
-				"thdrawn\",\"doc\":\"Amount money that was not yet withdrawn from this loan. CDM attr" +
-				"ibute class name: LoanBalanceAmountNotYetWithdrawn. Attribute has simple type ST" +
-				"_AmountMoney with description: Castka.Decimal number representing an amount of m" +
-				"oney.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"pr" +
-				"ecision\":17,\"scale\":2}]},{\"name\":\"amountWithdrawn\",\"doc\":\"Amount money that was " +
-				"already withdrawn from this loan. CDM attribute class name: LoanBalanceAmountWit" +
-				"hdrawn. Attribute has simple type ST_AmountMoney with description: Castka.Decima" +
-				"l number representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\"" +
-				":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"interestAm" +
-				"ount\",\"doc\":\"Actual interest amount to be paid. CDM attribute class name: LoanBa" +
-				"lanceInterestAmount. Attribute has simple type ST_AmountMoney with description: " +
-				"Castka.Decimal number representing an amount of money.\",\"default\":null,\"type\":[\"" +
-				"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name" +
-				"\":\"lateFee\",\"doc\":\"All non_standard=late yet unpaid fees related to loan soldpro" +
-				"duct. (additional fees, fees for late repayment of installment). CDM attribute c" +
-				"lass name: LoanBalanceLateFee. Attribute has simple type ST_AmountMoney with des" +
-				"cription: Castka.Decimal number representing an amount of money.\",\"default\":null" +
-				",\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2" +
-				"}]},{\"name\":\"loanFee\",\"doc\":\"All standard yet unpaid fees related to this loan s" +
-				"oldproduct. CDM attribute class name: LoanBalanceLoanFee. Attribute has simple t" +
-				"ype ST_AmountMoney with description: Castka.Decimal number representing an amoun" +
-				"t of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decima" +
-				"l\",\"precision\":17,\"scale\":2}]},{\"name\":\"overdueInstallmentAmount\",\"doc\":\"Sum of " +
-				"overdue installments amount.Has to be disputed!!. CDM attribute class name: Loan" +
-				"BalanceOverdueInstallmentAmount. Attribute has simple type ST_AmountMoney with d" +
-				"escription: Castka.Decimal number representing an amount of money.\",\"default\":nu" +
-				"ll,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\"" +
-				":2}]},{\"name\":\"principalAmount\",\"doc\":\"Actual (not yet repaid) principal amount." +
-				" Relevant for loans. CDM attribute class name: LoanBalancePrincipalAmount. Attri" +
-				"bute has simple type ST_AmountMoney with description: Castka.Decimal number repr" +
-				"esenting an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"log" +
-				"icalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"totalAmount\",\"doc\":\"If " +
-				"loan was to be completely repaid at this time, this is total amount that would b" +
-				"e needed. CDM attribute class name: LoanBalanceTotalAmount. Attribute has simple" +
-				" type ST_AmountMoney with description: Castka.Decimal number representing an amo" +
-				"unt of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"deci" +
-				"mal\",\"precision\":17,\"scale\":2}]}]}},{\"name\":\"loanInstanceInfo\",\"type\":{\"type\":\"r" +
-				"ecord\",\"name\":\"LoanInstanceInfo\",\"doc\":\"Information entity representing any loan" +
-				" product (instance of product). CDM entity name(s): LoanInstanceInfo.\",\"namespac" +
-				"e\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"Ex" +
-				"pectedDrawdownPeriod\",\"type\":{\"type\":\"record\",\"name\":\"DrawdownPeriod\",\"doc\":\"Def" +
-				"ines when loan can be withdrawn. CDM entity name(s): DrawdownPeriod.\",\"namespace" +
-				"\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"dat" +
-				"eFrom\",\"doc\":\"Defines exact date when withdrawal of the loan can be started. CDM" +
-				" attribute class name: DrawdownPeriodDateFrom. Standard avro date represented by" +
-				" the number of days from the unix epoch, see avro specification: https://avro.ap" +
-				"ache.org/docs/1.8.0/spec.html. Consider using converters to date class in code g" +
-				"enerator (see KB Integration Platform wiki for schema registry chapter).\",\"type\"" +
-				":{\"type\":\"int\",\"logicalType\":\"date\"}},{\"name\":\"dateUntil\",\"doc\":\"Defines exact d" +
-				"ate when all purposes on the loan must be completely withdrawn. CDM attribute cl" +
-				"ass name: DrawdownPeriodDateUntil. Standard avro date represented by the number " +
+				"Account\",\"doc\":\"This entity represents information about account as is used in p" +
+				"ayment landscape. For example has properties current balance, account number, ib" +
+				"an, currency, available balance,.. . If this entity represents multicurrency (MC" +
+				"Y) master account (multicurrency=true):: the account is called master (parent) a" +
+				"ccount; it acts as envelope for supported currencies subaccounts set; balances a" +
+				"nd limits attributes represent aggregated values from the currencies subaccounts" +
+				" (converted to base currency); currency represents base (nominated) currency of " +
+				"master account.; payment domain systems work only with master account informatio" +
+				"n or identification (single master account number plus currency); transactions, " +
+				"holds and interests occure only on specific currency subaccounts.;To be deleted:" +
+				"In KB finance called \'aplikacni ucet\'.This is not product sales entity. Do not c" +
+				"onfuse with CurrentAccountProduct. Also do not represents general ledger account" +
+				"s.. ## A representation of a product instance as implemented in bank\'s core syst" +
+				"ems, systems delivering product\'s functionality to customer. CDM entity name(s):" +
+				" Account,TechnicalItemInstance.\",\"namespace\":\"cz.kb.api.mortgageservicingevents." +
+				"v3.mortgageinstance\",\"fields\":[{\"name\":\"accountNumber\",\"type\":{\"type\":\"record\",\"" +
+				"name\":\"AccountNumber\",\"doc\":\"AccountNumber: .AccountNumberPrefix; .AccountNumber" +
+				"Core; .AccountNumberBankCode; .AccountNumberIban;. ## IBAN (International Bank A" +
+				"ccount Number) representation of the account number by ISO 13616 - for detail de" +
+				"scription see attribute notes. ## Account identification number defined by CNB f" +
+				"or domestic paymentshttps://www.cnb.cz/export/sites/cnb/cs/legislativa/.gallerie" +
+				"s/vyhlasky/vyhlaska_169_2011.pdf. CDM entity name(s): AccountNumberIBAN,AccountN" +
+				"umberCNB.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"" +
+				"fields\":[{\"name\":\"bankCode\",\"doc\":\"Bank code: 4 digits; contains values from \'Di" +
+				"rectory of payment system codes\' by CNB (https://www.cnb.cz/en/payments/accounts" +
+				"-bank-codes/); e.g.: for \'1234-567890/0100\' the bank code is \'0100\';. CDM attrib" +
+				"ute class name: AccountNumberCNBBankCode. Attribute has simple type ST_BankCode " +
+				"with description: Kod banky.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String" +
+				"\",\"pattern\":\"^.{0,4}$\"}},{\"name\":\"core\",\"doc\":\"Core/base of account number (i.e." +
+				" the number without the bank code and without prefix): 2 to 10 digits; mandatory" +
+				"; e.g.: for \'1234-567890/0100\' the core is \'567890\';. CDM attribute class name: " +
+				"AccountNumberCNBCore. Attribute has simple type ST_AccountNumberCore with descri" +
+				"ption: Cislo uctu bez prefixu.An account number excluding a prefix.\",\"type\":{\"ty" +
+				"pe\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"0*[1-9][0-9]*[1-9][0-9]*\"}}," +
+				"{\"name\":\"iban\",\"doc\":\"IBAN representation of the account number: up to 32 charac" +
+				"ters - XX## #### #### #### #### #### #### ####; first 2 characters - country cod" +
+				"e; next 2 characters are check digits; rest is country dependent - for CZ&amp;SK" +
+				" - 4 digits bank code, 6 digits prefix, 10 digits core/base account number; with" +
+				"out blanks for electronic communication; grouped by 4 characters for user interf" +
+				"aces;. CDM attribute class name: AccountNumberIBANIban. Attribute has simple typ" +
+				"e ST_IBAN with description: The International Bank Account Number (IBAN).\",\"type" +
+				"\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"[A-Z][A-Z][0-9][0-9][0" +
+				"-9A-Z]*\"}},{\"name\":\"prefix\",\"doc\":\"Account number prefix: up to 6 digits; option" +
+				"al - could be empty or contain zeroes \'000000\'; e.g.: for \'1234-567890/0100\' the" +
+				" prefix is \'1234\';. CDM attribute class name: AccountNumberCNBPrefix. Attribute " +
+				"has simple type ST_AccountNumberPrefix with description: Cislo uctu prefix.An ac" +
+				"count number prefix. \",\"default\":null,\"type\":[\"null\",{\"type\":\"string\",\"avro.java" +
+				".string\":\"String\",\"pattern\":\"[0-9]*\"}]}]}},{\"name\":\"AccountState\",\"default\":null" +
+				",\"type\":[\"null\",{\"type\":\"record\",\"name\":\"TechnicalItemInstanceState\",\"doc\":\"Mult" +
+				"icodebook property of technical product instance state. As the name suggests, it" +
+				" defines state of product instance in its core system.It is multicodebook as sta" +
+				"te of technical product instance is generic concept and will differ across techn" +
+				"ical product instance core systems. CDM entity name(s): TechnicalItemInstanceSta" +
+				"te.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields" +
+				"\":[{\"name\":\"class\",\"doc\":\"Attribute that defines codebook that is used in attrib" +
+				"ute state. CDM attribute class name: TechnicalItemInstanceStateClass. Codebook t" +
+				"ype: CB_TechnicalProductInstanceStateClass.\",\"type\":{\"type\":\"string\",\"avro.java." +
+				"string\":\"String\"}},{\"name\":\"state\",\"doc\":\"Multicodebook value of state itself. A" +
+				"ttribute has specific codebook type: CB_Undefined. CDM attribute class name: Tec" +
+				"hnicalItemInstanceStateState. Attribute has simple type CB_MultiCodebookValue wi" +
+				"th description: Represents information that value can be from more than one code" +
+				"book. Codebook type: CB_Undefined.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"" +
+				"String\",\"pattern\":\"^.{0,100}$\"}}]}]}]}},{\"name\":\"loanAmount\",\"type\":{\"type\":\"rec" +
+				"ord\",\"name\":\"LoanAmount\",\"doc\":\"Vyska uveruInformation about loan amount. This i" +
+				"s static information. Change only with sale or maintenance action. CDM entity na" +
+				"me(s): LoanAmount.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgagein" +
+				"stance\",\"fields\":[{\"name\":\"limit\",\"doc\":\"Vyska uveru, ktora bola schvalena. (Poz" +
+				"or, nie je nutne suma, ktoru si klient skutocne poziacia)Allowed loan limit. It " +
+				"is maximum amount that customer can borrow from bank.E.g. credit card limit, ove" +
+				"rdraft limit, or contracted consumer loan amount. CDM attribute class name: Loan" +
+				"AmountLimit. Attribute has simple type ST_AmountMoney with description: Castka.D" +
+				"ecimal number representing an amount of money.\",\"type\":{\"type\":\"bytes\",\"logicalT" +
+				"ype\":\"decimal\",\"precision\":17,\"scale\":2}}]}},{\"name\":\"loanBalance\",\"type\":{\"type" +
+				"\":\"record\",\"name\":\"LoanBalance\",\"doc\":\"Information entity with various loan/cred" +
+				"it balance information on given date.. CDM entity name(s): LoanBalance.\",\"namesp" +
+				"ace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"" +
+				"amountNotYetWithdrawn\",\"doc\":\"Amount money that was not yet withdrawn from this " +
+				"loan. CDM attribute class name: LoanBalanceAmountNotYetWithdrawn. Attribute has " +
+				"simple type ST_AmountMoney with description: Castka.Decimal number representing " +
+				"an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\"" +
+				":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"amountWithdrawn\",\"doc\":\"Amount m" +
+				"oney that was already withdrawn from this loan. CDM attribute class name: LoanBa" +
+				"lanceAmountWithdrawn. Attribute has simple type ST_AmountMoney with description:" +
+				" Castka.Decimal number representing an amount of money.\",\"default\":null,\"type\":[" +
+				"\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"nam" +
+				"e\":\"interestAmount\",\"doc\":\"Actual interest amount to be paid. CDM attribute clas" +
+				"s name: LoanBalanceInterestAmount. Attribute has simple type ST_AmountMoney with" +
+				" description: Castka.Decimal number representing an amount of money.\",\"default\":" +
+				"null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scal" +
+				"e\":2}]},{\"name\":\"lateFee\",\"doc\":\"All non_standard=late yet unpaid fees related t" +
+				"o loan soldproduct. (additional fees, fees for late repayment of installment). C" +
+				"DM attribute class name: LoanBalanceLateFee. Attribute has simple type ST_Amount" +
+				"Money with description: Castka.Decimal number representing an amount of money.\"," +
+				"\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision" +
+				"\":17,\"scale\":2}]},{\"name\":\"loanFee\",\"doc\":\"All standard yet unpaid fees related " +
+				"to this loan soldproduct. CDM attribute class name: LoanBalanceLoanFee. Attribut" +
+				"e has simple type ST_AmountMoney with description: Castka.Decimal number represe" +
+				"nting an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logica" +
+				"lType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"overdueInstallmentAmount\"," +
+				"\"doc\":\"Sum of overdue installments amount.Has to be disputed!!. CDM attribute cl" +
+				"ass name: LoanBalanceOverdueInstallmentAmount. Attribute has simple type ST_Amou" +
+				"ntMoney with description: Castka.Decimal number representing an amount of money." +
+				"\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precisi" +
+				"on\":17,\"scale\":2}]},{\"name\":\"principalAmount\",\"doc\":\"Actual (not yet repaid) pri" +
+				"ncipal amount. Relevant for loans. CDM attribute class name: LoanBalancePrincipa" +
+				"lAmount. Attribute has simple type ST_AmountMoney with description: Castka.Decim" +
+				"al number representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type" +
+				"\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"totalAmou" +
+				"nt\",\"doc\":\"If loan was to be completely repaid at this time, this is total amoun" +
+				"t that would be needed. CDM attribute class name: LoanBalanceTotalAmount. Attrib" +
+				"ute has simple type ST_AmountMoney with description: Castka.Decimal number repre" +
+				"senting an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"bytes\",\"logi" +
+				"calType\":\"decimal\",\"precision\":17,\"scale\":2}]},{\"name\":\"totalAmountWithoutUncred" +
+				"itedInterest\",\"doc\":\".If loan was to be completely repaid at this time, this is " +
+				"total amount that would be needed. CDM attribute class name: LoanBalanceTotalAmo" +
+				"unt. Attribute has simple type ST_AmountMoney with description: Castka.Decimal n" +
+				"umber representing an amount of money.\",\"default\":null,\"type\":[\"null\",{\"type\":\"b" +
+				"ytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}]}]}},{\"name\":\"loanInstan" +
+				"ceInfo\",\"type\":{\"type\":\"record\",\"name\":\"LoanInstanceInfo\",\"doc\":\"Information ent" +
+				"ity representing any loan product (instance of product). CDM entity name(s): Loa" +
+				"nInstanceInfo.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstan" +
+				"ce\",\"fields\":[{\"name\":\"ExpectedDrawdownPeriod\",\"type\":{\"type\":\"record\",\"name\":\"D" +
+				"rawdownPeriod\",\"doc\":\"Defines when loan can be withdrawn. CDM entity name(s): Dr" +
+				"awdownPeriod.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstanc" +
+				"e\",\"fields\":[{\"name\":\"dateFrom\",\"doc\":\"Defines exact date when withdrawal of the" +
+				" loan can be started. CDM attribute class name: DrawdownPeriodDateFrom. Standard" +
+				" avro date represented by the number of days from the unix epoch, see avro speci" +
+				"fication: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converter" +
+				"s to date class in code generator (see KB Integration Platform wiki for schema r" +
+				"egistry chapter).\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}},{\"name\":\"dateUnti" +
+				"l\",\"doc\":\"Defines exact date when all purposes on the loan must be completely wi" +
+				"thdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date r" +
+				"epresented by the number of days from the unix epoch, see avro specification: ht" +
+				"tps://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date cl" +
+				"ass in code generator (see KB Integration Platform wiki for schema registry chap" +
+				"ter).\",\"default\":null,\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}]}]}},{\"" +
+				"name\":\"loanInstallments\",\"type\":{\"type\":\"record\",\"name\":\"LoanInstallments\",\"doc\"" +
+				":\"One installment amount. It is information entity. It can be used for any insta" +
+				"llment. CDM entity name(s): LoanInstallments.\",\"namespace\":\"cz.kb.api.mortgagese" +
+				"rvicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"dayInMonth\",\"doc\":\"Day wit" +
+				"hin month when installment is due to be paid. CDM attribute class name: LoanInst" +
+				"allmentsDayInMonth. Codebook type: CB_DayOfMonth.\",\"type\":{\"type\":\"string\",\"avro" +
+				".java.string\":\"String\"}},{\"name\":\"firstAnnuityLoanIndividualInstallment\",\"defaul" +
+				"t\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"FirstAnnuityLoanIndividualInstal" +
+				"lment\",\"doc\":\"Individual/concrete repayment of loan - one loan installment. CDM " +
+				"entity name(s): LoanIndividualInstallment.\",\"namespace\":\"cz.kb.api.mortgageservi" +
+				"cingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date of installmen" +
+				"t to be repaid/was repaid. CDM attribute class name: LoanIndividualInstallmentOn" +
+				". Standard avro date represented by the number of days from the unix epoch, see " +
+				"avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using" +
+				" converters to date class in code generator (see KB Integration Platform wiki fo" +
+				"r schema registry chapter).\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}]}]},{\"n" +
+				"ame\":\"loanIndividualInstallment\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\"," +
+				"\"name\":\"LoanIndividualInstallment\",\"doc\":\"Individual/concrete repayment of loan " +
+				"- one loan installment. CDM entity name(s): LoanIndividualInstallment.\",\"namespa" +
+				"ce\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"a" +
+				"mount\",\"doc\":\"Total amount that has to paid as one loan installment. CDM attribu" +
+				"te class name: LoanIndividualInstallmentAmount. Attribute has simple type ST_Amo" +
+				"untMoney with description: Castka.Decimal number representing an amount of money" +
+				".\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}}]}]}" +
+				",{\"name\":\"nextLoanIndividualInstallment\",\"default\":null,\"type\":[\"null\",{\"type\":\"" +
+				"record\",\"name\":\"NextLoanIndividualInstallment\",\"doc\":\"Individual/concrete repaym" +
+				"ent of loan - one loan installment. CDM entity name(s): LoanIndividualInstallmen" +
+				"t.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\"" +
+				":[{\"name\":\"on\",\"doc\":\"Date of installment to be repaid/was repaid. CDM attribute" +
+				" class name: LoanIndividualInstallmentOn. Standard avro date represented by the " +
+				"number of days from the unix epoch, see avro specification: https://avro.apache." +
+				"org/docs/1.8.0/spec.html. Consider using converters to date class in code genera" +
+				"tor (see KB Integration Platform wiki for schema registry chapter).\",\"type\":{\"ty" +
+				"pe\":\"int\",\"logicalType\":\"date\"}}]}]}]}},{\"name\":\"loanMaturity\",\"default\":null,\"t" +
+				"ype\":[\"null\",{\"type\":\"record\",\"name\":\"LoanMaturity\",\"doc\":\"SplatnostBasic inform" +
+				"ation about loan maturity. More detailed information are in PaymentSchedule. CDM" +
+				" entity name(s): LoanMaturity.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v" +
+				"3.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date when loan will be repaid " +
+				"under normal circumstances. CDM attribute class name: LoanMaturityOn. Standard a" +
+				"vro date represented by the number of days from the unix epoch, see avro specifi" +
+				"cation: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters " +
+				"to date class in code generator (see KB Integration Platform wiki for schema reg" +
+				"istry chapter).\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}]}]}]}},{\"name\":\"loa" +
+				"nInterestRate\",\"type\":{\"type\":\"record\",\"name\":\"LoanInterestRate\",\"doc\":\"Specific" +
+				" interest rate of proposed or sold loan business product. This is only THE (prim" +
+				"ary) interest rate. This is NOT any other interest rate on product. CDM entity n" +
+				"ame(s): LoanInterestRate.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mor" +
+				"tgageinstance\",\"fields\":[{\"name\":\"fixedRatePeriod\",\"default\":null,\"type\":[\"null\"" +
+				",{\"type\":\"record\",\"name\":\"FixedRatePeriod\",\"doc\":\"Time that interest rate is fix" +
+				"ed and can not change. CDM entity name(s): FixedRatePeriod.\",\"namespace\":\"cz.kb." +
+				"api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"nextRefixDat" +
+				"e\",\"doc\":\".Date, when the next fixed period of the loan (mortgage) has to be def" +
+				"ined.Datum pristi refixace urokove sazby uveru (hypoteky). CDM attribute class n" +
+				"ame: FixedRatePeriodNextRefixDate. Standard avro date represented by the number " +
 				"of days from the unix epoch, see avro specification: https://avro.apache.org/doc" +
 				"s/1.8.0/spec.html. Consider using converters to date class in code generator (se" +
 				"e KB Integration Platform wiki for schema registry chapter).\",\"default\":null,\"ty" +
-				"pe\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}]}]}},{\"name\":\"loanInstallments\"," +
-				"\"type\":{\"type\":\"record\",\"name\":\"LoanInstallments\",\"doc\":\"One installment amount." +
-				" It is information entity. It can be used for any installment. CDM entity name(s" +
-				"): LoanInstallments.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgage" +
-				"instance\",\"fields\":[{\"name\":\"dayInMonth\",\"doc\":\"Day within month when installmen" +
-				"t is due to be paid. CDM attribute class name: LoanInstallmentsDayInMonth. Codeb" +
-				"ook type: CB_DayOfMonth.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}}," +
-				"{\"name\":\"firstAnnuityLoanIndividualInstallment\",\"default\":null,\"type\":[\"null\",{\"" +
-				"type\":\"record\",\"name\":\"FirstAnnuityLoanIndividualInstallment\",\"doc\":\"Individual/" +
-				"concrete repayment of loan - one loan installment. CDM entity name(s): LoanIndiv" +
-				"idualInstallment.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageins" +
-				"tance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date of installment to be repaid/was repaid" +
-				". CDM attribute class name: LoanIndividualInstallmentOn. Standard avro date repr" +
-				"esented by the number of days from the unix epoch, see avro specification: https" +
-				"://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class" +
-				" in code generator (see KB Integration Platform wiki for schema registry chapter" +
-				").\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}]}]},{\"name\":\"loanIndividualInsta" +
-				"llment\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"LoanIndividualIns" +
-				"tallment\",\"doc\":\"Individual/concrete repayment of loan - one loan installment. C" +
-				"DM entity name(s): LoanIndividualInstallment.\",\"namespace\":\"cz.kb.api.mortgagese" +
-				"rvicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"amount\",\"doc\":\"Total amoun" +
-				"t that has to paid as one loan installment. CDM attribute class name: LoanIndivi" +
-				"dualInstallmentAmount. Attribute has simple type ST_AmountMoney with description" +
-				": Castka.Decimal number representing an amount of money.\",\"type\":{\"type\":\"bytes\"" +
-				",\"logicalType\":\"decimal\",\"precision\":17,\"scale\":2}}]}]},{\"name\":\"nextLoanIndivid" +
-				"ualInstallment\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"NextLoanI" +
-				"ndividualInstallment\",\"doc\":\"Individual/concrete repayment of loan - one loan in" +
-				"stallment. CDM entity name(s): LoanIndividualInstallment.\",\"namespace\":\"cz.kb.ap" +
-				"i.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Dat" +
-				"e of installment to be repaid/was repaid. CDM attribute class name: LoanIndividu" +
-				"alInstallmentOn. Standard avro date represented by the number of days from the u" +
-				"nix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html." +
-				" Consider using converters to date class in code generator (see KB Integration P" +
-				"latform wiki for schema registry chapter).\",\"type\":{\"type\":\"int\",\"logicalType\":\"" +
-				"date\"}}]}]}]}},{\"name\":\"loanMaturity\",\"default\":null,\"type\":[\"null\",{\"type\":\"rec" +
-				"ord\",\"name\":\"LoanMaturity\",\"doc\":\"SplatnostBasic information about loan maturity" +
-				". More detailed information are in PaymentSchedule. CDM entity name(s): LoanMatu" +
-				"rity.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fiel" +
-				"ds\":[{\"name\":\"on\",\"doc\":\"Date when loan will be repaid under normal circumstance" +
-				"s. CDM attribute class name: LoanMaturityOn. Standard avro date represented by t" +
-				"he number of days from the unix epoch, see avro specification: https://avro.apac" +
-				"he.org/docs/1.8.0/spec.html. Consider using converters to date class in code gen" +
-				"erator (see KB Integration Platform wiki for schema registry chapter).\",\"type\":{" +
-				"\"type\":\"int\",\"logicalType\":\"date\"}}]}]}]}},{\"name\":\"loanInterestRate\",\"type\":{\"t" +
-				"ype\":\"record\",\"name\":\"LoanInterestRate\",\"doc\":\"Specific interest rate of propose" +
-				"d or sold loan business product. This is only THE (primary) interest rate. This " +
-				"is NOT any other interest rate on product. CDM entity name(s): LoanInterestRate." +
-				"\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[" +
-				"{\"name\":\"fixedRatePeriod\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":" +
-				"\"FixedRatePeriod\",\"doc\":\"Time that interest rate is fixed and can not change. CD" +
-				"M entity name(s): FixedRatePeriod.\",\"namespace\":\"cz.kb.api.mortgageservicingeven" +
-				"ts.v2.mortgageinstance\",\"fields\":[{\"name\":\"nextRefixDate\",\"doc\":\"Date, when the " +
-				"next fixed period of the loan (mortgage) has to be defined.Datum pristi refixace" +
-				" urokove sazby uveru (hypoteky). CDM attribute class name: FixedRatePeriodNextRe" +
-				"fixDate. Standard avro date represented by the number of days from the unix epoc" +
-				"h, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Conside" +
-				"r using converters to date class in code generator (see KB Integration Platform " +
-				"wiki for schema registry chapter).\",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}," +
-				"{\"name\":\"period\",\"doc\":\"Total length of period in units. If no units are given, " +
-				"default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has" +
-				" simple type ST_PositiveInt with description: Integer with a constraint. The val" +
-				"ue must be a positive number, i.e. zero is excluded.\",\"type\":\"int\"}]}]},{\"name\":" +
-				"\"value\",\"doc\":\"Resulting interest rate, i.e. what customer sees.Urokova mira uve" +
-				"ru.(High level) vbs + srn + margin. CDM attribute class name: LoanInterestRateVa" +
-				"lue. Attribute has simple type ST_InterestRate with description: Urok.Represents" +
-				" an interest rate or its part, (Interest rate, SRN, Margin).E. g. 1.0 (=100%), 0" +
-				".25 (=25%)Limited at 100000%\",\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"pr" +
-				"ecision\":11,\"scale\":8}}]}},{\"name\":\"mktItemInstanceInfo\",\"type\":{\"type\":\"record\"" +
-				",\"name\":\"MktItemInstanceInfo\",\"doc\":\"Information entity. Entity that is used to " +
-				"provide information about any instance of marketable item (product, service, fra" +
-				"me agreement, bundle,...). CDM entity name(s): MktItemInstanceInfo.\",\"namespace\"" +
-				":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"cata" +
-				"logueMktItemInOfferSpecsInfo\",\"type\":{\"type\":\"record\",\"name\":\"CatalogueMktItemIn" +
-				"OfferSpecsInfo\",\"doc\":\"Information about catalogue specification of business pro" +
-				"duct in offer.catalogue = no situation/context available, i.e. generic definitio" +
-				"n of product.  CDM entity name(s): CatalogueMktItemInOfferSpecsInfo.\",\"namespace" +
-				"\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"cat" +
-				"alogueItemObjectCode\",\"type\":{\"type\":\"record\",\"name\":\"CatalogueItemObjectCode\",\"" +
-				"doc\":\"Multiattribute property of any catalog item identification (product, servi" +
-				"ce, offer...). The identifier (object code) does not change when the version cha" +
-				"nges Multi-attribute is used because there is not only one identification of the" +
-				" bank\'s product items (products, services), but there can be several.#CZ#Multiat" +
-				"ributova vlastnost jakekoli identifikace katalogove polozky (produktu, sluzby, n" +
-				"abidky...). Identifikator (object code) se nemeni pri zmene verze Vice atributu " +
-				"je pouzito z duvodu ze neexistuje pouze jedina identifikace produktovych polozek" +
-				" banky (produktu, sluzeb), ale muze jich byt vice. CDM entity name(s): Catalogue" +
-				"ItemObjectCode.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinsta" +
-				"nce\",\"fields\":[{\"name\":\"objectCode\",\"doc\":\"The identifier of the catalog item (p" +
-				"roduct, service, offering, etc.) that does not change when the version of the it" +
-				"em changes.For example, the Standard Tariff Offer has different settings in diff" +
-				"erent versions (e.g. different types and quantities of products included), these" +
-				" versions have different IDs but the same OC as long as it is still the same off" +
-				"er from the bank\'s point of view.#CZ#Identifikator katalogve polozky (produkt, s" +
-				"luzba, nabidka apod.), ktery se nemeni pri zmene verze polozky.Napr. Nabidka tar" +
-				"ifu Standard ma v ruznych verzich ruzna nastaveni (napr. ruzne typy a mnozstvi p" +
-				"roduktu v ni zahrnute), tyto verze maji odlisne ID, ale stejny OC, dokud se jedn" +
-				"a z pohledu banky o stale stejnou nabidku. CDM attribute class name: CatalogueIt" +
-				"emObjectCodeObjectCode. Attribute has simple type ST_CodeDefault with descriptio" +
-				"n: Standard data type to be used on *Code* attributes.\'Code\' is very similar to " +
-				"\'ID\' (i.e. unique identifier) but it is supposed to be human-readable.E.g. Syste" +
-				"mApplicationCode, ProductGroupCode.\",\"type\":{\"type\":\"string\",\"avro.java.string\":" +
-				"\"String\",\"pattern\":\"^.{0,100}$\"}}]}}]}},{\"name\":\"partyInMktItemInstanceInfoes\",\"" +
-				"type\":{\"type\":\"array\",\"items\":{\"type\":\"record\",\"name\":\"PartyInMktItemInstanceInf" +
-				"o\",\"doc\":\"Information entity. Describes party occurrence in context of a marketi" +
-				"ng item instance (product, service, frame agreement, bundle,...). CDM entity nam" +
-				"e(s): PartyInMktItemInstanceInfo.\",\"namespace\":\"cz.kb.api.mortgageservicingevent" +
-				"s.v2.mortgageinstance\",\"fields\":[{\"name\":\"customer\",\"type\":{\"type\":\"record\",\"nam" +
-				"e\":\"Customer\",\"doc\":\" CDM entity name(s): Customer.\",\"namespace\":\"cz.kb.api.mort" +
-				"gageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"customerId\",\"doc\":\" " +
-				"CDM attribute class name: CustomerCustomerId.\",\"type\":\"long\"}]}},{\"name\":\"partyI" +
-				"nMktItemInstanceRole\",\"type\":{\"type\":\"record\",\"name\":\"PartyInMktItemInstanceRole" +
-				"\",\"doc\":\"The role that a party has in a particular product instance.It can be sp" +
-				"ecific to each product, common across a group of products, or even across all pr" +
-				"oducts.E.g. applicant, co-applicant, guarantor for consumer loans#CZ#Role, ktero" +
-				"u ma strana v konkretni instanci produktu.Muze byt specificka pro kazdy produkt," +
-				" spolecna v ramci skupiny produktu nebo dokonce pro vsechny produkty.Napr. zadat" +
-				"el, spoluzadatel, rucitel pro spotrebni uvery. CDM entity name(s): PartyInMktIte" +
-				"mInstanceRole.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstan" +
-				"ce\",\"fields\":[{\"name\":\"partyInMktItemInstanceRoleCode\",\"type\":{\"type\":\"record\",\"" +
-				"name\":\"PartyInMktItemInstanceRoleCode\",\"doc\":\"Multicodebook property representin" +
-				"g code of role (unique identifier) that parties in general can have on products." +
-				"It is multicodebook because roles always exists, but differs per product groups " +
-				"and are not managed centrally. CDM entity name(s): PartyInMktItemInstanceRoleCod" +
-				"e.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\"" +
-				":[{\"name\":\"code\",\"doc\":\"Human readable unique identifier of role on product inst" +
-				"ance. MultiCodebook value itself.Unique across all products. Attribute has speci" +
-				"fic codebook type: CB_CustomerInMortgageInstanceRole. CDM attribute class name: " +
-				"PartyInMktItemInstanceRoleCodeCode. Attribute has simple type CB_MultiCodebookVa" +
-				"lue with description: Represents information that value can be from more than on" +
-				"e codebook. Codebook type: CB_CustomerInMortgageInstanceRole.\",\"type\":{\"type\":\"s" +
-				"tring\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}}]}}]}}]}}},{\"name\":\"t" +
-				"ermination\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Termination\"," +
-				"\"doc\":\" CDM entity name(s): Termination.\",\"namespace\":\"cz.kb.api.mortgageservici" +
-				"ngevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"deactivatedExactlyOn\",\"doc\":\"Da" +
-				"te when product instance item was terminated or will be terminated (any way, e.g" +
-				". canceled, loan repaid, account closed). CDM attribute class name: DeactivatedE" +
-				"xactlyOn. Standard avro dateTime represented by the number of milliseconds from " +
-				"the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec." +
-				"html. Consider using converters to dateTime class in code generator (see KB Inte" +
-				"gration Platform wiki for schema registry chapter).\",\"type\":{\"type\":\"long\",\"logi" +
-				"calType\":\"timestamp-millis\"}}]}]}]}},{\"name\":\"mortgageLoanKind\",\"doc\":\" CDM attr" +
-				"ibute class name: MortgageLoanKind. Codebook type: CB_MortgageLoanKind.\",\"type\":" +
-				"{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"name\",\"doc\":\"Free text t" +
-				"hat contains name of product as <u>customer</u> or bank defines it for marketabl" +
-				"e item INSTANCE (version). Only relevant if different from Catalogue names. CDM " +
-				"attribute class name: CommonInstanceItemName. Attribute has simple type ST_Strin" +
-				"g255 with description: General string of max length 255.\",\"default\":null,\"type\":" +
-				"[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,255}$\"}]},{" +
-				"\"name\":\"PCP\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"PCPInstanceI" +
-				"d\",\"doc\":\"Multiattribute property of marketable item instance.Multiattribute: Id" +
-				"entifiers of marketable item instances are not yet unified, there is no one cent" +
-				"ral catalogue.This also covers identifiers valid for only some part of marketabl" +
-				"e item instance lifecycle, e.g. proposed product.E.g. PCP identifiers, TSS ident" +
-				"ifiers.#CZ#Viceatributova promenna instanci prodejnych polozek. Viceatributovost" +
-				": Identifikatory instanci prodejych polozek zatim nejsou sjednoceny. Neexistujce" +
-				" centralni katalog. Pokryva tez identifikatory, ktere jsou platne pouze pro nekt" +
-				"ere casti zivotniho cyklu instanci prodejnych polozek (napriklad navrhovany prod" +
-				"ukt). Priklad: PCP identifikator, TSS identifikator. CDM entity name(s): Instanc" +
-				"eId.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"field" +
-				"s\":[{\"name\":\"id\",\"doc\":\"Identifier of product instance item itself.#CZ#Vlastni i" +
-				"dentifikator instance prodejne polozky. CDM attribute class name: InstanceIdId. " +
-				"Attribute has simple type ST_IdStringDefault with description: Standard data typ" +
-				"e to be used ID, i.e. unique identifier. It is not supposed to be human-readable" +
-				".E.g.: AgreementID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern" +
-				"\":\"^.{0,30}$\"}}]}]},{\"name\":\"ProductDetailURIInNoby\",\"default\":null,\"type\":[\"nul" +
-				"l\",{\"type\":\"record\",\"name\":\"URI\",\"doc\":\"Uniform Resource IdentifierNapr./typicky" +
-				" http odkaz. CDM entity name(s): URI.\",\"namespace\":\"cz.kb.api.mortgageservicinge" +
-				"vents.v2.mortgageinstance\",\"fields\":[{\"name\":\"value\",\"doc\":\"Complete URI. CDM at" +
-				"tribute class name: URIValue. Attribute has simple type ST_URI with description:" +
-				" A string representing a URI. Limited to 2047 characters.\",\"type\":{\"type\":\"strin" +
-				"g\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,2048}$\"}}]}]},{\"name\":\"Starbuild\"" +
-				",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"StarbuildInstanceId\",\"do" +
-				"c\":\"Multiattribute property of marketable item instance.Multiattribute: Identifi" +
-				"ers of marketable item instances are not yet unified, there is no one central ca" +
-				"talogue.This also covers identifiers valid for only some part of marketable item" +
-				" instance lifecycle, e.g. proposed product.E.g. PCP identifiers, TSS identifiers" +
-				".#CZ#Viceatributova promenna instanci prodejnych polozek. Viceatributovost: Iden" +
-				"tifikatory instanci prodejych polozek zatim nejsou sjednoceny. Neexistujce centr" +
-				"alni katalog. Pokryva tez identifikatory, ktere jsou platne pouze pro nektere ca" +
-				"sti zivotniho cyklu instanci prodejnych polozek (napriklad navrhovany produkt). " +
-				"Priklad: PCP identifikator, TSS identifikator. CDM entity name(s): InstanceId.\"," +
-				"\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"" +
-				"name\":\"id\",\"doc\":\"Identifier of product instance item itself.#CZ#Vlastni identif" +
-				"ikator instance prodejne polozky. CDM attribute class name: InstanceIdId. Attrib" +
-				"ute has simple type ST_IdStringDefault with description: Standard data type to b" +
-				"e used ID, i.e. unique identifier. It is not supposed to be human-readable.E.g.:" +
-				" AgreementID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{" +
-				"0,30}$\"}}]}]}]}},{\"name\":\"occurredOn\",\"doc\":\"Date and time when event occurred. " +
-				"CDM attribute class name: EventOccurredOn. Standard avro dateTime represented by" +
-				" the number of milliseconds from the unix epoch, see avro specification: https:/" +
-				"/avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime cla" +
-				"ss in code generator (see KB Integration Platform wiki for schema registry chapt" +
-				"er).\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}},{\"name\":\"Old\",\"de" +
-				"fault\":null,\"type\":[\"null\",\"cz.kb.api.mortgageservicingevents.v2.mortgageinstanc" +
-				"e.MortgageInstance\"]}],\"javaAnnotation\":\"cz.kb.api.common.annotation.ConfluentSc" +
-				"hemaRegistryCompatible\"}");
+				"pe\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}]},{\"name\":\"period\",\"doc\":\"Total " +
+				"length of period in units. If no units are given, default is month. CDM attribut" +
+				"e class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt wi" +
+				"th description: Integer with a constraint. The value must be a positive number, " +
+				"i.e. zero is excluded.\",\"type\":\"int\"}]}]},{\"name\":\"value\",\"doc\":\"Resulting inter" +
+				"est rate, i.e. what customer sees.Urokova mira uveru.(High level) vbs + srn + ma" +
+				"rgin. CDM attribute class name: LoanInterestRateValue. Attribute has simple type" +
+				" ST_InterestRate with description: Urok.Represents an interest rate or its part," +
+				" (Interest rate, SRN, Margin).E. g. 1.0 (=100%), 0.25 (=25%)Limited at 100000%\"," +
+				"\"type\":{\"type\":\"bytes\",\"logicalType\":\"decimal\",\"precision\":11,\"scale\":8}}]}},{\"n" +
+				"ame\":\"mktItemInstanceInfo\",\"type\":{\"type\":\"record\",\"name\":\"MktItemInstanceInfo\"," +
+				"\"doc\":\"Information entity. Entity that is used to provide information about any " +
+				"instance of marketable item (product, service, frame agreement, bundle,...). CDM" +
+				" entity name(s): MktItemInstanceInfo.\",\"namespace\":\"cz.kb.api.mortgageservicinge" +
+				"vents.v3.mortgageinstance\",\"fields\":[{\"name\":\"catalogueMktItemInOfferSpecsInfo\"," +
+				"\"type\":{\"type\":\"record\",\"name\":\"CatalogueMktItemInOfferSpecsInfo\",\"doc\":\"Informa" +
+				"tion about catalogue specification of business product in offer.catalogue = no s" +
+				"ituation/context available, i.e. generic definition of product.  CDM entity name" +
+				"(s): CatalogueMktItemInOfferSpecsInfo.\",\"namespace\":\"cz.kb.api.mortgageservicing" +
+				"events.v3.mortgageinstance\",\"fields\":[{\"name\":\"catalogueItemObjectCode\",\"type\":{" +
+				"\"type\":\"record\",\"name\":\"CatalogueItemObjectCode\",\"doc\":\"Multiattribute property " +
+				"of any catalog item identification (product, service, offer...). The identifier " +
+				"(object code) does not change when the version changes Multi-attribute is used b" +
+				"ecause there is not only one identification of the bank\'s product items (product" +
+				"s, services), but there can be several.#CZ#Multiatributova vlastnost jakekoli id" +
+				"entifikace katalogove polozky (produktu, sluzby, nabidky...). Identifikator (obj" +
+				"ect code) se nemeni pri zmene verze Vice atributu je pouzito z duvodu ze neexist" +
+				"uje pouze jedina identifikace produktovych polozek banky (produktu, sluzeb), ale" +
+				" muze jich byt vice. CDM entity name(s): CatalogueItemObjectCode.\",\"namespace\":\"" +
+				"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"object" +
+				"Code\",\"doc\":\"The identifier of the catalog item (product, service, offering, etc" +
+				".) that does not change when the version of the item changes.For example, the St" +
+				"andard Tariff Offer has different settings in different versions (e.g. different" +
+				" types and quantities of products included), these versions have different IDs b" +
+				"ut the same OC as long as it is still the same offer from the bank\'s point of vi" +
+				"ew.#CZ#Identifikator katalogve polozky (produkt, sluzba, nabidka apod.), ktery s" +
+				"e nemeni pri zmene verze polozky.Napr. Nabidka tarifu Standard ma v ruznych verz" +
+				"ich ruzna nastaveni (napr. ruzne typy a mnozstvi produktu v ni zahrnute), tyto v" +
+				"erze maji odlisne ID, ale stejny OC, dokud se jedna z pohledu banky o stale stej" +
+				"nou nabidku. CDM attribute class name: CatalogueItemObjectCodeObjectCode. Attrib" +
+				"ute has simple type ST_CodeDefault with description: Standard data type to be us" +
+				"ed on *Code* attributes.\'Code\' is very similar to \'ID\' (i.e. unique identifier) " +
+				"but it is supposed to be human-readable.E.g. SystemApplicationCode, ProductGroup" +
+				"Code.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$" +
+				"\"}}]}}]}},{\"name\":\"partyInMktItemInstanceInfoes\",\"type\":{\"type\":\"array\",\"items\":" +
+				"{\"type\":\"record\",\"name\":\"PartyInMktItemInstanceInfo\",\"doc\":\"Information entity. " +
+				"Describes party occurrence in context of a marketing item instance (product, ser" +
+				"vice, frame agreement, bundle,...). CDM entity name(s): PartyInMktItemInstanceIn" +
+				"fo.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields" +
+				"\":[{\"name\":\"customer\",\"type\":{\"type\":\"record\",\"name\":\"Customer\",\"doc\":\"Subject r" +
+				"egistred in Customer Management. CDM entity name(s): Customer.\",\"namespace\":\"cz." +
+				"kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"customerI" +
+				"d\",\"doc\":\"Identifier of the customer  (KBID - identifier of customer in Customer" +
+				" Management system). CDM attribute class name: CustomerCustomerId.\",\"type\":\"long" +
+				"\"}]}},{\"name\":\"partyInMktItemInstanceRole\",\"type\":{\"type\":\"record\",\"name\":\"Party" +
+				"InMktItemInstanceRole\",\"doc\":\"The role that a party has in a particular product " +
+				"instance.It can be specific to each product, common across a group of products, " +
+				"or even across all products.E.g. applicant, co-applicant, guarantor for consumer" +
+				" loans#CZ#Role, kterou ma strana v konkretni instanci produktu.Muze byt specific" +
+				"ka pro kazdy produkt, spolecna v ramci skupiny produktu nebo dokonce pro vsechny" +
+				" produkty.Napr. zadatel, spoluzadatel, rucitel pro spotrebni uvery. CDM entity n" +
+				"ame(s): PartyInMktItemInstanceRole.\",\"namespace\":\"cz.kb.api.mortgageservicingeve" +
+				"nts.v3.mortgageinstance\",\"fields\":[{\"name\":\"partyInMktItemInstanceRoleCode\",\"typ" +
+				"e\":{\"type\":\"record\",\"name\":\"PartyInMktItemInstanceRoleCode\",\"doc\":\"Multicodebook" +
+				" property representing code of role (unique identifier) that parties in general " +
+				"can have on products.It is multicodebook because roles always exists, but differ" +
+				"s per product groups and are not managed centrally. CDM entity name(s): PartyInM" +
+				"ktItemInstanceRoleCode.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortg" +
+				"ageinstance\",\"fields\":[{\"name\":\"code\",\"doc\":\"Human readable unique identifier of" +
+				" role on product instance. MultiCodebook value itself.Unique across all products" +
+				". Attribute has specific codebook type: CB_CustomerInMortgageInstanceRole. CDM a" +
+				"ttribute class name: PartyInMktItemInstanceRoleCodeCode. Attribute has simple ty" +
+				"pe CB_MultiCodebookValue with description: Represents information that value can" +
+				" be from more than one codebook. Codebook type: CB_CustomerInMortgageInstanceRol" +
+				"e.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,100}$\"}}" +
+				"]}}]}}]}}},{\"name\":\"termination\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\"," +
+				"\"name\":\"Termination\",\"doc\":\" CDM entity name(s): Termination.\",\"namespace\":\"cz.k" +
+				"b.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"deactivate" +
+				"dExactlyOn\",\"doc\":\"Date when product instance item was terminated or will be ter" +
+				"minated (any way, e.g. canceled, loan repaid, account closed). CDM attribute cla" +
+				"ss name: DeactivatedExactlyOn. Standard avro dateTime represented by the number " +
+				"of milliseconds from the unix epoch, see avro specification: https://avro.apache" +
+				".org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code g" +
+				"enerator (see KB Integration Platform wiki for schema registry chapter).\",\"type\"" +
+				":{\"type\":\"long\",\"logicalType\":\"timestamp-millis\"}}]}]}]}},{\"name\":\"mortgageLoanK" +
+				"ind\",\"doc\":\" CDM attribute class name: MortgageLoanKind. Codebook type: CB_Mortg" +
+				"ageLoanKind.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\"}},{\"name\":\"nam" +
+				"e\",\"doc\":\"Free text that contains name of product as <u>customer</u> or bank def" +
+				"ines it for marketable item INSTANCE (version). Only relevant if different from " +
+				"Catalogue names. CDM attribute class name: CommonInstanceItemName. Attribute has" +
+				" simple type ST_String255 with description: General string of max length 255.\",\"" +
+				"default\":null,\"type\":[\"null\",{\"type\":\"string\",\"avro.java.string\":\"String\",\"patte" +
+				"rn\":\"^.{0,255}$\"}]},{\"name\":\"PCP\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\"" +
+				",\"name\":\"PCPInstanceId\",\"doc\":\"Multiattribute property of marketable item instan" +
+				"ce.Multiattribute: Identifiers of marketable item instances are not yet unified," +
+				" there is no one central catalogue.This also covers identifiers valid for only s" +
+				"ome part of marketable item instance lifecycle, e.g. proposed product.E.g. PCP i" +
+				"dentifiers, TSS identifiers.#CZ#Viceatributova promenna instanci prodejnych polo" +
+				"zek. Viceatributovost: Identifikatory instanci prodejych polozek zatim nejsou sj" +
+				"ednoceny. Neexistujce centralni katalog. Pokryva tez identifikatory, ktere jsou " +
+				"platne pouze pro nektere casti zivotniho cyklu instanci prodejnych polozek (napr" +
+				"iklad navrhovany produkt). Priklad: PCP identifikator, TSS identifikator. CDM en" +
+				"tity name(s): InstanceId.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mor" +
+				"tgageinstance\",\"fields\":[{\"name\":\"id\",\"doc\":\"Identifier of product instance item" +
+				" itself.#CZ#Vlastni identifikator instance prodejne polozky. CDM attribute class" +
+				" name: InstanceIdId. Attribute has simple type ST_IdStringDefault with descripti" +
+				"on: Standard data type to be used ID, i.e. unique identifier. It is not supposed" +
+				" to be human-readable.E.g.: AgreementID\",\"type\":{\"type\":\"string\",\"avro.java.stri" +
+				"ng\":\"String\",\"pattern\":\"^.{0,30}$\"}}]}]},{\"name\":\"ProductDetailURIInNoby\",\"defau" +
+				"lt\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"URI\",\"doc\":\"Uniform Resource Id" +
+				"entifierNapr./typicky http odkaz. CDM entity name(s): URI.\",\"namespace\":\"cz.kb.a" +
+				"pi.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"value\",\"doc\":" +
+				"\"Complete URI. CDM attribute class name: URIValue. Attribute has simple type ST_" +
+				"URI with description: A string representing a URI. Limited to 2047 characters.\"," +
+				"\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\":\"^.{0,2048}$\"}}]}]" +
+				"},{\"name\":\"Starbuild\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"Sta" +
+				"rbuildInstanceId\",\"doc\":\"Multiattribute property of marketable item instance.Mul" +
+				"tiattribute: Identifiers of marketable item instances are not yet unified, there" +
+				" is no one central catalogue.This also covers identifiers valid for only some pa" +
+				"rt of marketable item instance lifecycle, e.g. proposed product.E.g. PCP identif" +
+				"iers, TSS identifiers.#CZ#Viceatributova promenna instanci prodejnych polozek. V" +
+				"iceatributovost: Identifikatory instanci prodejych polozek zatim nejsou sjednoce" +
+				"ny. Neexistujce centralni katalog. Pokryva tez identifikatory, ktere jsou platne" +
+				" pouze pro nektere casti zivotniho cyklu instanci prodejnych polozek (napriklad " +
+				"navrhovany produkt). Priklad: PCP identifikator, TSS identifikator. CDM entity n" +
+				"ame(s): InstanceId.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgagei" +
+				"nstance\",\"fields\":[{\"name\":\"id\",\"doc\":\"Identifier of product instance item itsel" +
+				"f.#CZ#Vlastni identifikator instance prodejne polozky. CDM attribute class name:" +
+				" InstanceIdId. Attribute has simple type ST_IdStringDefault with description: St" +
+				"andard data type to be used ID, i.e. unique identifier. It is not supposed to be" +
+				" human-readable.E.g.: AgreementID\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"S" +
+				"tring\",\"pattern\":\"^.{0,30}$\"}}]}]}]}},{\"name\":\"occurredOn\",\"doc\":\"Date and time " +
+				"when event occurred. CDM attribute class name: EventOccurredOn. Standard avro da" +
+				"teTime represented by the number of milliseconds from the unix epoch, see avro s" +
+				"pecification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using conve" +
+				"rters to dateTime class in code generator (see KB Integration Platform wiki for " +
+				"schema registry chapter).\",\"type\":{\"type\":\"long\",\"logicalType\":\"timestamp-millis" +
+				"\"}},{\"name\":\"Old\",\"default\":null,\"type\":[\"null\",\"cz.kb.api.mortgageservicingeven" +
+				"ts.v3.mortgageinstance.MortgageInstance\"]}],\"javaAnnotation\":\"cz.kb.api.common.a" +
+				"nnotation.ConfluentSchemaRegistryCompatible\"}");
 		/// <summary>
 		/// Unique identifier of event. CDM attribute class name: EventId. Attribute has simple type ST_String100 with description: General string of max length 100.
 		/// </summary>
 		private string _eventId;
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.MortgageInstance _New;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.MortgageInstance _New;
 		/// <summary>
 		/// Date and time when event occurred. CDM attribute class name: EventOccurredOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter).
 		/// </summary>
 		private System.DateTime _occurredOn;
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.MortgageInstance _Old;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.MortgageInstance _Old;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -509,7 +516,7 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				this._eventId = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.MortgageInstance New
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.MortgageInstance New
 		{
 			get
 			{
@@ -534,7 +541,7 @@ namespace cz.kb.api.mortgageservicingevents.v2
 				this._occurredOn = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.MortgageInstance Old
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.MortgageInstance Old
 		{
 			get
 			{
@@ -561,9 +568,9 @@ namespace cz.kb.api.mortgageservicingevents.v2
 			switch (fieldPos)
 			{
 			case 0: this.eventId = (System.String)fieldValue; break;
-			case 1: this.New = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.MortgageInstance)fieldValue; break;
+			case 1: this.New = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.MortgageInstance)fieldValue; break;
 			case 2: this.occurredOn = (System.DateTime)fieldValue; break;
-			case 3: this.Old = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.MortgageInstance)fieldValue; break;
+			case 3: this.Old = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.MortgageInstance)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

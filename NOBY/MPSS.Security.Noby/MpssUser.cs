@@ -17,7 +17,13 @@ internal sealed class MpssUser : ClaimsPrincipal
         _Identity = identity;
     }
 
-    public string KbUid
+	public int DistributionChannel
+	{
+		get;
+		internal set;
+	}
+
+	public string KbUid
     {
         get { return _Identity.KbUid; }
     }

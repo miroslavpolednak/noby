@@ -3,11 +3,12 @@
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
 
 internal sealed class UpdateRealEstateValuationDetailRequestValidator
-    : AbstractValidator<UpdateRealEstateValuationDetailRequest>
+    : AbstractValidator<RealEstateValuationUpdateRealEstateValuationDetailRequest>
 {
     public UpdateRealEstateValuationDetailRequestValidator()
     {
         RuleFor(t => t.RealEstateStateId)
-            .Must(t => !t.HasValue || (t.Value >= 1 && t.Value <= 4));
+            .InclusiveBetween(1, 4)
+            .When(t => t.RealEstateStateId.HasValue);
     }
 }

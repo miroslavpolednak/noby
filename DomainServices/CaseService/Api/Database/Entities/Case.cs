@@ -1,6 +1,4 @@
-﻿using DomainServices.CaseService.Contracts;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DomainServices.CaseService.Api.Database.Entities;
@@ -22,7 +20,7 @@ internal sealed class Case
     public string? OwnerUserName { get; set; }
 
     // informace o klientovi
-    public SharedTypes.Enums.IdentitySchemes? CustomerIdentityScheme { get; set; }
+    public IdentitySchemes? CustomerIdentityScheme { get; set; }
     public long? CustomerIdentityId { get; set; }
     public string? FirstNameNaturalPerson { get; set; }
     public string Name { get; set; } = "";
@@ -31,6 +29,14 @@ internal sealed class Case
     public string? EmailForOffer { get; set; }
     public string? PhoneNumberForOffer { get; set; }
     public string? PhoneIDCForOffer { get; set; }
+
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? CustomerPriceSensitivity { get; set; }
+
+    [Column(TypeName = "decimal(12, 2)")]
+    [Precision(12, 2)]
+    public decimal? CustomerChurnRisk { get; set; }
 
     // byznys data
     public string? ContractNumber { get; set; }
@@ -42,38 +48,4 @@ internal sealed class Case
     public bool? IsEmployeeBonusRequested { get; set; }
 
     public List<ActiveTask>? ActiveTasks { get; set; }
-
-    /// <summary>
-    /// Vytvoreni entity z Create Requestu
-    /// </summary>
-    public static Case Create(long caseId, CreateCaseRequest request, DateTime now)
-    {
-        var entity = new Case
-        {
-            CaseId = caseId,
-
-            StateUpdateTime = now,
-            ProductTypeId = request.Data.ProductTypeId,
-
-            Name = request.Customer.Name,
-            FirstNameNaturalPerson = request.Customer.FirstNameNaturalPerson,
-            DateOfBirthNaturalPerson = request.Customer.DateOfBirthNaturalPerson,
-            Cin = request.Customer.Cin,
-
-            TargetAmount = request.Data.TargetAmount,
-            ContractNumber = request.Data.ContractNumber,
-            IsEmployeeBonusRequested = request.Data.IsEmployeeBonusRequested,
-
-            OwnerUserId = request.CaseOwnerUserId,
-        };
-
-        // pokud je zadany customer
-        if (request.Customer is not null)
-        {
-            entity.CustomerIdentityScheme = (SharedTypes.Enums.IdentitySchemes)Convert.ToInt32(request.Customer?.Identity?.IdentityScheme, System.Globalization.CultureInfo.InvariantCulture);
-            entity.CustomerIdentityId = request.Customer?.Identity?.IdentityId;
-        }
-
-        return entity;
-    }
 }

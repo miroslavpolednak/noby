@@ -7,14 +7,22 @@ namespace SharedTypes.Enums;
 public enum RefinancingTypes : byte
 {
     [EnumMember]
+    [Display(Name = "Unknown")]
+    Unknown = 0,
+
+    [EnumMember]
     [Display(Name = "Dodatek - Retence")]
-    Retence = 1,
+    MortgageRetention = 1,
 
     [EnumMember]
     [Display(Name = "Dodatek - Refixace")]
-    Refixace = 2,
+    MortgageRefixation = 2,
 
     [EnumMember]
-    [Display(Name = "Mimořádná splátka")]
-    MimoradnaSplatka = 3
+    [Display(Name = "Zákonné oznámení")]
+    MortgageLegalNotice = 3,
+
+    [EnumMember]
+    [Display(Name = "Dokument mimořádné splátky")]
+    MortgageExtraPayment = 4
 }

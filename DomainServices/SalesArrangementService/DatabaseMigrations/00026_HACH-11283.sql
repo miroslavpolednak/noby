@@ -1,0 +1,1 @@
+update FormValidationTransformation SET FieldPath = REPLACE(FieldPath, 'seznam_dokladu', 'seznam_dokladu[]') WHERE FieldPath LIKE '%seznam_dokladu%'

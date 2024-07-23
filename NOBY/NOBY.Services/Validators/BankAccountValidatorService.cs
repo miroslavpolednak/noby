@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 using DomainServices.CodebookService.Clients;
-using NOBY.Dto;
+using SharedTypes.Interfaces;
 
 namespace NOBY.Services.Validators;
 
@@ -28,13 +28,20 @@ public partial class BankAccountValidatorService : IBankAccountValidatorService
 
     public bool IsBankAccountValid(string? prefix, string accountNumber)
     {
-        var accountNumberFull = CleanNonNumberCharactersRegex().Replace($"{prefix}{accountNumber}", "");
+        var cleanAccountNumber = CleanNonNumberCharactersRegex().Replace(accountNumber, "");
 
-        var controlNumber = accountNumberFull.Reverse()
-                                             .Select((character, index) => int.Parse(character.ToString(), CultureInfo.InvariantCulture) * _weights.ElementAtOrDefault(index))
-                                             .Sum();
+        if (CalculateControlNumber(cleanAccountNumber) % 11 != 0)
+            return false;
 
-        return controlNumber % 11 == 0;
+        if (string.IsNullOrWhiteSpace(prefix))
+            return true;
+
+        var cleanAccountPrefix = CleanNonNumberCharactersRegex().Replace(prefix, "");
+
+        return CalculateControlNumber(cleanAccountPrefix) % 11 == 0;
+
+        int CalculateControlNumber(string number) =>
+            number.Reverse().Select((character, index) => int.Parse(character.ToString(), CultureInfo.InvariantCulture) * _weights.ElementAtOrDefault(index)).Sum();
     }
 
     public bool IsBankCodeValid(string? bankCode, CancellationToken cancellationToken = default)
@@ -49,7 +56,7 @@ public partial class BankAccountValidatorService : IBankAccountValidatorService
         return bankCodes.Any(c => c.BankCode.Equals(bankCode, StringComparison.Ordinal));
     }
 
-    public bool IsBankAccoungAndCodeValid(IBankAccount? bankAccount, CancellationToken cancellationToken = default)
+    public bool IsBankAccountAndCodeValid(IBankAccount? bankAccount, CancellationToken cancellationToken = default)
     {
         return IsBankAccountValid(bankAccount) && IsBankCodeValid(bankAccount?.AccountBankCode, cancellationToken);
     }

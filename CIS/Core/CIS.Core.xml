@@ -869,6 +869,11 @@
             Instance technickeho uzivatele
             </summary>
         </member>
+        <member name="M:CIS.Core.Security.IServiceUserAccessor.IsInRole(System.String@)">
+            <summary>
+            True pokud ma user nastavenou danou roli
+            </summary>
+        </member>
         <member name="T:CIS.Core.CisGlobalConstants">
             <summary>
             Globální konstanty aplikace.

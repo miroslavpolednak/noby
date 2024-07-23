@@ -22,4 +22,5 @@ enum EnvironmentNames {
   Prod = 7;
   Test = 8;
   Quality = 9;
+  Fat2 = 10;
 }

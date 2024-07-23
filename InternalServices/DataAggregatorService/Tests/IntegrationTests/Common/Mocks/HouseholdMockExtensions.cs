@@ -10,7 +10,7 @@ public static class HouseholdMockExtensions
 {
     public static void MockHouseholdList(this IHouseholdServiceClient householdServiceClient, ICustomerOnSAServiceClient customerOnSAServiceClient)
     {
-        var customerKbId = 0;
+        var customerKbId = 1;
         var fixture = FixtureFactory.Create();
 
         var householdMain = fixture.Build<Household>().With(h => h.HouseholdId, DefaultMockValues.HouseholdMainId).With(h => h.HouseholdTypeId, (int)HouseholdTypes.Main).Create();

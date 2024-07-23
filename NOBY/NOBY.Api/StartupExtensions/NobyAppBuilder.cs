@@ -1,9 +1,11 @@
-﻿using NOBY.Infrastructure.Security.Endpoints;
-using NOBY.Infrastructure.Configuration;
+﻿using Asp.Versioning.ApiExplorer;
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.StaticFiles;
+using NOBY.Infrastructure.Configuration;
+using NOBY.Infrastructure.Security.Endpoints;
 using NOBY.Infrastructure.Security.Middleware;
-using Asp.Versioning.ApiExplorer;
+using NOBY.Infrastructure.Swagger;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -14,6 +16,19 @@ internal static class NobyAppBuilder
         {
             appBuilder.UseSpaStaticFiles();
             appBuilder.UseStaticFiles("/docs");
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = new FileExtensionContentTypeProvider
+                {
+                    Mappings =
+                    {
+                        [".avif"] = "image/avif",
+                        [".webp"] = "image/webp"
+                    }
+                }
+            });
+
             appBuilder.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";
@@ -58,7 +73,7 @@ internal static class NobyAppBuilder
             {
                 appBuilder.UseMiddleware<CIS.Infrastructure.WebApi.Middleware.RequestBufferingMiddleware>();
             }
-            
+
             // autorizace
             appBuilder
                 .UseMiddleware<NobySecurityMiddleware>()
@@ -90,14 +105,7 @@ internal static class NobyAppBuilder
         .UseSwagger()
         .UseSwaggerUI(c =>
         {
-            // build a swagger endpoint for each discovered API version
-            foreach (var description in descriptions)
-            {
-                var url = $"/swagger/{description.GroupName}/swagger.json";
-                var name = description.GroupName.ToUpperInvariant();
-                c.SwaggerEndpoint(url, name);
-            }
-
+            c.SwaggerEndpoint($"/swagger/{Constants.OpenApiDocName}/swagger.json", "API all versions");
             c.DisplayOperationId();
         });
 
@@ -130,5 +138,6 @@ internal static class NobyAppBuilder
         => !context.Request.Path.StartsWithSegments(AuthenticationConstants.DefaultAuthenticationUrlSegment)
             && !context.Request.Path.StartsWithSegments("/api")
             && !context.Request.Path.StartsWithSegments("/swagger")
-            && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl);
+            && !context.Request.Path.StartsWithSegments(CIS.Core.CisGlobalConstants.CisHealthCheckEndpointUrl)
+            && !context.Request.Path.StartsWithSegments("/kafkaflow");
 }

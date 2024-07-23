@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
-internal sealed class OrderRealEstateValuationHandler
-    : IRequestHandler<OrderRealEstateValuationRequest>
+internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+    : IRequestHandler<RealEstateValuationOrderRealEstateValuationRequest>
 {
-    public async Task Handle(OrderRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RealEstateValuationOrderRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var revInstance = await _realEstateValuationService.GetRealEstateValuationDetail(request.RealEstateValuationId, cancellationToken);
 
@@ -13,10 +13,10 @@ internal sealed class OrderRealEstateValuationHandler
         {
             throw new NobyValidationException(90032, "PossibleValuationTypeId does not contain ValuationTypeId");
         }
-
+        
         switch (request.ValuationTypeId)
         {
-            case RealEstateValuationTypes.Online:
+            case EnumRealEstateValuationTypes.Online:
                 if (!revInstance.PreorderId.HasValue 
                     || revInstance.OrderId.HasValue 
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
@@ -24,14 +24,14 @@ internal sealed class OrderRealEstateValuationHandler
                     throw new NobyValidationException(90032, "Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
                 }
 
-                if (revInstance.IsRevaluationRequired 
-                    && (string.IsNullOrEmpty(request.LocalSurveyPerson?.FunctionCode)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.FirstName)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.LastName)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.MobilePhone?.PhoneNumber)
-                    || string.IsNullOrEmpty(request.LocalSurveyPerson?.EmailAddress?.EmailAddress)))
+                if ((revInstance.Attachments?.Count ?? 0) == 0)
                 {
-                    throw new NobyValidationException(90032, "Valuation:Online LocalSurveyPerson is not filled");
+                    throw new NobyValidationException(90065);
+                }
+
+                if (revInstance.IsRevaluationRequired)
+                {
+                    validateLocalSurvey(request.LocalSurveyPerson);
                 }
 
                 await _realEstateValuationService.OrderOnlineValuation(new DomainServices.RealEstateValuationService.Contracts.OrderOnlineValuationRequest
@@ -41,11 +41,16 @@ internal sealed class OrderRealEstateValuationHandler
                 }, cancellationToken);
                 break;
 
-            case RealEstateValuationTypes.Standard:
+            case EnumRealEstateValuationTypes.Standard:
                 if (revInstance.OrderId.HasValue 
                     || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId))
                 {
                     throw new NobyValidationException(90032, "Valuation:Standard OrderId already set or state is out of allowed range");
+                }
+
+                if (revInstance.IsRevaluationRequired)
+                {
+                    validateLocalSurvey(request.LocalSurveyPerson);
                 }
 
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
@@ -55,11 +60,16 @@ internal sealed class OrderRealEstateValuationHandler
                 }, cancellationToken);
                 break;
 
-            case RealEstateValuationTypes.Dts:
+            case EnumRealEstateValuationTypes.DTS:
                 if (revInstance.OrderId.HasValue 
                     || revInstance.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
                 {
                     throw new NobyValidationException(90032, "Valuation:Dts OrderId already set or state is out of allowed range");
+                }
+
+                if ((revInstance.Attachments?.Count ?? 0) == 0)
+                {
+                    throw new NobyValidationException(90064);
                 }
 
                 await _realEstateValuationService.OrderDTSValuation(request.RealEstateValuationId, cancellationToken);
@@ -67,8 +77,21 @@ internal sealed class OrderRealEstateValuationHandler
         }
     }
 
-    private static DomainServices.RealEstateValuationService.Contracts.LocalSurveyData createData(OrderRealEstateValuationRequest request)
-        => new DomainServices.RealEstateValuationService.Contracts.LocalSurveyData
+    private static void validateLocalSurvey(RealEstateValuationSharedLocalSurveyData? localSurvey)
+    {
+        if (string.IsNullOrEmpty(localSurvey?.FunctionCode)
+            || string.IsNullOrEmpty(localSurvey?.FirstName)
+            || string.IsNullOrEmpty(localSurvey?.LastName)
+            || string.IsNullOrEmpty(localSurvey?.MobilePhone?.PhoneIDC)
+            || string.IsNullOrEmpty(localSurvey?.MobilePhone?.PhoneNumber)
+            || string.IsNullOrEmpty(localSurvey?.EmailAddress?.EmailAddress))
+        {
+            throw new NobyValidationException(90032, "LocalSurveyPerson is not filled");
+        }
+    }
+
+    private static DomainServices.RealEstateValuationService.Contracts.LocalSurveyData createData(RealEstateValuationOrderRealEstateValuationRequest request)
+        => new()
         {
             RealEstateValuationLocalSurveyFunctionCode = request.LocalSurveyPerson?.FunctionCode ?? "",
             FirstName = request.LocalSurveyPerson?.FirstName ?? "",
@@ -77,11 +100,4 @@ internal sealed class OrderRealEstateValuationHandler
             PhoneIDC = request.LocalSurveyPerson?.MobilePhone?.PhoneIDC ?? "",
             PhoneNumber = request.LocalSurveyPerson?.MobilePhone?.PhoneNumber ?? ""
         };
-
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public OrderRealEstateValuationHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
-    }
 }

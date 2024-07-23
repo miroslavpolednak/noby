@@ -25,7 +25,7 @@ public static class StartupExtensions
                 break;
 
             case (IContactClient.Version, ServiceImplementationTypes.Real):
-                AddRestClient<IContactClient, RealContactClient>(builder);
+                AddRestClient<IContactClient, RealContactClient>(builder, configuration.Username ?? "");
                 break;
             default:
                 throw new NotImplementedException($"{ServiceName} version {typeof(TClient)} client not implemented");
@@ -34,13 +34,13 @@ public static class StartupExtensions
         return builder;
     }
 
-    private static void AddRestClient<TClient, TImplementation>(WebApplicationBuilder builder)
+    private static void AddRestClient<TClient, TImplementation>(WebApplicationBuilder builder, in string fallbackUsername)
         where TClient : class, IExternalServiceClient
         where TImplementation : class, TClient
     {
         builder.AddExternalServiceRestClient<TClient, TImplementation>()
                .AddExternalServicesKbHeaders()
-               .AddExternalServicesKbPartyHeaders()
+               .AddExternalServicesKbPartyHeadersWithFallback(new SharedTypes.Types.UserIdentity(fallbackUsername, UserIdentitySchemes.KbUms))
                .AddExternalServicesErrorHandling(ServiceName);
     }
 }

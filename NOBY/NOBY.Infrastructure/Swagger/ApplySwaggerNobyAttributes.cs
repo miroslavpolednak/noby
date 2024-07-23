@@ -9,7 +9,7 @@ public sealed class ApplySwaggerNobyAttributes
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        bool skipCaseOwnerStateAndProduct = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseOwnerStateAndProductSAValidationAttribute), false)?.Any() ?? false;
+        bool skipCaseOwnerStateAndProduct = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseStateAndProductSAValidationAttribute), false)?.Any() ?? false;
         bool skipCaseOwner = context.MethodInfo.GetCustomAttributes(typeof(NobySkipCaseOwnerValidationAttribute), false)?.Any() ?? false;
 
         // prava
@@ -31,7 +31,13 @@ public sealed class ApplySwaggerNobyAttributes
         // EAcko
         if (context.MethodInfo.GetCustomAttributes(typeof(SwaggerEaDiagramAttribute), false)?.FirstOrDefault() is SwaggerEaDiagramAttribute eaAttribute)
         {
-            operation.Description += $"{operation.Description}<br/><br/><strong style=\"color:#61affe;\">EA Diagram</strong><br/><a href=\"{eaAttribute.DiagramUrl}\">{eaAttribute.DiagramUrl}</a>";
+            operation.Description += $"<br/><br/><a href=\"{eaAttribute.DiagramUrl.Replace("&", "&amp;")}\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>";
+        }
+
+        // confl
+        if (context.MethodInfo.GetCustomAttributes(typeof(SwaggerConfluenceLinkAttribute), false)?.FirstOrDefault() is SwaggerConfluenceLinkAttribute conflAttribute)
+        {
+            operation.Description += $"<br/><br/><a href=\"{conflAttribute.ConfluenceUrl.Replace("&", "&amp;")}\">Confluence</a>";
         }
     }
 

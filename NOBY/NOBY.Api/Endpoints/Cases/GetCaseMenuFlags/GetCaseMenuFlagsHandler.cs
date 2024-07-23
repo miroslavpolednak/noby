@@ -1,17 +1,21 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
 using NOBY.Services.DocumentHelper;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
 
-internal sealed class GetCaseMenuFlagsHandler
-    : IRequestHandler<GetCaseMenuFlagsRequest, GetCaseMenuFlagsResponse>
+internal sealed class GetCaseMenuFlagsHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    ICaseServiceClient _caseService,
+    IProductServiceClient _productService,
+    IDocumentArchiveServiceClient _documentArchiveServiceClient,
+    IDocumentHelperServiceOld _documentHelper)
+        : IRequestHandler<GetCaseMenuFlagsRequest, CasesGetCaseMenuFlagsResponse>
 {
-    public async Task<GetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
+    public async Task<CasesGetCaseMenuFlagsResponse> Handle(GetCaseMenuFlagsRequest request, CancellationToken cancellationToken)
     {
         // instance case
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
@@ -24,32 +28,36 @@ internal sealed class GetCaseMenuFlagsHandler
         getDocumentsInQueueRequest.StatusesInQueue.AddRange(_values);
         var documentsInQueue = await _documentArchiveServiceClient.GetDocumentsInQueue(getDocumentsInQueueRequest, cancellationToken);
 
-        return new GetCaseMenuFlagsResponse
+        return new CasesGetCaseMenuFlagsResponse
         {
-            ParametersMenuItem = new(),
-            DebtorsItem = new(),
-            TasksMenuItem = new(),
-            ChangeRequestsMenuItem = new GetCaseMenuFlagsItem
+            ParametersMenuItem = new() { IsActive = true },
+            DebtorsItem = new() { IsActive = true },
+            TasksMenuItem = new() { IsActive = true },
+            ChangeRequestsMenuItem = new CasesGetCaseMenuFlagsItem
             {
                 IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
-            RealEstatesMenuItem = new GetCaseMenuFlagsItem
+            RealEstatesMenuItem = new CasesGetCaseMenuFlagsItem
             {
-                Flag = GetCaseMenuFlagsTypes.NoFlag,
+                Flag = CasesGetCaseMenuFlagsItemFlag.NoFlag,
                 IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)CaseStates.InProgress && caseInstance.State != (int)CaseStates.ToBeCancelled
             },
             DocumentsMenuItem = await getDocuments(documentsInQueue, cancellationToken),
             CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
             RefinancingMenuItem = new()
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.WFL_TASK_DETAIL_RetentionManage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
+            },
+            ExtraPaymentMenuItem = new()
+            {
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)CaseStates.InDisbursement or (int)CaseStates.InAdministration)
             }
         };
     }
 
-    private async Task<GetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
+    private async Task<CasesGetCaseMenuFlagsItem> getCovenants(long caseId, CancellationToken cancellationToken)
     {
-        var response = new GetCaseMenuFlagsItem();
+        var response = new CasesGetCaseMenuFlagsItem();
 
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
@@ -71,48 +79,32 @@ internal sealed class GetCaseMenuFlagsHandler
         return response;
     }
 
-    private async Task<GetCaseMenuFlagsItem> getDocuments(GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
+    private async Task<CasesGetCaseMenuFlagsItem> getDocuments(GetDocumentsInQueueResponse documentsInQueue, CancellationToken cancellationToken)
     {
         var getDocumentsInQueueMetadata = _documentHelper.MapGetDocumentsInQueueMetadata(documentsInQueue);
         var documentsInQueueFiltered = await _documentHelper.FilterDocumentsVisibleForKb(getDocumentsInQueueMetadata, cancellationToken);
 
-        var response = new GetCaseMenuFlagsItem();
+        var response = new CasesGetCaseMenuFlagsItem()
+        {
+            IsActive = true
+        };
 
         if (_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
         {
             if (documentsInQueue.QueuedDocuments.Any(t => t.StatusInQueue == 300))
             {
-                response.Flag = GetCaseMenuFlagsTypes.ExclamationMark;
+                response.Flag = CasesGetCaseMenuFlagsItemFlag.ExclamationMark;
             }
-            else if (documentsInQueue.QueuedDocuments.Any(t => (new[] { 100, 110, 200 }).Contains(t.StatusInQueue)))
+            else if (documentsInQueue.QueuedDocuments.Any(t => _requiredStatusesInDocumentQueue.Contains(t.StatusInQueue)))
             {
-                response.Flag = GetCaseMenuFlagsTypes.InProcessing;
+                response.Flag = CasesGetCaseMenuFlagsItemFlag.InProcessing;
             }
         }
 
         return response;
     }
 
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IProductServiceClient _productService;
-    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly IDocumentHelperService _documentHelper;
-    private readonly ICaseServiceClient _caseService;
-
-    internal static readonly int[] _values = [ 100, 110, 200, 300 ];
-
-    public GetCaseMenuFlagsHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        ICaseServiceClient caseService,
-        IProductServiceClient productService,
-        IDocumentArchiveServiceClient documentArchiveServiceClient,
-        IDocumentHelperService documentHelper)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _caseService = caseService;
-        _productService = productService;
-        _documentArchiveServiceClient = documentArchiveServiceClient;
-        _documentHelper = documentHelper;
-    }
+    private static readonly int[] _requiredStatusesInDocumentQueue = [100, 110, 200];
+    private static readonly int[] _values = [ 100, 110, 200, 300 ];
 }
 

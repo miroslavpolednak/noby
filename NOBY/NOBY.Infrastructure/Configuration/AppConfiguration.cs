@@ -2,6 +2,8 @@
 
 public sealed class AppConfiguration
 {
+    public string ESignatureDocumentStateChangedTopic { get; set; } = null!;
+
     /// <summary>
     /// Zapnuti logovani rozdilu mezi rozdilem a modelem
     /// </summary>
@@ -21,6 +23,8 @@ public sealed class AppConfiguration
     /// Max allowed file size for upload [MB]
     /// </summary>
     public int MaxFileSize { get; set; } = 20;
+
+    public bool UseKafkaFlowDashboard { get; set; }
 
     public IcapAntivirusConfiguration? IcapAntivirus { get; set; }
 

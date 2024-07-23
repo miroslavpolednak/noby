@@ -49,7 +49,7 @@ public static class GeneratorVariables
         new(Path.Combine(StoragePath, FontsFolder, $"{name}.ttf"))
         {
             Embed = true,
-            Subset = false
+            Subset = true
         };
 
     public class CachedFont

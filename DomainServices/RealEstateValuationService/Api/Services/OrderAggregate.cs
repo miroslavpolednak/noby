@@ -1,6 +1,6 @@
-﻿using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
@@ -64,7 +64,7 @@ internal sealed class OrderAggregate
 
         // REV data
         var revDetailData = (await _documentDataStorage
-            .FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData>(realEstateValuationId, cancellationToken))
+            .FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData, int>(realEstateValuationId, cancellationToken))
             ?.Data;
 
         return (entity, revDetailData, realEstateIds, attachments, caseInstance, addressPointId);
@@ -133,7 +133,7 @@ internal sealed class OrderAggregate
         if (caseState == (int)CaseStates.InProgress)
         {
             var offerId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().OfferId;
-            var offer = await _offerService.GetOfferDetail(offerId!.Value, cancellationToken);
+            var offer = await _offerService.GetOffer(offerId!.Value, cancellationToken);
 
             var collateralAmount = offer.MortgageOffer.SimulationInputs.CollateralAmount;
             var loanDuration = offer.MortgageOffer.SimulationInputs.LoanDuration;
@@ -146,7 +146,7 @@ internal sealed class OrderAggregate
             var mortgage = await _productService.GetMortgage(caseId, cancellationToken);
 
             var purpose = await getLoanPurpose(mortgage.Mortgage.LoanPurposes?.FirstOrDefault()?.LoanPurposeId);
-            var loanAmount = mortgage.Mortgage.LoanPaymentAmount;
+            var loanAmount = ((decimal?)mortgage.Mortgage.AvailableForDrawing).GetValueOrDefault() > 0 ? mortgage.Mortgage.LoanAmount : mortgage.Mortgage.CurrentAmount;
             return new GetProductPropertiesResult(null, loanAmount, null, purpose);
         }
     }

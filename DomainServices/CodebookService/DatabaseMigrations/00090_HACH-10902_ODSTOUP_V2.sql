@@ -1,0 +1,2 @@
+INSERT INTO CodebookService.dbo.DocumentTemplateVersion (Id, DocumentTypeId, DocumentVersion, FormTypeId, ValidFrom, ValidTo, TemplateProcessingType) VALUES(17, 15, N'002', NULL, '2024-05-10 00:00:00.000', NULL, N'A');
+UPDATE CodebookService.dbo.DocumentTemplateVersion SET ValidTo='2024-05-10 00:00:00.000'WHERE Id=15;

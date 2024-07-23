@@ -31,7 +31,7 @@ internal class EasProductForm : EasForm<ProductFormData>
             {
                 EasFormType = easFormType,
                 DynamicFormValues = dynamicValues,
-                DefaultValues = EasFormTypeFactory.CreateDefaultValues(easFormType, _documentTypes),
+                DefaultValues = EasFormTypeFactory.CreateDefaultValues(easFormType, (SalesArrangementTypes)_formData.SalesArrangement.SalesArrangementTypeId, _documentTypes),
                 Json = CreateJson(sourceFieldsGroup[easFormType]),
                 FormIdentifier = $"P{FormIdentifierNumber().ToString(CultureInfo.InvariantCulture)}"
             };

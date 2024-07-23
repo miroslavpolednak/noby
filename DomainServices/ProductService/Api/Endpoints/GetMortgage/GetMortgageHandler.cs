@@ -1,79 +1,69 @@
-﻿using SharedTypes.GrpcTypes;
+﻿using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.ProductService.Api.Endpoints.GetMortgage;
 
-internal sealed class GetMortgageHandler : IRequestHandler<GetMortgageRequest, GetMortgageResponse>
+internal sealed class GetMortgageHandler(
+	IMpHomeClient _mpHomeClient,
+	ICodebookServiceClient _codebookService)
+    : IRequestHandler<GetMortgageRequest, GetMortgageResponse>
 {
-    private readonly LoanRepository _repository;
-
-    public GetMortgageHandler(LoanRepository repository)
-    {
-        _repository = repository;
-    }
-
     public async Task<GetMortgageResponse> Handle(GetMortgageRequest request, CancellationToken cancellationToken)
     {
-        var loan = await _repository.GetLoan(request.ProductId, cancellationToken) 
-                   ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        var loan = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
+        var partner = await _mpHomeClient.GetPartner(loan!.PartnerId!.Value, cancellationToken);
+		var (retention, refixation) = await _mpHomeClient.GetRefinancing(request.ProductId, cancellationToken);
 
-        var relationships = await _repository.GetRelationships(request.ProductId, cancellationToken);
+        var mappedLoan = loan!.MapToProductServiceContract();
+		mappedLoan.Statement.Address = await getStatementAddress(partner!, cancellationToken);
+		
+		// retence
+		if (retention is not null && retention.MonthInstallment > 0)
+		{
+			mappedLoan.Retention = new MortgageData.Types.RetentionData
+			{
+				LoanInterestRate = retention.InterestRate.ToDecimal(),
+				LoanInterestRateValidFrom = retention.From,
+				LoanInterestRateValidTo = retention.To,
+				LoanPaymentAmount = retention.MonthInstallment.ToDecimal()
+			};
+		}
+		
+		// refixace
+		if (refixation is not null && refixation.FixationPeriod > 0)
+		{
+			mappedLoan.Refixation = new MortgageData.Types.RefixationData
+			{
+				FixedRatePeriod = refixation.FixationPeriod,
+				LoanInterestRate = refixation.InterestRate.ToDecimal(),
+				LoanInterestRateValidTo = refixation.InterestRateValidTo,
+				LoanPaymentAmount = refixation.RefixFutureMonthInstallment.ToDecimal()
+			};
+		}
 
-        var mortgage = loan.ToMortgage(relationships);
-
-        mortgage.PcpId = await _repository.GetPcpIdByCaseId(request.ProductId, cancellationToken);
-        mortgage.Statement.Address = await GetStatementAddress(request.ProductId, cancellationToken);
-        mortgage.LoanRealEstates.AddRange(await GetLoanRealEstates(request.ProductId, cancellationToken));
-        mortgage.LoanPurposes.AddRange(await GetLoanPurposes(request.ProductId, cancellationToken));
-
-        return new GetMortgageResponse { Mortgage = mortgage };
-    }
-    private async Task<GrpcAddress?> GetStatementAddress(long caseId, CancellationToken cancellationToken)
-    {
-        var loanStatement = await _repository.GetLoanStatement(caseId, cancellationToken);
-
-        if (loanStatement is null)
-            return default;
-
-        return new GrpcAddress
-        {
-            Street = loanStatement.Street ?? string.Empty,
-            StreetNumber = loanStatement.StreetNumber ?? string.Empty,
-            HouseNumber = loanStatement.HouseNumber ?? string.Empty,
-            Postcode = loanStatement.Postcode ?? string.Empty,
-            City = loanStatement.City ?? string.Empty,
-            AddressPointId = loanStatement.AddressPointId ?? string.Empty,
-            CountryId = loanStatement.CountryId
+		return new GetMortgageResponse 
+        { 
+            Mortgage = mappedLoan
         };
     }
 
-    private async Task<IEnumerable<LoanRealEstate>> GetLoanRealEstates(long caseId, CancellationToken cancellationToken)
+    private async Task<SharedTypes.GrpcTypes.GrpcAddress?> getStatementAddress(PartnerResponse partner, CancellationToken cancellationToken)
     {
-        var realEstates = await _repository.GetLoanRealEstates(caseId, cancellationToken);
+		var address = partner.Addresses.FirstOrDefault(t => t.Type == AddressType.Mailing);
+		var countries = await _codebookService.Countries(cancellationToken);
 
-        if (realEstates.Count == 0)
-        {
-            return Enumerable.Empty<LoanRealEstate>();
-        }
+		if (address is not null) 
+		{
+			return new SharedTypes.GrpcTypes.GrpcAddress
+			{
+				Street = address.Street ?? string.Empty,
+				StreetNumber = address.BuildingIdentificationNumber ?? string.Empty,
+				HouseNumber = address.LandRegistryNumber ?? string.Empty,
+				Postcode = address.PostCode ?? string.Empty,
+				City = address.City ?? string.Empty,
+				CountryId = countries.FirstOrDefault(t => t.ShortName == address.Country)?.Id
+			};
+		}
 
-        var collateral = await _repository.GetCollateral(caseId, cancellationToken);
-
-        return realEstates.Select(r =>
-        {
-            var col = collateral.FirstOrDefault(c => c.RealEstateId == r.RealEstateId);
-
-            return new LoanRealEstate
-            {
-                RealEstateTypeId = (int)r.RealEstateTypeId,
-                RealEstatePurchaseTypeId = r.RealEstatePurchaseTypeId,
-                IsCollateral = col is not null
-            };
-        });
-    }
-
-    private async Task<IEnumerable<Contracts.LoanPurpose>> GetLoanPurposes(long caseId, CancellationToken cancellationToken)
-    {
-        var purposes = await _repository.GetLoanPurposes(caseId, cancellationToken);
-
-        return purposes.Select(p => p.ToLoanPurpose());
-    }
+		return null;
+	}
 }

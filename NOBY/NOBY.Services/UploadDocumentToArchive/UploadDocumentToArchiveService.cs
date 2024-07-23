@@ -1,5 +1,7 @@
 ﻿using CIS.Core.Security;
 using DomainServices.DocumentArchiveService.Clients;
+using DomainServices.DocumentOnSAService.Clients;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using NOBY.Services.DocumentHelper;
@@ -7,8 +9,16 @@ using NOBY.Services.DocumentHelper;
 namespace NOBY.Services.UploadDocumentToArchive;
 
 [TransientService, AsImplementedInterfacesService]
-internal sealed class UploadDocumentToArchiveService
-    : IUploadDocumentToArchiveService
+internal sealed class UploadDocumentToArchiveService(
+    SharedComponents.Storage.ITempStorage _tempFileManager,
+    TimeProvider _dateTime,
+    IDocumentArchiveServiceClient _documentArchiveService,
+    IUserServiceClient _userServiceClient,
+    ICurrentUserAccessor _currentUserAccessor,
+    IDocumentHelperServiceOld _documentHelper,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    ISalesArrangementServiceClient _salesArrangementService)
+        : IUploadDocumentToArchiveService
 {
     private const string _defaultContractNumber = "HF00111111125";
 
@@ -43,32 +53,41 @@ internal sealed class UploadDocumentToArchiveService
                 NotifyStarBuild = false
             }, cancellationToken);
 
+            // Only TaskTypeId == 6 has not null FormId
+            if (!string.IsNullOrWhiteSpace(attachment.FormId))
+            {
+                var documentOnSaId = await GetDocumentOnSaId(caseId, attachment.FormId, cancellationToken);
+                if (documentOnSaId.HasValue)
+                {
+                    await _documentOnSAService.LinkEArchivIdToDocumentOnSA(new() 
+                    { 
+                        DocumentOnSAId = documentOnSaId.Value, 
+                        EArchivId = documentId 
+                    }, cancellationToken);
+                }
+            }
+            
             documentIds.Add(documentId);
         }
 
         return documentIds;
     }
 
-    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-    private readonly TimeProvider _dateTime;
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IUserServiceClient _userServiceClient;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDocumentHelperService _documentHelper;
-
-    public UploadDocumentToArchiveService(
-        SharedComponents.Storage.ITempStorage tempFileManager,
-        TimeProvider dateTime,
-        IDocumentArchiveServiceClient documentArchiveService,
-        IUserServiceClient userServiceClient,
-        ICurrentUserAccessor currentUserAccessor,
-        IDocumentHelperService documentHelper)
+    private async Task<int?> GetDocumentOnSaId(long caseId, string formId, CancellationToken cancellationToken)
     {
-        _tempFileManager = tempFileManager;
-        _dateTime = dateTime;
-        _documentArchiveService = documentArchiveService;
-        _userServiceClient = userServiceClient;
-        _currentUserAccessor = currentUserAccessor;
-        _documentHelper = documentHelper;
+        var saResponse = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
+        foreach (var sa in saResponse.SalesArrangements)
+        {
+            var docOnSa = (await _documentOnSAService.GetDocumentsOnSAList(sa.SalesArrangementId, cancellationToken))
+                .DocumentsOnSA
+                .FirstOrDefault(d => d.FormId == formId);
+
+            if (docOnSa is not null)
+            {
+                return docOnSa.DocumentOnSAId!.Value;
+            }
+        }
+
+        return null;
     }
 }

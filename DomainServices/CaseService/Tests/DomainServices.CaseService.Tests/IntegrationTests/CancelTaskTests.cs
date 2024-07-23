@@ -30,7 +30,7 @@ public class CancelTaskTests
             TaskIdSB = 2
         });
 
-        await act.Should().ThrowAsync<RpcException>().Where(t => t.StatusCode == StatusCode.InvalidArgument);
+        await act.Should().ThrowAsync<RpcException>().Where(t => t.StatusCode == StatusCode.NotFound);
     }
 
     // na tohle bych musel pripravit vsechny data, ktera maji prijit v gettaskdetail z SB

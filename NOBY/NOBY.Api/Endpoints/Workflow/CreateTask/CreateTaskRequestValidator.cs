@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
 internal sealed class CreateTaskRequestValidator
-    : AbstractValidator<CreateTaskRequest>
+    : AbstractValidator<WorkflowCreateTaskRequest>
 {
     public CreateTaskRequestValidator()
     {
@@ -12,9 +12,6 @@ internal sealed class CreateTaskRequestValidator
             .NotEmpty()
             .Must(t => _allowedTaskTypes.Contains(t))
             .WithMessage("Task type not allowed");
-
-        RuleFor(t => t.ProcessId)
-            .NotEmpty();
 
         RuleFor(t => t.OrderId)
             .LessThanOrEqualTo(999999999)
@@ -25,5 +22,10 @@ internal sealed class CreateTaskRequestValidator
             .WithErrorCode(90046);
     }
 
-    private static int[] _allowedTaskTypes = [2, 3, 7];
+    private static readonly int[] _allowedTaskTypes = 
+        [
+            (int)WorkflowTaskTypes.PriceException,
+            (int)WorkflowTaskTypes.Consultation,
+            (int)WorkflowTaskTypes.PredaniNaSpecialitu
+        ];
 }

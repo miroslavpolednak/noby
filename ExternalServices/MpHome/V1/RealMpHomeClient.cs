@@ -5,41 +5,111 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace ExternalServices.MpHome.V1;
 
-internal sealed class RealMpHomeClient 
+internal sealed class RealMpHomeClient(HttpClient _httpClient)
     : IMpHomeClient
 {
-    public async Task UpdateLoan(long loanId, MortgageRequest mortgageRequest, CancellationToken cancellationToken = default(CancellationToken))
+    private const int _defaultCountryId = 16;
+
+	public async Task UpdatePcpId(long productId, string pcpId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient
+            .PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/pcpInstId", new LoanPcpInstIdRequest { PcpInstId = pcpId }, cancellationToken)
+			.ConfigureAwait(false);
+		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+    public async Task<List<PartnerResponse>?> SearchPartners(PartnerSearchRequest request, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/search", request, cancellationToken);
+        await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+        var result = await response.EnsureSuccessStatusAndReadJson<List<PartnerResponse>>(StartupExtensions.ServiceName, cancellationToken);
+        result.ForEach(t =>
+        {
+            t.Addresses?.ForEach(x => x.CountryId = x.CountryId.GetValueOrDefault() == 0 ? _defaultCountryId : x.CountryId!.Value);
+        });
+        return result;
+    }
+
+    public async Task<List<CaseSearchResponse>?> SearchCases(CaseSearchRequest request, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + $"/foms/Case/search", request, cancellationToken);
+		await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+        return await response.EnsureSuccessStatusAndReadJson<List<CaseSearchResponse>>(StartupExtensions.ServiceName, cancellationToken);
+    }
+
+	public async Task<(List<LoanCondition>? Conditions, List<LoanConditionPhase>? Phases)> GetCovenants(long productId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/conditions", cancellationToken);
+		var result = await response.EnsureSuccessStatusAndReadJson<LoanConditionsResponse>(StartupExtensions.ServiceName, cancellationToken);
+        return (result.Conditions?.ToList(), result.Phases?.ToList());
+	}
+
+	public async Task<(LoanRetention? Retention, LoanRefixation? Refixation)> GetRefinancing(long productId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/retentionRefixation", cancellationToken);
+		var result = await response.EnsureSuccessStatusAndReadJson<LoanRetentionResponse>(StartupExtensions.ServiceName, cancellationToken);
+		return (result.Retention, result.Refixation);
+	}
+
+	public async Task<bool> PartnerExists(long partnerId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}/exists", cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<bool>(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+	public async Task<bool> CaseExists(long caseId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Case/{caseId}/exists", cancellationToken);
+        await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
+        return (await response.SafeReadAsStringAsync(cancellationToken)) == "true";
+	}
+
+	public async Task<PartnerResponse?> GetPartner(long partnerId, CancellationToken cancellationToken = default)
+	{
+		var response = await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", cancellationToken);
+		var result = await response.EnsureSuccessStatusAndReadJson<PartnerResponse>(StartupExtensions.ServiceName, cancellationToken);
+        result.Addresses?.ForEach(x => x.CountryId = x.CountryId.GetValueOrDefault() == 0 ? _defaultCountryId : x.CountryId!.Value);
+        return result;
+	}
+
+	public async Task<LoanDetail> GetMortgage(long productId, CancellationToken cancellationToken = default)
+    {
+		var response =  await _httpClient.GetAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}", cancellationToken);
+		return await response.EnsureSuccessStatusAndReadJson<Contracts.LoanDetail>(StartupExtensions.ServiceName, cancellationToken);
+	}
+
+    public async Task UpdateLoan(long productId, MortgageRequest mortgageRequest, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}", mortgageRequest, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}", mortgageRequest, cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task CancelLoan(long loanId, CancellationToken cancellationToken = default)
+    public async Task CancelLoan(long productId, CancellationToken cancellationToken = default)
     {
-        var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/foms/Loan/{loanId}", cancellationToken);
+        var response = await _httpClient.DeleteAsync($"{_httpClient.BaseAddress}/foms/Loan/{productId}", cancellationToken);
 
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task UpdateLoanPartnerLink(long loanId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdateLoanPartnerLink(long productId, long partnerId, LoanLinkRequest loanLinkRequest, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}/link/{partnerId}", loanLinkRequest, cancellationToken)
+            .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/link/{partnerId}", loanLinkRequest, cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task DeletePartnerLoanLink(long loanId, long partnerId, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task DeletePartnerLoanLink(long productId, long partnerId, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
-            .DeleteAsync(_httpClient.BaseAddress + $"/foms/Loan/{loanId}/link/{partnerId}", cancellationToken)
+            .DeleteAsync(_httpClient.BaseAddress + $"/foms/Loan/{productId}/link/{partnerId}", cancellationToken)
             .ConfigureAwait(false);
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
 
-    public async Task UpdatePartner(long partnerId, PartnerRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task UpdatePartner(long partnerId, PartnerRequest request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
             .PutAsJsonAsync(_httpClient.BaseAddress + $"/foms/Partner/{partnerId}", request, cancellationToken)
@@ -55,8 +125,4 @@ internal sealed class RealMpHomeClient
 
         await response.EnsureSuccessStatusCode(StartupExtensions.ServiceName, cancellationToken);
     }
-
-    private readonly HttpClient _httpClient;
-    public RealMpHomeClient(HttpClient httpClient)
-        => _httpClient = httpClient;
 }

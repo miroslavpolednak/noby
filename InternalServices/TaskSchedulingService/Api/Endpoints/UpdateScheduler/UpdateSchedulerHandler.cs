@@ -5,7 +5,9 @@ using NCrontab.Scheduler;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Endpoints.UpdateScheduler;
 
-internal sealed class UpdateSchedulerHandler
+internal sealed class UpdateSchedulerHandler(
+    IScheduler _scheduler, 
+    TriggerService _triggerService)
     : IRequestHandler<UpdateSchedulerRequest, Empty>
 {
     public Task<Empty> Handle(UpdateSchedulerRequest request, CancellationToken cancellationToken)
@@ -13,19 +15,10 @@ internal sealed class UpdateSchedulerHandler
         _scheduler.Stop();
         _scheduler.RemoveAllTasks();
 
-        _triggerService.UpdateTriggersInScheduler(_scheduler, cancellationToken);
+        _triggerService.UpdateTriggersInScheduler(_scheduler);
 
         _scheduler.Start(cancellationToken);
 
         return Task.FromResult(new Empty());
-    }
-
-    private readonly IScheduler _scheduler;
-    private readonly TriggerService _triggerService;
-
-    public UpdateSchedulerHandler(IScheduler scheduler, TriggerService triggerService)
-    {
-        _scheduler = scheduler;
-        _triggerService = triggerService;
     }
 }

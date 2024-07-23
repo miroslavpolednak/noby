@@ -1,6 +1,6 @@
 ﻿using DomainServices.HouseholdService.Clients;
 using _Case = DomainServices.CaseService.Contracts;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 
 namespace NOBY.Services.CreateProductTrain.Handlers;
 

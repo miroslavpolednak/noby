@@ -4,8 +4,13 @@ using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.UpdateCustomer;
 
-internal sealed class UpdateCustomerHandler
-    : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
+internal sealed class UpdateCustomerHandler(
+    SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    IAuditLogger _auditLogger,
+    SulmService.ISulmClientHelper _sulmClient,
+    UpdateCustomerService _updateService,
+    Database.HouseholdServiceDbContext _dbContext)
+        : IRequestHandler<UpdateCustomerRequest, UpdateCustomerResponse>
 {
     public async Task<UpdateCustomerResponse> Handle(UpdateCustomerRequest request, CancellationToken cancellationToken)
     {
@@ -18,6 +23,9 @@ internal sealed class UpdateCustomerHandler
 
         // helper aby se nemuselo porad null checkovat
         entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
+
+        // customerOnSA byl jiz updatovan z KB CM
+        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
 
         // v tomto pripade natvrdo beru identity z requestu a nezajima me, jake mel pred tim
         if (request.SkipValidations)
@@ -45,9 +53,6 @@ internal sealed class UpdateCustomerHandler
 
             entity.Identities.AddRange(newSchemasToAdd.Select(t => new Database.Entities.CustomerOnSAIdentity(t, entity.CustomerOnSAId)));
         }
-
-        // customerOnSA byl jiz updatovan z KB CM
-        bool alreadyKbUpdatedCustomer = entity.Identities.Any(t => t.IdentityScheme == IdentitySchemes.Kb);
 
         // provolat sulm - pokud jiz ma nebo mu byla akorat pridana KB identita
         var kbIdentity = entity.Identities.FirstOrDefault(t => t.IdentityScheme == IdentitySchemes.Kb);
@@ -101,25 +106,5 @@ internal sealed class UpdateCustomerHandler
         }
 
         return model;
-    }
-
-    private readonly IAuditLogger _auditLogger;
-    private readonly SulmService.ISulmClientHelper _sulmClient;
-    private readonly UpdateCustomerService _updateService;
-    private readonly Database.HouseholdServiceDbContext _dbContext;
-    private readonly SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-
-    public UpdateCustomerHandler(
-        SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        IAuditLogger auditLogger,
-        SulmService.ISulmClientHelper sulmClient,
-        UpdateCustomerService updateService,
-        Database.HouseholdServiceDbContext dbContext)
-    {
-        _salesArrangementService = salesArrangementService;
-        _auditLogger = auditLogger;
-        _sulmClient = sulmClient;
-        _updateService = updateService;
-        _dbContext = dbContext;
     }
 }

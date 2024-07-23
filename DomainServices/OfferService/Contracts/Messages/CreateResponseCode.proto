@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "Messages/Types.proto";
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+
+message CreateResponseCodeRequest {
+	int64 CaseId = 1;
+	google.protobuf.Int32Value ResponseCodeTypeId = 2;
+	google.protobuf.StringValue Data = 3;
+	ResponseCodeCategories ResponseCodeCategory = 4;
+	cis.types.GrpcDate ValidTo = 5;
+}
+
+message CreateResponseCodeResponse {
+	int32 ResponseCodeId = 1;
+}

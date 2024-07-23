@@ -6,19 +6,19 @@ public class GetDocumentRequestValidator: AbstractValidator<GetDocumentRequest>
 {
     public GetDocumentRequestValidator()
     {
-        When(t => t.Source == Source.EArchive, () =>
+        When(t => t.Source == EnumDocumentSource.EArchive, () =>
         {
             RuleFor(t => t.DocumentId)
                 .NotEmpty();
         });
         
-        When(t => t.Source == Source.SbAttachment, () =>
+        When(t => t.Source == EnumDocumentSource.SbAttachment, () =>
         {
             RuleFor(t => t.ExternalId)
                 .NotEmpty();
         });
 
-        When(t => t.Source == Source.SbDocument, () =>
+        When(t => t.Source == EnumDocumentSource.SbDocument, () =>
         {
             RuleFor(t => t.ExternalId)
                 .NotEmpty();

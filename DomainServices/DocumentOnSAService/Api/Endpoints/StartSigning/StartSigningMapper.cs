@@ -16,7 +16,7 @@ using CIS.Core.Security;
 using DomainServices.UserService.Clients;
 using DomainServices.CodebookService.Clients;
 using System.Globalization;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using static ExternalServices.ESignatures.Dto.PrepareDocumentRequest;
 using SharedTypes.Types;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
@@ -24,6 +24,9 @@ using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 using SharedTypes.Enums;
 using FastEnumUtility;
+using DomainServices.ProductService.Clients;
+using Google.Protobuf.Collections;
+using SharedTypes.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -39,6 +42,7 @@ public class StartSigningMapper
     private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly ICaseServiceClient _caseServiceClient;
     private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
+    private readonly IProductServiceClient _productServiceClient;
     private readonly IMediator _mediator;
 
     public StartSigningMapper(
@@ -50,6 +54,7 @@ public class StartSigningMapper
         ICodebookServiceClient codebookServiceClient,
         ICaseServiceClient caseServiceClient,
         IDocumentGeneratorServiceClient documentGeneratorServiceClient,
+        IProductServiceClient productServiceClient,
         IMediator mediator)
     {
         _dateTime = dateTime;
@@ -60,12 +65,13 @@ public class StartSigningMapper
         _codebookServiceClient = codebookServiceClient;
         _caseServiceClient = caseServiceClient;
         _documentGeneratorServiceClient = documentGeneratorServiceClient;
+        _productServiceClient = productServiceClient;
         _mediator = mediator;
     }
 
-    public async Task<UploadDocumentRequest> MapUploadDocumentRequest(long referenceId, string filename, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
+    public async Task<UploadDocumentRequest> MapUploadDocumentRequest(long referenceId, string filename, SalesArrangement salesArrangement, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
-        var docGenRequest = GenerateDocumentRequestMapper.CreateGenerateDocumentRequest(documentOnSa);
+        var docGenRequest = GenerateDocumentRequestMapper.CreateGenerateDocumentRequest(salesArrangement, documentOnSa);
         var docGenResponse = await _documentGeneratorServiceClient.GenerateDocument(docGenRequest, cancellationToken);
 
         return new()
@@ -77,15 +83,16 @@ public class StartSigningMapper
         };
     }
 
-    public async Task<PrepareDocumentRequest> MapPrepareDocumentRequest(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
+    public async Task<PrepareDocumentRequest> MapPrepareDocumentRequest(DocumentOnSa documentOnSa, long caseId, CancellationToken cancellationToken)
     {
         var currentUser = await _userServiceClient.GetUser(_currentUser.User!.Id, cancellationToken);
-        var saUser = await _userServiceClient.GetUser(salesArrangement.Created.UserId!.Value, cancellationToken);
         var documentType = (await _codebookServiceClient.DocumentTypes(cancellationToken)).Single(s => s.Id == documentOnSa.DocumentTypeId);
-        var caseObj = await _caseServiceClient.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+        var caseObj = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
 
         var request = new PrepareDocumentRequest
         {
+            ExternalId = await GetExternalId(caseId, cancellationToken),
+            AdditionalData = $"case_id:{caseId}",
             CurrentUserInfo = new()
             {
                 Cpm = currentUser.UserInfo.Cpm,
@@ -94,10 +101,10 @@ public class StartSigningMapper
             },
             CreatorInfo = new()
             {
-                Cpm = saUser.UserInfo.Cpm,
-                Icp = saUser.UserInfo.Icp,
-                FullName = $"{saUser.UserInfo.FirstName} {saUser.UserInfo.LastName}"
-            },
+				Cpm = currentUser.UserInfo.Cpm,
+				Icp = currentUser.UserInfo.Icp,
+				FullName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}"
+			},
             DocumentData = new()
             {
                 DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
@@ -132,7 +139,7 @@ public class StartSigningMapper
                     Identities = item.SigningIdentityJson.CustomerIdentifiers.Select(p => new CustomerIdentity(p.IdentityId, p.IdentityScheme)),
                     CodeIndex = ++counter,
                     FullName = $"{item.SigningIdentityJson.FirstName} {item.SigningIdentityJson.LastName}",
-                    Phone = item.SigningIdentityJson.MobilePhone?.PhoneNumber,
+                    Phone = string.Concat(item.SigningIdentityJson.MobilePhone?.PhoneIDC, item.SigningIdentityJson.MobilePhone?.PhoneNumber),
                     Email = item.SigningIdentityJson.EmailAddress
                 };
                 request.OtherClients.Add(otherClient);
@@ -142,11 +149,32 @@ public class StartSigningMapper
         return request;
     }
 
+    private async Task<string> GetExternalId(long caseId, CancellationToken cancellationToken)
+    {
+        var caseDetail = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
+
+        var identityOnCase = (caseDetail.Customer?.Identity)
+            ?? throw new NotSupportedException("Customer identity on Case cannot be null");
+
+        if (identityOnCase?.IdentityScheme == Identity.Types.IdentitySchemes.Mp)
+        {
+            return identityOnCase.IdentityId.ToString(CultureInfo.InvariantCulture);
+        }
+        else
+        {
+            var kbIdentityId = identityOnCase!.IdentityId;
+            var customersResponse = await _productServiceClient.GetCustomersOnProduct(caseId, cancellationToken);
+            var customer = customersResponse.Customers.Single(c => c.CustomerIdentifiers.Any(i => i.IdentityId == kbIdentityId));
+            var mpIndentity = customer.CustomerIdentifiers.GetKbIdentity();
+            return mpIndentity.IdentityId.ToString(CultureInfo.InvariantCulture);
+        }
+    }
+
     private static void MapClientData(ClientInfo clientData, SigningIdentityJson signingIdentity)
     {
         clientData.FullName = $"{signingIdentity.FirstName} {signingIdentity.LastName}";
         clientData.BirthNumber = signingIdentity.BirthNumber;
-        clientData.Phone = signingIdentity.MobilePhone?.PhoneNumber;
+        clientData.Phone = string.Concat(signingIdentity.MobilePhone?.PhoneIDC, signingIdentity.MobilePhone?.PhoneNumber);
         clientData.Email = signingIdentity.EmailAddress;
         clientData.Identities = signingIdentity.CustomerIdentifiers.Select(s => new CustomerIdentity(s.IdentityId, s.IdentityScheme));
     }
@@ -159,14 +187,12 @@ public class StartSigningMapper
             _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.AmendmentHasToBeOfTypeSigning)
         };
 
-        var (isCustomerPreviewSendingAllowed, externalIdESignatures) = await GetInfoFromSbQueue(signing, cancellationToken);
-
         var entity = new DocumentOnSa();
         entity.FormId = signing.FormId;
         entity.ExternalIdSb = signing.DocumentForSigning;
         if (request.SignatureTypeId == SignatureTypes.Electronic.ToByte())
         {
-            entity.ExternalIdESignatures = externalIdESignatures;
+            entity.ExternalIdESignatures = await GetExternalIdESignaturesFromSbQueue(signing, cancellationToken);
         }
         entity.Source = __DbEnum.Source.Workflow;
         entity.EArchivId = await _documentArchiveServiceClient.GenerateDocumentId(new(), cancellationToken);
@@ -178,7 +204,7 @@ public class StartSigningMapper
         entity.IsValid = true;
         entity.IsSigned = false;
         entity.IsArchived = false;
-        entity.IsCustomerPreviewSendingAllowed = isCustomerPreviewSendingAllowed;
+        entity.IsCustomerPreviewSendingAllowed = true;
         entity.EACodeMainId = signing.EACodeMain;
         return entity;
     }
@@ -330,16 +356,16 @@ public class StartSigningMapper
         switch (salesArrangement.ParametersCase)
         {
             case SalesArrangement.ParametersOneofCase.Drawing:
-                identities.Add(salesArrangement.Drawing.Applicant.First());
+                identities.Add(salesArrangement.Drawing.Applicant.GetIdentity(Identity.Types.IdentitySchemes.Kb));
                 break;
             case SalesArrangement.ParametersOneofCase.GeneralChange:
-                identities.Add(salesArrangement.GeneralChange.Applicant.First());
+                identities.Add(salesArrangement.GeneralChange.Applicant.GetIdentity(Identity.Types.IdentitySchemes.Kb));
                 break;
             case SalesArrangement.ParametersOneofCase.HUBN:
-                identities.Add(salesArrangement.HUBN.Applicant.First());
+                identities.Add(salesArrangement.HUBN.Applicant.GetIdentity(Identity.Types.IdentitySchemes.Kb));
                 break;
             case SalesArrangement.ParametersOneofCase.CustomerChange:
-                identities.AddRange(salesArrangement.CustomerChange.Applicants.SelectMany(s => s.Identity));
+                identities.AddRange(salesArrangement.CustomerChange.Applicants.Select(s => s.Identity.GetIdentity(Identity.Types.IdentitySchemes.Kb)));
                 break;
         }
 
@@ -378,37 +404,9 @@ public class StartSigningMapper
         return entity;
     }
 
-    private async Task<(bool IsCustomerPreviewSendingAllowed, string? ExternalIdESignatures)> GetInfoFromSbQueue(AmendmentSigning signing, CancellationToken cancellationToken)
+    private async Task<string?> GetExternalIdESignaturesFromSbQueue(AmendmentSigning signing, CancellationToken cancellationToken)
     {
-        if (signing.ProposalForEntry?.Count > 0)
-        {
-            var atchRequestProposalForE = new GetElectronicDocumentFromQueueRequest
-            {
-                DocumentAttachment = new()
-                {
-                    AttachmentId = signing.ProposalForEntry[0]
-                },
-                GetMetadataOnly = true
-            };
-
-            var atchResponse = await _mediator.Send(atchRequestProposalForE, cancellationToken);
-            return (atchResponse.IsCustomerPreviewSendingAllowed, null);
-        }
-        else if (signing.DocumentForSigningType.Equals("A", StringComparison.OrdinalIgnoreCase))
-        {
-            var atchRequest = new GetElectronicDocumentFromQueueRequest
-            {
-                DocumentAttachment = new()
-                {
-                    AttachmentId = signing.DocumentForSigning
-                },
-                GetMetadataOnly = true
-            };
-
-            var atchResponse = await _mediator.Send(atchRequest, cancellationToken);
-            return (atchResponse.IsCustomerPreviewSendingAllowed, null);
-        }
-        else if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase))
+        if (signing.DocumentForSigningType.Equals("D", StringComparison.OrdinalIgnoreCase))
         {
             var docRequest = new GetElectronicDocumentFromQueueRequest
             {
@@ -420,7 +418,7 @@ public class StartSigningMapper
             };
 
             var docResponse = await _mediator.Send(docRequest, cancellationToken);
-            return (docResponse.IsCustomerPreviewSendingAllowed, docResponse.ExternalIdESignatures);
+            return docResponse.ExternalIdESignatures;
         }
         else
         {

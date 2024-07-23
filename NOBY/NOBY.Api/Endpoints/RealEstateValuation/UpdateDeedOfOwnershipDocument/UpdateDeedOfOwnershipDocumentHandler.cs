@@ -2,10 +2,10 @@
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateDeedOfOwnershipDocument;
 
-public class UpdateDeedOfOwnershipDocumentHandler
-    : IRequestHandler<UpdateDeedOfOwnershipDocumentRequest>
+public class UpdateDeedOfOwnershipDocumentHandler(IRealEstateValuationServiceClient _realEstateValuationService)
+        : IRequestHandler<RealEstateValuationUpdateDeedOfOwnershipDocumentRequest>
 {
-    public async Task Handle(UpdateDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RealEstateValuationUpdateDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
         var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
         if (revInstance.PossibleValuationTypeId?.Any() ?? false)
@@ -14,12 +14,5 @@ public class UpdateDeedOfOwnershipDocumentHandler
         }
 
         await _realEstateValuationService.UpdateDeedOfOwnershipDocument(request.DeedOfOwnershipDocumentId, request.RealEstateIds, cancellationToken);
-    }
-    
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-
-    public UpdateDeedOfOwnershipDocumentHandler(IRealEstateValuationServiceClient realEstateValuationService)
-    {
-        _realEstateValuationService = realEstateValuationService;
     }
 }

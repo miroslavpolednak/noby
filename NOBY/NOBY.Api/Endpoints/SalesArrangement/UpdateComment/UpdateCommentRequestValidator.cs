@@ -2,7 +2,8 @@
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateComment;
 
-internal sealed class UpdateCommentRequestValidator : AbstractValidator<UpdateCommentRequest>
+internal sealed class UpdateCommentRequestValidator 
+    : AbstractValidator<SalesArrangementUpdateCommentRequest>
 {
     public UpdateCommentRequestValidator()
     {
@@ -10,7 +11,7 @@ internal sealed class UpdateCommentRequestValidator : AbstractValidator<UpdateCo
             .GreaterThan(0)
             .WithMessage("SalesArrangementId must be > 0");
 
-        RuleFor(t => t.Comment.Text)
+        RuleFor(t => t.Text)
             .MaximumLength(500);
     }
 }

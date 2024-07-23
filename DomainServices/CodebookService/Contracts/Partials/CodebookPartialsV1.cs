@@ -7,6 +7,14 @@ public partial class GenericCodebookResponse : IItemsResponse<GenericCodebookRes
         public partial class GenericCodebookItem : IBaseCodebook { }
     }
 }
+public partial class BuildingSavingsMarketingActionsResponse : IItemsResponse<BuildingSavingsMarketingActionsResponse.Types.BuildingSavingsMarketingActionsItem> { }
+public partial class BuildingSavingsPropertiesResponse : IItemsResponse<BuildingSavingsPropertiesResponse.Types.BuildingSavingsPropertiesItem> { }
+public partial class FlowSwitchStatesResponse : IItemsResponse<FlowSwitchStatesResponse.Types.FlowSwitchStatesItem> { }
+public partial class IdentificationSubjectMethodsResponse : IItemsResponse<IdentificationSubjectMethodsResponse.Types.IdentificationSubjectMethodsItem> { }
+public partial class RefinancingStatesResponse : IItemsResponse<RefinancingStatesResponse.Types.RefinancingStatesItem> { }
+public partial class ResponseCodeTypesResponse : IItemsResponse<ResponseCodeTypesResponse.Types.ResponseCodeTypesItem> { }
+public partial class FeeChangeRequestsResponse : IItemsResponse<FeeChangeRequestsResponse.Types.FeeChangeRequestsItem> { }
+public partial class SignatureTypeDetailResponse : IItemsResponse<SignatureTypeDetailResponse.Types.SignatureTypeDetailItem> { }
 public partial class AddressTypesResponse : IItemsResponse<AddressTypesResponse.Types.AddressTypeItem> { }
 public partial class BankCodesResponse : IItemsResponse<BankCodesResponse.Types.BankCodeItem> { }
 public partial class CollateralTypesResponse : IItemsResponse<CollateralTypesResponse.Types.CollateralTypeItem> { }
@@ -31,7 +39,6 @@ public partial class FixedRatePeriodsResponse : IItemsResponse<FixedRatePeriodsR
 public partial class FormTypesResponse : IItemsResponse<FormTypesResponse.Types.FormTypeItem> { }
 public partial class GendersResponse : IItemsResponse<GendersResponse.Types.GenderItem> { }
 public partial class GetGeneralDocumentListResponse : IItemsResponse<GetGeneralDocumentListResponse.Types.GetGeneralDocumentListItem> { }
-public partial class HashAlgorithmsResponse : IItemsResponse<HashAlgorithmsResponse.Types.HashAlgorithmItem> { }
 public partial class HouseholdTypesResponse : IItemsResponse<HouseholdTypesResponse.Types.HouseholdTypeItem> { }
 public partial class HousingConditionsResponse : IItemsResponse<HousingConditionsResponse.Types.HousingConditionItem> { }
 public partial class ChannelsResponse : IItemsResponse<ChannelsResponse.Types.ChannelItem> { }

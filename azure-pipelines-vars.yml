@@ -1,0 +1,4 @@
+variables:
+  versionMajor: 2
+  versionMinor: 3
+  versionPatch: 0

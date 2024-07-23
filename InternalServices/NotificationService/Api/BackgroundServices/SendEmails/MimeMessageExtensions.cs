@@ -3,7 +3,7 @@ using MimeKit;
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
-public static class MimeMessageExtensions
+internal static class MimeMessageExtensions
 {
     public static MimeMessage Create() => new();
 
@@ -42,8 +42,11 @@ public static class MimeMessageExtensions
         return message;
     }
 
-    public static MimeMessage AddCc(this MimeMessage message, IEnumerable<string> cc)
+    public static MimeMessage AddCc(this MimeMessage message, IEnumerable<string>? cc)
     {
+        if (cc is null || !cc.Any())
+            return message;
+
         foreach (var c in cc)
         {
             if (!string.IsNullOrEmpty(c))
@@ -55,8 +58,11 @@ public static class MimeMessageExtensions
         return message;
     }
 
-    public static MimeMessage AddBcc(this MimeMessage message, IEnumerable<string> bcc)
+    public static MimeMessage AddBcc(this MimeMessage message, IEnumerable<string>? bcc)
     {
+        if (bcc is null || !bcc.Any())
+            return message;
+
         foreach (var b in bcc)
         {
             if (!string.IsNullOrEmpty(b))
@@ -68,11 +74,11 @@ public static class MimeMessageExtensions
         return message;
     }
 
-    public static MimeMessage AddContent(this MimeMessage message, string format, string content, IEnumerable<Dto.SmtpAttachment> attachments)
+    public static MimeMessage AddContent(this MimeMessage message, string format, string content, IEnumerable<Dto.SmtpAttachment>? attachments)
     {
         var bodyBuilder = new BodyBuilder();
 
-        if (format.ToLower(CultureInfo.InvariantCulture).Contains("html"))
+        if (format.Contains("html", StringComparison.CurrentCultureIgnoreCase))
         {
             bodyBuilder.HtmlBody = content;
         }
@@ -81,10 +87,13 @@ public static class MimeMessageExtensions
             bodyBuilder.TextBody = content;
         }
 
-        foreach (var attachment in attachments)
+        if (attachments != null && attachments.Any())
         {
-            bodyBuilder.Attachments.Add(attachment.Filename, attachment.Binary);
-        }
+            foreach (var attachment in attachments)
+            {
+                bodyBuilder.Attachments.Add(attachment.Filename, attachment.Binary);
+            }
+        }        
 
         message.Body = bodyBuilder.ToMessageBody();
 

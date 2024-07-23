@@ -11,5 +11,9 @@ internal sealed class OrderStandardValuationRequestValidator
         RuleFor(t => t.RealEstateValuationId)
             .GreaterThan(0)
             .WithErrorCode(ErrorCodeMapper.RealEstateValuationIdEmpty);
+
+        RuleFor(t => t.LocalSurveyDetails)
+            .NotNull()
+            .WithErrorCode(ErrorCodeMapper.LocalSurveyDetailsIsEmpty);
     }
 }

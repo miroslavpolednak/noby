@@ -1,7 +1,12 @@
-﻿namespace NOBY.Dto.Workflow;
+﻿using System.Text.Json.Serialization;
+
+namespace NOBY.Dto.Workflow;
 
 public sealed class WorkflowTask
 {
+    [JsonIgnore]
+    public bool Cancelled { get; set; }
+
     /// <summary>
     /// Noby task ID. Jde o ID sady úkolů generované Starbuildem.
     /// </summary>
@@ -66,5 +71,5 @@ public sealed class WorkflowTask
     /// Indikátor barvy Noby stavu
     /// </summary>
     /// <example>1</example>
-    public StateIndicators StateIndicator { get; set; }
+    public SharedTypes.Enums.StateIndicators StateIndicator { get; set; }
 }

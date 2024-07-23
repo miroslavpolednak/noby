@@ -27,7 +27,11 @@ public class CustomerWithChangesService
         var customerOnSa = customerOnSaList.FirstOrDefault(c => c.CustomerIdentifiers.Contains(identity));
 
         if (customerOnSa is not null)
+        {
+            customerOnSa = await _customerOnSAService.GetCustomer(customerOnSa.CustomerOnSAId, cancellationToken);
+
             _customerChangeDataMerger.MergeAll(customer, customerOnSa);
+        }
 
         return (customer, customerOnSa);
     }
@@ -38,7 +42,7 @@ public class CustomerWithChangesService
 
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
 
-        var customerIdentity = customerOnSa.CustomerIdentifiers.MaxBy(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+        var customerIdentity = customerOnSa.CustomerIdentifiers.GetKbIdentityOrDefault()
                                ?? throw new InvalidOperationException($"CustomerOnSa {customerOnSa} has no identity");
 
         var customer = await _customerService.GetCustomerDetail(customerIdentity, forceKbCustomerLoad: true, cancellationToken);
@@ -60,6 +64,9 @@ public class CustomerWithChangesService
 
             if (customerOnSa is null)
                 continue;
+
+            //CustomerOnSa full detail
+            customerOnSa = await _customerOnSAService.GetCustomer(customerOnSa.CustomerOnSAId, cancellationToken);
 
             _customerChangeDataMerger.MergeAll(customerDetail, customerOnSa);
         }
@@ -94,18 +101,15 @@ public class CustomerWithChangesService
         customersOnSa.Select(c => new
                      {
                          CustomerOnSa = c,
-                         KbIdentity = c.CustomerIdentifiers.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)
+                         KbIdentity = c.CustomerIdentifiers.GetKbIdentityOrDefault()
                      })
                      .Where(c => c.KbIdentity is not null)
                      .ToDictionary(k => k.KbIdentity!, v => v.CustomerOnSa);
 
     private static CustomerOnSA? GetCustomerOnSA(CustomerDetailResponse customerDetail, IReadOnlyDictionary<Identity, CustomerOnSA> customersOnSaWithKbIdentity)
     {
-        var kbIdentity = GetKbIdentity(customerDetail);
+        var kbIdentity = customerDetail.Identities.GetKbIdentityOrDefault();
 
         return kbIdentity is null ? default : customersOnSaWithKbIdentity.GetValueOrDefault(kbIdentity);
     }
-
-    private static Identity? GetKbIdentity(CustomerDetailResponse customerDetail) =>
-        customerDetail.Identities.FirstOrDefault(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
 }

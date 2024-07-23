@@ -53,6 +53,11 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new SalesArrangementParametersRetention
         {
+            Comment = retentionData.Comment,
+            IndividualPriceCommentLastVersion = retentionData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = retentionData.ManagedByRC2,
+            SignatureTypeDetailId = retentionData.SignatureTypeDetailId,
+            SignatureDeadline = retentionData.SignatureDeadline
         };
     }
 
@@ -60,6 +65,62 @@ internal static class SalesArrangementParametersMapperExtensions
     {
         return new RetentionData
         {
+            Comment = retentionData.Comment,
+            IndividualPriceCommentLastVersion = retentionData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = retentionData.ManagedByRC2,
+            SignatureDeadline = retentionData.SignatureDeadline,
+            SignatureTypeDetailId = retentionData.SignatureTypeDetailId
+        };
+    }
+
+    public static SalesArrangementParametersRefixation MapRefixation(this RefixationData refixationData)
+    {
+        return new SalesArrangementParametersRefixation
+        {
+            Comment = refixationData.Comment,
+            IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = refixationData.ManagedByRC2,
+			SignatureDeadline = refixationData.SignatureDeadline,
+			SignatureTypeDetailId = refixationData.SignatureTypeDetailId
+		};
+    }
+
+    public static RefixationData MapRefixation(this SalesArrangementParametersRefixation refixationData)
+    {
+        return new RefixationData
+        {
+            Comment = refixationData.Comment,
+            IndividualPriceCommentLastVersion = refixationData.IndividualPriceCommentLastVersion,
+            ManagedByRC2 = refixationData.ManagedByRC2,
+			SignatureDeadline = refixationData.SignatureDeadline,
+			SignatureTypeDetailId = refixationData.SignatureTypeDetailId
+		};
+    }
+
+    public static SalesArrangementParametersExtraPayment MapExtraPayment(this ExtraPaymentData extraPayment)
+    {
+        return new SalesArrangementParametersExtraPayment
+        {
+            IndividualPriceCommentLastVersion = extraPayment.IndividualPriceCommentLastVersion,
+            HandoverTypeDetailId = extraPayment.HandoverTypeDetailId,
+            Client = !extraPayment.ClientKBId.HasValue ? null : new SalesArrangementParametersExtraPayment.Types.SalesArrangementParametersExtraPaymentClient
+            {
+                KBId = extraPayment.ClientKBId.Value,
+                FirstName = extraPayment.ClientFirstName ?? "",
+                LastName = extraPayment.ClientLastName ?? ""
+            }
+        };
+    }
+
+    public static ExtraPaymentData MapExtraPayment(this SalesArrangementParametersExtraPayment extraPayment)
+    {
+        return new ExtraPaymentData
+        {
+            IndividualPriceCommentLastVersion = extraPayment.IndividualPriceCommentLastVersion,
+            HandoverTypeDetailId = extraPayment.HandoverTypeDetailId,
+            ClientKBId = extraPayment.Client?.KBId,
+            ClientFirstName = extraPayment.Client?.FirstName,
+            ClientLastName = extraPayment.Client?.LastName
         };
     }
 
@@ -195,7 +256,8 @@ internal static class SalesArrangementParametersMapperExtensions
             {
                 IsActive = hubnData.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = hubnData.DrawingDateTo.AgreedDrawingDateTo,
-                ExtensionDrawingDateToByMonths = hubnData.DrawingDateTo.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = hubnData.DrawingDateTo.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = hubnData.DrawingDateTo.IsDrawingDateEarlier ?? false
             },
             CommentToChangeRequest = hubnData.CommentToChangeRequest is null ? null : new SalesArrangementParametersHUBN.Types.CommentToChangeRequestObject
             {
@@ -245,7 +307,8 @@ internal static class SalesArrangementParametersMapperExtensions
             {
                 IsActive = hubn.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = hubn.DrawingDateTo.AgreedDrawingDateTo,
-                ExtensionDrawingDateToByMonths = hubn.DrawingDateTo.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = hubn.DrawingDateTo.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = hubn.DrawingDateTo.IsDrawingDateEarlier
             },
             CommentToChangeRequest = hubn.CommentToChangeRequest is null ? null : new HUBNData.HUBNCommentToChangeRequestData
             {
@@ -277,7 +340,8 @@ internal static class SalesArrangementParametersMapperExtensions
                 IsActive = generalChangeData.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = generalChangeData.DrawingDateTo.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = generalChangeData.DrawingDateTo.ExtensionDrawingDateToByMonths,
-                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo ?? ""
+                CommentToDrawingDateTo = generalChangeData.DrawingDateTo.CommentToDrawingDateTo ?? "",
+                IsDrawingDateEarlier = generalChangeData.DrawingDateTo.IsDrawingDateEarlier ?? false
             },
             RepaymentAccount = generalChangeData.RepaymentAccount is null ? null : new SalesArrangementParametersGeneralChange.Types.PaymentAccountObject
             {
@@ -358,7 +422,8 @@ internal static class SalesArrangementParametersMapperExtensions
                 IsActive = generalChange.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = generalChange.DrawingDateTo.AgreedDrawingDateTo,
                 ExtensionDrawingDateToByMonths = generalChange.DrawingDateTo.ExtensionDrawingDateToByMonths,
-                CommentToDrawingDateTo = generalChange.DrawingDateTo.CommentToDrawingDateTo
+                CommentToDrawingDateTo = generalChange.DrawingDateTo.CommentToDrawingDateTo,
+                IsDrawingDateEarlier = generalChange.DrawingDateTo.IsDrawingDateEarlier
             },
             RepaymentAccount = generalChange.RepaymentAccount is null ? null : new GeneralChangeData.GeneralChangePaymentAccountData
             {

@@ -1,27 +1,21 @@
 ﻿using System.Net.Mime;
 using System.Reflection;
+using CIS.Infrastructure.Logging;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
-using NOBY.Dto.Attributes;
 
 namespace NOBY.Infrastructure.ErrorHandling.Internals;
 
-public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse>(
+    IHttpContextAccessor _httpContextAccessor, 
+    ILogger<TRequest> _logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<TRequest> _logger;
-
-    public NobyAdditionalRequestPropertiesLoggerBehavior(IHttpContextAccessor httpContextAccessor, ILogger<TRequest> logger)
-    {
-        _httpContextAccessor = httpContextAccessor;
-        _logger = logger;
-    }
-
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (_httpContextAccessor.HttpContext is null || _httpContextAccessor.HttpContext.Request.ContentType != MediaTypeNames.Application.Json)
@@ -47,9 +41,7 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
 
         if (extraProperties.Count != 0)
         {
-            _logger.LogWarning("Request {RequestName} has additional properties than contract. Differences: {ExtraProperties}", 
-                               typeof(TRequest).FullName, 
-                               extraProperties);
+            _logger.RequestHasAdditionalPropsThanContract(typeof(TRequest).FullName, extraProperties);
         }
 
         return await next();
@@ -98,15 +90,9 @@ public class NobyAdditionalRequestPropertiesLoggerBehavior<TRequest, TResponse> 
         return missingProperties;
     }
 
-    private sealed class ExcludeOneOfContractResolver : DefaultContractResolver
+    private sealed class ExcludeOneOfContractResolver(ICollection<string> _oneOfProperties) 
+        : DefaultContractResolver
     {
-        private readonly ICollection<string> _oneOfProperties;
-
-        public ExcludeOneOfContractResolver(ICollection<string> oneOfProperties)
-        {
-            _oneOfProperties = oneOfProperties;
-        }
-
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             if (member.GetCustomAttribute<SwaggerOneOfAttribute>() != null)

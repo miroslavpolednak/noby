@@ -4,8 +4,11 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.DeleteSalesArrangement;
 
-internal sealed class DeleteSalesArrangementHandler
-    : IRequestHandler<DeleteSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteSalesArrangementHandler(
+	HouseholdService.Clients.IHouseholdServiceClient _householdService,
+	Database.SalesArrangementServiceDbContext _dbContext,
+	IDocumentDataStorage _documentDataStorage)
+		: IRequestHandler<DeleteSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteSalesArrangementRequest request, CancellationToken cancellation)
     {
@@ -46,18 +49,4 @@ internal sealed class DeleteSalesArrangementHandler
         (int)SalesArrangementStates.ToSend,
         (int)SalesArrangementStates.InSigning
     ];
-
-    private readonly HouseholdService.Clients.IHouseholdServiceClient _householdService;
-    private readonly Database.SalesArrangementServiceDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-
-    public DeleteSalesArrangementHandler(
-        HouseholdService.Clients.IHouseholdServiceClient householdService,
-        Database.SalesArrangementServiceDbContext dbContext,
-        IDocumentDataStorage documentDataStorage)
-    {
-        _householdService = householdService;
-        _dbContext = dbContext;
-        _documentDataStorage = documentDataStorage;
-    }
 }

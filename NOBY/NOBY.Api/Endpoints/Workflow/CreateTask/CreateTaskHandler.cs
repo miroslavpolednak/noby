@@ -1,18 +1,21 @@
 ﻿using CIS.Core.Security;
-using DomainServices.CaseService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.CaseService.Clients.v1;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Workflow.CreateTask;
 
-#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-internal sealed class CreateTaskHandler
-    : IRequestHandler<CreateTaskRequest, long>
+internal sealed class CreateTaskHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    SharedComponents.Storage.ITempStorage _tempFileManager,
+    Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive)
+        : IRequestHandler<WorkflowCreateTaskRequest, long>
 {
-    public async Task<long> Handle(CreateTaskRequest request, CancellationToken cancellationToken)
+    public async Task<long> Handle(WorkflowCreateTaskRequest request, CancellationToken cancellationToken)
     {
-        WorkflowHelpers.ValidateTaskManagePermission(request.TaskTypeId, null, null, _currentUserAccessor);
-
         // kontrola existence Case
         DomainServices.CaseService.Contracts.Case caseInstance;
         try
@@ -24,13 +27,16 @@ internal sealed class CreateTaskHandler
             throw new NobyValidationException(90032, "DS error 13029");
         }
 
+        // validace procesu
+        await validateProcess(caseInstance.CaseId, request.ProcessId, request.TaskTypeId, cancellationToken);
+
         // validace price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await validatePriceException(caseInstance.CaseId, cancellationToken);
         }
 
-        List<string>? documentIds = new();
+        List<string>? documentIds = [];
         var attachments = request
             .Attachments?
             .Select(t => new Services.UploadDocumentToArchive.DocumentMetadata
@@ -63,7 +69,7 @@ internal sealed class CreateTaskHandler
         }
 
         // price exception
-        if (request.TaskTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException)
         {
             await updatePriceExceptionTask(dsRequest, cancellationToken);
         }
@@ -79,6 +85,24 @@ internal sealed class CreateTaskHandler
         return result.TaskId;
     }
 
+    private async Task validateProcess(long caseId, long processId, int taskTypeId, CancellationToken cancellationToken)
+    {
+        var allProcesses = await _caseService.GetProcessList(caseId, cancellationToken);
+        var processInstance = allProcesses.FirstOrDefault(t => t.ProcessId == processId)
+            ?? throw new NobyValidationException($"Workflow process {processId} for Case {caseId} not found");
+        
+        if (!_allowedProcessTypes.Contains(processInstance.ProcessTypeId))
+        {
+            throw new NobyValidationException(90032, "validateProcess #1");
+        }
+        else if (processInstance.ProcessTypeId == (int)WorkflowProcesses.Refinancing && taskTypeId != (int)WorkflowTaskTypes.Consultation)
+        {
+            throw new NobyValidationException(90032, "validateProcess #2");
+        }
+
+        WorkflowHelpers.ValidateRefinancing(processInstance.ProcessTypeId, _currentUserAccessor, UserPermissions.WFL_TASK_DETAIL_OtherManage, UserPermissions.WFL_TASK_DETAIL_RefinancingOtherManage);
+    }
+
     private async Task updatePriceExceptionTask(DomainServices.CaseService.Contracts.CreateTaskRequest request, CancellationToken cancellationToken)
     {
         var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
@@ -87,28 +111,28 @@ internal sealed class CreateTaskHandler
         {
             throw new NobyValidationException($"OfferId is null for SalesArrangementId={saId}");
         }
-        var offerInstance = await _offerService.GetOfferDetail(saInstance.OfferId.Value, cancellationToken);
+        var offerInstance = await _offerService.GetMortgageDetail(saInstance.OfferId.Value, cancellationToken);
 
         request.PriceException = new()
         {
-            ProductTypeId = offerInstance.MortgageOffer.SimulationInputs.ProductTypeId,
-            FixedRatePeriod = offerInstance.MortgageOffer.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
-            LoanAmount = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanAmount),
-            LoanDuration = offerInstance.MortgageOffer.SimulationResults.LoanDuration,
-            LoanToValue = Convert.ToInt32(offerInstance.MortgageOffer.SimulationResults.LoanToValue),
-            Expiration = ((DateTime?)offerInstance.MortgageOffer.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
+            ProductTypeId = offerInstance.SimulationInputs.ProductTypeId,
+            FixedRatePeriod = offerInstance.SimulationInputs.FixedRatePeriod.GetValueOrDefault(),
+            LoanAmount = Convert.ToInt32(offerInstance.SimulationResults.LoanAmount),
+            LoanDuration = offerInstance.SimulationResults.LoanDuration,
+            LoanToValue = Convert.ToInt32(offerInstance.SimulationResults.LoanToValue),
+            Expiration = ((DateTime?)offerInstance.BasicParameters.GuaranteeDateTo ?? DateTime.Now), // nikdo nerekl co delat, pokud datum bude null...
             LoanInterestRate = new()
             {
-                LoanInterestRate = offerInstance.MortgageOffer.SimulationResults.LoanInterestRate,
-                LoanInterestRateProvided = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateProvided,
-                LoanInterestRateAnnouncedType = offerInstance.MortgageOffer.SimulationResults.LoanInterestRateAnnouncedType,
-                LoanInterestRateDiscount = offerInstance.MortgageOffer.SimulationInputs.InterestRateDiscount
+                LoanInterestRate = offerInstance.SimulationResults.LoanInterestRate,
+                LoanInterestRateProvided = offerInstance.SimulationResults.LoanInterestRateProvided,
+                LoanInterestRateAnnouncedType = offerInstance.SimulationResults.LoanInterestRateAnnouncedType,
+                LoanInterestRateDiscount = offerInstance.SimulationInputs.InterestRateDiscount
             }
         };
 
-        if (offerInstance.MortgageOffer.AdditionalSimulationResults.Fees is not null)
+        if (offerInstance.AdditionalSimulationResults.Fees is not null)
         {
-            request.PriceException.Fees.AddRange(offerInstance.MortgageOffer.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
+            request.PriceException.Fees.AddRange(offerInstance.AdditionalSimulationResults.Fees.Select(t => new DomainServices.CaseService.Contracts.PriceExceptionFeesItem
             {
                 FinalSum = (decimal?)t.FinalSum ?? 0,
                 TariffSum = (decimal?)t.TariffSum ?? 0,
@@ -117,10 +141,10 @@ internal sealed class CreateTaskHandler
             }));
         }
 
-        if (offerInstance.MortgageOffer.AdditionalSimulationResults.MarketingActions is not null)
+        if (offerInstance.AdditionalSimulationResults.MarketingActions is not null)
         {
             request.PriceException.AppliedMarketingActionsCodes.AddRange(
-                offerInstance.MortgageOffer.AdditionalSimulationResults.MarketingActions
+                offerInstance.AdditionalSimulationResults.MarketingActions
                     .Where(t => t.Applied.GetValueOrDefault() == 1)
                     .Select(t => t.Code)
             );
@@ -132,32 +156,16 @@ internal sealed class CreateTaskHandler
     /// </summary>
     private async Task validatePriceException(long caseId, CancellationToken cancellationToken)
     {
-        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == 2 && !t.Cancelled))
+        if ((await _caseService.GetTaskList(caseId, cancellationToken)).Any(t => t.TaskTypeId == (int)WorkflowTaskTypes.PriceException && !t.Cancelled))
         {
             throw new NobyValidationException(90032, "ValidatePriceException failed");
         }
     }
 
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly Services.UploadDocumentToArchive.IUploadDocumentToArchiveService _uploadDocumentToArchive;
-    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-
-    public CreateTaskHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        SharedComponents.Storage.ITempStorage tempFileManager,
-        Services.UploadDocumentToArchive.IUploadDocumentToArchiveService uploadDocumentToArchive)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _caseService = caseService;
-        _tempFileManager = tempFileManager;
-        _uploadDocumentToArchive = uploadDocumentToArchive;
-    }
+    private static readonly int[] _allowedProcessTypes =
+    [
+        (int)WorkflowProcesses.Main,
+        (int)WorkflowProcesses.Change,
+        (int)WorkflowProcesses.Refinancing
+    ];
 }

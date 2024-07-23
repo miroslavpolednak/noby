@@ -5,6 +5,7 @@ using ExternalServices.Eas.Dto;
 using ExternalServices.Eas.V1.CheckFormV2;
 using ExternalServices.Eas.V1.EasWrapper;
 using System.ServiceModel.Channels;
+using CIS.Core.Exceptions;
 using CIS.Infrastructure.ExternalServicesHelpers.Soap;
 
 namespace ExternalServices.Eas.V1;
@@ -103,6 +104,22 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
             var request = new ContractNrRequest(Convert.ToInt32(clientId), caseId);
             var result = await Client.Get_ContractNumberAsync(request).WithCancellation(cancellationToken);
             return result.contractNumber;
+        });
+    }
+
+    public async Task<BuildingSavingsResponse> SimulateBuildingSavings(BuildingSavingsRequest request, CancellationToken cancellationToken)
+    {
+        return await callMethod(async () =>
+        {
+            var result = await Client.SimulationAsync(request.ToEasRequest()).WithCancellation(cancellationToken);
+
+            if (result.SIM_error != 0)
+            {
+                Logger.ExternalServiceResponseError($"Error occured during call external service EAS [{result.SIM_error} : {result.SIM_error_text}]");
+                throw new CisValidationException(0, result.SIM_error_text);
+            }
+            
+            return BuildingSavingsResponse.CreateInstance(result);
         });
     }
 

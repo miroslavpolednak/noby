@@ -4,13 +4,13 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.C
 
 internal class DocumentOnSaInfo
 {
-    private readonly ICollection<DocumentOnSAToSign> _documentsOnSa;
-
     public DocumentOnSaInfo(ICollection<DocumentOnSAToSign> documentsOnSa)
     {
-        _documentsOnSa = documentsOnSa;
+        DocumentsOnSa = documentsOnSa;
         Configure();
     }
+
+    public ICollection<DocumentOnSAToSign> DocumentsOnSa { get; }
 
     public DocumentOnSAToSign? FinalDocument { get; private set; }
 
@@ -34,7 +34,7 @@ internal class DocumentOnSaInfo
     }
 
     private IEnumerable<DocumentOnSAToSign> GetDocumentsOnSa(int? documentTypeId = default) => 
-        documentTypeId.HasValue ? _documentsOnSa.Where(d => d.DocumentTypeId == documentTypeId) : _documentsOnSa;
+        documentTypeId.HasValue ? DocumentsOnSa.Where(d => d.DocumentTypeId == documentTypeId) : DocumentsOnSa;
 
     private static int GetSignatureTypeId(IEnumerable<DocumentOnSAToSign> documentsOnSa)
     {

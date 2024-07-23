@@ -1,8 +1,0 @@
-﻿using Confluent.Kafka;
-
-namespace CIS.InternalServices.NotificationService.Api.Messaging.Infrastructure;
-
-public interface ISerializerWrapper
-{
-    Task<byte[]> SerializeAsync(object data, SerializationContext context);
-}

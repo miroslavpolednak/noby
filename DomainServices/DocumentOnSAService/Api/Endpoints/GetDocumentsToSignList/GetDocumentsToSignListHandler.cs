@@ -82,8 +82,8 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         CancellationToken cancellationToken)
     {
         var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
-        var documentType = documentTypes.Single(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId);
-        var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentType, request.SalesArrangementId);
+        var documentTypeId = documentTypes.SingleOrDefault(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId)?.Id;
+        var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentTypeId, request.SalesArrangementId);
         var documentOnSaReal = documentOnSaEntities.Find(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
 
         if (documentOnSaReal is not null)

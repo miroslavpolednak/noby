@@ -1,22 +1,13 @@
 ﻿namespace DomainServices.ProductService.Api.Endpoints.GetProductList;
 
-internal sealed class GetProductListHandler : IRequestHandler<GetProductListRequest, GetProductListResponse>
+internal sealed class GetProductListHandler(IMpHomeClient _mpHomeClient)
+    : IRequestHandler<GetProductListRequest, GetProductListResponse>
 {
-    private readonly LoanRepository _repository;
-
-    public GetProductListHandler(LoanRepository repository)
-    {
-        _repository = repository;
-    }
-    
     public async Task<GetProductListResponse> Handle(GetProductListRequest request, CancellationToken cancellationToken)
     {
-        // add mortgage product if exists
-        var loan = await _repository.GetLoan(request.CaseId, cancellationToken);
-
-        if (loan is null)
-            return new GetProductListResponse();
-
+        //TODO nechat vytvorit ekonomictejsi endpoint MPHOME
+        var loan = await _mpHomeClient.GetMortgage(request.CaseId, cancellationToken);
+        
         return new GetProductListResponse
         {
             Products =
@@ -24,10 +15,9 @@ internal sealed class GetProductListHandler : IRequestHandler<GetProductListRequ
                 new GetProductListItem
                 {
                     ProductId = request.CaseId,
-                    ProductTypeId = loan.ProductTypeId.GetValueOrDefault()
+                    ProductTypeId = loan!.ProductUvCode.GetValueOrDefault()
                 }
             }
         };
     }
-
 }

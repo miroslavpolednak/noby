@@ -6,29 +6,15 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.SendToCmp;
 
-internal sealed class SendToCmpHandler : IRequestHandler<SendToCmpRequest, Empty>
+internal sealed class SendToCmpHandler(
+	IAuditLogger _auditLogger,
+	FormsService _formsService,
+	FormsDocumentService _formsDocumentService,
+	PerformerProvider _performerProvider,
+	IDocumentOnSAServiceClient _documentOnSAService)
+		: IRequestHandler<SendToCmpRequest, Empty>
 {
-    private readonly FormsService _formsService;
-    private readonly FormsDocumentService _formsDocumentService;
-    private readonly PerformerProvider _performerProvider;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly IAuditLogger _auditLogger;
-
-    public SendToCmpHandler(
-        IAuditLogger auditLogger,
-        FormsService formsService,
-        FormsDocumentService formsDocumentService,
-        PerformerProvider performerProvider,
-        IDocumentOnSAServiceClient documentOnSAService)
-    {
-        _auditLogger = auditLogger;
-        _formsService = formsService;
-        _formsDocumentService = formsDocumentService;
-        _performerProvider = performerProvider;
-        _documentOnSAService = documentOnSAService;
-    }
-
-    public async Task<Empty> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
+	public async Task<Empty> Handle(SendToCmpRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await LoadAndValidateSalesArrangement(request.SalesArrangementId, request.IsCancelled, cancellationToken);
 

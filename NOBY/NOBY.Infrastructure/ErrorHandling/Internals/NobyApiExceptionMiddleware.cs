@@ -9,17 +9,10 @@ using CIS.Core.Exceptions.ExternalServices;
 
 namespace NOBY.Infrastructure.ErrorHandling.Internals;
 
-public sealed class NobyApiExceptionMiddleware
+public sealed class NobyApiExceptionMiddleware(
+    RequestDelegate _next, 
+    ILoggerFactory _loggerFactory)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILoggerFactory _loggerFactory;
-
-    public NobyApiExceptionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
-    {
-        _loggerFactory = loggerFactory;
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext context, AppConfiguration appConfiguration)
     {
         var logger = _loggerFactory.CreateLogger<NobyApiExceptionMiddleware>();
@@ -113,8 +106,8 @@ public sealed class NobyApiExceptionMiddleware
 
     private static List<ApiErrorItem> createExternalServiceError(in string serviceName, in string reasonType)
     {
-        return new List<ApiErrorItem>
-        {
+        return
+        [
             new()
             {
                 Severity = ApiErrorItemServerity.Error,
@@ -126,7 +119,7 @@ public sealed class NobyApiExceptionMiddleware
                     ReasonDescription = serviceName
                 }
             }
-        };
+        ];
     }
 
     private static List<ApiErrorItem> singleErrorResult(BaseCisException exception, in int? customDefaultExceptionCode = null)
@@ -136,7 +129,7 @@ public sealed class NobyApiExceptionMiddleware
         => singleErrorResult(ErrorCodeMapper.DefaultExceptionCode, message, customDefaultExceptionCode);
 
     private static List<ApiErrorItem> singleErrorResult(in int errorCode, in string message, in int? customDefaultExceptionCode = null)
-        => new List<ApiErrorItem>
+        => new()
         {
             createErrorItem(errorCode, message, customDefaultExceptionCode)
         };
@@ -167,7 +160,7 @@ public sealed class NobyApiExceptionMiddleware
         }
 
         //Unknown exception
-        return createItem(customDefaultExceptionCode.HasValue ? customDefaultExceptionCode.Value : ErrorCodeMapper.DefaultExceptionCode);
+        return createItem(customDefaultExceptionCode ?? ErrorCodeMapper.DefaultExceptionCode);
 
         static ApiErrorItem createItem(int errorCode)
         {

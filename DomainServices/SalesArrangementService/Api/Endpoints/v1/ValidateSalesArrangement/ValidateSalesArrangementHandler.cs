@@ -4,19 +4,12 @@ using DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangem
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement;
 
-internal sealed class ValidateSalesArrangementHandler
-    : IRequestHandler<ValidateSalesArrangementRequest, ValidateSalesArrangementResponse>
+internal sealed class ValidateSalesArrangementHandler(
+    Services.Forms.FormsService _formsService, 
+    IServiceProvider _serviceProvider)
+		: IRequestHandler<ValidateSalesArrangementRequest, ValidateSalesArrangementResponse>
 {
-    private readonly Services.Forms.FormsService _formsService;
-    private readonly IServiceProvider _serviceProvider;
-
-    public ValidateSalesArrangementHandler(Services.Forms.FormsService formsService, IServiceProvider serviceProvider)
-    {
-        _formsService = formsService;
-        _serviceProvider = serviceProvider;
-    }
-
-    public async Task<ValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
+	public async Task<ValidateSalesArrangementResponse> Handle(ValidateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _formsService.LoadSalesArrangement(request.SalesArrangementId, cancellationToken);
         var saType = await _formsService.LoadSalesArrangementType(salesArrangement.SalesArrangementTypeId, cancellationToken);

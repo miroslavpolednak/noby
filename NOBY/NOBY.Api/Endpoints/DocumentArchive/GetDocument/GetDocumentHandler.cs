@@ -3,6 +3,7 @@ using CIS.Infrastructure.gRPC;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.DocumentOnSAService.Contracts;
+using System.Net;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
@@ -11,28 +12,45 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
     private readonly ICurrentUserAccessor _currentUserAccessor;
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly IDocumentOnSAServiceClient _documentOnSAService;
+    private readonly ILogger<GetDocumentHandler> _logger;
 
     public GetDocumentHandler(
         ICurrentUserAccessor currentUserAccessor,
         IDocumentArchiveServiceClient documentArchiveService,
-        IDocumentOnSAServiceClient documentOnSaService)
+        IDocumentOnSAServiceClient documentOnSaService,
+        ILogger<GetDocumentHandler> logger
+          )
     {
         _currentUserAccessor = currentUserAccessor;
         _documentArchiveService = documentArchiveService;
         _documentOnSAService = documentOnSaService;
+        _logger = logger;
     }
 
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
     {
         return request.Source switch
         {
-            Source.EArchive => await HandleByEArchive(request.DocumentId ?? string.Empty, cancellationToken),
-            Source.SbDocument or Source.SbAttachment => await HandleBySb(request.ExternalId ?? string.Empty, request.Source, cancellationToken),
+            EnumDocumentSource.EArchive => await HandleByEArchive(request.DocumentId ?? string.Empty, cancellationToken),
+            EnumDocumentSource.SbDocument or EnumDocumentSource.SbAttachment => await HandleBySb(request.ExternalId ?? string.Empty, request.Source, cancellationToken),
             _ => throw new NobyValidationException($"Unsupported kind of source {request.Source}")
         };
     }
 
     private async Task<GetDocumentResponse> HandleByEArchive(string documentId, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await GetDocumentFromEArchive(documentId, cancellationToken);
+        }
+        catch (Exception exp)
+        {
+            _logger.LogError(exp, "Error when getting document");
+            throw new NobyValidationException(90054, (int)HttpStatusCode.BadRequest);
+        }
+    }
+
+    private async Task<GetDocumentResponse> GetDocumentFromEArchive(string documentId, CancellationToken cancellationToken)
     {
         var user = _currentUserAccessor.User;
 
@@ -76,8 +94,13 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
         };
     }
 
-    private async Task<GetDocumentResponse> HandleBySb(string externalId, Source source, CancellationToken cancellationToken)
+    private async Task<GetDocumentResponse> HandleBySb(string externalId, EnumDocumentSource source, CancellationToken cancellationToken)
     {
+        if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage) && !_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_RefinancingManage))
+        {
+            throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage or DOCUMENT_SIGNING_RefinancingManage permission missing");
+        }
+
         if (!_currentUserAccessor.HasPermission(UserPermissions.DOCUMENT_SIGNING_Manage))
         {
             throw new CisAuthorizationException("DOCUMENT_SIGNING_Manage permission missing");
@@ -90,14 +113,14 @@ public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumen
 
         var request = source switch
         {
-            Source.SbAttachment => new GetElectronicDocumentFromQueueRequest
+            EnumDocumentSource.SbAttachment => new GetElectronicDocumentFromQueueRequest
             {
                 DocumentAttachment = new()
                 {
                     AttachmentId = externalId
                 }
             },
-            Source.SbDocument => new GetElectronicDocumentFromQueueRequest
+            EnumDocumentSource.SbDocument => new GetElectronicDocumentFromQueueRequest
             {
                 MainDocument = new()
                 {

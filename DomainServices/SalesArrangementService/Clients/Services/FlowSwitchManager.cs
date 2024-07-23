@@ -1,18 +1,12 @@
 ﻿using SharedTypes.Enums;
 using DomainServices.SalesArrangementService.Contracts;
 
-namespace DomainServices.SalesArrangementService.Clients.Services;
+namespace DomainServices.SalesArrangementService.Clients;
 
-internal sealed class FlowSwitchManager
+internal sealed class FlowSwitchManager(ISalesArrangementServiceClient _client)
     : IFlowSwitchManager
 {
-    private readonly ISalesArrangementServiceClient _client;
-    private List<EditableFlowSwitch> _flowSwitches = new();
-
-    public FlowSwitchManager(ISalesArrangementServiceClient client)
-    {
-        _client = client;
-    }
+    private List<EditableFlowSwitch> _flowSwitches = [];
 
     public void AddFlowSwitch(FlowSwitches flowSwitchId, bool? value)
     {

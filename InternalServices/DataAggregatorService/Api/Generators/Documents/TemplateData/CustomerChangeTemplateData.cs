@@ -83,7 +83,7 @@ internal class CustomerChangeTemplateData : AggregatedData
         configurator.DegreesBefore();
     }
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         var customerIdentities = SalesArrangement.CustomerChange.Applicants.Select(a => a.Identity.GetIdentity(Identity.Types.IdentitySchemes.Kb));
 

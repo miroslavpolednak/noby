@@ -1,16 +1,20 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CaseService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.OfferService.Clients;
+using DomainServices.OfferService.Clients.v1;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.CreateRealEstateValuation;
 
-internal sealed class CreateRealEstateValuationHandler
-    : IRequestHandler<CreateRealEstateValuationRequest, int>
+internal sealed class CreateRealEstateValuationHandler(
+    ICodebookServiceClient _codebookService,
+    IOfferServiceClient _offerService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IRealEstateValuationServiceClient _realEstateValuationService,
+    ICaseServiceClient _caseService)
+        : IRequestHandler<RealEstateValuationCreateRealEstateValuationRequest, int>
 {
-    public async Task<int> Handle(CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(RealEstateValuationCreateRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
         var isCollateral = (await _codebookService.RealEstateTypes(cancellationToken))
             .FirstOrDefault(t => t.Id == request.RealEstateTypeId)
@@ -60,25 +64,5 @@ internal sealed class CreateRealEstateValuationHandler
         }
 
         return await _realEstateValuationService.CreateRealEstateValuation(revRequest, cancellationToken);
-    }
-
-    private readonly IOfferServiceClient _offerService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IRealEstateValuationServiceClient _realEstateValuationService;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public CreateRealEstateValuationHandler(
-        ICodebookServiceClient codebookService,
-        IOfferServiceClient offerService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IRealEstateValuationServiceClient realEstateValuationService, 
-        ICaseServiceClient caseService)
-    {
-        _codebookService = codebookService;
-        _offerService = offerService;
-        _salesArrangementService = salesArrangementService;
-        _realEstateValuationService = realEstateValuationService;
-        _caseService = caseService;
     }
 }

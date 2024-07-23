@@ -29,13 +29,13 @@ internal class RiskLoanApplicationData : AggregatedData
 
     public List<LoanApplicationHousehold> Households { get; private set; } = new();
 
-    public decimal? InvestmentAmount => (decimal)Offer.MortgageOffer.SimulationResults.LoanAmount + ((decimal?)Offer.MortgageOffer.BasicParameters.FinancialResourcesOwn ?? 0M) + ((decimal?)Offer.MortgageOffer.BasicParameters.FinancialResourcesOther ?? 0M);
+    public decimal? InvestmentAmount => (decimal)Offer.SimulationResults.LoanAmount + ((decimal?)Offer.BasicParameters.FinancialResourcesOwn ?? 0M) + ((decimal?)Offer.BasicParameters.FinancialResourcesOther ?? 0M);
 
-    public List<int> MarketingActions => Offer.MortgageOffer.AdditionalSimulationResults.MarketingActions.Where(i => i.MarketingActionId.HasValue && i.Applied == 1).Select(i => i.MarketingActionId!.Value).ToList();
+    public List<int> MarketingActions => Offer.AdditionalSimulationResults.MarketingActions.Where(i => i.MarketingActionId.HasValue && i.Applied == 1).Select(i => i.MarketingActionId!.Value).ToList();
 
-    public IEnumerable<object> Collaterals => new[] { new { Amount = Offer.MortgageOffer.SimulationInputs.CollateralAmount } };
+    public IEnumerable<object> Collaterals => new[] { new { Amount = Offer.SimulationInputs.CollateralAmount } };
 
-    public override async Task LoadAdditionalData(CancellationToken cancellationToken)
+    public override async Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken)
     {
         var households = await _householdService.GetHouseholdList(SalesArrangement.SalesArrangementId, cancellationToken);
         var customersOnSa = await LoadCustomersOnSA(SalesArrangement.SalesArrangementId, cancellationToken);
@@ -53,7 +53,7 @@ internal class RiskLoanApplicationData : AggregatedData
                 Household = household,
                 Customers = householdCustomers.Select(customerOnSA =>
                                               {
-                                                  var customerDetail = customers[customerOnSA.CustomerIdentifiers.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId];
+                                                  var customerDetail = customers[customerOnSA.CustomerIdentifiers.GetKbIdentity().IdentityId];
 
                                                   return new LoanApplicationCustomer(customerOnSA, customerDetail, incomes, _codebookManager.DegreesBefore)
                                                   {
@@ -76,7 +76,7 @@ internal class RiskLoanApplicationData : AggregatedData
 
         var customersWithDetail = new Dictionary<int, CustomerOnSA>(customers.Count);
 
-        foreach (var customerId in customers.Where(c => c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb)).Select(c => c.CustomerOnSAId))
+        foreach (var customerId in customers.Where(c => c.CustomerIdentifiers.HasKbIdentity()).Select(c => c.CustomerOnSAId))
         {
             var customerDetail = await _customerOnSAService.GetCustomer(customerId, cancellationToken);
             customersWithDetail.Add(customerId, customerDetail);
@@ -94,7 +94,7 @@ internal class RiskLoanApplicationData : AggregatedData
 
         var result = await _customerService.GetCustomerList(customerIds.Select(id => new Identity(id, IdentitySchemes.Kb)), cancellationToken);
 
-        return result.Customers.ToDictionary(c => c.Identities.First(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb).IdentityId, c => c);
+        return result.Customers.ToDictionary(c => c.Identities.GetKbIdentity().IdentityId, c => c);
     }
 
     private async Task<Dictionary<int, Income>> LoadIncomes(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)

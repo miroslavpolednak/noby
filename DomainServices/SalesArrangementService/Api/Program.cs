@@ -1,4 +1,6 @@
 using CIS.Infrastructure.StartupExtensions;
+using DomainServices.SalesArrangementService.Api.Endpoints.Maintanance;
+using DomainServices.SalesArrangementService.Api.Endpoints.v1;
 using ExternalServices;
 using SharedComponents.DocumentDataStorage;
 
@@ -34,16 +36,11 @@ SharedComponents.GrpcServiceBuilder
         builder.AddEntityFramework<DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.DocumentArchiveServiceDbContext>(connectionStringKey: "documentArchiveDb");
 
         builder.AddDocumentDataStorage();
-
-        // background svc
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.OfferGuaranteeDateToCheck.OfferGuaranteeDateToCheckJob>();
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelCase.CancelCaseJob>();
-        builder.AddCisBackgroundService<DomainServices.SalesArrangementService.Api.BackgroundServices.CancelServiceSalesArrangement.CancelServiceSalesArrangementJob>();
     })
     .MapGrpcServices(app =>
     {
-        app.MapGrpcService<DomainServices.SalesArrangementService.Api.Endpoints.SalesArrangementService>();
-        app.MapGrpcService<DomainServices.SalesArrangementService.Api.Endpoints.MaintananceService>();
+        app.MapGrpcService<SalesArrangementService>();
+        app.MapGrpcService<MaintananceService>();
     })
     .Run();
 

@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -21,10 +21,10 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"LoanInstanceInfo\",\"doc\":\"Information entity representing" +
 				" any loan product (instance of product). CDM entity name(s): LoanInstanceInfo.\"," +
-				"\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"" +
+				"\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"" +
 				"name\":\"ExpectedDrawdownPeriod\",\"type\":{\"type\":\"record\",\"name\":\"DrawdownPeriod\",\"" +
 				"doc\":\"Defines when loan can be withdrawn. CDM entity name(s): DrawdownPeriod.\",\"" +
-				"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"n" +
+				"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"n" +
 				"ame\":\"dateFrom\",\"doc\":\"Defines exact date when withdrawal of the loan can be sta" +
 				"rted. CDM attribute class name: DrawdownPeriodDateFrom. Standard avro date repre" +
 				"sented by the number of days from the unix epoch, see avro specification: https:" +
@@ -39,14 +39,14 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				":null,\"type\":[\"null\",{\"type\":\"int\",\"logicalType\":\"date\"}]}]}},{\"name\":\"loanInsta" +
 				"llments\",\"type\":{\"type\":\"record\",\"name\":\"LoanInstallments\",\"doc\":\"One installmen" +
 				"t amount. It is information entity. It can be used for any installment. CDM enti" +
-				"ty name(s): LoanInstallments.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2" +
+				"ty name(s): LoanInstallments.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3" +
 				".mortgageinstance\",\"fields\":[{\"name\":\"dayInMonth\",\"doc\":\"Day within month when i" +
 				"nstallment is due to be paid. CDM attribute class name: LoanInstallmentsDayInMon" +
 				"th. Codebook type: CB_DayOfMonth.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"S" +
 				"tring\"}},{\"name\":\"firstAnnuityLoanIndividualInstallment\",\"default\":null,\"type\":[" +
 				"\"null\",{\"type\":\"record\",\"name\":\"FirstAnnuityLoanIndividualInstallment\",\"doc\":\"In" +
 				"dividual/concrete repayment of loan - one loan installment. CDM entity name(s): " +
-				"LoanIndividualInstallment.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mo" +
+				"LoanIndividualInstallment.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mo" +
 				"rtgageinstance\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date of installment to be repaid/w" +
 				"as repaid. CDM attribute class name: LoanIndividualInstallmentOn. Standard avro " +
 				"date represented by the number of days from the unix epoch, see avro specificati" +
@@ -56,7 +56,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"dualInstallment\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"LoanIndi" +
 				"vidualInstallment\",\"doc\":\"Individual/concrete repayment of loan - one loan insta" +
 				"llment. CDM entity name(s): LoanIndividualInstallment.\",\"namespace\":\"cz.kb.api.m" +
-				"ortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"amount\",\"doc\":\"To" +
+				"ortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"amount\",\"doc\":\"To" +
 				"tal amount that has to paid as one loan installment. CDM attribute class name: L" +
 				"oanIndividualInstallmentAmount. Attribute has simple type ST_AmountMoney with de" +
 				"scription: Castka.Decimal number representing an amount of money.\",\"type\":{\"type" +
@@ -64,7 +64,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"anIndividualInstallment\",\"default\":null,\"type\":[\"null\",{\"type\":\"record\",\"name\":\"" +
 				"NextLoanIndividualInstallment\",\"doc\":\"Individual/concrete repayment of loan - on" +
 				"e loan installment. CDM entity name(s): LoanIndividualInstallment.\",\"namespace\":" +
-				"\"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"" +
+				"\"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"on\",\"" +
 				"doc\":\"Date of installment to be repaid/was repaid. CDM attribute class name: Loa" +
 				"nIndividualInstallmentOn. Standard avro date represented by the number of days f" +
 				"rom the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/s" +
@@ -73,16 +73,16 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"alType\":\"date\"}}]}]}]}},{\"name\":\"loanMaturity\",\"default\":null,\"type\":[\"null\",{\"t" +
 				"ype\":\"record\",\"name\":\"LoanMaturity\",\"doc\":\"SplatnostBasic information about loan" +
 				" maturity. More detailed information are in PaymentSchedule. CDM entity name(s):" +
-				" LoanMaturity.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageinstan" +
+				" LoanMaturity.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageinstan" +
 				"ce\",\"fields\":[{\"name\":\"on\",\"doc\":\"Date when loan will be repaid under normal cir" +
 				"cumstances. CDM attribute class name: LoanMaturityOn. Standard avro date represe" +
 				"nted by the number of days from the unix epoch, see avro specification: https://" +
 				"avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in" +
 				" code generator (see KB Integration Platform wiki for schema registry chapter).\"" +
 				",\"type\":{\"type\":\"int\",\"logicalType\":\"date\"}}]}]}]}");
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.DrawdownPeriod _ExpectedDrawdownPeriod;
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanInstallments _loanInstallments;
-		private cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanMaturity _loanMaturity;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.DrawdownPeriod _ExpectedDrawdownPeriod;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanInstallments _loanInstallments;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanMaturity _loanMaturity;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -90,7 +90,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				return LoanInstanceInfo._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.DrawdownPeriod ExpectedDrawdownPeriod
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.DrawdownPeriod ExpectedDrawdownPeriod
 		{
 			get
 			{
@@ -101,7 +101,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				this._ExpectedDrawdownPeriod = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanInstallments loanInstallments
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanInstallments loanInstallments
 		{
 			get
 			{
@@ -112,7 +112,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				this._loanInstallments = value;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanMaturity loanMaturity
+		public cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanMaturity loanMaturity
 		{
 			get
 			{
@@ -137,9 +137,9 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 		{
 			switch (fieldPos)
 			{
-			case 0: this.ExpectedDrawdownPeriod = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.DrawdownPeriod)fieldValue; break;
-			case 1: this.loanInstallments = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanInstallments)fieldValue; break;
-			case 2: this.loanMaturity = (cz.kb.api.mortgageservicingevents.v2.mortgageinstance.LoanMaturity)fieldValue; break;
+			case 0: this.ExpectedDrawdownPeriod = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.DrawdownPeriod)fieldValue; break;
+			case 1: this.loanInstallments = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanInstallments)fieldValue; break;
+			case 2: this.loanMaturity = (cz.kb.api.mortgageservicingevents.v3.mortgageinstance.LoanMaturity)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

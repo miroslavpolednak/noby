@@ -15,13 +15,29 @@
 		<AnalysisMode>Recommended</AnalysisMode>
 		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	  <NoWarn>1701;1702;CA1707</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+	  <NoWarn>1701;1702;CA1707</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	  <NoWarn>1701;1702;CA1707</NoWarn>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+	  <NoWarn>1701;1702;CA1707</NoWarn>
+	</PropertyGroup>
   
   <ItemGroup>
-	<PackageReference Include="Dapper" Version="2.1.28" />
-    <PackageReference Include="MediatR" Version="12.2.0" />
+	<PackageReference Include="Dapper" Version="2.1.44" />
+    <PackageReference Include="MediatR" Version="12.3.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
-	<PackageReference Include="Grpc.AspNetCore" Version="2.60.0" />
-	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
+	<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
   </ItemGroup>
 
@@ -44,11 +60,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="Services\KonsDb\Sql\SqlScripts.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SqlScripts.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -56,14 +67,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Update="Services\KonsDb\Sql\SqlScripts.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>SqlScripts.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Endpoints\FormatAddress\" />
+    <Folder Include="Endpoints\v1\FormatAddress\" />
   </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@
 //----------------------
 
 
-namespace DomainServices.CustomerService.Api.Messaging.PartyCreated
+namespace cz.kb.cm.be.@event.partycreated.v1
 {
     #pragma warning disable // Disable all warnings
 

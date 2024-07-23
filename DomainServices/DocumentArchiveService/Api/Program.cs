@@ -46,6 +46,7 @@ SharedComponents.GrpcServiceBuilder
     .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.DocumentArchiveServiceGrpc>();
+        app.MapGrpcService<DomainServices.DocumentArchiveService.Api.Endpoints.MaintananceService>();
     })
     .Run();
 

@@ -1,0 +1,1 @@
+UPDATE DataField SET FieldPath = REPLACE(FieldPath, 'Offer.MortgageOffer.', 'Offer.') WHERE DataServiceId = 3 AND DataFieldId <> 28

@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+package CIS.InternalServices.NotificationService.v2;
+option csharp_namespace = "CIS.InternalServices.NotificationService.Contracts.v2";
+
+import "google/protobuf/wrappers.proto";
+import "Messages/Types.proto";
+import "UserIdentity.proto";
+
+message SendSmsRequest {
+	string PhoneNumber = 1;
+    google.protobuf.Int32Value ProcessingPriority = 2;
+    string Type = 3;
+    cis.types.UserIdentity Identifier = 4;
+    Product Product = 5;
+    google.protobuf.StringValue CustomId = 6;
+    google.protobuf.StringValue DocumentId = 7;
+    repeated DocumentHash DocumentHashes = 8;
+    string Text = 9;
+}

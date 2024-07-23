@@ -50,4 +50,16 @@ public sealed class AmendmentsSigning
     public string ProposalForEntry { get; set; } = null!;
 
     public AmendmentsSigningEaCodeMain? EaCodeMain { get; set; }
+
+    /// <summary>
+    /// True, pokud má být zobrazen link "Přejít k podepisování"
+    /// </summary>
+    [Required]
+    public bool SignatureLinkVisible { get; set; }
+
+    /// <summary>
+    /// True, pokud má být zobrazeno tlačítko "Odeslat"
+    /// </summary>
+    [Required]
+    public bool SendButtonVisible { get; set; }
 }

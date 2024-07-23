@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+package DomainServices.OfferService;
+option csharp_namespace = "DomainServices.OfferService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+import "GrpcDate.proto";
+import "GrpcDecimal.proto";
+
+message GetInterestRateRequest {
+	int64 CaseId = 1;
+	cis.types.GrpcDate FutureInterestRateValidTo = 2;
+	google.protobuf.Int32Value FixedRatePeriod = 3;
+}
+
+message GetInterestRateResponse {
+	cis.types.GrpcDecimal LoanInterestRate = 1;
+}

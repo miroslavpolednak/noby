@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageapplication
 {
 	using System;
 	using System.Collections.Generic;
@@ -22,12 +22,12 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"MktItemInstanceInfo\",\"doc\":\"Information entity. Entity t" +
 				"hat is used to provide information about any instance of marketable item (produc" +
 				"t, service, frame agreement, bundle,...). CDM entity name(s): MktItemInstanceInf" +
-				"o.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageapplication\",\"fiel" +
+				"o.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageapplication\",\"fiel" +
 				"ds\":[{\"name\":\"catalogueMktItemInOfferSpecsInfo\",\"type\":{\"type\":\"record\",\"name\":\"" +
 				"CatalogueMktItemInOfferSpecsInfo\",\"doc\":\"Information about catalogue specificati" +
 				"on of business product in offer.catalogue = no situation/context available, i.e." +
 				" generic definition of product.  CDM entity name(s): CatalogueMktItemInOfferSpec" +
-				"sInfo.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageapplication\",\"" +
+				"sInfo.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageapplication\",\"" +
 				"fields\":[{\"name\":\"catalogueItemObjectCode\",\"type\":{\"type\":\"record\",\"name\":\"Catal" +
 				"ogueItemObjectCode\",\"doc\":\"Multiattribute property of any catalog item identific" +
 				"ation (product, service, offer...). The identifier (object code) does not change" +
@@ -38,7 +38,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				" verze Vice atributu je pouzito z duvodu ze neexistuje pouze jedina identifikace" +
 				" produktovych polozek banky (produktu, sluzeb), ale muze jich byt vice. CDM enti" +
 				"ty name(s): CatalogueItemObjectCode.\",\"namespace\":\"cz.kb.api.mortgageservicingev" +
-				"ents.v2.mortgageapplication\",\"fields\":[{\"name\":\"objectCode\",\"doc\":\"The identifie" +
+				"ents.v3.mortgageapplication\",\"fields\":[{\"name\":\"objectCode\",\"doc\":\"The identifie" +
 				"r of the catalog item (product, service, offering, etc.) that does not change wh" +
 				"en the version of the item changes.For example, the Standard Tariff Offer has di" +
 				"fferent settings in different versions (e.g. different types and quantities of p" +
@@ -57,9 +57,9 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				"artyInMktItemInstanceInfo\",\"doc\":\"Information entity. Describes party occurrence" +
 				" in context of a marketing item instance (product, service, frame agreement, bun" +
 				"dle,...). CDM entity name(s): PartyInMktItemInstanceInfo.\",\"namespace\":\"cz.kb.ap" +
-				"i.mortgageservicingevents.v2.mortgageapplication\",\"fields\":[{\"name\":\"customer\",\"" +
+				"i.mortgageservicingevents.v3.mortgageapplication\",\"fields\":[{\"name\":\"customer\",\"" +
 				"type\":{\"type\":\"record\",\"name\":\"Customer\",\"doc\":\" CDM entity name(s): Customer.\"," +
-				"\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mortgageapplication\",\"fields\":" +
+				"\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mortgageapplication\",\"fields\":" +
 				"[{\"name\":\"customerId\",\"doc\":\" CDM attribute class name: CustomerCustomerId.\",\"ty" +
 				"pe\":\"long\"}]}},{\"name\":\"partyInMktItemInstanceRole\",\"type\":{\"type\":\"record\",\"nam" +
 				"e\":\"PartyInMktItemInstanceRole\",\"doc\":\"The role that a party has in a particular" +
@@ -69,13 +69,13 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				" specificka pro kazdy produkt, spolecna v ramci skupiny produktu nebo dokonce pr" +
 				"o vsechny produkty.Napr. zadatel, spoluzadatel, rucitel pro spotrebni uvery. CDM" +
 				" entity name(s): PartyInMktItemInstanceRole.\",\"namespace\":\"cz.kb.api.mortgageser" +
-				"vicingevents.v2.mortgageapplication\",\"fields\":[{\"name\":\"partyInMktItemInstanceRo" +
+				"vicingevents.v3.mortgageapplication\",\"fields\":[{\"name\":\"partyInMktItemInstanceRo" +
 				"leCode\",\"type\":{\"type\":\"record\",\"name\":\"PartyInMktItemInstanceRoleCode\",\"doc\":\"M" +
 				"ulticodebook property representing code of role (unique identifier) that parties" +
 				" in general can have on products.It is multicodebook because roles always exists" +
 				", but differs per product groups and are not managed centrally. CDM entity name(" +
 				"s): PartyInMktItemInstanceRoleCode.\",\"namespace\":\"cz.kb.api.mortgageservicingeve" +
-				"nts.v2.mortgageapplication\",\"fields\":[{\"name\":\"code\",\"doc\":\"Human readable uniqu" +
+				"nts.v3.mortgageapplication\",\"fields\":[{\"name\":\"code\",\"doc\":\"Human readable uniqu" +
 				"e identifier of role on product instance. MultiCodebook value itself.Unique acro" +
 				"ss all products. Attribute has specific codebook type: CB_CustomerInMortgageInst" +
 				"anceRole. CDM attribute class name: PartyInMktItemInstanceRoleCodeCode. Attribut" +
@@ -83,8 +83,8 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				" that value can be from more than one codebook. Codebook type: CB_CustomerInMort" +
 				"gageInstanceRole.\",\"type\":{\"type\":\"string\",\"avro.java.string\":\"String\",\"pattern\"" +
 				":\"^.{0,100}$\"}}]}}]}}]}}}]}");
-		private cz.kb.api.mortgageservicingevents.v2.mortgageapplication.CatalogueMktItemInOfferSpecsInfo _catalogueMktItemInOfferSpecsInfo;
-		private IList<cz.kb.api.mortgageservicingevents.v2.mortgageapplication.PartyInMktItemInstanceInfo> _partyInMktItemInstanceInfoes;
+		private cz.kb.api.mortgageservicingevents.v3.mortgageapplication.CatalogueMktItemInOfferSpecsInfo _catalogueMktItemInOfferSpecsInfo;
+		private IList<cz.kb.api.mortgageservicingevents.v3.mortgageapplication.PartyInMktItemInstanceInfo> _partyInMktItemInstanceInfoes;
 		public virtual global::Avro.Schema Schema
 		{
 			get
@@ -92,7 +92,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				return MktItemInstanceInfo._SCHEMA;
 			}
 		}
-		public cz.kb.api.mortgageservicingevents.v2.mortgageapplication.CatalogueMktItemInOfferSpecsInfo catalogueMktItemInOfferSpecsInfo
+		public cz.kb.api.mortgageservicingevents.v3.mortgageapplication.CatalogueMktItemInOfferSpecsInfo catalogueMktItemInOfferSpecsInfo
 		{
 			get
 			{
@@ -103,7 +103,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 				this._catalogueMktItemInOfferSpecsInfo = value;
 			}
 		}
-		public IList<cz.kb.api.mortgageservicingevents.v2.mortgageapplication.PartyInMktItemInstanceInfo> partyInMktItemInstanceInfoes
+		public IList<cz.kb.api.mortgageservicingevents.v3.mortgageapplication.PartyInMktItemInstanceInfo> partyInMktItemInstanceInfoes
 		{
 			get
 			{
@@ -127,8 +127,8 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 		{
 			switch (fieldPos)
 			{
-			case 0: this.catalogueMktItemInOfferSpecsInfo = (cz.kb.api.mortgageservicingevents.v2.mortgageapplication.CatalogueMktItemInOfferSpecsInfo)fieldValue; break;
-			case 1: this.partyInMktItemInstanceInfoes = (IList<cz.kb.api.mortgageservicingevents.v2.mortgageapplication.PartyInMktItemInstanceInfo>)fieldValue; break;
+			case 0: this.catalogueMktItemInOfferSpecsInfo = (cz.kb.api.mortgageservicingevents.v3.mortgageapplication.CatalogueMktItemInOfferSpecsInfo)fieldValue; break;
+			case 1: this.partyInMktItemInstanceInfoes = (IList<cz.kb.api.mortgageservicingevents.v3.mortgageapplication.PartyInMktItemInstanceInfo>)fieldValue; break;
 			default: throw new global::Avro.AvroRuntimeException("Bad index " + fieldPos + " in Put()");
 			};
 		}

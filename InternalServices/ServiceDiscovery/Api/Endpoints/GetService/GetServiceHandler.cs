@@ -3,7 +3,7 @@ using CIS.InternalServices.ServiceDiscovery.Contracts;
 
 namespace CIS.InternalServices.ServiceDiscovery.Api.Endpoints.GetService;
 
-internal sealed class GetServiceHandler
+internal sealed class GetServiceHandler(ServicesMemoryCache _cache)
     : IRequestHandler<GetServiceRequest, GetServiceResponse>
 {
     public async Task<GetServiceResponse> Handle(GetServiceRequest request, CancellationToken cancellation)
@@ -23,12 +23,5 @@ internal sealed class GetServiceHandler
                 ServiceUrl = service.ServiceUrl
             }
         };
-    }
-
-    private readonly ServicesMemoryCache _cache;
-
-    public GetServiceHandler(ServicesMemoryCache cache)
-    {
-        _cache = cache;
     }
 }

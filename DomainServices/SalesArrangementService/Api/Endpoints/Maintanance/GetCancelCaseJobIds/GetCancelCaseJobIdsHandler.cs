@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.Maintanance.GetCancelCaseJobIds;
 
-internal sealed class GetCancelCaseJobIdsHandler
-    : IRequestHandler<GetCancelCaseJobIdsRequest, GetCancelCaseJobIdsResponse>
+internal sealed class GetCancelCaseJobIdsHandler(SalesArrangementServiceDbContext _dbContext)
+		: IRequestHandler<GetCancelCaseJobIdsRequest, GetCancelCaseJobIdsResponse>
 {
     public async Task<GetCancelCaseJobIdsResponse> Handle(GetCancelCaseJobIdsRequest request, CancellationToken cancellationToken)
     {
@@ -28,15 +28,8 @@ WHERE
 	SalesArrangementTypeId = 1
 	and (
 		(FirstSignatureDate is null and CreatedTime<DATEADD(DAY, -90, GETDATE()))
-		or (isnull(LoanApplicationAssessmentId, '')='' and CreatedTime<DATEADD(DAY, -40, GETDATE()))
-		or (isnull(LoanApplicationAssessmentId, '')!='' and State!=2 and CreatedTime<DATEADD(DAY, -140, GETDATE()))
+		or (isnull(LoanApplicationAssessmentId, '')='' and FirstSignatureDate<DATEADD(DAY, -40, GETDATE()))
+		or (isnull(LoanApplicationAssessmentId, '')!='' and State!=2 and FirstSignatureDate<DATEADD(DAY, -140, GETDATE()))
 	)
 ";
-
-    private readonly SalesArrangementServiceDbContext _dbContext;
-
-    public GetCancelCaseJobIdsHandler(SalesArrangementServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
-    }
 }

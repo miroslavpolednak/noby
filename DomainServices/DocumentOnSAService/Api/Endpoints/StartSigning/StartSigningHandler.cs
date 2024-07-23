@@ -2,8 +2,7 @@
 using SharedTypes.Enums;
 using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
-using DomainServices.CaseService.Clients;
-using DomainServices.CodebookService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
@@ -22,13 +21,11 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 {
     private const int _crsDocumentType = 13;
 
-
     private readonly DocumentOnSAServiceDbContext _dbContext;
     private readonly IMediator _mediator;
     private readonly IHouseholdServiceClient _householdClient;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
     private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
-    private readonly ICodebookServiceClient _codebookServiceClient;
     private readonly StartSigningMapper _startSigningMapper;
     private readonly ICurrentUserAccessor _currentUser;
     private readonly ICaseServiceClient _caseServiceClient;
@@ -41,7 +38,6 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         IHouseholdServiceClient householdClient,
         ISalesArrangementServiceClient salesArrangementServiceClient,
         IDataAggregatorServiceClient dataAggregatorServiceClient,
-        ICodebookServiceClient codebookServiceClient,
         StartSigningMapper startSigningMapper,
         ICurrentUserAccessor currentUser,
         ICaseServiceClient caseServiceClient,
@@ -53,7 +49,6 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
         _householdClient = householdClient;
         _salesArrangementServiceClient = salesArrangementServiceClient;
         _dataAggregatorServiceClient = dataAggregatorServiceClient;
-        _codebookServiceClient = codebookServiceClient;
         _startSigningMapper = startSigningMapper;
         _currentUser = currentUser;
         _caseServiceClient = caseServiceClient;
@@ -69,43 +64,49 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
         var salesArrangementType = await _commonSigning.GetSalesArrangementType(salesArrangement, cancellationToken);
 
-        DocumentOnSa documentOnSaEntity;
-        if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ProductRequest.ToByte())
+        var documentOnSaEntity = request switch
         {
-            if (request.TaskIdSb is not null) // workflow
-                documentOnSaEntity = await ProcessWorkflowRequest(request, cancellationToken);
-            else if (request.DocumentTypeId == _crsDocumentType) //CRS request
-                documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
-            else // Product request
-                documentOnSaEntity = await ProcessProductRequest(request, salesArrangement, cancellationToken);
-        }
-        else if (salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte())
+            //Workflow
+            _ when request.TaskIdSb is not null => await ProcessWorkflowRequest(request, cancellationToken),
+            //CRS request
+            _ when request.DocumentTypeId == _crsDocumentType => await ProcessCrsRequest(request, salesArrangement, cancellationToken),
+            // Product request
+            _ when salesArrangementType.SalesArrangementCategory ==  SalesArrangementCategories.ProductRequest.ToByte() => await ProcessProductRequest(request, salesArrangement, cancellationToken),
+            // Service request
+            _ when salesArrangementType.SalesArrangementCategory == SalesArrangementCategories.ServiceRequest.ToByte() => await ProcessServiceRequest(request, salesArrangement, cancellationToken),
+            _ => throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest)
+        };
+
+        try
         {
-            if (request.DocumentTypeId == _crsDocumentType) // CRS request can be service request too
-                documentOnSaEntity = await ProcessCrsRequest(request, salesArrangement, cancellationToken);
-            else
-                documentOnSaEntity = await ProcessServiceRequest(request, salesArrangement, cancellationToken);
-        }
-        else
-            throw ErrorCodeMapper.CreateArgumentException(ErrorCodeMapper.UnsupportedKindOfSigningRequest);
+            //Insert new DocumentOnSA and get DocumentOnSaId
+            await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
-        // For CRS, Product and Service request  
-        if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == SignatureTypes.Electronic.ToByte())
+            // For CRS, Product and Service request  
+            if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == SignatureTypes.Electronic.ToByte())
+            {
+                var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement.CaseId, cancellationToken);
+                var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
+                var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, salesArrangement, documentOnSaEntity, cancellationToken);
+                var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
+                
+                documentOnSaEntity.ExternalIdESignatures = externalId;
+                await _dbContext.SaveChangesAsync(cancellationToken);
+            }
+
+            if (request.TaskId is null)
+                await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
+
+            return _startSigningMapper.MapToResponse(documentOnSaEntity);
+        }
+        catch
         {
-            var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement, cancellationToken);
-            var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
-            var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, documentOnSaEntity, cancellationToken);
-            var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
-            documentOnSaEntity.ExternalIdESignatures = externalId;
+            _dbContext.DocumentOnSa.Remove(documentOnSaEntity);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+
+            throw;
         }
-
-        if (request.TaskId is null)
-            await UpdateSalesArrangementStateIfNeeded(salesArrangement, cancellationToken);
-
-        await _dbContext.DocumentOnSa.AddAsync(documentOnSaEntity, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        return _startSigningMapper.MapToResponse(documentOnSaEntity);
     }
 
     private async Task<DocumentOnSa> ProcessServiceRequest(StartSigningRequest request, SalesArrangement salesArrangement, CancellationToken cancellationToken)

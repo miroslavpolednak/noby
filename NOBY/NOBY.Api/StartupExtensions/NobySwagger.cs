@@ -18,12 +18,9 @@ internal static class NobySwagger
 {
     static string xmlFileName(Type type) => type.GetTypeInfo().Module.Name.Replace(".dll", ".xml").Replace(".exe", ".xml");
 
-    public static WebApplicationBuilder AddFomsSwagger(this WebApplicationBuilder builder)
+    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder, ICodebookMap codebookMap)
     {
         builder.Services.AddEndpointsApiExplorer();
-
-        var codebookMap = new CodebookMap();
-        builder.Services.AddSingleton<ICodebookMap>(codebookMap);
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
@@ -57,7 +54,6 @@ internal static class NobySwagger
 
             x.SchemaFilter<NewLineReplacementFilter>();
             x.SchemaFilter<SwaggerOneOfSchemaFilter>();
-            x.SchemaFilter<CodebookGetAllSchemaFilter>(codebookMap);
             x.SchemaFilter<EnumValuesDescriptionSchemaFilter>();
 
             x.OperationFilter<NewLineReplacementFilter>();
@@ -67,29 +63,6 @@ internal static class NobySwagger
         });
 
         return builder;
-    }
-
-    private sealed class CodebookGetAllSchemaFilter : ISchemaFilter
-    {
-        private readonly List<Type> _getAllResponsePossibleTypes;
-
-        public CodebookGetAllSchemaFilter(CodebookMap codebookMap)
-        {
-            _getAllResponsePossibleTypes = codebookMap.GroupBy(c => c.ReturnType, c => c.ReturnType).Select(c => c.First()).ToList();
-        }
-
-        public void Apply(OpenApiSchema schema, SchemaFilterContext context)
-        {
-            if (context.Type != typeof(Endpoints.Codebooks.GetAll.GetAllResponseItem))
-                return;
-
-            var codebookCollectionProperty = schema.Properties[nameof(Endpoints.Codebooks.GetAll.GetAllResponseItem.Codebook).ToLowerInvariant()];
-
-            foreach (var type in _getAllResponsePossibleTypes)
-            {
-                codebookCollectionProperty.Items.OneOf.Add(context.SchemaGenerator.GenerateSchema(type, context.SchemaRepository));
-            }
-        }
     }
 
     private sealed class EnumValuesDescriptionSchemaFilter : ISchemaFilter
@@ -128,25 +101,44 @@ internal static class NobySwagger
     /// <see cref="IApiVersionDescriptionProvider"/> service has been resolved from the service container.</remarks>
     private sealed class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     {
-        private readonly IApiVersionDescriptionProvider provider;
+        private readonly IApiVersionDescriptionProvider _provider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigureSwaggerOptions"/> class.
         /// </summary>
         /// <param name="provider">The <see cref="IApiVersionDescriptionProvider">provider</see> used to generate Swagger documents.</param>
-        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this.provider = provider;
+        public ConfigureSwaggerOptions(IApiVersionDescriptionProvider provider) => this._provider = provider;
 
         /// <inheritdoc />
         public void Configure(SwaggerGenOptions options)
         {
-            // add a swagger document for each discovered API version
-            // note: you might choose to skip or document deprecated API versions differently
-            foreach (var description in provider.ApiVersionDescriptions)
+            options.SwaggerDoc(Constants.OpenApiDocName, CreateInfoForApiVersionAll());
+
+            options.DocInclusionPredicate((openApiDocName, apiDesc) =>
             {
-                options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
-            }
+                // Here we can decide if api endpoint should be in specific open api json file. (Currently we have only one file and all api versions gone be in one file)
+                return true;
+            });
         }
 
+        private static OpenApiInfo CreateInfoForApiVersionAll()
+        {
+            var text = new StringBuilder("Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>");
+
+            var info = new OpenApiInfo()
+            {
+                Title = "NOBY FRONTEND API",
+                Version = "All version"
+            };
+
+            info.Description = text.ToString();
+
+            return info;
+        }
+
+        /// <summary>
+        /// For api versioning to multiple documents according versions
+        /// </summary>
         private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
         {
             var text = new StringBuilder("Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>");

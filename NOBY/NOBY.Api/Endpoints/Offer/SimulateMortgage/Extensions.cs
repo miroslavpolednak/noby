@@ -5,7 +5,7 @@ namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
 internal static class Extensions
 {
-    public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this SimulateMortgageRequest request, DateTime guaranteeDateFrom, bool isUserVip)
+    public static DomainServices.OfferService.Contracts.SimulateMortgageRequest ToDomainServiceRequest(this OfferSimulateMortgageRequest request, DateTime guaranteeDateFrom, bool isUserVip)
     {
         var model = new DomainServices.OfferService.Contracts.SimulateMortgageRequest()
         {
@@ -76,7 +76,7 @@ internal static class Extensions
             }));
         }
 
-        if (request.LoanPurposes is not null && request.LoanPurposes.Any())
+        if (request.LoanPurposes is not null && request.LoanPurposes.Count != 0)
             model.SimulationInputs.LoanPurposes.AddRange(
                 request.LoanPurposes.Select(t => new DomainServices.OfferService.Contracts.LoanPurpose() { LoanPurposeId = t.Id, Sum = t.Sum })
                 );

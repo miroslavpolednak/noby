@@ -1,12 +1,12 @@
 ﻿using CIS.Core.Attributes;
 using CIS.Core.Configuration;
-using CIS.Core.Security;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.UserService.Clients;
 using Google.Protobuf;
 using NOBY.Services.DocumentHelper;
+using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Document.SharedDto;
 
@@ -19,13 +19,13 @@ internal sealed class DocumentArchiveManager
     private readonly IDocumentArchiveServiceClient _documentArchiveService;
     private readonly ICodebookServiceClient _codebookService;
     private readonly ICisEnvironmentConfiguration _environmentConfiguration;
-    private readonly IDocumentHelperService _documentHelperService;
+    private readonly IDocumentHelperServiceOld _documentHelperService;
     private readonly IUserServiceClient _userService;
 
     public DocumentArchiveManager(IDocumentArchiveServiceClient documentArchiveService,
                                   ICodebookServiceClient codebookService,
                                   ICisEnvironmentConfiguration environmentConfiguration,
-                                  IDocumentHelperService documentHelperService,
+                                  IDocumentHelperServiceOld documentHelperService,
                                   IUserServiceClient userService)
     {
         _documentArchiveService = documentArchiveService;
@@ -67,7 +67,7 @@ internal sealed class DocumentArchiveManager
         var request = new GetDocumentRequest
         {
             DocumentId = documentId,
-            UserLogin = documentRequest.InputParameters.UserId.ToString(),
+            UserLogin = documentRequest.InputParameters.UserId?.ToString(CultureInfo.InvariantCulture) ?? "",
             WithContent = true
         };
 

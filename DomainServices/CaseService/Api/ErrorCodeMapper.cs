@@ -7,7 +7,7 @@ internal sealed class ErrorCodeMapper
     : ErrorCodeMapperBase
 {
     public const int CaseNotFound = 13000;
-    public const int TaskProcessIdNotUnique = 13001;
+    public const int ProcessIdNotUnique = 13001;
     public const int ProductTypeIdIsEmpty = 13002;
     public const int CaseOwnerIsEmpty = 13003;
     public const int CaseStateAlreadySet = 13005;
@@ -39,12 +39,14 @@ internal sealed class ErrorCodeMapper
     public const int FeeSumEmpty = 13042;
     public const int FeeFinalSumEmpty = 13043;
     public const int RetentionNull = 13044;
+    public const int PriceExceptionLoanInterestRateOrFeesFillIn = 13045;
+
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
         {
             { CaseNotFound, "Case ID {PropertyValue} not found" },
-            { TaskProcessIdNotUnique, "TaskProcessId must be unique" },
+            { ProcessIdNotUnique, "ProcessId must be unique" },
             { ProductTypeIdIsEmpty, "ProductTypeId must be > 0" },
             { CaseOwnerIsEmpty, "CaseOwnerUserId must be > 0" },
             { CaseStateAlreadySet, "Case state already set to the same value" },
@@ -75,7 +77,8 @@ internal sealed class ErrorCodeMapper
             { LoanPaymentAmountFinalEmpty, "LoanPaymentAmountFinal cannot be empty" },
             { FeeSumEmpty ,"FeeSumEmpty cannot be empty" },
             { FeeFinalSumEmpty, "FeeFinalSumEmpty cannot be empty" },
-            { RetentionNull, "Retention cannot be null"}
+            { RetentionNull, "Retention cannot be null"},
+            { PriceExceptionLoanInterestRateOrFeesFillIn, "One of parameter (PriceException.LoanInterestRate or PriceException.Fees) have to be fill in"}
         });
 
         return Messages;

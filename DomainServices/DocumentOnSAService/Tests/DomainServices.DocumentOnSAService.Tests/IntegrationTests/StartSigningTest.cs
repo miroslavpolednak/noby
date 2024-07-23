@@ -41,7 +41,7 @@ public class StartSigningServiceRequestsTests : IntegrationTestBase
                 }}
             }
         };
-       
+
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 
         var resp = new GetDocumentDataResponse
@@ -171,7 +171,7 @@ public class StartSigningServiceRequestsTestsPart2 : IntegrationTestBase
                 }}
             }
         };
-       
+
         ArrangementServiceClient.GetSalesArrangement(0, Arg.Any<CancellationToken>()).ReturnsForAnyArgs(sa);
 
         var resp = new GetDocumentDataResponse
@@ -361,7 +361,7 @@ public class StartSigningProductsRequestsTests : IntegrationTestBase
         var client = CreateGrpcClient();
 
         var documentTypeId = 4;
-        var signatureTypeId = 5;
+        var signatureTypeId = 3;
 
         Func<Task> act = async () =>
         {
@@ -373,6 +373,25 @@ public class StartSigningProductsRequestsTests : IntegrationTestBase
         };
 
         await act.Should().ThrowAsync<CisValidationException>().WithMessage($"SalesArrangementId is required");
+    }
+
+    [Fact]
+    public async Task StartSigning_ElDoc_SigningOfThisDocIsNotEnabled_ShloudReturnValidationExp()
+    {
+        //Grpc call
+        var client = CreateGrpcClient();
+        Func<Task> act = async () =>
+                {
+                    var response = await client.StartSigningAsync(new()
+                    {
+                        DocumentTypeId = (int)DocumentTypes.ZAODHUBN,
+                        SignatureTypeId = (int)SignatureTypes.Electronic,
+                        SalesArrangementId = 1,
+                        CustomerOnSAId1 = 4522
+                    });
+                };
+
+        await act.Should().ThrowAsync<CisValidationException>().WithMessage($"Electronic signing is disabled");
     }
 }
 

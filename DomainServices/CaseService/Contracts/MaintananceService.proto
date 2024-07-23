@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+package DomainServices.CaseService;
+option csharp_namespace = "DomainServices.CaseService.Contracts";
+
+import "GrpcDate.proto";
+import "google/protobuf/empty.proto";
+
+service MaintananceService {
+   rpc GetConfirmedPriceExceptions (GetConfirmedPriceExceptionsRequest) returns (GetConfirmedPriceExceptionsResponse);
+   rpc DeleteConfirmedPriceException (DeleteConfirmedPriceExceptionRequest) returns (google.protobuf.Empty);
+}
+
+message GetConfirmedPriceExceptionsRequest {
+	cis.types.GrpcDate OlderThan = 1;
+}
+
+message GetConfirmedPriceExceptionsResponse {
+	repeated ConfirmedPriceException ConfirmedPriceExp = 1;
+}
+
+message DeleteConfirmedPriceExceptionRequest {
+	int64 CaseId = 1;
+}
+
+message ConfirmedPriceException {
+	 int64 CaseId = 1;
+	 int32 TaskIdSB = 2;
+}

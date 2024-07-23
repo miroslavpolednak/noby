@@ -2,6 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "NullableGrpcDecimal.proto";
 import "Identity.proto";
 import "NullableGrpcDate.proto";
 
@@ -20,4 +21,8 @@ message CustomerData {
 
 	// ICO spolecnosti
 	string Cin = 5;
+
+	cis.types.NullableGrpcDecimal CustomerPriceSensitivity = 6;
+
+	cis.types.NullableGrpcDecimal CustomerChurnRisk = 7;
 }

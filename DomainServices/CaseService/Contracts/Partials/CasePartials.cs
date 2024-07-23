@@ -22,6 +22,10 @@ public partial class SearchCasesRequest
     : MediatR.IRequest<SearchCasesResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
+public partial class GetCasesByIdentityRequest
+    : MediatR.IRequest<GetCasesByIdentityResponse>, CIS.Core.Validation.IValidatableRequest
+{ }
+
 public partial class LinkOwnerToCaseRequest
     : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }

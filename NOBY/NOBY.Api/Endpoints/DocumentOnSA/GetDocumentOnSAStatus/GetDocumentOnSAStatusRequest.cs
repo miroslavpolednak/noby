@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.DocumentOnSA.GetDocumentOnSAStatus;
 
-public class GetDocumentOnSAStatusRequest : IRequest<GetDocumentOnSAStatusResponse>
+public class GetDocumentOnSAStatusRequest : IRequest<DocumentOnSaGetDocumentOnSAStatusResponse>
 {
     public GetDocumentOnSAStatusRequest(int salesArrangementId, int documentOnSAId)
     {

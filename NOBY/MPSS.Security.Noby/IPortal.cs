@@ -14,5 +14,6 @@ public interface IPortal
         int v03id, /* v03id uzivatele - 0 pokud se nejedna o agenturu */
         int m17id,
         int brokerId,
-        string kbuid);
+        string kbuid,
+        int distributionChannel);
 }

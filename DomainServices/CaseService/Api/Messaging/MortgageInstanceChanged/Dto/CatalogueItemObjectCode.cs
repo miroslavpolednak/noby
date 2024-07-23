@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -28,7 +28,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 				"ect code) se nemeni pri zmene verze Vice atributu je pouzito z duvodu ze neexist" +
 				"uje pouze jedina identifikace produktovych polozek banky (produktu, sluzeb), ale" +
 				" muze jich byt vice. CDM entity name(s): CatalogueItemObjectCode.\",\"namespace\":\"" +
-				"cz.kb.api.mortgageservicingevents.v2.mortgageinstance\",\"fields\":[{\"name\":\"object" +
+				"cz.kb.api.mortgageservicingevents.v3.mortgageinstance\",\"fields\":[{\"name\":\"object" +
 				"Code\",\"doc\":\"The identifier of the catalog item (product, service, offering, etc" +
 				".) that does not change when the version of the item changes.For example, the St" +
 				"andard Tariff Offer has different settings in different versions (e.g. different" +

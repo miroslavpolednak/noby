@@ -1,9 +1,17 @@
 ﻿using DomainServices.ProductService.Contracts;
+using SharedTypes.GrpcTypes;
 
 namespace DomainServices.ProductService.Clients.Services;
 
-internal sealed class ProductServiceClient : IProductServiceClient
+internal sealed class ProductServiceClient(Contracts.v1.ProductService.ProductServiceClient _service) 
+    : IProductServiceClient
 {
+    public async Task<List<SearchProductsResponse.Types.SearchProductsItem>> SearchProducts(Identity? identity, CancellationToken cancellationToken = default)
+        => (await _service.SearchProductsAsync(new SearchProductsRequest
+        {
+            Identity = identity
+        }, cancellationToken: cancellationToken)).Products.ToList();
+
     public async Task<GetProductListResponse> GetProductList(long caseId, CancellationToken cancellationToken = default)
     {
         return await _service.GetProductListAsync(new GetProductListRequest { CaseId = caseId }, cancellationToken: cancellationToken);
@@ -30,6 +38,11 @@ internal sealed class ProductServiceClient : IProductServiceClient
         {
             ProductId = productId
         }, cancellationToken: cancellationToken);
+    }
+
+    public async Task<string?> UpdateMortgagePcpId(UpdateMortgagePcpIdRequest request, CancellationToken cancellationToken = default)
+    {
+        return (await _service.UpdateMortgagePcpIdAsync(request, cancellationToken: cancellationToken)).PcpId;
     }
 
     public async Task CreateContractRelationship(long partnerId, long productId, int contractRelationshipTypeId, CancellationToken cancellationToken = default)
@@ -77,12 +90,5 @@ internal sealed class ProductServiceClient : IProductServiceClient
     public async Task CancelMortgage(long caseId, CancellationToken cancellationToken = default)
     {
         await _service.CancelMortgageAsync(new CancelMortgageRequest { ProductId = caseId }, cancellationToken: cancellationToken);
-    }
-
-    private readonly Contracts.v1.ProductService.ProductServiceClient _service;
-
-    public ProductServiceClient(Contracts.v1.ProductService.ProductServiceClient service)
-    {
-        _service = service;
     }
 }

@@ -1,4 +1,4 @@
-DROP IF EXISTS [dbo].[ScheduleLock];
+DROP TABLE IF EXISTS [dbo].[ScheduleLock];
 GO
 CREATE TABLE [dbo].[ScheduleLock](
 	[InstanceName] [varchar](100) NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE [dbo].[ScheduleLock](
 ) ON [PRIMARY]
 GO
 
-DROP IF EXISTS [dbo].[ScheduleTrigger]
+DROP TABLE IF EXISTS [dbo].[ScheduleTrigger]
 GO
 
 CREATE TABLE [dbo].[ScheduleTrigger](
@@ -14,6 +14,7 @@ CREATE TABLE [dbo].[ScheduleTrigger](
 	[ScheduleJobId] [uniqueidentifier] NOT NULL,
 	[TriggerName] [nvarchar](250) NOT NULL,
 	[Cron] [varchar](10) NOT NULL,
+	[JobData] nvarchar(max) NULL,
 	[IsDisabled] [bit] NOT NULL,
  CONSTRAINT [PK_ScheduleTrigger] PRIMARY KEY CLUSTERED 
 (
@@ -25,7 +26,7 @@ GO
 ALTER TABLE [dbo].[ScheduleTrigger] ADD  CONSTRAINT [DF_ScheduleTrigger_IsDisabled]  DEFAULT ((0)) FOR [IsDisabled]
 GO
 
-DROP IF EXISTS [dbo].[ScheduleJob]
+DROP TABLE IF EXISTS [dbo].[ScheduleJob]
 GO
 
 CREATE TABLE [dbo].[ScheduleJob](
@@ -44,7 +45,7 @@ GO
 ALTER TABLE [dbo].[ScheduleJob] ADD  CONSTRAINT [DF_ScheduleJob_IsDisabled]  DEFAULT ((0)) FOR [IsDisabled]
 GO
 
-DROP IF EXISTS [dbo].[ScheduleJobStatus]
+DROP TABLE IF EXISTS [dbo].[ScheduleJobStatus]
 GO
 
 CREATE TABLE [dbo].[ScheduleJobStatus](
@@ -55,6 +56,7 @@ CREATE TABLE [dbo].[ScheduleJobStatus](
 	[StartedAt] [datetime] NOT NULL,
 	[StatusChangedAt] [datetime] NULL,
 	[TraceId] [varchar](50) NULL,
+	[FailedMessage] varchar(max) NULL,
  CONSTRAINT [PK_ScheduleJobStatus] PRIMARY KEY CLUSTERED 
 (
 	[ScheduleJobStatusId] ASC
@@ -62,7 +64,7 @@ CREATE TABLE [dbo].[ScheduleJobStatus](
 ) ON [PRIMARY]
 GO
 
-DROP IF EXISTS PROCEDURE dbo.fn_AcquireScheduleLock
+DROP PROCEDURE IF EXISTS dbo.fn_AcquireScheduleLock
 GO
 
 CREATE PROCEDURE dbo.fn_AcquireScheduleLock

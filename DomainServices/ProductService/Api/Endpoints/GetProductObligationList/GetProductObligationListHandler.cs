@@ -1,47 +1,53 @@
 ﻿namespace DomainServices.ProductService.Api.Endpoints.GetProductObligationList;
 
-internal sealed class GetProductObligationListHandler : IRequestHandler<GetProductObligationListRequest, GetProductObligationListResponse>
+internal sealed class GetProductObligationListHandler(IMpHomeClient _mpHomeClient)
+    : IRequestHandler<GetProductObligationListRequest, GetProductObligationListResponse>
 {
-    private readonly LoanRepository _loanRepository;
-
-    public GetProductObligationListHandler(LoanRepository loanRepository)
-    {
-        _loanRepository = loanRepository;
-    }
-
     public async Task<GetProductObligationListResponse> Handle(GetProductObligationListRequest request, CancellationToken cancellationToken)
     {
-        // check if loan exists (against KonsDB)
-        if (!await _loanRepository.LoanExists(request.ProductId, cancellationToken))
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        var product = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
 
-        var obligations = await _loanRepository.GetObligations(request.ProductId, cancellationToken);
-
-        var responseItems = obligations.Select(obligation =>
+        if (product.Inactive)
         {
-            var item = new GetProductObligationItem
-            {
-                ObligationTypeId = obligation.ObligationTypeId,
-                Amount = obligation.Amount,
-                CreditorName = obligation.CreditorName
-            };
+            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001);
+        }
 
-            if (!string.IsNullOrWhiteSpace(obligation.AccountNumber))
+        var responseItems = product?
+            .Obligations?
+            .Where(obligation => obligation.ObligationType != 0 && obligation.Amount > 0 && !string.IsNullOrWhiteSpace(obligation.Creditor))
+            .Select(obligation =>
             {
-                item.PaymentAccount = new PaymentAccount
+                var item = new GetProductObligationItem
                 {
-                    Prefix = obligation.AccountNumberPrefix ?? string.Empty,
-                    Number = obligation.AccountNumber ?? string.Empty,
-                    BankCode = obligation.BankCode ?? string.Empty
+                    ObligationTypeId = obligation.ObligationType,
+                    Amount = Convert.ToDecimal(obligation.Amount),
+                    CreditorName = obligation.Creditor
                 };
-            }
 
-            if (!string.IsNullOrWhiteSpace(obligation.VariableSymbol))
-                item.PaymentSymbols = new PaymentSymbols { VariableSymbol = obligation.VariableSymbol };
+                if (!string.IsNullOrWhiteSpace(obligation.AccountNumber))
+                {
+                    item.PaymentAccount = new PaymentAccount
+                    {
+                        Prefix = obligation.AccountPrefix ?? string.Empty,
+                        Number = obligation.AccountNumber ?? string.Empty,
+                        BankCode = obligation.BankCode ?? string.Empty
+                    };
+                }
 
-            return item;
-        });
+                if (!string.IsNullOrWhiteSpace(obligation.VariableSymbol))
+                {
+					item.PaymentSymbols = new PaymentSymbols 
+                    { 
+                        VariableSymbol = obligation.VariableSymbol 
+                    };
+				}
+                
+                return item;
+            });
 
-        return new GetProductObligationListResponse { ProductObligations = { responseItems } };
+        return new GetProductObligationListResponse 
+        { 
+            ProductObligations = { responseItems } 
+        };
     }
 }

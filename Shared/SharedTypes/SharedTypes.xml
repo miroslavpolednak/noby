@@ -99,6 +99,41 @@
             Je možné oceňovat nemovitost
             </summary>
         </member>
+        <member name="T:SharedTypes.Enums.OfferFlagTypes">
+            <summary>
+            Položky označené * není možné měnit pomocí API SetOfferFlags
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Current">
+            <summary>
+            * Aktuální nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Communicated">
+            <summary>
+            * Komunikovaná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.LegalNotice">
+            <summary>
+            * Zákonné oznámení
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Liked">
+            <summary>
+            Likovaná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.Selected">
+            <summary>
+            Vybraná nabídka
+            </summary>
+        </member>
+        <member name="F:SharedTypes.Enums.OfferFlagTypes.LegalNoticeDefault">
+            <summary>
+            * Výchozí nabídka
+            </summary>
+        </member>
         <member name="F:SharedTypes.FeatureFlagsConstants.BlueBang">
             <summary>
             Flag oznacujici zda jsou zapnute modre produkty nebo ne (TRUE jsou zapnute)
@@ -107,6 +142,36 @@
         <member name="F:SharedTypes.FeatureFlagsConstants.ElectronicSigning">
             <summary>
             zapíná/vypíná elektronické podepisování
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.ElectronicWorkflowSigning">
+            <summary>
+            zapíná/vypíná elektronické podepisování workflow úkolů
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.Retention">
+            <summary>
+            zapíná/vypíná retenční endpointy
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.Refixation">
+            <summary>
+            zapíná/vypíná refixační endpointy
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.ExtraPayment">
+            <summary>
+            zapíná/vypíná endpointy související s mimořádnou splátkou
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.InternalRefinancing">
+            <summary>
+            zapíná/vypíná endpointy související s interním refinancováním
+            </summary>
+        </member>
+        <member name="F:SharedTypes.FeatureFlagsConstants.UseFieldsMap">
+            <summary>
+            zapíná/vypíná použití vygenerované mapy AcroFieldů v DocumentDataGenerator službě.
             </summary>
         </member>
         <member name="F:SharedTypes.GrpcTypes.GrpcAddress.StreetFieldNumber">
@@ -564,6 +629,21 @@
         </member>
         <member name="P:SharedTypes.GrpcTypes.NullableGrpcDateTimeReflection.Descriptor">
             <summary>File descriptor for NullableGrpcDateTime.proto</summary>
+        </member>
+        <member name="P:SharedTypes.Interfaces.IBankAccount.AccountPrefix">
+            <summary>
+            Předčíslí účtu
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Interfaces.IBankAccount.AccountNumber">
+            <summary>
+            Číslo účtu
+            </summary>
+        </member>
+        <member name="P:SharedTypes.Interfaces.IBankAccount.AccountBankCode">
+            <summary>
+            Kód banky
+            </summary>
         </member>
         <member name="T:SharedTypes.Types.Address">
             <summary>

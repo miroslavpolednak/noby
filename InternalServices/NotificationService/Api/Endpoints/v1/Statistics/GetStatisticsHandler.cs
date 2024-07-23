@@ -1,10 +1,10 @@
-﻿using CIS.InternalServices.NotificationService.Api.Services.Repositories;
-using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
-using CIS.InternalServices.NotificationService.Contracts.Statistics;
-using CIS.InternalServices.NotificationService.Contracts.Statistics.Dto;
-using CIS.InternalServices.NotificationService.Contracts.Result.Dto;
+﻿using CIS.InternalServices.NotificationService.Api.Services.User.Abstraction;
+using CIS.InternalServices.NotificationService.LegacyContracts.Statistics;
+using CIS.InternalServices.NotificationService.LegacyContracts.Statistics.Dto;
+using CIS.InternalServices.NotificationService.LegacyContracts.Result.Dto;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using CIS.InternalServices.NotificationService.Api.Database;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Statistics;
 
@@ -39,7 +39,7 @@ internal sealed class GetStatisticsHandler
             })
             .ToListAsync(cancellationToken);
 
-        Contracts.Statistics.Dto.Statistics statistics = new()
+        LegacyContracts.Statistics.Dto.Statistics statistics = new()
         {
             Email = new Status
             {

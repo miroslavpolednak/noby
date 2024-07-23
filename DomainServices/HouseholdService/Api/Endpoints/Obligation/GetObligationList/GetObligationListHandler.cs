@@ -6,12 +6,16 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Obligation.GetObligationList;
 
-internal sealed class GetObligationListHandler
-    : IRequestHandler<GetObligationListRequest, GetObligationListResponse>
+internal sealed class GetObligationListHandler(
+    IDocumentDataStorage _documentDataStorage,
+    ObligationMapper _mapper,
+    HouseholdServiceDbContext _dbContext,
+    ILogger<GetIncomeListHandler> _logger)
+        : IRequestHandler<GetObligationListRequest, GetObligationListResponse>
 {
     public async Task<GetObligationListResponse> Handle(GetObligationListRequest request, CancellationToken cancellationToken)
     {
-        var list = await _documentDataStorage.GetList<Database.DocumentDataEntities.Obligation>(request.CustomerOnSAId, cancellationToken);
+        var list = await _documentDataStorage.GetList<Database.DocumentDataEntities.Obligation, int>(request.CustomerOnSAId, cancellationToken);
 
         if (list.Count == 0 && !_dbContext.Customers.Any(t => t.CustomerOnSAId == request.CustomerOnSAId))
         {
@@ -25,22 +29,5 @@ internal sealed class GetObligationListHandler
         var response = new GetObligationListResponse();
         response.Obligations.AddRange(obligations);
         return response;
-    }
-
-    private readonly HouseholdServiceDbContext _dbContext;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly ObligationMapper _mapper;
-    private readonly ILogger<GetIncomeListHandler> _logger;
-
-    public GetObligationListHandler(
-        IDocumentDataStorage documentDataStorage,
-        ObligationMapper mapper,
-        HouseholdServiceDbContext dbContext,
-        ILogger<GetIncomeListHandler> logger)
-    {
-        _documentDataStorage = documentDataStorage;
-        _mapper = mapper;
-        _dbContext = dbContext;
-        _logger = logger;
     }
 }

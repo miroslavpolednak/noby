@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageapplication
 {
 	using System;
 	using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageapplication
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class FixedRatePeriod : global::Avro.Specific.ISpecificRecord
 	{
-		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""FixedRatePeriod"",""doc"":""Time that interest rate is fixed and can not change. CDM entity name(s): FixedRatePeriod."",""namespace"":""cz.kb.api.mortgageservicingevents.v2.mortgageapplication"",""fields"":[{""name"":""period"",""doc"":""Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded."",""type"":""int""}]}");
+		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse(@"{""type"":""record"",""name"":""FixedRatePeriod"",""doc"":""Time that interest rate is fixed and can not change. CDM entity name(s): FixedRatePeriod."",""namespace"":""cz.kb.api.mortgageservicingevents.v3.mortgageapplication"",""fields"":[{""name"":""period"",""doc"":""Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded."",""type"":""int""}]}");
 		/// <summary>
 		/// Total length of period in units. If no units are given, default is month. CDM attribute class name: FixedRatePeriodPeriod. Attribute has simple type ST_PositiveInt with description: Integer with a constraint. The value must be a positive number, i.e. zero is excluded.
 		/// </summary>

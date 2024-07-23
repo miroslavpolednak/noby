@@ -9,9 +9,9 @@ public sealed class CreateOrUpdateCustomerKonsDbService
     public async Task CreateOrUpdate(IEnumerable<Identity> identities, CancellationToken cancellationToken)
     {
         // pokud nema KB identitu, posli ho pryc
-        var kbIdentity = identities.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Kb);
+        var kbIdentity = identities.GetKbIdentityOrDefault();
         if (kbIdentity is null) return;
-        var mpIdentity = identities.FirstOrDefault(t => t.IdentityScheme == Identity.Types.IdentitySchemes.Mp);
+        var mpIdentity = identities.GetMpIdentityOrDefault();
 
         DomainServices.CustomerService.Contracts.CustomerDetailResponse? konsDbCustomer = null;
         try
@@ -30,7 +30,7 @@ public sealed class CreateOrUpdateCustomerKonsDbService
             await createClientInKonsDb(kbIdentity, mpIdentity!, cancellationToken);
         }
         // ma klient v konsDb KB identitu? pokud ne, tak ho updatuj
-        else if (konsDbCustomer.Identities.All(t => t.IdentityScheme != Identity.Types.IdentitySchemes.Kb))
+        else if (!konsDbCustomer.Identities.HasKbIdentity())
         {
             await updateClientInKonsDb(mpIdentity!, kbIdentity, cancellationToken);
         }

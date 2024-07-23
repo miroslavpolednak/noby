@@ -1,8 +1,8 @@
 {
   "type" : "record",
   "name" : "MortgageApplicationChanged",
-  "namespace" : "cz.kb.api.mortgageservicingevents.v2",
-  "doc" : "Request for Mortgage change event\r\nZměny na žadosti o hypoteku. Schema belongs to API MortgageServicingEvents.v2. Root type description: Entity representing any formal 'agreement' within any sales related area.. ## General entity for any event. CDM entity name(s): SalesArrangement,Event.",
+  "namespace" : "cz.kb.api.mortgageservicingevents.v3",
+  "doc" : "Request for Mortgage change event\r\nZměny na žadosti o hypoteku. Schema belongs to API MortgageServicingEvents.v3. Root type description: Entity representing any formal 'agreement' within any sales related area.. ## General entity for any event. CDM entity name(s): SalesArrangement,Event.",
   "fields" : [ {
     "name" : "eventId",
     "type" : {
@@ -16,7 +16,7 @@
     "type" : {
       "type" : "record",
       "name" : "SalesArrangement",
-      "namespace" : "cz.kb.api.mortgageservicingevents.v2.mortgageapplication",
+      "namespace" : "cz.kb.api.mortgageservicingevents.v3.mortgageapplication",
       "doc" : "Entity representing any formal 'agreement' within any sales related area. CDM entity name(s): SalesArrangement.",
       "fields" : [ {
         "name" : "agreement",
@@ -106,6 +106,82 @@
             "type" : [ "null", "InstanceState" ],
             "default" : null
           }, {
+            "name" : "LoanAccount",
+            "type" : [ "null", {
+              "type" : "record",
+              "name" : "Account",
+              "doc" : "This entity represents information about account as is used in payment landscape. For example has properties current balance, account number, iban, currency, available balance,.. . If this entity represents multicurrency (MCY) master account (multicurrency=true):: the account is called master (parent) account; it acts as envelope for supported currencies subaccounts set; balances and limits attributes represent aggregated values from the currencies subaccounts (converted to base currency); currency represents base (nominated) currency of master account.; payment domain systems work only with master account information or identification (single master account number plus currency); transactions, holds and interests occure only on specific currency subaccounts.;In KB finance called 'aplikacni ucet'.This is not product sales entity. Do not confuse with CurrentAccountProduct. Also do not represents general ledger accounts.. ## A representation of a product instance as implemented in bank's core systems, systems delivering product's functionality to customer. CDM entity name(s): Account,TechnicalItemInstance.",
+              "fields" : [ {
+                "name" : "accountNumber",
+                "type" : {
+                  "type" : "record",
+                  "name" : "AccountNumber",
+                  "doc" : "AccountNumber: .AccountNumberPrefix; .AccountNumberCore; .AccountNumberBankCode; .AccountNumberIban;. ## IBAN (International Bank Account Number) representation of the account number by ISO 13616 - for detail description see attribute notes. ## Account identification number defined by CNB for domestic paymentshttps://www.cnb.cz/export/sites/cnb/cs/legislativa/.galleries/vyhlasky/vyhlaska_169_2011.pdf. CDM entity name(s): AccountNumberIBAN,AccountNumberCNB.",
+                  "fields" : [ {
+                    "name" : "bankCode",
+                    "type" : {
+                      "type" : "string",
+                      "avro.java.string" : "String",
+                      "pattern" : "^.{0,4}$"
+                    },
+                    "doc" : "Bank code: 4 digits; contains values from 'Directory of payment system codes' by CNB (https://www.cnb.cz/en/payments/accounts-bank-codes/); e.g.: for '1234-567890/0100' the bank code is '0100';. CDM attribute class name: AccountNumberCNBBankCode. Attribute has simple type ST_BankCode with description: Kod banky."
+                  }, {
+                    "name" : "core",
+                    "type" : {
+                      "type" : "string",
+                      "avro.java.string" : "String",
+                      "pattern" : "0*[1-9][0-9]*[1-9][0-9]*"
+                    },
+                    "doc" : "Core/base of account number (i.e. the number without the bank code and without prefix): 2 to 10 digits; mandatory; e.g.: for '1234-567890/0100' the core is '567890';. CDM attribute class name: AccountNumberCNBCore. Attribute has simple type ST_AccountNumberCore with description: Cislo uctu bez prefixu.An account number excluding a prefix."
+                  }, {
+                    "name" : "iban",
+                    "type" : {
+                      "type" : "string",
+                      "avro.java.string" : "String",
+                      "pattern" : "[A-Z][A-Z][0-9][0-9][0-9A-Z]*"
+                    },
+                    "doc" : "IBAN representation of the account number: up to 32 characters - XX## #### #### #### #### #### #### ####; first 2 characters - country code; next 2 characters are check digits; rest is country dependent - for CZ&amp;SK - 4 digits bank code, 6 digits prefix, 10 digits core/base account number; without blanks for electronic communication; grouped by 4 characters for user interfaces;. CDM attribute class name: AccountNumberIBANIban. Attribute has simple type ST_IBAN with description: The International Bank Account Number (IBAN)."
+                  }, {
+                    "name" : "prefix",
+                    "type" : [ "null", {
+                      "type" : "string",
+                      "avro.java.string" : "String",
+                      "pattern" : "[0-9]*"
+                    } ],
+                    "doc" : "Account number prefix: up to 6 digits; optional - could be empty or contain zeroes '000000'; e.g.: for '1234-567890/0100' the prefix is '1234';. CDM attribute class name: AccountNumberCNBPrefix. Attribute has simple type ST_AccountNumberPrefix with description: Cislo uctu prefix.An account number prefix. ",
+                    "default" : null
+                  } ]
+                }
+              }, {
+                "name" : "AccountState",
+                "type" : [ "null", {
+                  "type" : "record",
+                  "name" : "TechnicalItemInstanceState",
+                  "doc" : "Multicodebook property of technical product instance state. As the name suggests, it defines state of product instance in its core system.It is multicodebook as state of technical product instance is generic concept and will differ across technical product instance core systems. CDM entity name(s): TechnicalItemInstanceState.",
+                  "fields" : [ {
+                    "name" : "class",
+                    "type" : {
+                      "type" : "string",
+                      "avro.java.string" : "String"
+                    },
+                    "doc" : "Attribute that defines codebook that is used in attribute state. CDM attribute class name: TechnicalItemInstanceStateClass. Codebook type: CB_TechnicalProductInstanceStateClass."
+                  }, {
+                    "name" : "state",
+                    "type" : {
+                      "type" : "string",
+                      "avro.java.string" : "String",
+                      "pattern" : "^.{0,100}$"
+                    },
+                    "doc" : "Multicodebook value of state itself. CDM attribute class name: TechnicalItemInstanceStateState. Attribute has simple type CB_MultiCodebookValue with description: Represents information that value can be from more than one codebook. Codebook type: CB_MultiCodebookValue."
+                  } ]
+                } ],
+                "doc" : "",
+                "default" : null
+              } ]
+            } ],
+            "doc" : "",
+            "default" : null
+          }, {
             "name" : "loanAmount",
             "type" : {
               "type" : "record",
@@ -129,6 +205,31 @@
               "name" : "LoanInstanceInfo",
               "doc" : "Information entity representing any loan product (instance of product). CDM entity name(s): LoanInstanceInfo.",
               "fields" : [ {
+                "name" : "ExpectedDrawdownPeriod",
+                "type" : [ "null", {
+                  "type" : "record",
+                  "name" : "DrawdownPeriod",
+                  "doc" : "Defines when loan can be withdrawn. CDM entity name(s): DrawdownPeriod.",
+                  "fields" : [ {
+                    "name" : "dateFrom",
+                    "type" : {
+                      "type" : "int",
+                      "logicalType" : "date"
+                    },
+                    "doc" : "Defines exact date when withdrawal of the loan can be started. CDM attribute class name: DrawdownPeriodDateFrom. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter)."
+                  }, {
+                    "name" : "dateUntil",
+                    "type" : [ "null", {
+                      "type" : "int",
+                      "logicalType" : "date"
+                    } ],
+                    "doc" : "Defines exact date when all purposes on the loan must be completely withdrawn. CDM attribute class name: DrawdownPeriodDateUntil. Standard avro date represented by the number of days from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to date class in code generator (see KB Integration Platform wiki for schema registry chapter).",
+                    "default" : null
+                  } ]
+                } ],
+                "doc" : "",
+                "default" : null
+              }, {
                 "name" : "loanInstallments",
                 "type" : {
                   "type" : "record",
@@ -378,7 +479,7 @@
     "doc" : "Date and time when event occurred. CDM attribute class name: EventOccurredOn. Standard avro dateTime represented by the number of milliseconds from the unix epoch, see avro specification: https://avro.apache.org/docs/1.8.0/spec.html. Consider using converters to dateTime class in code generator (see KB Integration Platform wiki for schema registry chapter)."
   }, {
     "name" : "Old",
-    "type" : [ "null", "cz.kb.api.mortgageservicingevents.v2.mortgageapplication.SalesArrangement" ],
+    "type" : [ "null", "cz.kb.api.mortgageservicingevents.v3.mortgageapplication.SalesArrangement" ],
     "default" : null
   } ],
   "javaAnnotation" : "cz.kb.api.common.annotation.ConfluentSchemaRegistryCompatible"

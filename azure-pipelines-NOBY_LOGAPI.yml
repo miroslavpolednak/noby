@@ -1,49 +1,37 @@
 # ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- main
+#Default none and then overriden in the Azure Pipeline settings
+trigger: none
 
 pool:
   name: MPSS Common
 
 variables:
-  buildConfiguration: 'Release'
-  buildPlatform: 'Any CPU'
-  projectFile: 'NOBY\NOBY.LogApi\NOBY.LogApi.csproj'
-  runSonarQube: $[or(eq(lower(variables['Build.SourceBranchName']), 'stage'), eq(lower(variables['Build.SourceBranchName']), 'production'), ne(lower(variables['USESONARQUBE']), 'false'))]
+  - name: buildConfiguration
+    value: 'Release'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: projectFile
+    value: 'NOBY\NOBY.LogApi\NOBY.LogApi.csproj'
+  - name: runSonarQube
+    value: $[or(eq(lower(variables['Build.SourceBranchName']), 'stage'), eq(lower(variables['Build.SourceBranchName']), 'production'), ne(lower(variables['USESONARQUBE']), 'false'))]
+  - template: azure-pipelines-vars.yml
 
 # custom BuildNumber
-name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(Date:yyyyMMdd)$(Rev:.r)_$(Build.BuildId)
+name: $(TeamProject)_$(Build.DefinitionName)_$(SourceBranchName)_$(versionMajor).$(versionMinor).$(versionPatch).$(Build.BuildId)
 
 steps:
-
-#- task: UseDotNet@2
-#  inputs:
-#    packageType: 'sdk'
-#    version: '6.0.x'
-#    includePreviewVersions: true
-
 - task: InlinePowershell@1
+  displayName: Set Version
   inputs:
     Script: |
       $file = '$(Build.SourcesDirectory)\$(projectFile)'
       $regex = '(?<=<Version>)[^<]*'
       
-      $buildVersion='$(Build.BuildId)'
-      
-      $versionFromFile = Select-String -Path $file $regex
-      $versionFromFile = $versionFromFile.Matches[0].Value
-      $versionFromFile = $versionFromFile.Substring(0, $versionFromFile.lastIndexOf('.'))
-      
-      $finalVersion = $versionFromFile + "." + $buildVersion
+      $finalVersion = "$(versionMajor).$(versionMinor).$(versionPatch).$(Build.BuildId)"
      
       (Get-Content $file) -replace $regex, $finalversion | Set-Content $file
- 
-      Write-Host "Build.BuildNumber - " -NoNewline
-      Write-Host $(Build.BuildNumber)
+
       Write-Host "Build.BuildId - " -NoNewline
       Write-Host $(Build.BuildId)
       Write-Host "Final version - " -NoNewline

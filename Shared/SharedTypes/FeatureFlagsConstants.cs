@@ -13,4 +13,35 @@ public static class FeatureFlagsConstants
     /// zapíná/vypíná elektronické podepisování
     /// </summary>
     public const string ElectronicSigning = "ElectronicSigning";
+
+    /// <summary>
+    /// zapíná/vypíná elektronické podepisování workflow úkolů
+    /// </summary>
+    public const string ElectronicWorkflowSigning = "ElectronicWorkflowSigning";
+
+    /// <summary>
+    /// zapíná/vypíná retenční endpointy
+    /// </summary>
+    public const string Retention = "Retention";
+
+    /// <summary>
+    /// zapíná/vypíná refixační endpointy
+    /// </summary>
+    public const string Refixation = "Refixation";
+
+    /// <summary>
+    /// zapíná/vypíná endpointy související s mimořádnou splátkou
+    /// </summary>
+    public const string ExtraPayment = "ExtraPayment";
+
+    /// <summary>
+    /// zapíná/vypíná endpointy související s interním refinancováním
+    /// </summary>
+    public const string InternalRefinancing = "InternalRefinancing";
+
+    /// <summary>
+    /// zapíná/vypíná použití vygenerované mapy AcroFieldů v DocumentDataGenerator službě.
+    /// </summary>
+    public const string UseFieldsMap = "UseFieldsMap";
+
 }

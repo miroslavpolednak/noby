@@ -1,27 +1,38 @@
-﻿namespace DomainServices.ProductService.Api.Endpoints.CancelMortgage;
+﻿using DomainServices.ProductService.ExternalServices.Pcp;
 
-internal sealed class CancelMortgageHandler : IRequestHandler<CancelMortgageRequest>
+namespace DomainServices.ProductService.Api.Endpoints.CancelMortgage;
+
+internal sealed class CancelMortgageHandler(
+    IMpHomeClient _mpHomeClient, 
+    IPcpClient _pcpClient,
+    ILogger<CancelMortgageHandler> _logger) 
+    : IRequestHandler<CancelMortgageRequest>
 {
-    private readonly IMpHomeClient _mpHomeClient;
-    private readonly LoanRepository _repository;
-    private readonly ILogger<CancelMortgageHandler> _logger;
-
-    public CancelMortgageHandler(IMpHomeClient mpHomeClient, LoanRepository repository, ILogger<CancelMortgageHandler> logger)
+	public async Task Handle(CancelMortgageRequest request, CancellationToken cancellationToken)
     {
-        _mpHomeClient = mpHomeClient;
-        _repository = repository;
-        _logger = logger;
-    }
-
-    public async Task Handle(CancelMortgageRequest request, CancellationToken cancellationToken)
-    {
-        if (!await _repository.LoanExists(request.ProductId, cancellationToken))
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+        var mortgage = await _mpHomeClient.GetMortgage(request.ProductId, cancellationToken);
 
         try
         {
             await _mpHomeClient.CancelLoan(request.ProductId, cancellationToken);
+
+            // klienti s KB ID na produktu
+			var clientId = mortgage
+				.LoanRelationships?
+				.Where(t => t.KbId.HasValue && t.PartnerRelationshipId == 1)
+				.Select(t => t.KbId!.Value)
+				.FirstOrDefault();
+            
+			// update v KB
+			if (!string.IsNullOrEmpty(mortgage.PcpInstId) && clientId.HasValue)
+            {
+				await _pcpClient.UpdateProduct(mortgage.PcpInstId, clientId.Value, cancellationToken);
+			}
         }
+        catch (CisNotFoundException)
+        {
+			throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.NotFound12001, request.ProductId);
+		}
         catch (Exception ex)
         {
             _logger.CancelMortgageFailed(request.ProductId, ex);

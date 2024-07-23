@@ -1,6 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.DocumentOnSA.RefreshElectronicDocument;
 
-public class RefreshElectronicDocumentRequest : IRequest<RefreshElectronicDocumentResponse>
+public class RefreshElectronicDocumentRequest : IRequest<DocumentOnSaRefreshElectronicDocumentResponse>
 {
     public RefreshElectronicDocumentRequest(int salesArrangementId, int documentOnSAId)
     {

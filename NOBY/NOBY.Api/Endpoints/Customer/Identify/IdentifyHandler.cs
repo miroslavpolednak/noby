@@ -45,7 +45,7 @@ internal sealed class IdentifyHandler
             return new CustomerInList().FillBaseData(customer).FillIdentification(customer.Identity);
         }
 
-        if (!searchResult.Customers.Any())
+        if (searchResult.Customers.Count == 0)
             return null;
 
         _logger.LogInformation("More than 1 client found");

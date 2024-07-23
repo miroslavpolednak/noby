@@ -1,6 +1,6 @@
 ﻿using DomainServices.CodebookService.Contracts.v1;
 
-namespace DomainServices.CodebookService.Api.Endpoints;
+namespace DomainServices.CodebookService.Api.Endpoints.v1;
 
 internal partial class CodebookService
 {
@@ -38,7 +38,7 @@ internal partial class CodebookService
         => _db.GetGenericItems();
 
     public override Task<GenericCodebookResponse> WorkflowTaskCategories(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<SharedTypes.Enums.WorkflowTaskCategory>();
+        => Helpers.GetGenericItems<SharedTypes.Enums.WorkflowTaskCategories>();
 
     public override Task<GenericCodebookResponse> WorkflowTaskConsultationTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();

@@ -1,13 +1,11 @@
 ﻿using DomainServices.OfferService.Contracts;
 using Google.Protobuf.Collections;
-using NOBY.Api.Endpoints.Offer.SharedDto;
-using NOBY.Api.Endpoints.Offer.SimulateMortgage;
 
 namespace NOBY.Api.Endpoints.Offer;
 
 internal static class OfferApiModuleDtoExtensions
 {
-    public static SharedDto.MortgageInputsExtended ToApiResponse(this MortgageOfferSimulationInputs input, MortgageOfferBasicParameters basicParams)
+    public static OfferMortgageInputsExtended ToApiResponse(this MortgageOfferSimulationInputs input, MortgageOfferBasicParameters basicParams)
         => new()
         {
             ProductTypeId = input.ProductTypeId,
@@ -21,8 +19,8 @@ internal static class OfferApiModuleDtoExtensions
             ExpectedDateOfDrawing = input.ExpectedDateOfDrawing,
             FinancialResourcesOwn = basicParams.FinancialResourcesOwn,
             FinancialResourcesOther = basicParams.FinancialResourcesOther,
-            LoanPurposes = input.LoanPurposes?.Select(t => new SharedDto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
-            Developer = input.Developer is null ? null : new SharedDto.Developer
+            LoanPurposes = input.LoanPurposes?.Select(t => new SharedTypesLoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
+            Developer = input.Developer is null ? null : new OfferSharedDeveloper
             {
                 DeveloperId = input.Developer.DeveloperId,
                 Description = input.Developer.Description,
@@ -31,7 +29,7 @@ internal static class OfferApiModuleDtoExtensions
             DrawingDurationId = input.DrawingDurationId,
             DrawingTypeId = input.DrawingTypeId,
             InterestRateDiscount = input.InterestRateDiscount,
-            MarketingActions = input.MarketingActions is null ? null : new SharedDto.MarketingActionInputItemResult
+            MarketingActions = input.MarketingActions is null ? null : new OfferSharedMarketingActionInputItemResult
             {
                 Domicile = input.MarketingActions.Domicile,
                 HealthRiskInsurance = input.MarketingActions.HealthRiskInsurance,
@@ -39,24 +37,24 @@ internal static class OfferApiModuleDtoExtensions
                 RealEstateInsurance = input.MarketingActions.RealEstateInsurance,
                 UserVip = input.MarketingActions.UserVip
             },
-            Fees = input.Fees is null ? null : input.Fees.Select(f => new SharedDto.FeeInputItem
+            Fees = input?.Fees.Select(f => new OfferSharedFeeInputItem
             {
                 DiscountPercentage = f.DiscountPercentage,
                 FeeId = f.FeeId
             }).ToList(),
-            RiskLifeInsurance = input.RiskLifeInsurance is null ? null : new SharedDto.InsuranceItem
+            RiskLifeInsurance = input.RiskLifeInsurance is null ? null : new OfferSharedInsuranceItem
             {
                 Sum = input.RiskLifeInsurance.Sum,
                 Frequency = input.RiskLifeInsurance.Frequency
             },
-            RealEstateInsurance = input.RealEstateInsurance is null ? null : new SharedDto.InsuranceItem
+            RealEstateInsurance = input.RealEstateInsurance is null ? null : new OfferSharedInsuranceItem
             {
                 Sum = input.RealEstateInsurance.Sum,
                 Frequency = input.RealEstateInsurance.Frequency
             }
         };
     
-    public static SharedDto.MortgageOutputs ToApiResponse(this MortgageOfferSimulationResults result, MortgageOfferSimulationInputs inputs, MortgageOfferAdditionalSimulationResults additionalResults)
+    public static OfferSharedMortgageOutputs ToApiResponse(this MortgageOfferSimulationResults result, MortgageOfferSimulationInputs inputs, MortgageOfferAdditionalSimulationResults additionalResults)
         => new()
         {
             Aprc = result.Aprc,
@@ -66,7 +64,7 @@ internal static class OfferApiModuleDtoExtensions
             LoanToValue = result.LoanToValue,
             LoanAmount = result.LoanAmount,
             LoanPaymentAmount = result.LoanPaymentAmount,
-            LoanPurposes = inputs.LoanPurposes?.Select(t => new SharedDto.LoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
+            LoanPurposes = inputs.LoanPurposes?.Select(t => new SharedTypesLoanPurposeItem() { Id = t.LoanPurposeId, Sum = t.Sum }).ToList(),
             PaymentDay = inputs.PaymentDay,
             LoanDueDate = result.LoanDueDate,
             LoanInterestRateProvided = result.LoanInterestRateProvided,
@@ -85,15 +83,15 @@ internal static class OfferApiModuleDtoExtensions
             Warnings = result.Warnings?.Select(t => t.ToApiResponseItem())?.ToList()
         };
 
-    public static SharedDto.OutputWarning ToApiResponseItem(this SimulationResultWarning resultItem)
-        => new SharedDto.OutputWarning()
+    public static OfferSharedMortgageOutputsOutputWarning ToApiResponseItem(this SimulationResultWarning resultItem)
+        => new()
         {
             InternalMessage = resultItem.WarningInternalMessage,
             Text = resultItem.WarningText
         };
 
-    public static SharedDto.PaymentScheduleSimpleItem ToApiResponseItem(this PaymentScheduleSimple resultItem)
-        => new SharedDto.PaymentScheduleSimpleItem()
+    public static OfferSharedMortgageOutputsPaymentScheduleSimpleItem ToApiResponseItem(this PaymentScheduleSimple resultItem)
+        => new()
         {
             Amount = resultItem.Amount,
             Date = resultItem.Date,
@@ -101,8 +99,8 @@ internal static class OfferApiModuleDtoExtensions
             Type = resultItem.Type,
         };
 
-    public static SharedDto.MarketingActionItem ToApiResponseItem(this ResultMarketingAction resultItem)
-        => new SharedDto.MarketingActionItem()
+    public static OfferSharedMortgageOutputsMarketingActionItem ToApiResponseItem(this ResultMarketingAction resultItem)
+        => new()
         {
             Code = resultItem.Code,
             Requested = resultItem.Requested == 1,
@@ -112,8 +110,8 @@ internal static class OfferApiModuleDtoExtensions
             Name = resultItem.Name
         };
 
-    public static List<SharedDto.FeeItem> ToApiResponse(this RepeatedField<ResultFee> fees)
-        => fees.Select(t => new SharedDto.FeeItem
+    public static List<OfferSharedMortgageOutputsFeeItem> ToApiResponse(this RepeatedField<ResultFee> fees)
+        => fees.Select(t => new OfferSharedMortgageOutputsFeeItem
         {
             FeeId = t.FeeId,
             DiscountPercentage = t.DiscountPercentage,
@@ -133,14 +131,14 @@ internal static class OfferApiModuleDtoExtensions
             UsageText = t.UsageText
         }).ToList();
 
-    public static CreditWorthinessSimpleResults? ToApiResponse(this MortgageOfferCreditWorthinessSimpleResults? result)
+    public static OfferSimulateMortgageCreditWorthinessSimpleResults? ToApiResponse(this MortgageOfferCreditWorthinessSimpleResults? result)
     {
         if (result is null)
             return null;
 
-        return new CreditWorthinessSimpleResults
+        return new()
         {
-            WorthinessResult = (SimulateMortgage.WorthinessResult)result.WorthinessResult,
+            WorthinessResult = (OfferSimulateMortgageCreditWorthinessSimpleResultsWorthinessResult)result.WorthinessResult,
             InstallmentLimit = result.InstallmentLimit ?? 0,
             MaxAmount = result.MaxAmount ?? 0,
             RemainsLivingAnnuity = result.RemainsLivingAnnuity ?? 0,
@@ -148,12 +146,12 @@ internal static class OfferApiModuleDtoExtensions
         };
     }
 
-    public static CreditWorthinessSimpleInputs? ToApiResponse(this MortgageOfferCreditWorthinessSimpleInputs? inputs, bool isActive)
+    public static OfferSharedCreditWorthinessSimpleInputs? ToApiResponse(this MortgageOfferCreditWorthinessSimpleInputs? inputs, bool isActive)
     {
         if (inputs is null)
             return null;
 
-        return new CreditWorthinessSimpleInputs
+        return new()
         {
             IsActive = isActive,
             TotalMonthlyIncome = inputs.TotalMonthlyIncome,

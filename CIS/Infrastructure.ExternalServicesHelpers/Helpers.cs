@@ -1,11 +1,18 @@
 ﻿using CIS.Core.Exceptions.ExternalServices;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace CIS.Infrastructure.ExternalServicesHelpers;
 
 public static class Helpers
 {
+    private static JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        PropertyNameCaseInsensitive = true //!!! dokud to v KB neopravi
+    };
+
     public static async Task<string?> SafeReadAsStringAsync(this HttpResponseMessage? response, CancellationToken cancellationToken = default)
         => response?.Content == null ? null : await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
@@ -26,7 +33,7 @@ public static class Helpers
                 switch (response!.StatusCode)
                 {
                     case System.Net.HttpStatusCode.NotFound:
-                        throw new CisExternalServiceValidationException($"{serviceName} Not found: {await response.SafeReadAsStringAsync(cancellationToken)}");
+                        throw new CisNotFoundException(0, $"{serviceName} Not found: {await response.SafeReadAsStringAsync(cancellationToken)}");
                         
                     case System.Net.HttpStatusCode.BadRequest:
                         throw new CisExternalServiceValidationException($"{serviceName} Bad request: {await response.SafeReadAsStringAsync(cancellationToken)}");
@@ -49,11 +56,10 @@ public static class Helpers
         string serviceName, 
         CancellationToken cancellationToken = default,
         [CallerMemberName] string callerName = "")
-        where TResponse : class, new()
     {
         await response.EnsureSuccessStatusCode(serviceName, cancellationToken: cancellationToken);
 
-        return await response!.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken)
+        return await response!.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions, cancellationToken)
             ?? throw new CisExternalServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
     }
 
@@ -63,11 +69,10 @@ public static class Helpers
         Dictionary<System.Net.HttpStatusCode, int> customErrorCodes,
         CancellationToken cancellationToken = default,
         [CallerMemberName] string callerName = "")
-        where TResponse : class, new()
     {
         await response.EnsureSuccessStatusCodeWithCustomErrorCodes(serviceName, customErrorCodes, cancellationToken);
 
-        return await response!.Content.ReadFromJsonAsync<TResponse>(cancellationToken: cancellationToken)
+        return await response!.Content.ReadFromJsonAsync<TResponse>(_jsonSerializerOptions, cancellationToken)
             ?? throw new CisExternalServiceResponseDeserializationException(0, serviceName, callerName, typeof(TResponse).ToString());
     }
 }

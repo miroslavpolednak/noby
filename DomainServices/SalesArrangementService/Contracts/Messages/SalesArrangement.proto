@@ -12,6 +12,8 @@ import "Parameters/SalesArrangementParametersGeneralChange.proto";
 import "Parameters/SalesArrangementParametersCustomerChange.proto";
 import "Parameters/SalesArrangementParametersCustomerChange3602.proto";
 import "Parameters/SalesArrangementParametersRetention.proto";
+import "Parameters/SalesArrangementParametersRefixation.proto";
+import "Parameters/SalesArrangementParametersExtraPayment.proto";
 
 message SalesArrangement {
 	int32 SalesArrangementId = 1;
@@ -38,7 +40,7 @@ message SalesArrangement {
 	cis.types.NullableGrpcDate FirstSignatureDate = 19;
 	google.protobuf.StringValue PcpId = 20;
 	google.protobuf.StringValue LoanApplicationDataVersion = 21;
-	google.protobuf.Int64Value TaskProcessId = 22;
+	google.protobuf.Int64Value ProcessId = 22;
 
 	oneof Parameters {
         DomainServices.SalesArrangementService.SalesArrangementParametersMortgage Mortgage = 30;
@@ -50,5 +52,7 @@ message SalesArrangement {
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602B = 36;
 		SalesArrangementParametersCustomerChange3602 CustomerChange3602C = 37;
 		SalesArrangementParametersRetention Retention = 38;
+		SalesArrangementParametersRefixation Refixation = 39;
+		SalesArrangementParametersExtraPayment ExtraPayment = 40;
     }
 }

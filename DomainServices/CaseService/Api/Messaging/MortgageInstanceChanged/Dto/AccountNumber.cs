@@ -5,7 +5,7 @@
 //    is regenerated
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
+namespace cz.kb.api.mortgageservicingevents.v3.mortgageinstance
 {
 	using System;
 	using System.Collections.Generic;
@@ -14,18 +14,18 @@ namespace cz.kb.api.mortgageservicingevents.v2.mortgageinstance
 	using global::Avro.Specific;
 	
 	/// <summary>
-	/// AccountNumber: .AccountNumberPrefix; .AccountNumberCore; .AccountNumberBankCode; .AccountNumberIban;. ## Account identification number defined by CNB for domestic paymentshttps://www.cnb.cz/export/sites/cnb/cs/legislativa/.galleries/vyhlasky/vyhlaska_169_2011.pdf. ## IBAN (International Bank Account Number) representation of the account number by ISO 13616 - for detail description see attribute notes. CDM entity name(s): AccountNumberCNB,AccountNumberIBAN.
+	/// AccountNumber: .AccountNumberPrefix; .AccountNumberCore; .AccountNumberBankCode; .AccountNumberIban;. ## IBAN (International Bank Account Number) representation of the account number by ISO 13616 - for detail description see attribute notes. ## Account identification number defined by CNB for domestic paymentshttps://www.cnb.cz/export/sites/cnb/cs/legislativa/.galleries/vyhlasky/vyhlaska_169_2011.pdf. CDM entity name(s): AccountNumberIBAN,AccountNumberCNB.
 	/// </summary>
 	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("avrogen", "1.11.1")]
 	public partial class AccountNumber : global::Avro.Specific.ISpecificRecord
 	{
 		public static global::Avro.Schema _SCHEMA = global::Avro.Schema.Parse("{\"type\":\"record\",\"name\":\"AccountNumber\",\"doc\":\"AccountNumber: .AccountNumberPrefi" +
-				"x; .AccountNumberCore; .AccountNumberBankCode; .AccountNumberIban;. ## Account i" +
-				"dentification number defined by CNB for domestic paymentshttps://www.cnb.cz/expo" +
-				"rt/sites/cnb/cs/legislativa/.galleries/vyhlasky/vyhlaska_169_2011.pdf. ## IBAN (" +
-				"International Bank Account Number) representation of the account number by ISO 1" +
-				"3616 - for detail description see attribute notes. CDM entity name(s): AccountNu" +
-				"mberCNB,AccountNumberIBAN.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v2.mo" +
+				"x; .AccountNumberCore; .AccountNumberBankCode; .AccountNumberIban;. ## IBAN (Int" +
+				"ernational Bank Account Number) representation of the account number by ISO 1361" +
+				"6 - for detail description see attribute notes. ## Account identification number" +
+				" defined by CNB for domestic paymentshttps://www.cnb.cz/export/sites/cnb/cs/legi" +
+				"slativa/.galleries/vyhlasky/vyhlaska_169_2011.pdf. CDM entity name(s): AccountNu" +
+				"mberIBAN,AccountNumberCNB.\",\"namespace\":\"cz.kb.api.mortgageservicingevents.v3.mo" +
 				"rtgageinstance\",\"fields\":[{\"name\":\"bankCode\",\"doc\":\"Bank code: 4 digits; contain" +
 				"s values from \'Directory of payment system codes\' by CNB (https://www.cnb.cz/en/" +
 				"payments/accounts-bank-codes/); e.g.: for \'1234-567890/0100\' the bank code is \'0" +

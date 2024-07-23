@@ -41,22 +41,11 @@ internal class GeneralChangeTemplateData : AggregatedData
 
     public string? RealEstatePurchaseTypes => GeneralChange.LoanRealEstate?.IsActive == true ? string.Join("; ", GetRealEstatePurchaseTypes()) : default;
 
-    public string? ExtensionDrawingDateLabel
-    {
-        get
-        {
-            if (GeneralChange.DrawingDateTo?.IsActive != true || GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths == 0)
-                return default;
-
-            return GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths > 0 ? "Prodloužení lhůty čerpání" : "Zkrácení lhůty čerpání";
-        }
-    }
-
     public string? ExtensionDrawingDateText
     {
         get
         {
-            if (GeneralChange.DrawingDateTo?.IsActive != true || (GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths ?? 0) == 0)
+            if (GeneralChange.DrawingDateTo?.IsActive != true || (GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths ?? 0) <= 0)
                 return default;
 
             var months = Math.Abs(GeneralChange.DrawingDateTo.ExtensionDrawingDateToByMonths!.Value);

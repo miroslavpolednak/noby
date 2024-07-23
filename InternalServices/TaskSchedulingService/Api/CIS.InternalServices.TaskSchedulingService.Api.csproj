@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
 	  <TargetFramework>net8.0</TargetFramework>
@@ -10,18 +10,20 @@
 
 	<PropertyGroup>
 		<AnalysisMode>Recommended</AnalysisMode>
-		<PublishReadyToRun>true</PublishReadyToRun>
+		<PublishReadyToRun>false</PublishReadyToRun>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Grpc.AspNetCore.Server" Version="2.60.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.60.0" />
-		<PackageReference Include="MediatR" Version="12.2.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server" Version="2.63.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.63.0" />
+		<PackageReference Include="MediatR" Version="12.3.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
 		<PackageReference Include="NCrontab.Scheduler" Version="1.2.10" />
 	</ItemGroup>
 	
   <ItemGroup>
+	  <ProjectReference Include="..\..\..\DomainServices\HouseholdService\Clients\DomainServices.HouseholdService.Clients.csproj" />
+	  <ProjectReference Include="..\..\..\ExternalServices\ESignatures\ExternalServices.ESignatures.csproj" />
 	  <ProjectReference Include="..\..\..\Shared\SharedComponents\SharedComponents.csproj" />
     <ProjectReference Include="..\..\..\CIS\Infrastructure\CIS.Infrastructure.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\CaseService\Clients\DomainServices.CaseService.Clients.csproj" />
@@ -29,7 +31,6 @@
     <ProjectReference Include="..\..\..\DomainServices\CustomerService\Clients\DomainServices.CustomerService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\DocumentArchiveService\Clients\DomainServices.DocumentArchiveService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\DocumentOnSAService\Clients\DomainServices.DocumentOnSAService.Clients.csproj" />
-    <ProjectReference Include="..\..\..\DomainServices\HouseholdService\Api\DomainServices.HouseholdService.Api.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\OfferService\Clients\DomainServices.OfferService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\ProductService\Clients\DomainServices.ProductService.Clients.csproj" />
     <ProjectReference Include="..\..\..\DomainServices\RealEstateValuationService\Clients\DomainServices.RealEstateValuationService.Clients.csproj" />
@@ -40,14 +41,6 @@
     <ProjectReference Include="..\..\DocumentGeneratorService\Clients\CIS.InternalServices.DocumentGeneratorService.Clients.csproj" />
     <ProjectReference Include="..\..\NotificationService\Clients\CIS.InternalServices.NotificationService.Clients.csproj" />
     <ProjectReference Include="..\Contracts\CIS.InternalServices.TaskSchedulingService.Contracts.csproj" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <Content Update="kestrel.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
   </ItemGroup>
 
 </Project>

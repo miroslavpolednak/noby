@@ -2,7 +2,6 @@
 using System.Linq.Expressions;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
-using SharedTypes.Enums;
 
 namespace NOBY.Api.Endpoints.Codebooks.CodebookMap;
 
@@ -21,21 +20,31 @@ public class CodebookMap : ICodebookMap
         {
             var optimizedCode = code.ToLowerInvariant();
 
-            if (!_endpoints.ContainsKey(optimizedCode))
+            if (!_endpoints.TryGetValue(optimizedCode, out ICodebookEndpoint? endpoint))
                 throw new NotImplementedException($"Codebook code '{code}' is not implemented");
-
-            return _endpoints[optimizedCode]; 
+            else
+                return endpoint; 
 
         }
     }
 
     private void ConfigureMap()
     {
+        AddCodebook((s, ct) => s.BuildingSavingsMarketingActions(ct));
+        AddCodebook((s, ct) => s.BuildingSavingsProperties(ct));
+        AddCodebook((s, ct) => s.FlowSwitchStates(ct));
+        AddCodebook((s, ct) => s.ExtraPaymentReasons(ct));
+        AddCodebook((s, ct) => s.ExtraPaymentTypes(ct));
+        AddCodebook((s, ct) => s.ResponseCodeTypes(ct));
+        AddCodebook((s, ct) => s.FeeChangeRequests(ct));
+        AddCodebook((s, ct) => s.SignatureTypeDetails(ct));
+        AddCodebook((s, ct) => s.RefinancingStates(ct));
+        AddCodebook((s, ct) => s.RefixationDocumentTypes(ct));
         AddCodebook((s, ct) => s.RefixationOfferTypes(ct));
         AddCodebook((s, ct) => s.RefinancingTypes(ct));
         AddCodebook((s, ct) => s.AcademicDegreesAfter(ct));
         AddCodebook((s, ct) => s.AcademicDegreesBefore(ct));
-        AddCodebook((s, ct) => s.AddressTypes(ct), c => c.Cast<DomainServices.CodebookService.Contracts.v1.AddressTypesResponse.Types.AddressTypeItem>());
+        AddCodebook((s, ct) => s.AddressTypes(ct), c => c.Cast<AddressTypesResponse.Types.AddressTypeItem>());
         AddCodebook((s, ct) => s.AcvAttachmentCategories(ct));
         AddCodebook((s, ct) => s.BankCodes(ct));
         AddCodebook((s, ct) => s.CaseStates(ct));
@@ -59,6 +68,7 @@ public class CodebookMap : ICodebookMap
         AddCodebook((s, ct) => s.Fees(ct));
         AddCodebook((s, ct) => s.FixedRatePeriods(ct));
         AddCodebook((s, ct) => s.Genders(ct));
+        AddCodebook((s, ct) => s.HandoverTypeDetails(ct));
         AddCodebook((s, ct) => s.HouseholdTypes(ct));
         AddCodebook((s, ct) => s.IdentificationDocumentTypes(ct));
         AddCodebook((s, ct) => s.IdentificationSubjectMethods(ct));

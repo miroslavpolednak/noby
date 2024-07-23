@@ -32,7 +32,7 @@ internal class AggregatedData
 
     public Case Case { get; set; } = null!;
 
-    public GetOfferDetailResponse Offer { get; set; } = null!;
+    public GetMortgageDetailResponse Offer { get; set; } = null!;
 
     public GetMortgageOfferFPScheduleResponse OfferPaymentSchedule { get; set; } = null!;
 
@@ -57,7 +57,7 @@ internal class AggregatedData
         return ((ICodebookManagerConfigurator)_codebookManager).Load(codebookService, cancellationToken);
     }
 
-    public virtual Task LoadAdditionalData(CancellationToken cancellationToken) => Task.CompletedTask;
+    public virtual Task LoadAdditionalData(InputParameters parameters, CancellationToken cancellationToken) => Task.CompletedTask;
 
     protected virtual void ConfigureCodebooks(ICodebookManagerConfigurator configurator) { }
 }

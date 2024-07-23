@@ -3,7 +3,10 @@ using DomainServices.UserService.Contracts;
 
 namespace DomainServices.UserService.Clients.Services;
 
-internal class UserService 
+internal class UserService(
+	Contracts.v1.UserService.UserServiceClient _service,
+	UserServiceClientCacheProvider _distributedCacheProvider,
+	ICurrentUserAccessor _currentUser)
     : IUserServiceClient
 {
     public async Task<Contracts.User> GetCurrentUser(CancellationToken cancellationToken = default)
@@ -117,18 +120,4 @@ internal class UserService
 
     private Contracts.User? _cachedGetUser = null;
     private int? _cachedGetUserHash = null;
-
-    private readonly Contracts.v1.UserService.UserServiceClient _service;
-    private readonly UserServiceClientCacheProvider _distributedCacheProvider;
-    private readonly ICurrentUserAccessor _currentUser;
-
-    public UserService(
-        Contracts.v1.UserService.UserServiceClient service, 
-        UserServiceClientCacheProvider distributedCacheProvider,
-        ICurrentUserAccessor currentUser)
-    {
-        _currentUser = currentUser;
-        _distributedCacheProvider = distributedCacheProvider;
-        _service = service;
-    }
 }

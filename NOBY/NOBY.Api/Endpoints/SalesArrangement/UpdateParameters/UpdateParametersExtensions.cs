@@ -1,12 +1,13 @@
 ﻿using SharedTypes.GrpcTypes;
-using NOBY.Api.Endpoints.SalesArrangement.SharedDto;
 using _SA = DomainServices.SalesArrangementService.Contracts;
+
+#pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
 
 namespace NOBY.Api.Endpoints.SalesArrangement.UpdateParameters;
 
 internal static class UpdateParametersExtensions
 {
-    public static _SA.SalesArrangementParametersCustomerChange3602 ToDomainService(this Dto.CustomerChange3602Update parameters, _SA.SalesArrangementParametersCustomerChange3602 originalParameters)
+    public static _SA.SalesArrangementParametersCustomerChange3602 ToDomainService(this SalesArrangementUpdateParametersCustomerChange3602 parameters, _SA.SalesArrangementParametersCustomerChange3602 originalParameters)
     {
         return new _SA.SalesArrangementParametersCustomerChange3602
         {
@@ -15,7 +16,7 @@ internal static class UpdateParametersExtensions
         };
     }
 
-    public static _SA.SalesArrangementParametersMortgage ToDomainService(this ParametersMortgage parameters, _SA.SalesArrangementParametersMortgage originalParameter)
+    public static _SA.SalesArrangementParametersMortgage ToDomainService(this SalesArrangementSharedParametersMortgage parameters, _SA.SalesArrangementParametersMortgage originalParameter)
     {
         var model = new _SA.SalesArrangementParametersMortgage
         {
@@ -39,7 +40,7 @@ internal static class UpdateParametersExtensions
         return model;
     }
 
-    public static _SA.SalesArrangementParametersDrawing ToDomainService(this ParametersDrawing parameters)
+    public static _SA.SalesArrangementParametersDrawing ToDomainService(this SalesArrangementSharedParametersDrawing parameters)
     {
         var model = new _SA.SalesArrangementParametersDrawing()
         {
@@ -58,10 +59,10 @@ internal static class UpdateParametersExtensions
                 DateOfBirth = parameters.Agent?.DateOfBirth,
                 FirstName = parameters.Agent?.FirstName,
                 LastName = parameters.Agent?.LastName,
-                IdentificationDocument = parameters.Agent?.IdentificationDocument is null ? null : new()
+                IdentificationDocument = parameters.Agent?.IdentificationDocument?.IdentificationDocumentTypeId is null ? null : new()
                 {
                     Number = parameters.Agent.IdentificationDocument.Number,
-                    IdentificationDocumentTypeId = parameters.Agent.IdentificationDocument.IdentificationDocumentTypeId.GetValueOrDefault()
+                    IdentificationDocumentTypeId = parameters.Agent.IdentificationDocument.IdentificationDocumentTypeId.Value
                 }
             }
         };
@@ -89,7 +90,7 @@ internal static class UpdateParametersExtensions
         return model;
     }
 
-    public static _SA.SalesArrangementParametersGeneralChange ToDomainService(this Dto.GeneralChangeUpdate parameters, _SA.SalesArrangementParametersGeneralChange? originalParameter)
+    public static _SA.SalesArrangementParametersGeneralChange ToDomainService(this SalesArrangementUpdateParametersGeneralChange parameters, _SA.SalesArrangementParametersGeneralChange? originalParameter)
     {
         var model = new _SA.SalesArrangementParametersGeneralChange()
         {
@@ -110,7 +111,8 @@ internal static class UpdateParametersExtensions
                 IsActive = parameters.DrawingDateTo.IsActive,
                 AgreedDrawingDateTo = originalParameter?.DrawingDateTo?.AgreedDrawingDateTo,
                 CommentToDrawingDateTo = parameters.DrawingDateTo.CommentToDrawingDateTo,
-                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = parameters.DrawingDateTo?.IsDrawingDateEarlier ?? false
             },
             RepaymentAccount = new()
             {
@@ -175,7 +177,7 @@ internal static class UpdateParametersExtensions
         return model;
     }
 
-    public static _SA.SalesArrangementParametersHUBN ToDomainService(this Dto.HUBNUpdate parameters, _SA.SalesArrangementParametersHUBN? originalParameter)
+    public static _SA.SalesArrangementParametersHUBN ToDomainService(this SalesArrangementUpdateParametersHubn parameters, _SA.SalesArrangementParametersHUBN? originalParameter)
     {
         var model = new _SA.SalesArrangementParametersHUBN()
         {
@@ -203,7 +205,8 @@ internal static class UpdateParametersExtensions
             {
                 IsActive = parameters.DrawingDateTo?.IsActive ?? false,
                 AgreedDrawingDateTo = originalParameter?.DrawingDateTo?.AgreedDrawingDateTo,
-                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths
+                ExtensionDrawingDateToByMonths = parameters.DrawingDateTo?.ExtensionDrawingDateToByMonths,
+                IsDrawingDateEarlier = parameters.DrawingDateTo?.IsDrawingDateEarlier ?? false
             },
             CommentToChangeRequest = new()
             {
@@ -234,7 +237,7 @@ internal static class UpdateParametersExtensions
         return model;
     }
 
-    public static _SA.SalesArrangementParametersCustomerChange ToDomainService(this Dto.CustomerChangeUpdate parameters, _SA.SalesArrangementParametersCustomerChange? originalParameter)
+    public static _SA.SalesArrangementParametersCustomerChange ToDomainService(this SalesArrangementUpdateParametersCustomerChange parameters, _SA.SalesArrangementParametersCustomerChange? originalParameter)
     {
         var model = new _SA.SalesArrangementParametersCustomerChange()
         {
@@ -270,7 +273,7 @@ internal static class UpdateParametersExtensions
             if (parameters.Release.Customers is not null)
                 model.Release.Customers.AddRange(parameters.Release.Customers.Select(t => new _SA.SalesArrangementParametersCustomerChange.Types.ReleaseCustomerObject
                 {
-                    Identity = t.Identity ?? new SharedTypes.Types.CustomerIdentity(),
+                    Identity = t.Identity ?? new SharedTypesCustomerIdentity(),
                     NaturalPerson = new()
                     {
                         FirstName = t.NaturalPerson?.FirstName ?? "",

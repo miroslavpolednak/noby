@@ -7,7 +7,7 @@ namespace NOBY.Services.CreateProductTrain;
 internal sealed class CreateProductTrainService
     : ICreateProductTrainService
 {
-    public async Task Run(
+    public async Task RunAll(
         long caseId,
         int salesArrangementId,
         int customerOnSAId,
@@ -20,15 +20,15 @@ internal sealed class CreateProductTrainService
 
         await _product.Run(caseId, salesArrangementId, customerOnSAId, customerIdentifiers, cancellationToken);
 
-        long? mpId = customerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)?.IdentityId;
-        long? kbId = customerIdentifiers?.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)?.IdentityId;
+        long? mpId = customerIdentifiers?.GetMpIdentityOrDefault()?.IdentityId;
+        long? kbId = customerIdentifiers?.GetKbIdentityOrDefault()?.IdentityId;
         if (mpId.HasValue && kbId.HasValue)
         {
             await _createRiskBusinessCase.Run(salesArrangementId, cancellationToken);
         }
         else
         {
-            _logger.LogInformation($"CreateRiskBusinessCaseService for CaseId #{caseId} not proceeding / missing MP ID");
+            _logger.LogInformation("CreateRiskBusinessCaseService for CaseId #{CaseId} not proceeding / missing MP ID", caseId);
         }
         
         _logger.LogDebug("CreateProductTrainService finished");

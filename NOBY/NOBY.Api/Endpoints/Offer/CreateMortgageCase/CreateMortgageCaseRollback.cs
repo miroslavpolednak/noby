@@ -1,14 +1,19 @@
 ﻿using CIS.Infrastructure.CisMediatR.Rollback;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
-internal sealed class CreateMortgageCaseRollback
-    : IRollbackAction<CreateMortgageCaseRequest>
+internal sealed class CreateMortgageCaseRollback(
+    IRollbackBag _bag,
+    ILogger<CreateMortgageCaseRollback> _logger,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IHouseholdServiceClient _householdService,
+    ICaseServiceClient _caseService)
+        : IRollbackAction<OfferCreateMortgageCaseRequest>
 {
-    public async Task ExecuteRollback(Exception exception, CreateMortgageCaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task ExecuteRollback(Exception exception, OfferCreateMortgageCaseRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         _logger.RollbackHandlerStarted(nameof(CreateMortgageCaseRollback));
 
@@ -39,27 +44,4 @@ internal sealed class CreateMortgageCaseRollback
     public const string BagKeyProductId = "ProductId";
     public const string BagKeyHouseholdId = "HouseholdId";
     public const string BagKeyCustomerOnSAId = "CustomerOnSAId";
-
-    private readonly IRollbackBag _bag;
-    private readonly ILogger<CreateMortgageCaseRollback> _logger;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICaseServiceClient _caseService;
-
-    public CreateMortgageCaseRollback(
-        IRollbackBag bag,
-        ILogger<CreateMortgageCaseRollback> logger,
-        ICustomerOnSAServiceClient customerOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IHouseholdServiceClient householdService,
-        ICaseServiceClient caseService)
-    {
-        _logger = logger;
-        _bag = bag;
-        _customerOnSAService = customerOnSAService;
-        _caseService = caseService;
-        _householdService = householdService;
-        _salesArrangementService = salesArrangementService;
-    }
 }

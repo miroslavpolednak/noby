@@ -5,12 +5,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, int, long, int?, Exception> _createSalesArrangementStarted;
     private static readonly Action<ILogger, int, int, Exception> _linkToModelationStarted;
     private static readonly Action<ILogger, int, int, Exception> _updateStateStarted;
-    private static readonly Action<ILogger, int, Exception> _deleteServiceSalesArrangements;
-    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobFailed;
-    private static readonly Action<ILogger, long, Exception> _cancelCaseJobFinished;
-    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobSkipped;
-    private static readonly Action<ILogger, long, int, Exception> _offerGuaranteeDateToCheckJobCancelTask;
-    private static readonly Action<ILogger, int, Exception> _offerGuaranteeDateToCheckJobFinished;
+    private static readonly Action<ILogger, long, string, Exception> _cancelNotFinishedExtraPaymentsFailed;
 
     static LoggerExtensions()
     {
@@ -29,35 +24,10 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.UpdateStateStarted, nameof(UpdateStateStarted)),
             "Update SA #{SalesArrangementId} State to {State}");
 
-        _deleteServiceSalesArrangements = LoggerMessage.Define<int>(
-            LogLevel.Information,
-            new EventId(LoggerEventIdCodes.DeleteServiceSalesArrangement, nameof(DeleteServiceSalesArrangement)),
-            "{SaForDeleteCount} SalesArrangements gonna be deleted");
-
-        _cancelCaseJobFailed = LoggerMessage.Define<long, string>(
+        _cancelNotFinishedExtraPaymentsFailed = LoggerMessage.Define<long, string>(
             LogLevel.Warning,
-            new EventId(LoggerEventIdCodes.CancelCaseJobFailed, nameof(CancelCaseJobFailed)),
-            "CancelCase job failed for CaseId '{CaseId}': {Message}");
-
-        _cancelCaseJobFinished = LoggerMessage.Define<long>(
-            LogLevel.Information,
-            new EventId(LoggerEventIdCodes.CancelCaseJobFinished, nameof(CancelCaseJobFinished)),
-            "CancelCase job finished for CaseId '{CaseId}'");
-
-        _cancelCaseJobSkipped = LoggerMessage.Define<long, string>(
-            LogLevel.Information,
-            new EventId(LoggerEventIdCodes.CancelCaseJobSkipped, nameof(CancelCaseJobSkipped)),
-            "CancelCase job skipped for CaseId '{CaseId}' due to {Reason}");
-
-        _offerGuaranteeDateToCheckJobCancelTask = LoggerMessage.Define<long, int>(
-            LogLevel.Information,
-            new EventId(LoggerEventIdCodes.OfferGuaranteeDateToCheckJobCancelTask, nameof(OfferGuaranteeDateToCheckJobCancelTask)),
-            "OfferGuaranteeDateToCheckJob is cancelled task for case {CaseId} with SB ID {TaskSbId}");
-
-        _offerGuaranteeDateToCheckJobFinished = LoggerMessage.Define<int>(
-            LogLevel.Information,
-            new EventId(LoggerEventIdCodes.OfferGuaranteeDateToCheckJobCancelTask, nameof(OfferGuaranteeDateToCheckJobFinished)),
-            "OfferGuaranteeDateToCheckJob set switch 1 to false on SalesArrangement {SalesArrangementId}");
+            new EventId(LoggerEventIdCodes.CancelNotFinishedExtraPaymentsFailed, nameof(CancelNotFinishedExtraPaymentsFailed)),
+            "CancelNotFinishedExtraPayments exception for Case #{CaseId}: {Message}");
     }
 
     public static void CreateSalesArrangementStarted(this ILogger logger, int salesArrangementTypeId, long caseId, int? offerId)
@@ -69,21 +39,6 @@ internal static class LoggerExtensions
     public static void UpdateStateStarted(this ILogger logger, int salesArrangementId, int state)
         => _updateStateStarted(logger, salesArrangementId, state, null!);
 
-    public static void DeleteServiceSalesArrangement(this ILogger logger, int SaForDeleteCount)
-        => _deleteServiceSalesArrangements(logger, SaForDeleteCount, null!);
-
-    public static void CancelCaseJobFailed(this ILogger logger, long caseId, string message, Exception ex)
-        => _cancelCaseJobFailed(logger, caseId, message, ex);
-
-    public static void CancelCaseJobFinished(this ILogger logger, long caseId)
-        => _cancelCaseJobFinished(logger, caseId, null!);
-
-    public static void CancelCaseJobSkipped(this ILogger logger, long caseId, string reason)
-        => _cancelCaseJobSkipped(logger, caseId, reason, null!);
-
-    public static void OfferGuaranteeDateToCheckJobCancelTask(this ILogger logger, long caseId, int taskSbId)
-        => _offerGuaranteeDateToCheckJobCancelTask(logger, caseId, taskSbId, null!);
-
-    public static void OfferGuaranteeDateToCheckJobFinished(this ILogger logger, int salesArrangementId)
-        => _offerGuaranteeDateToCheckJobFinished(logger, salesArrangementId, null!);
+    public static void CancelNotFinishedExtraPaymentsFailed(this ILogger logger, long caseId, string message, Exception ex)
+        => _cancelNotFinishedExtraPaymentsFailed(logger, caseId, message, ex);
 }

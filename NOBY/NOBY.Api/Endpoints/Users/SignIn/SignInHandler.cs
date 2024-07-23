@@ -6,10 +6,15 @@ using System.Security.Claims;
 
 namespace NOBY.Api.Endpoints.Users.SignIn;
 
-internal sealed class SignInHandler 
-    : IRequestHandler<SignInRequest>
+internal sealed class SignInHandler(
+    ILogger<SignInHandler> _logger,
+    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    IHttpContextAccessor _httpContext,
+    Infrastructure.Configuration.AppConfiguration _configuration,
+    IAuditLogger _auditLogger)
+        : IRequestHandler<UsersSignInRequest>
 {
-    public async Task Handle(SignInRequest request, CancellationToken cancellationToken)
+    public async Task Handle(UsersSignInRequest request, CancellationToken cancellationToken)
     {
         _auditLogger.Log(AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
@@ -47,7 +52,7 @@ internal sealed class SignInHandler
         logAuditEvent(request);
     }
 
-    private void logAuditEvent(SignInRequest request)
+    private void logAuditEvent(UsersSignInRequest request)
     {
         if (string.IsNullOrEmpty(_appVersion))
         {
@@ -65,24 +70,4 @@ internal sealed class SignInHandler
     }
 
     private static string? _appVersion;
-
-    private readonly IHttpContextAccessor _httpContext;
-    private readonly ILogger<SignInHandler> _logger;
-    private readonly IAuditLogger _auditLogger;
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly Infrastructure.Configuration.AppConfiguration _configuration;
-
-    public SignInHandler(
-        ILogger<SignInHandler> logger, 
-        DomainServices.UserService.Clients.IUserServiceClient userService, 
-        IHttpContextAccessor httpContext, 
-        Infrastructure.Configuration.AppConfiguration configuration,
-        IAuditLogger auditLogger)
-    {
-        _auditLogger = auditLogger;
-        _configuration = configuration;
-        _httpContext = httpContext;
-        _logger = logger;
-        _userService = userService;
-    }
 }

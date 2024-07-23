@@ -14,7 +14,6 @@ using NSubstitute;
 using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
-using DomainServices.DocumentOnSAService.Api.BackgroundServices.CheckDocumentsArchived;
 using CIS.Infrastructure.BackgroundServices;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.Eas.V1;
@@ -22,7 +21,7 @@ using DomainServices.ProductService.Clients;
 using ExternalServices.ESignatures.V1;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
 using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CustomerService.Clients;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.DocumentOnSAService.Api.Common;
@@ -79,13 +78,6 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         })
         .ConfigureServices(services =>
         {
-            // Disable job execution
-            services.RemoveAll<ICisBackgroundServiceConfiguration<CheckDocumentsArchivedJob>>().AddSingleton<ICisBackgroundServiceConfiguration<CheckDocumentsArchivedJob>>(new CisBackgroundServiceConfiguration<CheckDocumentsArchivedJob>
-            {
-                CronSchedule = "* * * * *",
-                Disabled = true
-            });
-
             // This mock is necessary for mock of service discovery
             services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserService>();
 

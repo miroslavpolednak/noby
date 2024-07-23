@@ -2,22 +2,15 @@
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling;
 
-internal sealed class SchedulerHostedService
+internal sealed class SchedulerHostedService(
+    TriggerService _triggerService, 
+    IScheduler _scheduler)
     : IHostedService
 {
-    private readonly IScheduler _scheduler;
-    private readonly TriggerService _triggerService;
-
-    public SchedulerHostedService(TriggerService triggerService, IScheduler scheduler)
-    {
-        _triggerService = triggerService;
-        _scheduler = scheduler;
-    }
-
     public Task StartAsync(CancellationToken cancellationToken)
     {
         // nastaveni jobu do scheduleru (z DB)
-        _triggerService.UpdateTriggersInScheduler(_scheduler, cancellationToken);
+        _triggerService.UpdateTriggersInScheduler(_scheduler);
 
         // spusteni scheduleru
         _scheduler.Start(cancellationToken);

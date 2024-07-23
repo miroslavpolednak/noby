@@ -21,3 +21,7 @@ public partial class ExecuteJobRequest
 public partial class UpdateSchedulerRequest
     : MediatR.IRequest<Empty>
 { }
+
+public partial class GetJobStatusesRequest
+    : MediatR.IRequest<GetJobStatusesResponse>, CIS.Core.Validation.IValidatableRequest
+{ }

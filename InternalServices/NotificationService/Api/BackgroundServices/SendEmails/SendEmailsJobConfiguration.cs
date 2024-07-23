@@ -2,7 +2,7 @@
 
 namespace CIS.InternalServices.NotificationService.Api.BackgroundServices.SendEmails;
 
-public sealed class SendEmailsJobConfiguration
+internal sealed class SendEmailsJobConfiguration
 {
     public int NumberOfEmailsAtOnce { get; set; }
 
@@ -11,7 +11,7 @@ public sealed class SendEmailsJobConfiguration
     public SmtpConfiguration SmtpConfiguration { get; set; } = default!;
 }
 
-public class SmtpConfiguration
+internal sealed class SmtpConfiguration
 {
     public string Host { get; set; } = default!;
 

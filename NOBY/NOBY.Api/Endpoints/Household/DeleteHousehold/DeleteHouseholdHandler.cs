@@ -1,5 +1,4 @@
-﻿using SharedTypes.Enums;
-using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
@@ -35,7 +34,7 @@ internal sealed class DeleteHouseholdHandler
 
         var partnerId = customer
             .CustomerIdentifiers
-            .FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
+            .GetMpIdentityOrDefault()
             ?.IdentityId;
 
         if (partnerId.HasValue)

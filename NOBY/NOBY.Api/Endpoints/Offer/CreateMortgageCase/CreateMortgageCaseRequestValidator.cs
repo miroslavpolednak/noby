@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
 
 internal sealed class CreateMortgageCaseRequestValidator
-    : AbstractValidator<CreateMortgageCaseRequest>
+    : AbstractValidator<OfferCreateMortgageCaseRequest>
 {
     public CreateMortgageCaseRequestValidator()
     {
