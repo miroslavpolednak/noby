@@ -37,7 +37,7 @@ internal sealed class LoggingKnownMessagesMiddleware : IMessageMiddleware
         {
             var messageData = JsonSerializer.Serialize(context.Message.Value, _jsonSerializerOptions);
 
-            loggerData.Add("Message", messageData);
+            loggerData.Add("Payload", messageData);
         }
 
         using (_logger.BeginScope(loggerData))
