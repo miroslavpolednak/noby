@@ -3,7 +3,6 @@ using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using NOBY.Dto.RealEstateValuation;
 using RealEstateValuationDetail = DomainServices.RealEstateValuationService.Contracts.RealEstateValuationDetail;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationTypes;

@@ -3,8 +3,8 @@ using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using NOBY.ApiContracts;
 using NOBY.Infrastructure.ErrorHandling;
-using SharedTypes.Enums;
 
 namespace NOBY.Services.MortgageRefinancing;
 
@@ -13,21 +13,21 @@ public sealed class MortgageRefinancingDataService(
     ICodebookServiceClient _codebookService,
     ICaseServiceClient _caseService,
     ISalesArrangementServiceClient _salesArrangementService,
-    WorkflowMapper.IWorkflowMapperServiceOld _workflowMapper)
+    WorkflowMapper.IWorkflowMapperService _workflowMapper)
 {
-    public async Task<Dto.Refinancing.RefinancingDocument> CreateSigningDocument(GetRefinancingDataResult result, RefinancingTypes refinancingType, int? eaCode, string? documentId)
+    public async Task<RefinancingSharedDocument> CreateSigningDocument(GetRefinancingDataResult result, EnumRefinancingTypes refinancingType, int? eaCode, string? documentId)
     {
         // aktivni podepisovaci task
         var activeSigningTask = result.Tasks?.FirstOrDefault(t => t.TaskTypeId == (int)WorkflowTaskTypes.Signing && !t.Cancelled);
 
-        var response = new Dto.Refinancing.RefinancingDocument
+        var response = new RefinancingSharedDocument
         {
             DocumentId = documentId,
-            IsContinueEnabled = refinancingType == RefinancingTypes.MortgageRetention || (refinancingType == RefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
+            IsContinueEnabled = refinancingType == EnumRefinancingTypes.MortgageRetention || (refinancingType == EnumRefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
             DocumentName = await getSigningDocumentName(refinancingType, eaCode),
             SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId ?? result.SalesArrangement?.Refixation?.SignatureTypeDetailId,
-            IsGenerateDocumentEnabled = (refinancingType == RefinancingTypes.MortgageRefixation || result.SalesArrangement?.OfferId is not null)
-                                        && result.RefinancingState == RefinancingStates.RozpracovanoVNoby
+            IsGenerateDocumentEnabled = (refinancingType == EnumRefinancingTypes.MortgageRefixation || result.SalesArrangement?.OfferId is not null)
+                                        && result.RefinancingState == EnumRefinancingStates.RozpracovanoVNoby
                                         && (result.ActivePriceException is null || result.IsActivePriceExceptionCompleted)
         };
 
@@ -46,11 +46,11 @@ public sealed class MortgageRefinancingDataService(
         return response;
     }
 
-    public async Task<GetRefinancingDataResult> GetRefinancingData(long caseId, long? processId, RefinancingTypes refinancingType, CancellationToken cancellationToken)
+    public async Task<GetRefinancingDataResult> GetRefinancingData(long caseId, long? processId, EnumRefinancingTypes refinancingType, CancellationToken cancellationToken)
     {
         GetRefinancingDataResult result = new()
         {
-            RefinancingState = RefinancingStates.Unknown
+            RefinancingState = EnumRefinancingStates.Unknown
         };
 
         var processes = await _caseService.GetProcessList(caseId, cancellationToken);
@@ -77,11 +77,11 @@ public sealed class MortgageRefinancingDataService(
             var (salesArrangement, refinancingState) = await getRefinancingStateId(caseId, result.Process, cancellationToken);
 
             // validace stavu refinancovani
-            if (refinancingType == RefinancingTypes.MortgageExtraPayment && refinancingState is not (RefinancingStates.RozpracovanoVNoby or RefinancingStates.Dokonceno or RefinancingStates.Zruseno))
+            if (refinancingType == EnumRefinancingTypes.MortgageExtraPayment && refinancingState is not (EnumRefinancingStates.RozpracovanoVNoby or EnumRefinancingStates.Dokonceno or EnumRefinancingStates.Zruseno))
             {
                 throw new NobyValidationException(90032);
             }
-            else if (refinancingType != RefinancingTypes.MortgageExtraPayment && refinancingState is (RefinancingStates.Zruseno or RefinancingStates.Dokonceno))
+            else if (refinancingType != EnumRefinancingTypes.MortgageExtraPayment && refinancingState is (EnumRefinancingStates.Zruseno or EnumRefinancingStates.Dokonceno))
             {
                 throw new NobyValidationException(90032, $"RefinancingState is not allowed: {refinancingState}");
             }
@@ -119,7 +119,7 @@ public sealed class MortgageRefinancingDataService(
         return result.priceException;
     }
 
-    private async Task<string> getSigningDocumentName(RefinancingTypes refinancingType, int? eaCode)
+    private async Task<string> getSigningDocumentName(EnumRefinancingTypes refinancingType, int? eaCode)
     {
         var code = (await _codebookService.EaCodesMain()).FirstOrDefault(t => t.Id == eaCode);
         if (code is not null)
@@ -148,16 +148,16 @@ public sealed class MortgageRefinancingDataService(
 
     }
 
-    private static ProcessTask.AmendmentsOneofCase getRequiredAmendmentCase(RefinancingTypes refinancingType)
+    private static ProcessTask.AmendmentsOneofCase getRequiredAmendmentCase(EnumRefinancingTypes refinancingType)
         => refinancingType switch
         {
-            RefinancingTypes.MortgageRetention => ProcessTask.AmendmentsOneofCase.MortgageRetention,
-            RefinancingTypes.MortgageRefixation => ProcessTask.AmendmentsOneofCase.MortgageRefixation,
-            RefinancingTypes.MortgageExtraPayment => ProcessTask.AmendmentsOneofCase.MortgageExtraPayment,
+            EnumRefinancingTypes.MortgageRetention => ProcessTask.AmendmentsOneofCase.MortgageRetention,
+            EnumRefinancingTypes.MortgageRefixation => ProcessTask.AmendmentsOneofCase.MortgageRefixation,
+            EnumRefinancingTypes.MortgageExtraPayment => ProcessTask.AmendmentsOneofCase.MortgageExtraPayment,
             _ => throw new NotImplementedException()
         };
 
-    private async Task<(DomainServices.SalesArrangementService.Contracts.SalesArrangement? salesArrangement, RefinancingStates RefinancingState)> getRefinancingStateId(long caseId, ProcessTask process, CancellationToken cancellationToken)
+    private async Task<(DomainServices.SalesArrangementService.Contracts.SalesArrangement? salesArrangement, EnumRefinancingStates RefinancingState)> getRefinancingStateId(long caseId, ProcessTask process, CancellationToken cancellationToken)
     {
         DomainServices.SalesArrangementService.Contracts.SalesArrangement? currentProcessSADetail = null;
         var allSalesArrangements = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);

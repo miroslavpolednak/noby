@@ -1,6 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.RealEstateValuationService.Clients;
-using NOBY.Dto.RealEstateValuation;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;

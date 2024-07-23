@@ -29,6 +29,1003 @@ namespace NOBY.ApiContracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetRefinancingParametersResponse
+    {
+        /// <summary>
+        /// True, pokud existuje rozpracovaná relevantní žádost
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isAnotherSalesArrangementInProgress")]
+        public bool IsAnotherSalesArrangementInProgress { get; set; } = default!;
+
+        /// <summary>
+        /// Cenová citlivost klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerPriceSensitivity")]
+        public decimal? CustomerPriceSensitivity { get; set; } = default!;
+
+        /// <summary>
+        /// Riziko odchodovosti klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerChurnRisk")]
+        public decimal? CustomerChurnRisk { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingParametersCurrent")]
+        public RefinancingGetRefinancingParametersCurrent RefinancingParametersCurrent { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingParametersFuture")]
+        public RefinancingGetRefinancingParametersFuture RefinancingParametersFuture { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingProcesses")]
+        public List<RefinancingGetRefinancingParametersProcess> RefinancingProcesses { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetRefinancingParametersCurrent
+    {
+        /// <summary>
+        /// Výše úvěru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+        public decimal? LoanAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Aktuální zůstatek jistiny
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("principal")]
+        public decimal? Principal { get; set; } = default!;
+
+        /// <summary>
+        /// Datum splatnosti - předpoklad/skutečnost
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanDueDate")]
+        public DateOnly? LoanDueDate { get; set; } = default!;
+
+        /// <summary>
+        /// Aktuální úroková sazba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRate")]
+        public decimal? LoanInterestRate { get; set; } = default!;
+
+        /// <summary>
+        /// Délka fixace úrokové sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRatePeriod")]
+        public int? FixedRatePeriod { get; set; } = default!;
+
+        /// <summary>
+        /// Výše měsíční splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        public decimal? LoanPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost úrokové sazby od (spočítaná jako fixedRateValidTo mínus fixedRatePeriod)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRateValidFrom")]
+        public DateOnly? FixedRateValidFrom { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost úrokové sazby do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRateValidTo")]
+        public DateOnly? FixedRateValidTo { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetRefinancingParametersFuture
+    {
+        /// <summary>
+        /// Aktuální úroková sazba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRate")]
+        public decimal? LoanInterestRate { get; set; } = default!;
+
+        /// <summary>
+        /// Délka fixace úrokové sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRatePeriod")]
+        public int? FixedRatePeriod { get; set; } = default!;
+
+        /// <summary>
+        /// Výše měsíční splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        public decimal? LoanPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost úrokové sazby od
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRateValidFrom")]
+        public DateOnly? FixedRateValidFrom { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost úrokové sazby do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRateValidTo")]
+        public DateOnly? FixedRateValidTo { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetRefinancingParametersProcess
+    {
+        /// <summary>
+        /// SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int? SalesArrangementId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("processDetail")]
+        public RefinancingGetRefinancingParametersProcessDetail ProcessDetail { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetRefinancingParametersProcessDetail
+    {
+        /// <summary>
+        /// Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("processId")]
+        public long ProcessId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingTypeId")]
+        public EnumRefinancingTypes RefinancingTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Vracíme textaci specifickou podle typu dodatku. Pro jeden refinancingTypeId se tedy může vrátit 1 z n různých textací.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingTypeText")]
+        public string? RefinancingTypeText { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingStateId")]
+        public EnumRefinancingStates RefinancingStateId { get; set; } = default!;
+
+        /// <summary>
+        /// Datum vzniku proces
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        public DateOnly CreatedOn { get; set; } = default!;
+
+        /// <summary>
+        /// Úroková sazba poskytnutá (včetně slevy)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRateProvided")]
+        public decimal? LoanInterestRateProvided { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost nové úrokové sazby od
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRateValidFrom")]
+        public DateOnly? LoanInterestRateValidFrom { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost nové úrokové sazby do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRateValidTo")]
+        public DateOnly? LoanInterestRateValidTo { get; set; } = default!;
+
+        /// <summary>
+        /// Datum účinnosti (kdy byl požadavek podepsán a finalizován ve SB)
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("effectiveDate")]
+        public DateOnly? EffectiveDate { get; set; } = default!;
+
+        /// <summary>
+        /// Slouží k náhledu na dokumenty
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentId")]
+        public string? DocumentId { get; set; } = default!;
+
+        /// <summary>
+        /// Název stavu procesu Refinancí
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingStateName")]
+        public string RefinancingStateName { get; set; } = default!;
+
+        /// <summary>
+        /// Indikátor barvy stavu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingStateIndicator")]
+        public int RefinancingStateIndicator { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingUpdateMortgageRefixationRequest
+    {
+        /// <summary>
+        /// Komentář k Cenové výjimce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("individualPriceCommentLastVersion")]
+        public string? IndividualPriceCommentLastVersion { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář k refixaci
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("comment")]
+        public string? Comment { get; set; } = default!;
+
+        /// <summary>
+        /// Sleva ze sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscount")]
+        public decimal InterestRateDiscount { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetMortgageExtraPaymentListResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("processId")]
+        public long ProcessId { get; set; } = default!;
+
+        /// <summary>
+        /// ID SA pokud existuje
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int? SalesArrangementId { get; set; } = default!;
+
+        /// <summary>
+        /// datum vytvoření
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        public System.DateTime CreatedOn { get; set; } = default!;
+
+        /// <summary>
+        /// Způsob splacení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isExtraPaymentFullyRepaid")]
+        public bool IsExtraPaymentFullyRepaid { get; set; } = default!;
+
+        /// <summary>
+        /// Výše splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("extraPaymentAmount")]
+        public decimal? ExtraPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Výše splacené jistiny
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("principalAmount")]
+        public decimal? PrincipalAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Datum splátky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("extraPaymentDate")]
+        public DateOnly ExtraPaymentDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingStateId")]
+        public EnumRefinancingStates RefinancingStateId { get; set; } = default!;
+
+        /// <summary>
+        /// Uhrazeno; 0 - Unknown; 1 - Uhrazeno; 2 - Neuhrazeno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("paymentState")]
+        public int PaymentState { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateIndicator")]
+        public EnumStateIndicators StateIndicator { get; set; } = default!;
+
+        /// <summary>
+        /// Název stavu procesu Refinancí
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        public string? StateName { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetMortgageRetentionResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int? SalesArrangementId { get; set; } = default!;
+
+        /// <summary>
+        /// Informace zda se jedná o readonly režim
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isReadOnly")]
+        public bool IsReadOnly { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář k IC
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("individualPriceCommentLastVersion")]
+        public string? IndividualPriceCommentLastVersion { get; set; } = default!;
+
+        /// <summary>
+        /// Všechny workflow úkoly pro daný proces retence
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("tasks")]
+        public List<SharedTypesWorkflowTask>? Tasks { get; set; } = default!;
+
+        /// <summary>
+        /// Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("containsInconsistentIndividualPriceData")]
+        public bool ContainsInconsistentIndividualPriceData { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingStateId")]
+        public EnumRefinancingStates RefinancingStateId { get; set; } = default!;
+
+        /// <summary>
+        /// Existuje workflow úkol cenové vyjímky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isPriceExceptionActive")]
+        public bool IsPriceExceptionActive { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("comment")]
+        public string? Comment { get; set; } = default!;
+
+        /// <summary>
+        /// Seznam odpovědních kódů
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("responseCodes")]
+        public List<RefinancingSharedResponseCode>? ResponseCodes { get; set; } = default!;
+
+        /// <summary>
+        /// Výše poplatku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("feeAmount")]
+        public decimal FeeAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Upravená výše poplatku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("feeAmountDiscounted")]
+        public decimal? FeeAmountDiscounted { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost nové úrokové sazby od.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateValidFrom")]
+        public System.DateTime InterestRateValidFrom { get; set; } = default!;
+
+        /// <summary>
+        /// Úroková sazba
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
+        public decimal InterestRate { get; set; } = default!;
+
+        /// <summary>
+        /// Sleva ze sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscount")]
+        public decimal? InterestRateDiscount { get; set; } = default!;
+
+        /// <summary>
+        /// Sleva ze sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscounted")]
+        public decimal? InterestRateDiscounted { get; set; } = default!;
+
+        /// <summary>
+        /// Výše měsíční splátky.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        public decimal LoanPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Výše měsíční splátky se zohledněním IC.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmountDiscounted")]
+        public decimal? LoanPaymentAmountDiscounted { get; set; } = default!;
+
+        /// <summary>
+        /// Dokumentu refinancování
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("document")]
+        public RefinancingSharedDocument Document { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetMortgageRefixationResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int? SalesArrangementId { get; set; } = default!;
+
+        /// <summary>
+        /// Informace zda se jedná o readonly režim
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isReadOnly")]
+        public bool IsReadOnly { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář k IC
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("individualPriceCommentLastVersion")]
+        public string? IndividualPriceCommentLastVersion { get; set; } = default!;
+
+        /// <summary>
+        /// Všechny workflow úkoly pro daný proces retence
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("tasks")]
+        public List<SharedTypesWorkflowTask>? Tasks { get; set; } = default!;
+
+        /// <summary>
+        /// Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("containsInconsistentIndividualPriceData")]
+        public bool ContainsInconsistentIndividualPriceData { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingStateId")]
+        public EnumRefinancingStates RefinancingStateId { get; set; } = default!;
+
+        /// <summary>
+        /// Existuje workflow úkol cenové vyjímky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isPriceExceptionActive")]
+        public bool IsPriceExceptionActive { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("comment")]
+        public string? Comment { get; set; } = default!;
+
+        /// <summary>
+        /// Seznam odpovědních kódů
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("responseCodes")]
+        public List<RefinancingSharedResponseCode>? ResponseCodes { get; set; } = default!;
+
+        /// <summary>
+        /// Seznam nabídek pro daný proces
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("offers")]
+        public List<RefinancingGetMortgageRefixationOfferDetail>? Offers { get; set; } = default!;
+
+        /// <summary>
+        /// Sleva sazby z IC
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscount")]
+        public decimal? InterestRateDiscount { get; set; } = default!;
+
+        /// <summary>
+        /// Datum platnosti sdělených nabídek
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("communicatedOffersValidTo")]
+        public DateOnly? CommunicatedOffersValidTo { get; set; } = default!;
+
+        /// <summary>
+        /// Datum odeslání zákonných oznámení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("legalNoticeGeneratedDate")]
+        public DateOnly? LegalNoticeGeneratedDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("document")]
+        public RefinancingSharedDocument Document { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetMortgageRefixationOfferDetail
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("offerId")]
+        public int OfferId { get; set; } = default!;
+
+        /// <summary>
+        /// Platnost nabídky do
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("validTo")]
+        public DateOnly? ValidTo { get; set; } = default!;
+
+        /// <summary>
+        /// Jedná se o zákonné sdělení
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isLegalNotice")]
+        public bool IsLegalNotice { get; set; } = default!;
+
+        /// <summary>
+        /// Jedná se o Aktuální nabídku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isCurrent")]
+        public bool IsCurrent { get; set; } = default!;
+
+        /// <summary>
+        /// Jedná se o sdělenou nabídku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isCommunicated")]
+        public bool IsCommunicated { get; set; } = default!;
+
+        /// <summary>
+        /// Jedná se o likovanou nabídku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isLiked")]
+        public bool IsLiked { get; set; } = default!;
+
+        /// <summary>
+        /// Jedná se o zvolenou nabídku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSelected")]
+        public bool IsSelected { get; set; } = default!;
+
+        /// <summary>
+        /// Jedná se o výchozí nabídku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isLegalNoticeDefault")]
+        public bool IsLegalNoticeDefault { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("fixedRatePeriod")]
+        public int FixedRatePeriod { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
+        public decimal InterestRate { get; set; } = default!;
+
+        /// <summary>
+        /// Sleva ze sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscount")]
+        public decimal? InterestRateDiscount { get; set; } = default!;
+
+        /// <summary>
+        /// Sleva ze sazby
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscounted")]
+        public decimal? InterestRateDiscounted { get; set; } = default!;
+
+        /// <summary>
+        /// Výše měsíční splátky.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmount")]
+        public decimal LoanPaymentAmount { get; set; } = default!;
+
+        /// <summary>
+        /// Výše měsíční splátky se zohledněním IC.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanPaymentAmountDiscounted")]
+        public decimal? LoanPaymentAmountDiscounted { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingSharedResponseCode
+    {
+        /// <summary>
+        /// ID instance response kódu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public int Id { get; set; } = default!;
+
+        /// <summary>
+        /// Typ response kodu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("responseCodeTypeId")]
+        public int? ResponseCodeTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dataDateTime")]
+        public System.DateTime? DataDateTime { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dataBankCode")]
+        public string? DataBankCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dataString")]
+        public string? DataString { get; set; } = default!;
+
+        /// <summary>
+        /// Čas vytvoření response kódu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        public System.DateTime CreatedTime { get; set; } = default!;
+
+        /// <summary>
+        /// Kdo vytvořil response kód
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdBy")]
+        public string CreatedBy { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetMortgageExtraPaymentResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int? SalesArrangementId { get; set; } = default!;
+
+        /// <summary>
+        /// Informace zda se jedná o readonly režim
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isReadOnly")]
+        public bool IsReadOnly { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář k IC
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("individualPriceCommentLastVersion")]
+        public string? IndividualPriceCommentLastVersion { get; set; } = default!;
+
+        /// <summary>
+        /// Všechny workflow úkoly pro daný proces retence
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("tasks")]
+        public List<SharedTypesWorkflowTask>? Tasks { get; set; } = default!;
+
+        /// <summary>
+        /// Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("containsInconsistentIndividualPriceData")]
+        public bool ContainsInconsistentIndividualPriceData { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("refinancingStateId")]
+        public EnumRefinancingStates RefinancingStateId { get; set; } = default!;
+
+        /// <summary>
+        /// Existuje workflow úkol cenové vyjímky
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isPriceExceptionActive")]
+        public bool IsPriceExceptionActive { get; set; } = default!;
+
+        /// <summary>
+        /// Dokumentu refinancování
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("document")]
+        public RefinancingSharedDocument Document { get; set; } = default!;
+
+        /// <summary>
+        /// Souhlasy
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("agreements")]
+        public List<RefinancingGetMortgageExtraPaymentResponseAgreementDocument>? Agreements { get; set; } = default!;
+
+        /// <summary>
+        /// Způsob předání dokumentů
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("handover")]
+        public RefinancingGetMortgageExtraPaymentResponseHandoverObject? Handover { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("extraPaymentAmount")]
+        public decimal ExtraPaymentAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("extraPaymentAmountIncludingFee")]
+        [System.Obsolete]
+        public decimal ExtraPaymentAmountIncludingFee { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("principalAmount")]
+        public decimal PrincipalAmount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("extraPaymentDate")]
+        public DateOnly ExtraPaymentDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("isExtraPaymentFullyRepaid")]
+        public bool IsExtraPaymentFullyRepaid { get; set; } = default!;
+
+        /// <summary>
+        /// Upravená výše poplatku
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("feeAmountDiscount")]
+        public decimal? FeeAmountDiscount { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("simulationResults")]
+        public OfferSharedExtraPaymentSimulationResult? SimulationResults { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetMortgageExtraPaymentResponseHandoverObject
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("handoverTypeDetailId")]
+        public int HandoverTypeDetailId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string FirstName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string LastName { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetMortgageExtraPaymentResponseAgreementDocument
+    {
+        /// <summary>
+        /// eArchiv ID dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentId")]
+        public string DocumentId { get; set; } = default!;
+
+        /// <summary>
+        /// EA kód dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentEACode")]
+        public int DocumentEACode { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingSharedDocument
+    {
+        /// <summary>
+        /// Noby task ID. Jde o ID sady úkolů generované Starbuildem.&lt;br /&gt;zafiltrovat seznam tasku na taskTypeId = 6 a neni cancelled
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("taskId")]
+        public long? TaskId { get; set; } = default!;
+
+        /// <summary>
+        /// True pokud je k dispozici tlacitko Pokracovat
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isContinueEnabled")]
+        public bool IsContinueEnabled { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentName")]
+        public string DocumentName { get; set; } = default!;
+
+        /// <summary>
+        /// Název Noby stavu úkolu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        public string StateName { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateFilter")]
+        public EnumWorkflowTaskStateFilters StateFilter { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateIndicator")]
+        public EnumStateIndicators StateIndicator { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureTypeDetailId")]
+        public int? SignatureTypeDetailId { get; set; } = default!;
+
+        /// <summary>
+        /// ID dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("documentId")]
+        public string? DocumentId { get; set; } = default!;
+
+        /// <summary>
+        /// Označuje zda má být aktivní button Generovat dokument
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isGenerateDocumentEnabled")]
+        public bool IsGenerateDocumentEnabled { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetInterestRatesValidFromResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRatesValidFrom")]
+        public List<RefinancingGetInterestRatesValidFromResponseItem>? InterestRatesValidFrom { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetInterestRatesValidFromResponseItem
+    {
+        /// <summary>
+        /// Platnost nové úrokové sazby od (nabízená hodnota).
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("interestRateValidFrom")]
+        public DateOnly InterestRateValidFrom { get; set; } = default!;
+
+        /// <summary>
+        /// Indikuje defaultní volbu pro výběr na FE.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isDefault")]
+        public bool IsDefault { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetInterestRateResponse
+    {
+        /// <summary>
+        /// Aktuální úroková sazba.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanInterestRateCurrent")]
+        public decimal? LoanInterestRateCurrent { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGetAvailableFixedRatePeriodsResponse
+    {
+        /// <summary>
+        /// Dostupné délky fixace pro daný Case v měsících
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("availableFixedRatePeriods")]
+        public List<int>? AvailableFixedRatePeriods { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGenerateRetentionDocumentRequest
+    {
+        /// <summary>
+        /// Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureTypeDetailId")]
+        public int SignatureTypeDetailId { get; set; } = default!;
+
+        /// <summary>
+        /// Nejzazší datum podpisu dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureDeadline")]
+        public System.DateTime? SignatureDeadline { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGenerateRefixationDocumentRequest
+    {
+        /// <summary>
+        /// Typ dokumentu, který se má vygenerovat pro refixace. Číselník &lt;a href="https://wiki.kb.cz/display/HT/RefixationDocumentType"&gt;RefixationDocumentTypes&lt;/a&gt;
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("refixationDocumentTypeId")]
+        public int RefixationDocumentTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureTypeDetailId")]
+        public int SignatureTypeDetailId { get; set; } = default!;
+
+        /// <summary>
+        /// Nejzazší datum podpisu dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("signatureDeadline")]
+        public DateOnly? SignatureDeadline { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingGenerateExtraPaymentDocumentRequest
+    {
+        /// <summary>
+        /// Způsoby předání podle číselníku &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=857276813"&gt;HandoverTypeDetail (SB CalculationDocuments Service enum).&lt;/a&gt;
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("handoverTypeDetailId")]
+        public int HandoverTypeDetailId { get; set; } = default!;
+
+        /// <summary>
+        /// KBID klienta, kterému se bude předávat vygenerovaný dokument vyčíslení (a případné vygenerované dokumenty souhlasů)).
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("clientKbId")]
+        public long? ClientKbId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingCreateMortgageResponseCodeRequest
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("responseCodeTypeId")]
+        public int ResponseCodeTypeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dataDateTime")]
+        public System.DateTime? DataDateTime { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dataBankCode")]
+        public string? DataBankCode { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("dataString")]
+        public string? DataString { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class RefinancingSharedOfferLinkResult
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int SalesArrangementId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("processId")]
+        public long? ProcessId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class OfferSimulateMortgageRetentionResponse
     {
         /// <summary>
@@ -7975,12 +8972,6 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("stateName")]
         public string StateName { get; set; } = default!;
-
-        /// <summary>
-        /// Filter Noby stavu úkolu
-        /// <br/>
-        /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;0 - Unknown&lt;/li&gt;&lt;li&gt;1 - Active&lt;/li&gt;&lt;li&gt;2 - Finished&lt;/li&gt;&lt;/ul&gt;
-        /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateFilter")]
         public EnumWorkflowTaskStateFilters StateFilter { get; set; } = default!;

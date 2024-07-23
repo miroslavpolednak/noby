@@ -1,4 +1,4 @@
-﻿namespace NOBY.Dto.RealEstateValuation;
+﻿namespace SharedTypes.Enums;
 
 public enum RealEstateVariants
 {

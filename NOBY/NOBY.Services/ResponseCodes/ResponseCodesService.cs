@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.ResponseCodes;
 
@@ -10,7 +11,7 @@ public sealed class ResponseCodesService(
     IOfferServiceClient _offerService, 
     ICodebookServiceClient _codebookService)
 {
-    public async Task<List<Dto.Refinancing.RefinancingResponseCode>> GetMortgageResponseCodes(long caseId, OfferTypes offerType, CancellationToken cancellationToken)
+    public async Task<List<RefinancingSharedResponseCode>> GetMortgageResponseCodes(long caseId, OfferTypes offerType, CancellationToken cancellationToken)
     {
         // uplne vsechny response kody
         var allCodes = (await _offerService.GetResponseCodeList(caseId, cancellationToken))
@@ -28,7 +29,7 @@ public sealed class ResponseCodesService(
             {
                 var cb = availableCodes.First(x => x.Id == t.ResponseCodeTypeId);
 
-                var item = new Dto.Refinancing.RefinancingResponseCode
+                var item = new RefinancingSharedResponseCode
                 {
                     Id = t.ResponseCodeId,
                     CreatedTime = t.Created.DateTime,

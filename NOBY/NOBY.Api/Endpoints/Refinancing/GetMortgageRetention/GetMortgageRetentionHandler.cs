@@ -8,19 +8,19 @@ internal sealed class GetMortgageRetentionHandler(
     IOfferServiceClient _offerService,
     Services.ResponseCodes.ResponseCodesService _responseCodes,
     MortgageRefinancingDataService _refinancingDataService)
-        : IRequestHandler<GetMortgageRetentionRequest, GetMortgageRetentionResponse>
+        : IRequestHandler<GetMortgageRetentionRequest, RefinancingGetMortgageRetentionResponse>
 {
-    public async Task<GetMortgageRetentionResponse> Handle(GetMortgageRetentionRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingGetMortgageRetentionResponse> Handle(GetMortgageRetentionRequest request, CancellationToken cancellationToken)
     {
         // sesbirat vsechna potrebna data
-        var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageRetention, cancellationToken);
+        var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, EnumRefinancingTypes.MortgageRetention, cancellationToken);
 
         // vytvorit a naplnit zaklad response modelu
-        var response = data.UpdateBaseResponseModel(new GetMortgageRetentionResponse());
+        var response = data.UpdateBaseResponseModel(new RefinancingGetMortgageRetentionResponse());
 
         // retention specific data
         response.ResponseCodes = await _responseCodes.GetMortgageResponseCodes(request.CaseId, OfferTypes.MortgageRetention, cancellationToken);
-        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageRetention, data.Process?.MortgageRetention?.DocumentEACode, data.Process?.MortgageRetention?.DocumentId);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data, EnumRefinancingTypes.MortgageRetention, data.Process?.MortgageRetention?.DocumentEACode, data.Process?.MortgageRetention?.DocumentId);
         response.IndividualPriceCommentLastVersion = data.SalesArrangement?.Retention?.IndividualPriceCommentLastVersion;
         response.Comment = data.SalesArrangement?.Retention?.Comment;
         response.InterestRate = (decimal?)data.Process!.MortgageRetention.LoanInterestRate ?? 0M;
@@ -61,7 +61,7 @@ internal sealed class GetMortgageRetentionHandler(
         return response;
     }
 
-    private static bool getContainsInconsistentIndividualPriceData(GetOfferResponse offerInstance, GetMortgageRetentionResponse response)
+    private static bool getContainsInconsistentIndividualPriceData(GetOfferResponse offerInstance, RefinancingGetMortgageRetentionResponse response)
     {
         return offerInstance.MortgageRetention.SimulationInputs.InterestRateDiscount != response.InterestRateDiscount
                 || offerInstance.MortgageRetention.SimulationInputs.InterestRate != response.InterestRate

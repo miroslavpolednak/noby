@@ -7,8 +7,7 @@ using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList;
-using NOBY.Dto.Refinancing;
-using NOBY.Infrastructure.Swagger;
+
 
 namespace NOBY.Api.Endpoints.Refinancing;
 
@@ -28,10 +27,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(List<GetMortgageExtraPaymentListResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<RefinancingGetMortgageExtraPaymentListResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DFD62AED-36C2-49f0-A8A4-A245657D5A4C")]
-    public async Task<List<GetMortgageExtraPaymentListResponse>> GetMortgageExtraPaymentList([FromRoute] long caseId)
+    public async Task<List<RefinancingGetMortgageExtraPaymentListResponse>> GetMortgageExtraPaymentList([FromRoute] long caseId)
         => await _mediator.Send(new GetMortgageExtraPaymentListRequest(caseId));
 
 	/// <summary>
@@ -45,10 +44,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetAvailableFixedRatePeriodsResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingGetAvailableFixedRatePeriodsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD")]
-    public async Task<GetAvailableFixedRatePeriodsResponse> GetAvailableFixedRatePeriods([FromRoute] long caseId)
+    public async Task<RefinancingGetAvailableFixedRatePeriodsResponse> GetAvailableFixedRatePeriods([FromRoute] long caseId)
         => await _mediator.Send(new GetAvailableFixedRatePeriodsRequest(caseId));
 
 	/// <summary>
@@ -65,9 +64,9 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8251FF4A-E3C6-46c8-883E-D70C884A859D")]
-    public async Task<IActionResult> CreateMortgageResponseCode([FromRoute] long caseId, [FromBody] CreateMortgageResponseCode.CreateMortgageResponseCodeRequest? request)
+    public async Task<IActionResult> CreateMortgageResponseCode([FromRoute] long caseId, [FromBody] RefinancingCreateMortgageResponseCodeRequest? request)
     {
-        await _mediator.Send((request ?? new CreateMortgageResponseCode.CreateMortgageResponseCodeRequest()).InfuseId(caseId));
+        await _mediator.Send((request ?? new()).InfuseId(caseId));
         return NoContent();
     }
 
@@ -83,10 +82,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(RefinancingLinkResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingSharedOfferLinkResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D2F4DD7B-54B9-4c86-BEE0-8673DBBDE5DB")]
-    public async Task<RefinancingLinkResult> UpdateMortgageRefixation([FromRoute] long caseId, [FromBody] UpdateMortgageRefixationRequest? request)
+    public async Task<RefinancingSharedOfferLinkResult> UpdateMortgageRefixation([FromRoute] long caseId, [FromBody] RefinancingUpdateMortgageRefixationRequest? request)
         => await _mediator.Send((request ?? new()).InfuseId(caseId));
 
     /// <summary>
@@ -100,10 +99,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingGetMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=87469E98-536F-47b6-853F-077E5BC7FF4A")]
-    public async Task<GetMortgageExtraPaymentResponse> GetMortgageExtraPayment([FromRoute] long caseId, [FromRoute] long processId)
+    public async Task<RefinancingGetMortgageExtraPaymentResponse> GetMortgageExtraPayment([FromRoute] long caseId, [FromRoute] long processId)
         => await _mediator.Send(new GetMortgageExtraPaymentRequest(caseId, processId));
 
     /// <summary>
@@ -117,11 +116,11 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetMortgageRefixationResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingGetMortgageRefixationResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerConfluenceLink("https://wiki.kb.cz/display/HT/Refixace")]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=1EF978B1-265D-40d0-8B1C-B0E07D9D8031")]
-    public async Task<GetMortgageRefixationResponse> GetMortgageRefixation([FromRoute] long caseId, [FromQuery] long? processId = null)
+    public async Task<RefinancingGetMortgageRefixationResponse> GetMortgageRefixation([FromRoute] long caseId, [FromQuery] long? processId = null)
         => await _mediator.Send(new GetMortgageRefixationRequest(caseId, processId));
 
     /// <summary>
@@ -135,10 +134,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetMortgageRetentionResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingGetMortgageRetentionResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=E0F5C17D-A6F5-4713-93DC-73E06D98AD09")]
-    public async Task<GetMortgageRetentionResponse> GetMortgageRetention([FromRoute] long caseId, [FromRoute] long processId)
+    public async Task<RefinancingGetMortgageRetentionResponse> GetMortgageRetention([FromRoute] long caseId, [FromRoute] long processId)
         => await _mediator.Send(new GetMortgageRetentionRequest(caseId, processId));
 
     /// <summary>
@@ -153,10 +152,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Refinancing"])]
-    [ProducesResponseType(typeof(GetRefinancingParametersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingGetRefinancingParametersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EBF744FA-9F0F-421e-89F8-CFFFAEC76BB1")]
-    public async Task<GetRefinancingParametersResponse> GetRefinancingParameters([FromRoute] long caseId)
+    public async Task<RefinancingGetRefinancingParametersResponse> GetRefinancingParameters([FromRoute] long caseId)
         => await _mediator.Send(new GetRefinancingParametersRequest(caseId));
 
     /// <summary>
@@ -169,10 +168,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
-    [ProducesResponseType(typeof(GetInterestRatesValidFrom.GetInterestRatesValidFromResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingGetInterestRatesValidFromResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=138F1225-E4D6-4a7c-B316-882C35CE2C74")]
-    public async Task<GetInterestRatesValidFrom.GetInterestRatesValidFromResponse> GetInterestRatesValidFrom([FromRoute] long caseId)
+    public async Task<RefinancingGetInterestRatesValidFromResponse> GetInterestRatesValidFrom([FromRoute] long caseId)
         => await _mediator.Send(new GetInterestRatesValidFrom.GetInterestRatesValidFromRequest(caseId));
 
     /// <summary>
@@ -185,10 +184,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
-    [ProducesResponseType(typeof(GetInterestRate.GetInterestRateResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingGetInterestRateResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704")]
-    public async Task<GetInterestRate.GetInterestRateResponse> GetInterestRate([FromRoute] long caseId)
+    public async Task<RefinancingGetInterestRateResponse> GetInterestRate([FromRoute] long caseId)
         => await _mediator.Send(new GetInterestRate.GetInterestRateRequest(caseId));
 
     /// <summary>
@@ -201,10 +200,10 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(typeof(RefinancingLinkResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(RefinancingSharedOfferLinkResult), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=95CE2766-FF1F-4267-9873-177189302EDD")]
-    public async Task<RefinancingLinkResult> CommunicateMortgageRefixation(long caseId) => 
-        await _mediator.Send(new CommunicateMortgageRefixation.CommunicateMortgageRefixationRequest { CaseId = caseId});
+    public async Task<RefinancingSharedOfferLinkResult> CommunicateMortgageRefixation(long caseId) => 
+        await _mediator.Send(new CommunicateMortgageRefixation.CommunicateMortgageRefixationRequest(caseId));
 
     /// <summary>
     /// Generování dokumentu Retenčního dodatku
@@ -220,7 +219,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5379DC03-6DFD-411c-9A7C-AB8203677FA9")]
-    public async Task GenerateRetentionDocument(long caseId, int salesArrangementId, [FromBody] GenerateRetentionDocument.GenerateRetentionDocumentRequest request) => 
+    public async Task GenerateRetentionDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateRetentionDocumentRequest request) => 
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
 
     /// <summary>
@@ -237,7 +236,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A415BC33-46AF-40f9-B50C-5F7297DC0B26")]
-    public async Task GenerateRefixationDocument(long caseId, int salesArrangementId, [FromBody] GenerateRefixationDocument.GenerateRefixationDocumentRequest request) => 
+    public async Task GenerateRefixationDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateRefixationDocumentRequest request) => 
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
 
     /// <summary>
@@ -254,6 +253,6 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20")]
-    public async Task GenerateExtraPaymentDocument(long caseId, int salesArrangementId, [FromBody] GenerateExtraPaymentDocument.GenerateExtraPaymentDocumentRequest request) => 
+    public async Task GenerateExtraPaymentDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateExtraPaymentDocumentRequest request) => 
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
 }

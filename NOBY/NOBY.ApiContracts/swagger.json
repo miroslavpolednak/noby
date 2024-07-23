@@ -4633,10 +4633,1451 @@
           }
         }
       }
+    },
+    "/api/v1/case/{caseId}/mortgage-refixation-offer-list/communicate": {
+      "post": {
+        "tags": ["Modelace"],
+        "summary": "Sdělení nabídek refixací.",
+        "description": "Smaže sdělené nabídky (pokud nejsou shodné s aktuálními) a označí aktuální paletu nabídek jako sdělenou.<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=95CE2766-FF1F-4267-9873-177189302EDD\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "CommunicateMortgageRefixation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingSharedOfferLinkResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/mortgage/create-mortgage-response-code": {
+      "put": {
+        "tags": ["Refinancing"],
+        "summary": "Vytvoří odpovědní kód",
+        "description": "Uloží odpovědní kód ke case a k odeslání do BDP (Big Data Platform)<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=8251FF4A-E3C6-46c8-883E-D70C884A859D\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "CreateMortgageResponseCode",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefinancingCreateMortgageResponseCodeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/sales-arrangement/{salesArrangementId}/extra-payment-document": {
+      "post": {
+        "tags": ["Refinancing"],
+        "summary": "Generování dokumentu mimořádné splátky",
+        "description": "Operace slouží k vygenerování dokumentu mimořádné splátky<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GenerateExtraPaymentDocument",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefinancingGenerateExtraPaymentDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/sales-arrangement/{salesArrangementId}/refixation-document": {
+      "post": {
+        "tags": ["Refinancing"],
+        "summary": "Generování dokumentu pro Refixace nebo Individuální sdělení",
+        "description": "Operace slouží k vygenerování dokumentu pro Refixace nebo Individuální sdělení<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A415BC33-46AF-40f9-B50C-5F7297DC0B26\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GenerateRefixationDocument",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefinancingGenerateRefixationDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/sales-arrangement/{salesArrangementId}/retention-document": {
+      "post": {
+        "tags": ["Refinancing"],
+        "summary": "Generování dokumentu Retenčního dodatku",
+        "description": "Operace slouží k vygenerování dokumentu Retenčního dodatku<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=5379DC03-6DFD-411c-9A7C-AB8203677FA9\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GenerateRetentionDocument",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "salesArrangementId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefinancingGenerateRetentionDocumentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/mortgage-refixation/available-fixed-rate-periods": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Seznam dostupných délek fixací pro refixace",
+        "description": "Seznam dostupných délek fixací pro refixace. Délky fixace jsou uvedeny v měsících.<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A4BCB0C7-506D-4edb-ADCD-66BA06A5D1DD\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetAvailableFixedRatePeriods",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingGetAvailableFixedRatePeriodsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/interest-rate": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Aktuální úroková sazba",
+        "description": "Operace slouží k získání informací o aktuální úrokové sazbě.<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=7C3EE41F-80E9-4bf2-A0CD-7E6E7F83D704\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetInterestRate",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingGetInterestRateResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/interest-rates-valid-from": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Seznam možných platností sazby od",
+        "description": "Vrátí kolekci možných platností sazby od pro konkrétní úvěr.<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=138F1225-E4D6-4a7c-B316-882C35CE2C74\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetInterestRatesValidFrom",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingGetInterestRatesValidFromResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/mortgage-extra-payment/{processId}": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Detail mimořádné splátky",
+        "description": "Operace slouží k získání informací o vybraném procesu mimořádné splátky.<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=87469E98-536F-47b6-853F-077E5BC7FF4A\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetMortgageExtraPayment",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "processId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingGetMortgageExtraPaymentResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/mortgage-refixation": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Detail refixace",
+        "description": "Operace slouží k získání informací o vybraném refixačním procesu.<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=1EF978B1-265D-40d0-8B1C-B0E07D9D8031\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><a href=\"https://wiki.kb.cz/display/HT/Refixace\">Confluence</a>",
+        "operationId": "GetMortgageRefixation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "processId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingGetMortgageRefixationResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/mortgage-retention/{processId}": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Detail retence",
+        "description": "Operace slouží k získání informací o vybraném retenčním procesu.<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E0F5C17D-A6F5-4713-93DC-73E06D98AD09\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetMortgageRetention",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "processId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingGetMortgageRetentionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/mortgage-extra-payment-list": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Rozscestník mimořádných splátek",
+        "description": "Seznam nezrušených mimořádných splátek<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=DFD62AED-36C2-49f0-A8A4-A245657D5A4C\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetMortgageExtraPaymentList",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RefinancingGetMortgageExtraPaymentListResponse"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/update-mortgage-refixation": {
+      "put": {
+        "tags": ["Refinancing"],
+        "summary": "Uložení změny individuální cenotvorby a komentáře",
+        "description": "Uloží změny ve výši slevy ze sazby včetně komentáře ke slevě. Dále uloží komentář k refixaci.<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=D2F4DD7B-54B9-4c86-BEE0-8673DBBDE5DB\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "UpdateMortgageRefixation",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefinancingUpdateMortgageRefixationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingSharedOfferLinkResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/case/{caseId}/refinancing-parameters": {
+      "get": {
+        "tags": ["Refinancing"],
+        "summary": "Žádosti o změnu sazby",
+        "description": "Operace slouží k získání informací a žádostí ke změnám sazeb.<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>REFINANCING_Manage<br/><br/><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EBF744FA-9F0F-421e-89F8-CFFFAEC76BB1\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "GetRefinancingParameters",
+        "parameters": [
+          {
+            "name": "caseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefinancingGetRefinancingParametersResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "RefinancingGetRefinancingParametersResponse": {
+        "type": "object",
+        "properties": {
+          "isAnotherSalesArrangementInProgress": {
+            "type": "boolean",
+            "description": "True, pokud existuje rozpracovaná relevantní žádost"
+          },
+          "customerPriceSensitivity": {
+            "type": "number",
+            "description": "Cenová citlivost klienta",
+            "format": "decimal",
+            "nullable": true
+          },
+          "customerChurnRisk": {
+            "type": "number",
+            "description": "Riziko odchodovosti klienta",
+            "format": "decimal",
+            "nullable": true
+          },
+          "refinancingParametersCurrent": {
+            "$ref": "#/components/schemas/RefinancingGetRefinancingParametersCurrent"
+          },
+          "refinancingParametersFuture": {
+            "$ref": "#/components/schemas/RefinancingGetRefinancingParametersFuture"
+          },
+          "refinancingProcesses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefinancingGetRefinancingParametersProcess"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetRefinancingParametersCurrent": {
+        "type": "object",
+        "properties": {
+          "loanAmount": {
+            "type": "number",
+            "description": "Výše úvěru",
+            "format": "decimal",
+            "nullable": true
+          },
+          "principal": {
+            "type": "number",
+            "description": "Aktuální zůstatek jistiny",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanDueDate": {
+            "type": "string",
+            "description": "Datum splatnosti - předpoklad/skutečnost",
+            "format": "date",
+            "nullable": true
+          },
+          "loanInterestRate": {
+            "type": "number",
+            "description": "Aktuální úroková sazba",
+            "format": "decimal",
+            "nullable": true
+          },
+          "fixedRatePeriod": {
+            "type": "integer",
+            "description": "Délka fixace úrokové sazby",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "description": "Výše měsíční splátky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "fixedRateValidFrom": {
+            "type": "string",
+            "description": "Platnost úrokové sazby od (spočítaná jako fixedRateValidTo mínus fixedRatePeriod)",
+            "format": "date",
+            "nullable": true
+          },
+          "fixedRateValidTo": {
+            "type": "string",
+            "description": "Platnost úrokové sazby do",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetRefinancingParametersFuture": {
+        "type": "object",
+        "properties": {
+          "loanInterestRate": {
+            "type": "number",
+            "description": "Aktuální úroková sazba",
+            "format": "decimal",
+            "nullable": true
+          },
+          "fixedRatePeriod": {
+            "type": "integer",
+            "description": "Délka fixace úrokové sazby",
+            "format": "int32",
+            "nullable": true
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "description": "Výše měsíční splátky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "fixedRateValidFrom": {
+            "type": "string",
+            "description": "Platnost úrokové sazby od",
+            "format": "date",
+            "nullable": true
+          },
+          "fixedRateValidTo": {
+            "type": "string",
+            "description": "Platnost úrokové sazby do",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetRefinancingParametersProcess": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "description": "SalesArrangementId se vrací pro SalesArrangementy vytvořené v NOBY",
+            "format": "int32",
+            "nullable": true
+          },
+          "processDetail": {
+            "$ref": "#/components/schemas/RefinancingGetRefinancingParametersProcessDetail"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetRefinancingParametersProcessDetail": {
+        "type": "object",
+        "properties": {
+          "processId": {
+            "type": "integer",
+            "description": "Noby proces ID daného procesu Refinancí. Jde o ID sady úkolů generované Starbuildem.",
+            "format": "int64"
+          },
+          "refinancingTypeId": {
+            "$ref": "#/components/schemas/EnumRefinancingTypes"
+          },
+          "refinancingTypeText": {
+            "type": "string",
+            "description": "Vracíme textaci specifickou podle typu dodatku. Pro jeden refinancingTypeId se tedy může vrátit 1 z n různých textací.",
+            "nullable": true
+          },
+          "refinancingStateId": {
+            "$ref": "#/components/schemas/EnumRefinancingStates"
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "Datum vzniku proces",
+            "format": "date"
+          },
+          "loanInterestRateProvided": {
+            "type": "number",
+            "description": "Úroková sazba poskytnutá (včetně slevy)",
+            "format": "decimal",
+            "nullable": true
+          },
+          "loanInterestRateValidFrom": {
+            "type": "string",
+            "description": "Platnost nové úrokové sazby od",
+            "format": "date",
+            "nullable": true
+          },
+          "loanInterestRateValidTo": {
+            "type": "string",
+            "description": "Platnost nové úrokové sazby do",
+            "format": "date",
+            "nullable": true
+          },
+          "effectiveDate": {
+            "type": "string",
+            "description": "Datum účinnosti (kdy byl požadavek podepsán a finalizován ve SB)",
+            "format": "date",
+            "nullable": true
+          },
+          "documentId": {
+            "type": "string",
+            "description": "Slouží k náhledu na dokumenty",
+            "nullable": true
+          },
+          "refinancingStateName": {
+            "type": "string",
+            "description": "Název stavu procesu Refinancí"
+          },
+          "refinancingStateIndicator": {
+            "type": "integer",
+            "description": "Indikátor barvy stavu",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingUpdateMortgageRefixationRequest": {
+        "type": "object",
+        "properties": {
+          "individualPriceCommentLastVersion": {
+            "type": "string",
+            "description": "Komentář k Cenové výjimce",
+            "nullable": true,
+            "example": "Prosím o slevu, jde o dlouhodobého loajálního klienta"
+          },
+          "comment": {
+            "type": "string",
+            "description": "Komentář k refixaci",
+            "nullable": true
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "example": 0.2
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetMortgageExtraPaymentListResponse": {
+        "type": "object",
+        "properties": {
+          "processId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "salesArrangementId": {
+            "type": "integer",
+            "description": "ID SA pokud existuje",
+            "format": "int32",
+            "nullable": true
+          },
+          "createdOn": {
+            "type": "string",
+            "description": "datum vytvoření",
+            "format": "date-time"
+          },
+          "isExtraPaymentFullyRepaid": {
+            "type": "boolean",
+            "description": "Způsob splacení"
+          },
+          "extraPaymentAmount": {
+            "type": "number",
+            "description": "Výše splátky",
+            "format": "decimal",
+            "nullable": true
+          },
+          "principalAmount": {
+            "type": "number",
+            "description": "Výše splacené jistiny",
+            "format": "decimal",
+            "nullable": true
+          },
+          "extraPaymentDate": {
+            "type": "string",
+            "description": "Datum splátky",
+            "format": "date"
+          },
+          "refinancingStateId": {
+            "$ref": "#/components/schemas/EnumRefinancingStates"
+          },
+          "paymentState": {
+            "type": "integer",
+            "description": "Uhrazeno; 0 - Unknown; 1 - Uhrazeno; 2 - Neuhrazeno",
+            "format": "int32"
+          },
+          "stateIndicator": {
+            "$ref": "#/components/schemas/EnumStateIndicators"
+          },
+          "stateName": {
+            "type": "string",
+            "description": "Název stavu procesu Refinancí",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetMortgageRetentionResponse": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isReadOnly": {
+            "type": "boolean",
+            "description": "Informace zda se jedná o readonly režim"
+          },
+          "individualPriceCommentLastVersion": {
+            "type": "string",
+            "description": "Komentář k IC",
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesWorkflowTask"
+            },
+            "description": "Všechny workflow úkoly pro daný proces retence",
+            "nullable": true
+          },
+          "containsInconsistentIndividualPriceData": {
+            "type": "boolean",
+            "description": "Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB"
+          },
+          "refinancingStateId": {
+            "$ref": "#/components/schemas/EnumRefinancingStates"
+          },
+          "isPriceExceptionActive": {
+            "type": "boolean",
+            "description": "Existuje workflow úkol cenové vyjímky"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "responseCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefinancingSharedResponseCode"
+            },
+            "description": "Seznam odpovědních kódů",
+            "nullable": true
+          },
+          "feeAmount": {
+            "type": "number",
+            "description": "Výše poplatku",
+            "format": "decimal"
+          },
+          "feeAmountDiscounted": {
+            "type": "number",
+            "description": "Upravená výše poplatku",
+            "format": "decimal",
+            "nullable": true
+          },
+          "interestRateValidFrom": {
+            "type": "string",
+            "description": "Platnost nové úrokové sazby od.",
+            "format": "date-time"
+          },
+          "interestRate": {
+            "type": "number",
+            "description": "Úroková sazba",
+            "format": "decimal",
+            "example": 4.7
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "nullable": true,
+            "example": 0.2
+          },
+          "interestRateDiscounted": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "nullable": true,
+            "readOnly": true,
+            "example": 4.5
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "description": "Výše měsíční splátky.",
+            "format": "decimal"
+          },
+          "loanPaymentAmountDiscounted": {
+            "type": "number",
+            "description": "Výše měsíční splátky se zohledněním IC.",
+            "format": "decimal",
+            "nullable": true
+          },
+          "document": {
+            "$ref": "#/components/schemas/RefinancingSharedDocument",
+            "description": "Dokumentu refinancování"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetMortgageRefixationResponse": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isReadOnly": {
+            "type": "boolean",
+            "description": "Informace zda se jedná o readonly režim"
+          },
+          "individualPriceCommentLastVersion": {
+            "type": "string",
+            "description": "Komentář k IC",
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesWorkflowTask"
+            },
+            "description": "Všechny workflow úkoly pro daný proces retence",
+            "nullable": true
+          },
+          "containsInconsistentIndividualPriceData": {
+            "type": "boolean",
+            "description": "Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB"
+          },
+          "refinancingStateId": {
+            "$ref": "#/components/schemas/EnumRefinancingStates"
+          },
+          "isPriceExceptionActive": {
+            "type": "boolean",
+            "description": "Existuje workflow úkol cenové vyjímky"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "responseCodes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefinancingSharedResponseCode"
+            },
+            "description": "Seznam odpovědních kódů",
+            "nullable": true
+          },
+          "offers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefinancingGetMortgageRefixationOfferDetail"
+            },
+            "description": "Seznam nabídek pro daný proces",
+            "nullable": true
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva sazby z IC",
+            "format": "decimal",
+            "nullable": true
+          },
+          "communicatedOffersValidTo": {
+            "type": "string",
+            "description": "Datum platnosti sdělených nabídek",
+            "format": "date",
+            "nullable": true
+          },
+          "legalNoticeGeneratedDate": {
+            "type": "string",
+            "description": "Datum odeslání zákonných oznámení",
+            "format": "date",
+            "nullable": true
+          },
+          "document": {
+            "$ref": "#/components/schemas/RefinancingSharedDocument"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetMortgageRefixationOfferDetail": {
+        "type": "object",
+        "properties": {
+          "offerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validTo": {
+            "type": "string",
+            "description": "Platnost nabídky do",
+            "format": "date",
+            "nullable": true
+          },
+          "isLegalNotice": {
+            "type": "boolean",
+            "description": "Jedná se o zákonné sdělení"
+          },
+          "isCurrent": {
+            "type": "boolean",
+            "description": "Jedná se o Aktuální nabídku"
+          },
+          "isCommunicated": {
+            "type": "boolean",
+            "description": "Jedná se o sdělenou nabídku"
+          },
+          "isLiked": {
+            "type": "boolean",
+            "description": "Jedná se o likovanou nabídku"
+          },
+          "isSelected": {
+            "type": "boolean",
+            "description": "Jedná se o zvolenou nabídku"
+          },
+          "isLegalNoticeDefault": {
+            "type": "boolean",
+            "description": "Jedná se o výchozí nabídku"
+          },
+          "fixedRatePeriod": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "interestRate": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "interestRateDiscount": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "nullable": true,
+            "example": 0.2
+          },
+          "interestRateDiscounted": {
+            "type": "number",
+            "description": "Sleva ze sazby",
+            "format": "decimal",
+            "nullable": true,
+            "readOnly": true,
+            "example": 4.5
+          },
+          "loanPaymentAmount": {
+            "type": "number",
+            "description": "Výše měsíční splátky.",
+            "format": "decimal"
+          },
+          "loanPaymentAmountDiscounted": {
+            "type": "number",
+            "description": "Výše měsíční splátky se zohledněním IC.",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingSharedResponseCode": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "ID instance response kódu",
+            "format": "int32"
+          },
+          "responseCodeTypeId": {
+            "type": "integer",
+            "description": "Typ response kodu",
+            "format": "int32",
+            "nullable": true
+          },
+          "dataDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dataBankCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataString": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdTime": {
+            "type": "string",
+            "description": "Čas vytvoření response kódu",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Kdo vytvořil response kód"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetMortgageExtraPaymentResponse": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "isReadOnly": {
+            "type": "boolean",
+            "description": "Informace zda se jedná o readonly režim"
+          },
+          "individualPriceCommentLastVersion": {
+            "type": "string",
+            "description": "Komentář k IC",
+            "nullable": true
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesWorkflowTask"
+            },
+            "description": "Všechny workflow úkoly pro daný proces retence",
+            "nullable": true
+          },
+          "containsInconsistentIndividualPriceData": {
+            "type": "boolean",
+            "description": "Příznak nastavený na true pokud jsou data o IC v nalinkované simulaci rozdílné od aktuální IC v SB"
+          },
+          "refinancingStateId": {
+            "$ref": "#/components/schemas/EnumRefinancingStates"
+          },
+          "isPriceExceptionActive": {
+            "type": "boolean",
+            "description": "Existuje workflow úkol cenové vyjímky"
+          },
+          "document": {
+            "$ref": "#/components/schemas/RefinancingSharedDocument",
+            "description": "Dokumentu refinancování"
+          },
+          "agreements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefinancingGetMortgageExtraPaymentResponseAgreementDocument"
+            },
+            "description": "Souhlasy",
+            "nullable": true
+          },
+          "handover": {
+            "$ref": "#/components/schemas/RefinancingGetMortgageExtraPaymentResponseHandoverObject",
+            "description": "Způsob předání dokumentů",
+            "nullable": true
+          },
+          "extraPaymentAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "extraPaymentAmountIncludingFee": {
+            "type": "number",
+            "format": "decimal",
+            "deprecated": true
+          },
+          "principalAmount": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "extraPaymentDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "isExtraPaymentFullyRepaid": {
+            "type": "boolean"
+          },
+          "feeAmountDiscount": {
+            "type": "number",
+            "description": "Upravená výše poplatku",
+            "format": "decimal",
+            "nullable": true
+          },
+          "simulationResults": {
+            "$ref": "#/components/schemas/OfferSharedExtraPaymentSimulationResult",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetMortgageExtraPaymentResponseHandoverObject": {
+        "type": "object",
+        "properties": {
+          "handoverTypeDetailId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetMortgageExtraPaymentResponseAgreementDocument": {
+        "type": "object",
+        "properties": {
+          "documentId": {
+            "type": "string",
+            "description": "eArchiv ID dokumentu"
+          },
+          "documentEACode": {
+            "type": "integer",
+            "description": "EA kód dokumentu",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingSharedDocument": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "type": "integer",
+            "description": "Noby task ID. Jde o ID sady úkolů generované Starbuildem.<br />zafiltrovat seznam tasku na taskTypeId = 6 a neni cancelled",
+            "format": "int64",
+            "nullable": true,
+            "example": 22777
+          },
+          "isContinueEnabled": {
+            "type": "boolean",
+            "description": "True pokud je k dispozici tlacitko Pokracovat"
+          },
+          "documentName": {
+            "type": "string"
+          },
+          "stateName": {
+            "type": "string",
+            "description": "Název Noby stavu úkolu",
+            "example": "K VYŘÍZENÍ"
+          },
+          "stateFilter": {
+            "$ref": "#/components/schemas/EnumWorkflowTaskStateFilters"
+          },
+          "stateIndicator": {
+            "$ref": "#/components/schemas/EnumStateIndicators"
+          },
+          "signatureTypeDetailId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "documentId": {
+            "type": "string",
+            "description": "ID dokumentu",
+            "nullable": true
+          },
+          "isGenerateDocumentEnabled": {
+            "type": "boolean",
+            "description": "Označuje zda má být aktivní button Generovat dokument"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetInterestRatesValidFromResponse": {
+        "type": "object",
+        "properties": {
+          "interestRatesValidFrom": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RefinancingGetInterestRatesValidFromResponseItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetInterestRatesValidFromResponseItem": {
+        "type": "object",
+        "properties": {
+          "interestRateValidFrom": {
+            "type": "string",
+            "description": "Platnost nové úrokové sazby od (nabízená hodnota).",
+            "format": "date"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "Indikuje defaultní volbu pro výběr na FE."
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetInterestRateResponse": {
+        "type": "object",
+        "properties": {
+          "loanInterestRateCurrent": {
+            "type": "number",
+            "description": "Aktuální úroková sazba.",
+            "format": "decimal",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGetAvailableFixedRatePeriodsResponse": {
+        "type": "object",
+        "properties": {
+          "availableFixedRatePeriods": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "Dostupné délky fixace pro daný Case v měsících",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGenerateRetentionDocumentRequest": {
+        "required": ["signatureTypeDetailId"],
+        "type": "object",
+        "properties": {
+          "signatureTypeDetailId": {
+            "type": "integer",
+            "description": "Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce",
+            "format": "int32"
+          },
+          "signatureDeadline": {
+            "type": "string",
+            "description": "Nejzazší datum podpisu dokumentu",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGenerateRefixationDocumentRequest": {
+        "required": ["refixationDocumentTypeId", "signatureTypeDetailId"],
+        "type": "object",
+        "properties": {
+          "refixationDocumentTypeId": {
+            "type": "integer",
+            "description": "Typ dokumentu, který se má vygenerovat pro refixace. Číselník <a href=\"https://wiki.kb.cz/display/HT/RefixationDocumentType\">RefixationDocumentTypes</a>",
+            "format": "int32"
+          },
+          "signatureTypeDetailId": {
+            "type": "integer",
+            "description": "Typ podpisu. 1 - Fyzicky poštou (Tlač na centrále), 2 - Moje banka, 3 - Elektronicky, 4 - Fyzicky na pobočce",
+            "format": "int32"
+          },
+          "signatureDeadline": {
+            "type": "string",
+            "description": "Nejzazší datum podpisu dokumentu",
+            "format": "date",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingGenerateExtraPaymentDocumentRequest": {
+        "required": ["handoverTypeDetailId"],
+        "type": "object",
+        "properties": {
+          "handoverTypeDetailId": {
+            "type": "integer",
+            "description": "Způsoby předání podle číselníku <a href=\"https://wiki.kb.cz/pages/viewpage.action?pageId=857276813\">HandoverTypeDetail (SB CalculationDocuments Service enum).</a>",
+            "format": "int32"
+          },
+          "clientKbId": {
+            "type": "integer",
+            "description": "KBID klienta, kterému se bude předávat vygenerovaný dokument vyčíslení (a případné vygenerované dokumenty souhlasů)).",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingCreateMortgageResponseCodeRequest": {
+        "type": "object",
+        "properties": {
+          "responseCodeTypeId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataDateTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "dataBankCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataString": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RefinancingSharedOfferLinkResult": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "processId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "OfferSimulateMortgageRetentionResponse": {
         "type": "object",
         "properties": {
@@ -12189,9 +13630,7 @@
             "example": "K VYŘÍZENÍ"
           },
           "stateFilter": {
-            "$ref": "#/components/schemas/EnumWorkflowTaskStateFilters",
-            "description": "Filter Noby stavu úkolu\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Active</li><li>2 - Finished</li></ul>",
-            "example": 1
+            "$ref": "#/components/schemas/EnumWorkflowTaskStateFilters"
           },
           "stateIndicator": {
             "$ref": "#/components/schemas/EnumStateIndicators",
@@ -12907,6 +14346,22 @@
         "format": "int32",
         "x-enum-varnames": ["Unknown", "Noby", "Workflow"],
         "x-enumNames": ["Unknown", "Noby", "Workflow"]
+      },
+      "EnumRefinancingStates": {
+        "enum": [0, 1, 2, 3, 4, 5, 6, 7],
+        "type": "integer",
+        "description": "Stav\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - RozpracovanoVNoby</li><li>2 - RozpracovanoVSB</li><li>3 - PodpisNOBY</li><li>4 - Dokonceno</li><li>5 - PredanoRC2</li><li>6 - Zruseno</li><li>7 - PodpisSB</li></ul>",
+        "format": "int32",
+        "x-enum-varnames": ["Unknown", "RozpracovanoVNoby", "RozpracovanoVSB", "PodpisNOBY", "Dokonceno", "PredanoRC2", "Zruseno", "PodpisSB"],
+        "x-enumNames": ["Unknown", "RozpracovanoVNoby", "RozpracovanoVSB", "PodpisNOBY", "Dokonceno", "PredanoRC2", "Zruseno", "PodpisSB"]
+      },
+      "EnumRefinancingTypes": {
+        "enum": [0, 1, 2, 3, 4],
+        "type": "integer",
+        "description": "<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - MortgageRetention</li><li>2 - MortgageRefixation</li><li>3 - MortgageLegalNotice</li><li>4 - MortgageExtraPayment</li></ul>",
+        "format": "int32",
+        "x-enum-varnames": ["Unknown", "MortgageRetention", "MortgageRefixation", "MortgageLegalNotice", "MortgageExtraPayment"],
+        "x-enumNames": ["Unknown", "MortgageRetention", "MortgageRefixation", "MortgageLegalNotice", "MortgageExtraPayment"]
       }
     }
   }

@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Contracts;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.MortgageRefinancing;
 
@@ -9,12 +10,12 @@ public sealed class GetRefinancingDataResult
     /// <summary>
     /// Napocitany stav procesu v NOBY
     /// </summary>
-    public RefinancingStates RefinancingState { get; set; }
+    public EnumRefinancingStates RefinancingState { get; set; }
 
     /// <summary>
     /// Vsechny tasky vcetne IC na procesu
     /// </summary>
-    public List<Dto.Workflow.WorkflowTask>? Tasks { get; set; }
+    public List<SharedTypesWorkflowTask>? Tasks { get; set; }
 
     /// <summary>
     /// Detail refinancniho procesu

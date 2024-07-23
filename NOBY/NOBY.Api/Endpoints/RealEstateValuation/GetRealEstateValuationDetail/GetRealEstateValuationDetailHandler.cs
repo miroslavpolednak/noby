@@ -4,7 +4,6 @@ using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RealEstateValuationService.Clients;
 using Google.Protobuf.Collections;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Dto.RealEstateValuation;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;

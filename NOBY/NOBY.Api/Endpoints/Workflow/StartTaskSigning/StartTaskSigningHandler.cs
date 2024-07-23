@@ -71,7 +71,7 @@ internal sealed class StartTaskSigningHandler(
         {
             return await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
         }
-        else if (process.RefinancingType == (int)RefinancingTypes.MortgageRetention)
+        else if (process.RefinancingType == (int)EnumRefinancingTypes.MortgageRetention)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention
                                                                                       && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled
@@ -80,7 +80,7 @@ internal sealed class StartTaskSigningHandler(
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
 
         }
-        else if (process.RefinancingType == (int)RefinancingTypes.MortgageRefixation)
+        else if (process.RefinancingType == (int)EnumRefinancingTypes.MortgageRefixation)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation
                                                                                      && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled

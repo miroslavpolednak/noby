@@ -9,9 +9,9 @@ internal sealed class GetMortgageExtraPaymentListHandler(
     ICodebookServiceClient _codebookService,
     ISalesArrangementServiceClient _salesArrangementService,
     ICaseServiceClient _caseService)
-    : IRequestHandler<GetMortgageExtraPaymentListRequest, List<GetMortgageExtraPaymentListResponse>>
+    : IRequestHandler<GetMortgageExtraPaymentListRequest, List<RefinancingGetMortgageExtraPaymentListResponse>>
 {
-    public async Task<List<GetMortgageExtraPaymentListResponse>> Handle(GetMortgageExtraPaymentListRequest request, CancellationToken cancellationToken)
+    public async Task<List<RefinancingGetMortgageExtraPaymentListResponse>> Handle(GetMortgageExtraPaymentListRequest request, CancellationToken cancellationToken)
     {
         // vsechny procesy
         var allProcesses = await _caseService.GetProcessList(request.CaseId, cancellationToken);
@@ -21,7 +21,7 @@ internal sealed class GetMortgageExtraPaymentListHandler(
         
         // vyber extra paymenty, ktere nejsou zrusene
         var extraPayments = allProcesses
-            .Where(t => t.ProcessTypeId == (int)RefinancingTypes.MortgageExtraPayment && !t.Cancelled && t.AmendmentsCase == DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageExtraPayment)
+            .Where(t => t.ProcessTypeId == (int)EnumRefinancingTypes.MortgageExtraPayment && !t.Cancelled && t.AmendmentsCase == DomainServices.CaseService.Contracts.ProcessTask.AmendmentsOneofCase.MortgageExtraPayment)
             .ToList();
 
         var refinancingStates = await _codebookService.RefinancingStates(cancellationToken);
@@ -34,7 +34,7 @@ internal sealed class GetMortgageExtraPaymentListHandler(
             var refinancingState = RefinancingHelper.GetRefinancingState((SharedTypes.Enums.EnumSalesArrangementStates)(currentProcessSA?.State ?? 0), false, process);
             var state = refinancingStates.First(t => t.Id == (int)refinancingState);
 
-			return new GetMortgageExtraPaymentListResponse
+			return new RefinancingGetMortgageExtraPaymentListResponse
             {
                 ProcessId = process.ProcessId,
                 SalesArrangementId = currentProcessSA?.SalesArrangementId,

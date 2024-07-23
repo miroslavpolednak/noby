@@ -9,7 +9,7 @@ public sealed class ProcessDetail
     /// </summary>
     public long ProcessId { get; set; }
 
-    public RefinancingTypes RefinancingTypeId { get; set; }
+    public EnumRefinancingTypes RefinancingTypeId { get; set; }
 
     /// <summary>
     /// Vracíme textaci specifickou podle typu dodatku. Pro jeden refinancingTypeId se tedy může vrátit 1 z n různých textací.
@@ -19,7 +19,7 @@ public sealed class ProcessDetail
     /// <summary>
     /// Číselník: <a href="https://wiki.kb.cz/display/HT/RefinancingState">RefinancingState</a>
     /// </summary>
-    public RefinancingStates RefinancingStateId { get; set; }
+    public EnumRefinancingStates RefinancingStateId { get; set; }
 
     /// <summary>
     /// Datum vzniku proces

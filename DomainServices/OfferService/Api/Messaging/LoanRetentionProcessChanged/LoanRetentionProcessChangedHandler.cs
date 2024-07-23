@@ -55,7 +55,7 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
         }
 
         var processes = await _caseService.GetProcessList(caseId);
-        var refixationProcess = processes.FirstOrDefault(p => p.ProcessId == processId && p.RefinancingType == (int)RefinancingTypes.MortgageRefixation);
+        var refixationProcess = processes.FirstOrDefault(p => p.ProcessId == processId && p.RefinancingType == (int)EnumRefinancingTypes.MortgageRefixation);
 
         if (refixationProcess is null)
             return;

@@ -6,11 +6,11 @@ namespace NOBY.Services.MortgageRefinancing;
 public static class RefinancingHelper
 {
     public static TResponse UpdateBaseResponseModel<TResponse>(this GetRefinancingDataResult result, TResponse response)
-        where TResponse : NOBY.Dto.Refinancing.BaseRefinancingDetailResponse
+        where TResponse : NOBY.ApiContracts.IRefinancingDataResult
     {
         response.RefinancingStateId = result.RefinancingState;
         response.SalesArrangementId = result.SalesArrangement?.SalesArrangementId;
-        response.IsReadOnly = result.RefinancingState != RefinancingStates.RozpracovanoVNoby && result.Process is not null;
+        response.IsReadOnly = result.RefinancingState != EnumRefinancingStates.RozpracovanoVNoby && result.Process is not null;
         response.IsPriceExceptionActive = result.ActivePriceException is not null && !result.IsActivePriceExceptionCompleted;
         response.Tasks = result.Tasks;
 
@@ -48,58 +48,58 @@ public static class RefinancingHelper
                 or SalesArrangementTypes.CustomerChange3602C));
     }
 
-    public static RefinancingTypes GetRefinancingType(ProcessTask process)
+    public static EnumRefinancingTypes GetRefinancingType(ProcessTask process)
     {
         return process.AmendmentsCase switch
         {
-            ProcessTask.AmendmentsOneofCase.MortgageRetention => RefinancingTypes.MortgageRetention,
-            ProcessTask.AmendmentsOneofCase.MortgageRefixation => RefinancingTypes.MortgageRefixation,
-            ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => RefinancingTypes.MortgageExtraPayment,
-            ProcessTask.AmendmentsOneofCase.MortgageLegalNotice => RefinancingTypes.MortgageLegalNotice,
-            _ => RefinancingTypes.Unknown
+            ProcessTask.AmendmentsOneofCase.MortgageRetention => EnumRefinancingTypes.MortgageRetention,
+            ProcessTask.AmendmentsOneofCase.MortgageRefixation => EnumRefinancingTypes.MortgageRefixation,
+            ProcessTask.AmendmentsOneofCase.MortgageExtraPayment => EnumRefinancingTypes.MortgageExtraPayment,
+            ProcessTask.AmendmentsOneofCase.MortgageLegalNotice => EnumRefinancingTypes.MortgageLegalNotice,
+            _ => EnumRefinancingTypes.Unknown
         };
     }
 
-    public static DateTime? GetFixedRateValidFrom(in DateTime? fixedRateValidTo, in int? fixedRatePeriod)
+    public static DateOnly? GetFixedRateValidFrom(in DateOnly? fixedRateValidTo, in int? fixedRatePeriod)
     {
         return fixedRatePeriod is not null && fixedRateValidTo is not null
-            ? ((DateTime)fixedRateValidTo).AddMonths(-fixedRatePeriod.Value)
-            : (DateTime?)default;
+            ? ((DateOnly)fixedRateValidTo).AddMonths(-fixedRatePeriod.Value)
+            : default;
     }
 
-    public static RefinancingStates GetRefinancingState(in EnumSalesArrangementStates salesArrangementState, in bool managedByRC2, ProcessTask process)
+    public static EnumRefinancingStates GetRefinancingState(in EnumSalesArrangementStates salesArrangementState, in bool managedByRC2, ProcessTask process)
     {
         if (salesArrangementState != EnumSalesArrangementStates.Unknown && !managedByRC2)
         {
             return salesArrangementState switch
             {
-                EnumSalesArrangementStates.InSigning => RefinancingStates.PodpisNOBY,
-                EnumSalesArrangementStates.Finished => RefinancingStates.Dokonceno,
-                EnumSalesArrangementStates.Cancelled => RefinancingStates.Zruseno,
-                _ => RefinancingStates.RozpracovanoVNoby
+                EnumSalesArrangementStates.InSigning => EnumRefinancingStates.PodpisNOBY,
+                EnumSalesArrangementStates.Finished => EnumRefinancingStates.Dokonceno,
+                EnumSalesArrangementStates.Cancelled => EnumRefinancingStates.Zruseno,
+                _ => EnumRefinancingStates.RozpracovanoVNoby
             };
         }
         else if (salesArrangementState == EnumSalesArrangementStates.Unknown || (salesArrangementState != EnumSalesArrangementStates.Unknown && managedByRC2))
         {
             if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 2 && salesArrangementState == EnumSalesArrangementStates.Unknown)
             {
-                return RefinancingStates.RozpracovanoVSB;
+                return EnumRefinancingStates.RozpracovanoVSB;
             }
             else if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 2 && salesArrangementState != EnumSalesArrangementStates.Unknown)
             {
-                return RefinancingStates.PredanoRC2;
+                return EnumRefinancingStates.PredanoRC2;
             }
             else if (!process.Cancelled && process.StateIdSB == 30)
             {
-                return RefinancingStates.Dokonceno;
+                return EnumRefinancingStates.Dokonceno;
             }
             else if (process.Cancelled && process.StateIdSB == 30)
             {
-                return RefinancingStates.Zruseno;
+                return EnumRefinancingStates.Zruseno;
             }
             else if (!process.Cancelled && process.StateIdSB != 30 && process.ProcessPhaseId == 3)
             {
-                return RefinancingStates.PodpisSB;
+                return EnumRefinancingStates.PodpisSB;
             }
             else
             {

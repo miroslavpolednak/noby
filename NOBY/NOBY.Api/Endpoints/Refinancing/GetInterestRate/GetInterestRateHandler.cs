@@ -3,27 +3,20 @@ using NOBY.Services.InterestRatesValidFrom;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetInterestRate;
 
-internal sealed class GetInterestRateHandler
-    : IRequestHandler<GetInterestRateRequest, GetInterestRateResponse>
+internal sealed class GetInterestRateHandler(
+    IOfferServiceClient _offerService, 
+    InterestRatesValidFromService _ratesValidFromService)
+        : IRequestHandler<GetInterestRateRequest, RefinancingGetInterestRateResponse>
 {
-    public async Task<GetInterestRateResponse> Handle(GetInterestRateRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingGetInterestRateResponse> Handle(GetInterestRateRequest request, CancellationToken cancellationToken)
     {
         // zjistit datumy, pouzit vychozi
-        var validityDates = await _ratesValidFromService.GetValidityDates(request.CaseId, cancellationToken);
+        var (_, date2) = await _ratesValidFromService.GetValidityDates(request.CaseId, cancellationToken);
 
-        var result = await _offerService.GetInterestRate(request.CaseId, validityDates.Date2, cancellationToken: cancellationToken);
-        return new GetInterestRateResponse
+        var result = await _offerService.GetInterestRate(request.CaseId, date2, cancellationToken: cancellationToken);
+        return new()
         {
             LoanInterestRateCurrent = result
         };
-    }
-
-    private readonly IOfferServiceClient _offerService;
-    private readonly InterestRatesValidFromService _ratesValidFromService;
-
-    public GetInterestRateHandler(IOfferServiceClient offerService, InterestRatesValidFromService ratesValidFromService)
-    {
-        _ratesValidFromService = ratesValidFromService;
-        _offerService = offerService;
     }
 }

@@ -86,7 +86,9 @@
         "EnumIncomeTypes",
         "EnumSalesArrangementStates",
         "EnumRealEstateValuationTypes",
-        "EnumOfferFlagTypes"
+        "EnumOfferFlagTypes",
+        "EnumRefinancingStates",
+        "EnumRefinancingTypes"
       ],
       "excludedParameterNames": [],
       "handleReferences": false,

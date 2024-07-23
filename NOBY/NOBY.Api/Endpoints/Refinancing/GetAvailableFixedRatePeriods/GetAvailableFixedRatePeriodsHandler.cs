@@ -8,9 +8,9 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
     IProductServiceClient _productService,
     IOfferServiceClient _offerService,
     ICodebookServiceClient _codebookService)
-        : IRequestHandler<GetAvailableFixedRatePeriodsRequest, GetAvailableFixedRatePeriodsResponse>
+        : IRequestHandler<GetAvailableFixedRatePeriodsRequest, RefinancingGetAvailableFixedRatePeriodsResponse>
 {
-    public async Task<GetAvailableFixedRatePeriodsResponse> Handle(GetAvailableFixedRatePeriodsRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingGetAvailableFixedRatePeriodsResponse> Handle(GetAvailableFixedRatePeriodsRequest request, CancellationToken cancellationToken)
     {
         // info o hypo
         var productInstance = await _productService.GetMortgage(request.CaseId, cancellationToken);
@@ -61,7 +61,7 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
             .Order()
             .ToList();
 
-        return new GetAvailableFixedRatePeriodsResponse
+        return new()
         {
             AvailableFixedRatePeriods = finalPeriods
         };

@@ -3,7 +3,8 @@ using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
-internal sealed class UpdateMortgageRefixationRequestValidator: AbstractValidator<UpdateMortgageRefixationRequest>
+internal sealed class UpdateMortgageRefixationRequestValidator
+    : AbstractValidator<RefinancingUpdateMortgageRefixationRequest>
 {
     public UpdateMortgageRefixationRequestValidator(IFeatureManager featureManager)
     {

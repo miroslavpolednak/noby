@@ -5,7 +5,7 @@ using Microsoft.FeatureManagement;
 namespace NOBY.Api.Endpoints.Refinancing.CreateMortgageResponseCode;
 
 internal sealed class CreateMortgageResponseCodeRequestValidator
-    : AbstractValidator<CreateMortgageResponseCodeRequest>
+    : AbstractValidator<RefinancingCreateMortgageResponseCodeRequest>
 {
     public CreateMortgageResponseCodeRequestValidator(ICodebookServiceClient codebookService, IFeatureManager featureManager)
     {
