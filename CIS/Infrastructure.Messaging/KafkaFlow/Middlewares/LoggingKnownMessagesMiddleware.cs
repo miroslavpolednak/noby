@@ -36,7 +36,7 @@ internal sealed class LoggingKnownMessagesMiddleware(
 
         using (_logger.BeginScope(loggerData))
         {
-            _logger.ConsumingKnownMessage(messagingId, context.ConsumerContext.Topic);
+            _logger.ConsumingKnownMessage(context.Message.Value.GetType().FullName!, messagingId, context.ConsumerContext.Topic);
         }
 
         return next(context);

@@ -6,7 +6,7 @@ internal static class LoggerExtensions
 {
     private static readonly Action<ILogger, string, string, Exception> _consumingMessageFailed;
     private static readonly Action<ILogger, Exception> _schemaRegistryError;
-    private static readonly Action<ILogger, string, string, Exception> _consumingKnownMessage;
+    private static readonly Action<ILogger, string, string, string, Exception> _consumingKnownMessage;
 
     static LoggerExtensions()
     {
@@ -22,10 +22,10 @@ internal static class LoggerExtensions
             "Schema registry error"
         );
 
-        _consumingKnownMessage = LoggerMessage.Define<string, string>(
+        _consumingKnownMessage = LoggerMessage.Define<string, string, string>(
             LogLevel.Information,
             new EventId(903, nameof(ConsumingKnownMessage)),
-            "Consuming message with ID '{MessageId}' from {Topic}"
+            "Consuming message type {MessageType} with ID '{MessageId}' from {Topic}"
         );
     }
 
@@ -35,6 +35,6 @@ internal static class LoggerExtensions
     public static void SchemaRegistryError(this ILogger logger, Exception ex) =>
         _schemaRegistryError(logger, ex);
 
-    public static void ConsumingKnownMessage(this ILogger logger, string messageId, string topic) =>
-        _consumingKnownMessage(logger, messageId, topic, null!);
+    public static void ConsumingKnownMessage(this ILogger logger, string messageType, string messageId, string topic) =>
+        _consumingKnownMessage(logger, messageType, messageId, topic, null!);
 }
