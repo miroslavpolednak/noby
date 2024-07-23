@@ -2,19 +2,12 @@
 
 namespace NOBY.Api.Endpoints.DocumentArchive.UploadDocument;
 
-public class UploadDocumentHandler : IRequestHandler<UploadDocumentRequest, Guid>
+public class UploadDocumentHandler(
+    SharedComponents.Storage.ITempStorage _tempFileManager, 
+    IFileAntivirusService _fileAntivirus, 
+    ILogger<UploadDocumentHandler> _logger) 
+    : IRequestHandler<UploadDocumentRequest, Guid>
 {
-    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-    private readonly IFileAntivirusService _fileAntivirus;
-    private readonly ILogger<UploadDocumentHandler> _logger;
-
-    public UploadDocumentHandler(SharedComponents.Storage.ITempStorage tempFileManager, IFileAntivirusService fileAntivirus, ILogger<UploadDocumentHandler> logger)
-    {
-        _fileAntivirus = fileAntivirus;
-        _tempFileManager = tempFileManager;
-        _logger = logger;
-    }
-
     public async Task<Guid> Handle(UploadDocumentRequest request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Scanning file {Filename}", request.File.FileName);

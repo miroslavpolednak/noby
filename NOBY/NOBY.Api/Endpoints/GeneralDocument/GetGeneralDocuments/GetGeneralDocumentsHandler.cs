@@ -2,7 +2,8 @@
 
 namespace NOBY.Api.Endpoints.GeneralDocument.GetGeneralDocuments;
 
-internal sealed class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDocumentsRequest, List<GeneralDocumentGetGeneralDocumentsDocument>>
+internal sealed class GetGeneralDocumentsHandler(ICodebookServiceClient _codebookService) 
+    : IRequestHandler<GetGeneralDocumentsRequest, List<GeneralDocumentGetGeneralDocumentsDocument>>
 {
     public async Task<List<GeneralDocumentGetGeneralDocumentsDocument>> Handle(GetGeneralDocumentsRequest request, CancellationToken cancellationToken)
     {
@@ -16,12 +17,5 @@ internal sealed class GetGeneralDocumentsHandler : IRequestHandler<GetGeneralDoc
             Format = d.Format,
             Name = d.Name
         }).ToList();
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    
-    public GetGeneralDocumentsHandler(ICodebookServiceClient codebookService)
-    {
-        _codebookService = codebookService;
     }
 }

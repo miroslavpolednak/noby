@@ -12,49 +12,21 @@ using NOBY.Services.EaCodeMain;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SaveDocumentsToArchive;
 
-public class SaveDocumentToArchiveHandler
-    : IRequestHandler<DocumentArchiveSaveDocumentsToArchiveRequest>
+public class SaveDocumentToArchiveHandler(
+    IDocumentArchiveServiceClient _documentArchiveService,
+    ICurrentUserAccessor _currentUserAccessor,
+    TimeProvider _dateTime,
+    SharedComponents.Storage.ITempStorage _tempFileManager,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    ICaseServiceClient _caseService,
+    IUserServiceClient _userService,
+    ICodebookServiceClient _codebookService,
+    IDocumentHelperServiceOld _documentHelper,
+    IEaCodeMainHelper _eaCodeMainHelper)
+        : IRequestHandler<DocumentArchiveSaveDocumentsToArchiveRequest>
 {
     private const string _defaultContractNumber = "HF00111111125";
-
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly TimeProvider _dateTime;
-    private readonly SharedComponents.Storage.ITempStorage _tempFileManager;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IUserServiceClient _userService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IDocumentHelperServiceOld _documentHelper;
-    private readonly IEaCodeMainHelper _eaCodeMainHelper;
-    
-    public SaveDocumentToArchiveHandler(
-        IDocumentArchiveServiceClient client,
-        ICurrentUserAccessor currentUserAccessor,
-        TimeProvider dateTime,
-        SharedComponents.Storage.ITempStorage tempFileManager,
-        ISalesArrangementServiceClient salesArrangementService,
-        IDocumentOnSAServiceClient documentOnSAService,
-        ICaseServiceClient caseService,
-        IUserServiceClient userService,
-        ICodebookServiceClient codebookService,
-        IDocumentHelperServiceOld documentHelper,
-        IEaCodeMainHelper eaCodeMainHelper
-        )
-    {
-        _documentArchiveService = client;
-        _currentUserAccessor = currentUserAccessor;
-        _dateTime = dateTime;
-        _tempFileManager = tempFileManager;
-        _salesArrangementService = salesArrangementService;
-        _documentOnSAService = documentOnSAService;
-        _caseService = caseService;
-        _userService = userService;
-        _codebookService = codebookService;
-        _documentHelper = documentHelper;
-        _eaCodeMainHelper = eaCodeMainHelper;
-    }
 
     public async Task Handle(DocumentArchiveSaveDocumentsToArchiveRequest request, CancellationToken cancellationToken)
     {

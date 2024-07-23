@@ -5,22 +5,12 @@ using NOBY.Services.DocumentHelper;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
 
-public class GetDocumentListHandler : IRequestHandler<GetDocumentListRequest, DocumentArchiveGetDocumentListResponse>
+public class GetDocumentListHandler(
+    IDocumentArchiveServiceClient _client,
+    ICurrentUserAccessor _currentUserAccessor,
+    IDocumentHelperServiceOld _documentHelper) 
+    : IRequestHandler<GetDocumentListRequest, DocumentArchiveGetDocumentListResponse>
 {
-    private readonly IDocumentArchiveServiceClient _client;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDocumentHelperServiceOld _documentHelper;
-
-    public GetDocumentListHandler(
-            IDocumentArchiveServiceClient client,
-            ICurrentUserAccessor currentUserAccessor,
-            IDocumentHelperServiceOld documentHelper)
-    {
-        _client = client;
-        _currentUserAccessor = currentUserAccessor;
-        _documentHelper = documentHelper;
-    }
-
     public async Task<DocumentArchiveGetDocumentListResponse> Handle(GetDocumentListRequest request, CancellationToken cancellationToken)
     {
         var user = _currentUserAccessor.User;

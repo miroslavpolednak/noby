@@ -8,17 +8,9 @@ namespace NOBY.Api.Endpoints.Document;
 [ApiController]
 [Route("api/v{v:apiVersion}/document")]
 [ApiVersion(1)]
-public class DocumentController : ControllerBase
+public class DocumentController(DocumentManager _documentManager, IMediator _mediator) 
+    : ControllerBase
 {
-    private readonly DocumentManager _documentManager;
-    private readonly IMediator _mediator;
-
-    public DocumentController(DocumentManager documentManager, IMediator mediator)
-    {
-        _documentManager = documentManager;
-        _mediator = mediator;
-    }
-
     /// <summary>
     /// Vygenerování dokumentu nabídka ze šablony
     /// </summary>

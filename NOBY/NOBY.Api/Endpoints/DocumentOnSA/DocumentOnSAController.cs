@@ -17,15 +17,9 @@ namespace NOBY.Api.Endpoints.DocumentOnSA;
 [ApiController]
 [Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
-public class DocumentOnSAController : ControllerBase
+public class DocumentOnSAController(IMediator _mediator) 
+    : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public DocumentOnSAController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     /// <summary>
     /// Dokumenty Sales Arrangement-u k podpisu / v podepisovacím procesu.
     /// </summary>
@@ -244,7 +238,6 @@ public class DocumentOnSAController : ControllerBase
           CancellationToken cancellationToken)
       => await _mediator.Send(new RefreshElectronicDocumentRequest(salesArrangementId, documentOnSaId), cancellationToken);
 
-
     /// <summary>
     /// Stav podepisovaného dokumentu 
     /// </summary>
@@ -263,5 +256,4 @@ public class DocumentOnSAController : ControllerBase
           CancellationToken cancellationToken
         )
         => await _mediator.Send(new GetDocumentOnSAStatusRequest(salesArrangementId, documentOnSAId), cancellationToken);
-
 }

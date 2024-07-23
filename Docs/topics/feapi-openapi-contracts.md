@@ -175,6 +175,7 @@ Ukázka výsledného JSONu:
 Kontrakty a partial třídy pro FE API jsou generovány z OpenApi specifikace a jsou umístěny v projektu **NOBY.ApiContracts** v souboru **Contracts.cs**.
 Kontrakty jsou vygenerovány pomocí nástroje *NSwag*, nastavení pro NSwag je uloženo v souboru **settings.nswag** v projektu *NOBY.ApiContracts*.
 
+## Adresář PartialRequests
 Projekt **NOBY.ApiContracts** dále obsahuje rozšíření (partial classes) pro třídy vygenerované *NSwagem*.
 Zejména se jedná o Mediatr requesty u kterých je potřeba implementovat rozhraní `IRequest`, případně metodu `InfuseId`.
 Partial třídy requestů jsou umístěny v adresáři **PartialRequests**.
@@ -195,3 +196,16 @@ public partial class CustomerIncomeCreateIncomeRequest : IRequest<int>
     }
 }
 ```
+
+## Adresář Partials
+V adresáři Partials jsou umístěné partial classes, které obsahují další logiku jinou než implementaci IRequest.
+Zejména se jedná o implicitní / explicitní operátory atd.
+
+## Enumy sdílené v řešení mimo FE API
+Pokud je v kontraktu FE API použit enum, který je sdílený i v rámci doménových / interních služeb, chováme se k němu jinak než ke standardním enumům v OAS.
+
+V OAS je enum definován jako každý jiný enum, nicméně navíc vytváříme jeho obraz i v projektu *SharedTypes* kde je definován jako standardní C# enum. 
+Následně pak v nastavení NSwagu tento enum vyjmeme z generovaných typů v nastavení "Exluded Type Names".
+Enumy v tomto režimu vždy prefixujeme "**Enum**", tj. místo `CaseStates` je název `EnumCaseStates`.
+
+> Příkladem takového enumu je EnumCaseStates v `SharedTypes.Enums.EnumCaseStates`.
