@@ -20,11 +20,11 @@ internal sealed class LoggerBootstraper
     private readonly LoggingConfiguration _configuration;
     private readonly IServiceProvider _serviceProvider;
 
-    static string[] _excludedGrpcRequestPaths = new[]
-    {
+    static readonly string[] _excludedGrpcRequestPaths =
+    [
         "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo",
         "/grpc.health.v1.Health/Check"
-    };
+    ];
 
     public LoggerBootstraper(HostBuilderContext hostingContext, IServiceProvider serviceProvider, LoggingConfiguration configuration)
     {

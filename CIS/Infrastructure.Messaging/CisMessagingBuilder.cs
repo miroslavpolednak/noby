@@ -5,14 +5,10 @@ using CIS.Infrastructure.Messaging.KafkaFlow.Configuration;
 
 namespace CIS.Infrastructure.Messaging;
 
-internal sealed class CisMessagingBuilder : ICisMessagingBuilder
+internal sealed class CisMessagingBuilder(WebApplicationBuilder builder) 
+    : ICisMessagingBuilder
 {
-    internal readonly WebApplicationBuilder _appBuilder;
-
-    public CisMessagingBuilder(WebApplicationBuilder builder)
-    {
-        _appBuilder = builder;
-    }
+    internal readonly WebApplicationBuilder _appBuilder = builder;
 
     public ICisMessagingBuilder AddKafkaFlow(Action<IKafkaFlowMessagingConfigurator> messaging)
     {

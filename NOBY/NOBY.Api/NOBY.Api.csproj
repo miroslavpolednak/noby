@@ -39,8 +39,8 @@
     <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.7" />
-    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.4.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.61.3" />
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.5.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.62.0" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="4.0.1" />
     <PackageReference Include="Scrutor" Version="4.2.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />

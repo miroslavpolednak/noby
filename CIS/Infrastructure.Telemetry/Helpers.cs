@@ -8,8 +8,6 @@ namespace CIS.Infrastructure.Telemetry;
 
 public static class Helpers
 {
-    
-
     public static (int? UserId, string? UserIdent) GetCurrentUser(ICurrentUserAccessor? userAccessor, IHttpContextAccessor httpContextAccessor)
     {
         // mam v kontextu instanci uzivatele
