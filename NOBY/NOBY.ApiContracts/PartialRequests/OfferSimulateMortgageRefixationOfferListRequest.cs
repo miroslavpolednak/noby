@@ -1,7 +1,7 @@
 ﻿namespace NOBY.ApiContracts;
 
 public partial class OfferSimulateMortgageRefixationOfferListRequest
-    : IRequest<OfferSimulateMortgageRefixationOfferListResponse>
+    : IRequest<OfferSimulateMortgageRefixationOfferListResponse?>
 {
     [JsonIgnore]
     public long CaseId { get; set; }
