@@ -26,12 +26,9 @@ using SharedTypes.Enums;
 using FastEnumUtility;
 using DomainServices.ProductService.Clients;
 using SharedTypes.Extensions;
-using DomainServices.CodebookService.Contracts;
-using System.Runtime.Intrinsics.Arm;
 using Google.Protobuf.Collections;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.ProductService.Contracts;
-using System.Diagnostics.Metrics;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
