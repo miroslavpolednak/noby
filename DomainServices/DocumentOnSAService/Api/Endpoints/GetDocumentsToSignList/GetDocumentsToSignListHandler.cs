@@ -55,7 +55,6 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
                                                               && !e.IsFinal)
                                                   .ToListAsync(cancellationToken);
 
-
         var response = new GetDocumentsToSignListResponse();
 
         if (salesArrangementType.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest)
@@ -84,23 +83,27 @@ public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignL
         var documentTypes = await _codebookServiceClients.DocumentTypes(cancellationToken);
         var documentTypeId = documentTypes.SingleOrDefault(d => d.SalesArrangementTypeId == salesArrangement.SalesArrangementTypeId)?.Id;
         var documentsOnSaToSignVirtual = _documentOnSaMapper.CreateDocumentOnSaToSign(documentTypeId, request.SalesArrangementId);
-        var documentOnSaReal = documentOnSaEntities.Find(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
+        
+        // Map real service request (should by only one here for non worflow SA, for WF documentTypeId gonna be null and many docsOnSa are possible)
+        var documentsOnSasReal = documentOnSaEntities.Where(r => r.DocumentTypeId == documentsOnSaToSignVirtual.DocumentTypeId);
 
-        if (documentOnSaReal is not null)
+        if (documentsOnSasReal.Any())
         {
-            // Map real service request (should by only one here)
-            var documentsOnSaToSignReal = _documentOnSaMapper.MapDocumentOnSaToSign(new List<DocumentOnSa>() { documentOnSaReal });
-            response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
+            foreach (var documentOnSaReal in documentsOnSasReal)
+            {
+                var documentsOnSaToSignReal = _documentOnSaMapper.MapDocumentOnSaToSign([documentOnSaReal]);
+                response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignReal);
+            }
         }
-        else
+        else if (documentTypeId is not null) // For WF virtual documentOnSa doesn't make sense (documentTypeId is null). 
         {
             // Map virtual
             response.DocumentsOnSAToSign.Add(documentsOnSaToSignVirtual);
         }
 
         // Map real CRS (DocumentTypeId == 13)
-        var documentsOnSaReal = documentOnSaEntities.Where(r => r.DocumentTypeId == (int)DocumentTypes.DANRESID); // 13
-        var documentsOnSaToSignRealCrs = _documentOnSaMapper.MapDocumentOnSaToSign(documentsOnSaReal);
+        var documentsOnSaRealCrs = documentOnSaEntities.Where(r => r.DocumentTypeId == (int)DocumentTypes.DANRESID); // 13
+        var documentsOnSaToSignRealCrs = _documentOnSaMapper.MapDocumentOnSaToSign(documentsOnSaRealCrs);
         response.DocumentsOnSAToSign.AddRange(documentsOnSaToSignRealCrs);
 
         // Map virtual CRS
