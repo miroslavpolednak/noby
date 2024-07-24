@@ -4,15 +4,22 @@ using DomainServices.CustomerService.Clients;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using SharedTypes.GrpcTypes;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
 // musi tady byt Mediatr.Unit, jinak nefunguje rollback behavior
-internal sealed class IdentifyByIdentityHandler
-    : IRequestHandler<IdentifyByIdentityRequest, MediatR.Unit>
+internal sealed class IdentifyByIdentityHandler(
+    IRollbackBag _bag,
+    Services.CreateProductTrain.ICreateProductTrainService _createProductTrain,
+    Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICustomerServiceClient _customerService,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    IHouseholdServiceClient _householdService,
+    IProductServiceClient _productService)
+        : IRequestHandler<IdentifyByIdentityRequest, Unit>
 {
     public async Task<Unit> Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
     {
@@ -35,8 +42,8 @@ internal sealed class IdentifyByIdentityHandler
 
         //Debtor has to be identified first
         if (saInstance.IsProductSalesArrangement()
-            && customerOnSaInstance.CustomerRoleId is not (int)SharedTypes.Enums.EnumCustomerRoles.Debtor 
-            && !customerDetails.Any(c => c.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
+            && customerOnSaInstance.CustomerRoleId is not (int)EnumCustomerRoles.Debtor 
+            && !customerDetails.Any(c => c.CustomerRoleId == (int)EnumCustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
         {
             throw new NobyValidationException("Main customer has to be identified first.");
         }
@@ -55,7 +62,7 @@ internal sealed class IdentifyByIdentityHandler
         if (saInstance.IsProductSalesArrangement())
         {
             // hlavni klient
-            if (customerOnSaInstance.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor)
+            if (customerOnSaInstance.CustomerRoleId == (int)EnumCustomerRoles.Debtor)
             {
                 await _createProductTrain.RunAll(saInstance.CaseId, saInstance.SalesArrangementId, request.CustomerOnSAId, updateResult.CustomerIdentifiers, cancellationToken);
             }
@@ -66,7 +73,7 @@ internal sealed class IdentifyByIdentityHandler
                 try
                 {
                     var partnerId = updateResult.CustomerIdentifiers.GetMpIdentity().IdentityId;
-                    var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Codebtor ? 2 : 0;
+                    var relationshipTypeId = customerOnSaInstance.CustomerRoleId == (int)EnumCustomerRoles.Codebtor ? 2 : 0;
 
                     await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
                 }
@@ -143,34 +150,5 @@ internal sealed class IdentifyByIdentityHandler
         modelToUpdate.Customer.CustomerIdentifiers.Add(customerIdentity);
 
         return await _customerOnSAService.UpdateCustomer(modelToUpdate, cancellationToken);
-    }
-
-    private readonly IRollbackBag _bag;
-    private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly IProductServiceClient _productService;
-    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-
-    public IdentifyByIdentityHandler(
-        IRollbackBag bag,
-        Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
-        Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICustomerServiceClient customerService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IHouseholdServiceClient householdService, 
-        IProductServiceClient productService)
-    {
-        _bag = bag;
-        _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
-        _householdService = householdService;
-        _productService = productService;
-        _createProductTrain = createProductTrain;
-        _salesArrangementService = salesArrangementService;
-        _customerService = customerService;
-        _customerOnSAService = customerOnSAService;
     }
 }
