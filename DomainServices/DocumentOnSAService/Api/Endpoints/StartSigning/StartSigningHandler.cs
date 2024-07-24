@@ -86,7 +86,7 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
             // For CRS, Product and Service request  
             if (documentOnSaEntity.TaskId is null && documentOnSaEntity.SignatureTypeId is not null && documentOnSaEntity.SignatureTypeId == SignatureTypes.Electronic.ToByte())
             {
-                var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement.CaseId, cancellationToken);
+                var prepareDocumentRequest = await _startSigningMapper.MapPrepareDocumentRequest(documentOnSaEntity, salesArrangement, cancellationToken);
                 var referenceId = await _eSignaturesClient.PrepareDocument(prepareDocumentRequest, cancellationToken);
                 var uploadDocumentRequest = await _startSigningMapper.MapUploadDocumentRequest(referenceId, prepareDocumentRequest.DocumentData.FileName, salesArrangement, documentOnSaEntity, cancellationToken);
                 var (externalId, _) = await _eSignaturesClient.UploadDocument(uploadDocumentRequest.ReferenceId, uploadDocumentRequest.Filename, uploadDocumentRequest.CreationDate, uploadDocumentRequest.FileData, cancellationToken);
