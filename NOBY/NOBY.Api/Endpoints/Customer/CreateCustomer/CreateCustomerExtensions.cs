@@ -1,15 +1,13 @@
 ﻿using SharedTypes.GrpcTypes;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _Cust = DomainServices.CustomerService.Contracts;
-using NOBY.Api.Endpoints.Customer.CreateCustomer.Dto;
-using NOBY.Dto.Customer;
 using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
 internal static class CreateCustomerExtensions
 {
-    public static _Cust.CreateCustomerRequest ToDomainService(this CreateCustomerRequest request, SharedTypes.GrpcTypes.Mandants createIn, params Identity[] identities)
+    public static _Cust.CreateCustomerRequest ToDomainService(this CustomerCreateCustomerRequest request, SharedTypes.GrpcTypes.Mandants createIn, params Identity[] identities)
     {
         var model = new _Cust.CreateCustomerRequest
         {
@@ -36,8 +34,7 @@ internal static class CreateCustomerExtensions
                 ContactTypeId = (int)ContactTypes.Email,
                 Email = new _Cust.EmailAddressItem
                 {
-                    EmailAddress = request.Contacts.EmailAddress.EmailAddress,
-                    IsEmailConfirmed = request.Contacts.EmailAddress.IsConfirmed
+                    EmailAddress = request.Contacts.EmailAddress.EmailAddress
                 }
             });
         }
@@ -49,8 +46,7 @@ internal static class CreateCustomerExtensions
                 Mobile = new _Cust.MobilePhoneItem
                 {
                     PhoneIDC = request.Contacts.MobilePhone.PhoneIDC ?? "",
-                    PhoneNumber = request.Contacts.MobilePhone.PhoneNumber,
-                    IsPhoneConfirmed = request.Contacts.MobilePhone.IsConfirmed
+                    PhoneNumber = request.Contacts.MobilePhone.PhoneNumber
                 }
             });
         }
@@ -68,7 +64,7 @@ internal static class CreateCustomerExtensions
         return model;
     }
 
-    public static GrpcAddress ToDomainService(this Dto.Address address)
+    public static GrpcAddress ToDomainService(this SharedTypesAddress address)
     {
         return new GrpcAddress
         {
@@ -110,22 +106,22 @@ internal static class CreateCustomerExtensions
         return model;
     }
 
-    public static CreateCustomerResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified, ResultCode resultCode)
+    public static CustomerCreateCustomerResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified, CustomerCreateCustomerResponseResultCode resultCode)
     {
-        GetCustomerDetail.Dto.NaturalPersonModel person = new();
+        CustomerNaturalPersonModel person = new();
         customer.NaturalPerson?.FillResponseDto(person);
         person.IsBrSubscribed = customer.NaturalPerson?.IsBrSubscribed;
 
-        var model = new CreateCustomerResponse
+        var model = new CustomerCreateCustomerResponse
         {
             NaturalPerson = person,
             JuridicalPerson = null,
             IsVerified = isVerified,
             ResultCode = resultCode,
             IdentificationDocument = customer.IdentificationDocument?.ToResponseDto(),
-            Addresses = customer.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList(),
+            Addresses = customer.Addresses?.Select(t => (SharedTypesAddress)t!).ToList(),
             Contacts = new(),
-            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new LegalCapacityItem
+            LegalCapacity = customer.NaturalPerson?.LegalCapacity is null ? null : new CustomerLegalCapacityItem
             {
                 RestrictionTypeId = customer.NaturalPerson.LegalCapacity.RestrictionTypeId,
                 RestrictionUntil = customer.NaturalPerson.LegalCapacity.RestrictionUntil
@@ -146,7 +142,4 @@ internal static class CreateCustomerExtensions
 
         return model;
     }
-
-    private static bool stringCompare(string? s1, string? s2)
-        => (s1 ?? "").Equals(s2, StringComparison.OrdinalIgnoreCase);
 }

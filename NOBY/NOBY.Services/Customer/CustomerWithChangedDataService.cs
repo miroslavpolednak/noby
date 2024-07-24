@@ -1,7 +1,5 @@
 ﻿using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients;
-using NOBY.Dto.Customer;
 
 namespace NOBY.Services.Customer;
 
@@ -52,12 +50,5 @@ public class CustomerWithChangedDataService
             CustomerDetail = customerInfo.CustomerDetail,
             CustomerWithChangedData = customerWithChangedData
         };
-    }
-
-    public async Task<TCustomer> GetCustomerResponseDto<TCustomer>(int customerOnSaId, CancellationToken cancellationToken = default) where TCustomer : BaseCustomerDetail
-    {
-        var info = await GetCustomerInfo(customerOnSaId, cancellationToken);
-
-        return CustomerMapper.MapCustomerToResponseDto<TCustomer>(info.CustomerDetail, info.CustomerOnSA);
     }
 }

@@ -5,9 +5,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
 internal sealed class CreateCustomerRollback
-    : IRollbackAction<CreateCustomerRequest>
+    : IRollbackAction<CustomerCreateCustomerRequest>
 {
-    public async Task ExecuteRollback(Exception exception, CreateCustomerRequest request, CancellationToken cancellationToken = default)
+    public async Task ExecuteRollback(Exception exception, CustomerCreateCustomerRequest request, CancellationToken cancellationToken = default)
     {
         _logger.RollbackHandlerStarted(nameof(CreateCustomerRollback));
 

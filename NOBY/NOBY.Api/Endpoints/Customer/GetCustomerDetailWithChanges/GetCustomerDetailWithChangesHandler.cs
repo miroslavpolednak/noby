@@ -5,9 +5,9 @@ using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.GetCustomerDetailWithChanges;
 
-internal sealed class GetCustomerDetailWithChangesHandler : IRequestHandler<GetCustomerDetailWithChangesRequest, GetCustomerDetailWithChangesResponse>
+internal sealed class GetCustomerDetailWithChangesHandler : IRequestHandler<GetCustomerDetailWithChangesRequest, CustomerGetCustomerDetailWithChangesResponse>
 {
-    public async Task<GetCustomerDetailWithChangesResponse> Handle(GetCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerGetCustomerDetailWithChangesResponse> Handle(GetCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
         var customerInfo = await _changedDataService.GetCustomerWithChangedData(request.CustomerOnSAId, cancellationToken);
 
@@ -16,7 +16,7 @@ internal sealed class GetCustomerDetailWithChangesHandler : IRequestHandler<GetC
 
         await checkProductTypeMandant(salesArrangement.CaseId, cancellationToken);
 
-        return CustomerMapper.MapCustomerToResponseDto<GetCustomerDetailWithChangesResponse>(customerInfo.CustomerWithChangedData, customerInfo.CustomerOnSA);
+        return CustomerMapper.MapCustomerToResponseDto<CustomerGetCustomerDetailWithChangesResponse>(customerInfo.CustomerWithChangedData, customerInfo.CustomerOnSA);
     }
 
     private async Task checkProductTypeMandant(long caseId, CancellationToken cancellationToken)

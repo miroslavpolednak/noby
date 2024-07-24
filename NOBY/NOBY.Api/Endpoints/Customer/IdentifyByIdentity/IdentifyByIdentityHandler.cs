@@ -19,9 +19,9 @@ internal sealed class IdentifyByIdentityHandler(
     ICustomerOnSAServiceClient _customerOnSAService,
     IHouseholdServiceClient _householdService,
     IProductServiceClient _productService)
-        : IRequestHandler<IdentifyByIdentityRequest, Unit>
+        : IRequestHandler<CustomerIdentifyByIdentityRequest, Unit>
 {
-    public async Task<Unit> Handle(IdentifyByIdentityRequest request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(CustomerIdentifyByIdentityRequest request, CancellationToken cancellationToken)
     {
         // customer On SA
         var customerOnSaInstance = await _customerOnSAService.GetCustomer(request.CustomerOnSAId, cancellationToken);
@@ -130,7 +130,7 @@ internal sealed class IdentifyByIdentityHandler(
         return (customersInSA, currentHousehold, saInstance);
     }
 
-    private async Task<_HO.UpdateCustomerResponse> updateCustomer(_HO.CustomerOnSA customerOnSaInstance, SharedTypes.Types.CustomerIdentity customerIdentity, CancellationToken cancellationToken)
+    private async Task<_HO.UpdateCustomerResponse> updateCustomer(_HO.CustomerOnSA customerOnSaInstance, SharedTypesCustomerIdentity customerIdentity, CancellationToken cancellationToken)
     {
         // crm customer
         var customerInstance = await _customerService.GetCustomerDetail(customerIdentity, cancellationToken);

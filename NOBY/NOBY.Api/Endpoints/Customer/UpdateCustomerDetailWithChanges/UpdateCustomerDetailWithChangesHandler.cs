@@ -15,7 +15,7 @@ using NOBY.Services.SigningHelper;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
-internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<UpdateCustomerDetailWithChangesRequest>
+internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<CustomerUpdateCustomerDetailWithChangesRequest>
 {
     private readonly IHouseholdServiceClient _householdService;
     private readonly ICustomerServiceClient _customerService;
@@ -55,13 +55,13 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         _customerChangedDataService = customerChangedDataService;
     }
 
-    public async Task Handle(UpdateCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
+    public async Task Handle(CustomerUpdateCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
         await _customerService.ValidateMobilePhone(request.MobilePhone, cancellationToken);
         await _customerService.ValidateEmail(request.EmailAddress, cancellationToken);
 
         var customerInfo =  await _customerChangedDataService.GetCustomerInfo(request.CustomerOnSAId, cancellationToken);
-        var originalModel = CustomerMapper.MapCustomerToResponseDto<UpdateCustomerDetailWithChangesRequest>(customerInfo.CustomerDetail, customerInfo.CustomerOnSA);
+        var originalModel = CustomerMapper.MapCustomerToResponseDto<CustomerUpdateCustomerDetailWithChangesRequest>(customerInfo.CustomerDetail, customerInfo.CustomerOnSA);
 
         await UpdateBasicCustomerData(request, customerInfo.CustomerOnSA, cancellationToken);
 
@@ -69,7 +69,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         {
             var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
 
-            request.CustomerIdentification ??= new UpdateCustomerDetailWithChangesRequest.CustomerIdentificationObj
+            request.CustomerIdentification ??= new CustomerUpdateCustomerDetailWithChangesRequest.CustomerIdentificationObj
             {
                 IdentificationDate = DateTime.Now.Date,
                 CzechIdentificationNumber = user.UserInfo.Cin,
@@ -117,7 +117,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
     // ----- update zakladnich udaju nasi instance customera
     // pokud se zmenili zakladni udaje jako jmeno, prijmeni, tak je potreba tuto zmenu
     // propsat take na CustomerOnSA (jedna se o props primo na entite, nikoliv v JSON datech) a Case
-    private async Task UpdateBasicCustomerData(UpdateCustomerDetailWithChangesRequest request, CustomerOnSA customerOnSa, CancellationToken cancellationToken)
+    private async Task UpdateBasicCustomerData(CustomerUpdateCustomerDetailWithChangesRequest request, CustomerOnSA customerOnSa, CancellationToken cancellationToken)
     {
         if (isStoredModelDifferentToRequest(customerOnSa, request))
         {
@@ -154,7 +154,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         }
     }
 
-    private async Task<(CustomerChangeData? delta, DeltaComparerResult result)> PrepareDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest originalModel, CancellationToken cancellationToken)
+    private async Task<(CustomerChangeData? delta, DeltaComparerResult result)> PrepareDelta(CustomerUpdateCustomerDetailWithChangesRequest request, CustomerUpdateCustomerDetailWithChangesRequest originalModel, CancellationToken cancellationToken)
     {
         request.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
         RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(originalModel, request);
@@ -227,7 +227,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
     /// Vraci true, pokud se zmenily zakladni udaje CustomerOnSA instance 
     /// (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
     /// </summary>
-    private static bool isStoredModelDifferentToRequest(CustomerOnSA customerOnSA, UpdateCustomerDetailWithChangesRequest request)
+    private static bool isStoredModelDifferentToRequest(CustomerOnSA customerOnSA, CustomerUpdateCustomerDetailWithChangesRequest request)
     {
         return !customerOnSA.Name.Equals(request.NaturalPerson?.LastName, StringComparison.Ordinal)
             || !customerOnSA.FirstNameNaturalPerson.Equals(request.NaturalPerson?.FirstName, StringComparison.Ordinal)
@@ -238,7 +238,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
     /// <summary>
     /// Vytvori metadata CustomerOnSA
     /// </summary>
-    private static CustomerChangeMetadata createMetadata(UpdateCustomerDetailWithChangesRequest? originalModel, UpdateCustomerDetailWithChangesRequest request,
+    private static CustomerChangeMetadata createMetadata(CustomerUpdateCustomerDetailWithChangesRequest? originalModel, CustomerUpdateCustomerDetailWithChangesRequest request,
         CustomerChangeData? delta, DeltaComparerResult deltaResult)
     {
         var metadata = new CustomerChangeMetadata
@@ -261,7 +261,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
     /// <summary>
     /// Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
     /// </summary>
-    private static (CustomerChangeData? delta, DeltaComparerResult result) CreateDelta(UpdateCustomerDetailWithChangesRequest request, UpdateCustomerDetailWithChangesRequest? originalModel)
+    private static (CustomerChangeData? delta, DeltaComparerResult result) CreateDelta(CustomerUpdateCustomerDetailWithChangesRequest request, CustomerUpdateCustomerDetailWithChangesRequest? originalModel)
     {
         var requestCustomerChangeData = CustomerMapper.MapCustomerDtoToChangeData(request);
         var originalCustomerChangeData = CustomerMapper.MapCustomerDtoToChangeData(originalModel);
@@ -276,10 +276,10 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         ModelComparers.CompareObjects(requestCustomerChangeData?.Addresses, originalCustomerChangeData?.Addresses, ref hasDifferences, obj => delta.Addresses = obj);
 
         // tohle je zajimavost - do delty ukladame zmeny jen u kontaktu, ktere nejsou v CM jako IsConfirmed=true
-        if (!(originalModel?.EmailAddress?.IsConfirmed ?? false))
+        if (!(originalModel?.IsEmailConfirmed ?? false))
             ModelComparers.CompareObjects(requestCustomerChangeData?.EmailAddress, originalCustomerChangeData?.EmailAddress, ref hasDifferences, obj => delta.EmailAddress = obj);
 
-        if (!(originalModel?.MobilePhone?.IsConfirmed ?? false))
+        if (!(originalModel?.IsPhoneConfirmed ?? false))
             ModelComparers.CompareObjects(requestCustomerChangeData?.MobilePhone, originalCustomerChangeData?.MobilePhone, ref hasDifferences, obj => delta.MobilePhone = obj);
 
         result.ClientDataWereChanged = result.ClientDataWereChanged || hasDifferences;
@@ -298,7 +298,7 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
     /// </summary>
     private static CustomerAdditionalData createAdditionalData(
         CustomerOnSA customerOnSA,
-        UpdateCustomerDetailWithChangesRequest request)
+        CustomerUpdateCustomerDetailWithChangesRequest request)
     {
         var additionalData = customerOnSA.CustomerAdditionalData ?? new CustomerAdditionalData();
 
@@ -319,18 +319,18 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<U
         return additionalData;
     }
 
-    private static void RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(UpdateCustomerDetailWithChangesRequest original, UpdateCustomerDetailWithChangesRequest request)
+    private static void RemoveContactAddressIfNotConfirmedAndContactsAreConfirmed(CustomerUpdateCustomerDetailWithChangesRequest original, CustomerUpdateCustomerDetailWithChangesRequest request)
     {
         if (original.Addresses is null || !original.Addresses.Any(address => address.AddressTypeId == (int)AddressTypes.Mailing && address.IsAddressConfirmed != true))
             return;
 
-        if (original.EmailAddress?.IsConfirmed != true || original.MobilePhone?.IsConfirmed != true)
+        if (original.IsEmailConfirmed != true || original.IsPhoneConfirmed != true)
             return;
 
         request.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Mailing);
     }
 
-    private async Task RemoveTinMissingReasonIfTinIsNotRequired(TaxResidenceItem? original, CancellationToken cancellationToken)
+    private async Task RemoveTinMissingReasonIfTinIsNotRequired(CustomerTaxResidenceItem? original, CancellationToken cancellationToken)
     {
         if (original?.ResidenceCountries is null)
             return;

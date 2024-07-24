@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
-using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Shared;
 
-internal sealed class IdentificationDocumentValidator : AbstractValidator<IdentificationDocumentFull>
+internal sealed class IdentificationDocumentValidator : AbstractValidator<SharedTypesIdentificationDocumentFull>
 {
     private const int CustomerValidationErrorCode = 90032;
     private const int IdentityCardId = 1;
@@ -14,10 +13,10 @@ internal sealed class IdentificationDocumentValidator : AbstractValidator<Identi
     public IdentificationDocumentValidator()
     {
         RuleFor(document => document.ValidTo)
-            .GreaterThan(DateTime.Today).WithErrorCode(CustomerValidationErrorCode);
+            .GreaterThan(DateOnly.FromDateTime(DateTime.Now)).WithErrorCode(CustomerValidationErrorCode);
 
         RuleFor(document => document.IssuedOn)
-            .LessThanOrEqualTo(DateTime.Today).WithErrorCode(CustomerValidationErrorCode);
+            .LessThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now)).WithErrorCode(CustomerValidationErrorCode);
 
         RuleFor(document => document.Number)
             .NotEmpty().WithErrorCode(CustomerValidationErrorCode);

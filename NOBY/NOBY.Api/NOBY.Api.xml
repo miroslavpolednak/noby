@@ -370,123 +370,7 @@
             </summary>
             <param name="customerOnSAId">ID customera</param>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.HardCreate">
-            <summary>
-            Příznak tvrdého vytvoření customera.
-            </summary>
-            <example>true</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.BirthDate">
-            <summary>
-            Datum narození
-            </summary>
-            <example>2000-02-01</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.FirstName">
-            <summary>
-            Jméno
-            </summary>
-            <example>Jidáš</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.LastName">
-            <summary>
-            Příjmení
-            </summary>
-            <example>Skočdopole</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.BirthPlace">
-            <summary>
-            Místo narození
-            </summary>
-            <example>Praha</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.GenderId">
-            <summary>
-            Pohlaví\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.CitizenshipCountryId">
-            <summary>
-            Státní příslušnost/občanství
-            </summary>
-            <example>16</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.BirthNumber">
-            <summary>
-            Rodné číslo CZ
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest.PrimaryAddress">
-            <summary>
-            Trvalá adresa v ČR
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerResponse.IsVerified">
-            <summary>
-            Klient byl při založení ztotožněn v základních registrech
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address">
-            <summary>
-            Adresa - bydliste, kontaktni atd.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.Street">
-            <summary>
-            Ulice
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.StreetNumber">
-            <summary>
-            Číslo orientační
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.HouseNumber">
-            <summary>
-            Číslo popisné
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.EvidenceNumber">
-            <summary>
-            Číslo evidenční
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.Postcode">
-            <summary>
-            PSČ
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.City">
-            <summary>
-            Město/Obec
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.CountryId">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.CityDistrict">
-            <summary>
-            Část obce
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.PragueDistrict">
-            <summary>
-            Praha obvod
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.CountrySubdivision">
-            <summary>
-            Název územního celku
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.CreateCustomer.Dto.Address.AddressPointId">
-            <summary>
-            Id adresního bodu
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.CreateCustomer(System.Int32,NOBY.Api.Endpoints.Customer.CreateCustomer.CreateCustomerRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.CreateCustomer(System.Int32,NOBY.ApiContracts.CustomerCreateCustomerRequest)">
             <summary>
             Založení nového klienta
             </summary>
@@ -496,7 +380,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.SearchCustomers(NOBY.Api.Endpoints.Customer.SearchCustomers.SearchCustomersRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.SearchCustomers(NOBY.ApiContracts.CustomerSearchCustomersRequest,System.Threading.CancellationToken)">
             <summary>
             Vyhledávání klientů
             </summary>
@@ -509,7 +393,7 @@
             </remarks>
             <returns>Seznam nalezených klientů. BE služba není stránkovatelná, takže stránkovaní je jen jako fake na FE.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetCustomerDetail(SharedTypes.Types.CustomerIdentity)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.GetCustomerDetail(NOBY.ApiContracts.SharedTypesCustomerIdentity)">
             <summary>
             Detail klienta
             </summary>
@@ -519,7 +403,7 @@
             </remarks>
             <returns>Kompletní detail klienta vrácený z KB CM nebo KonsDb.</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.IdentifyByIdentity(System.Int32,NOBY.Api.Endpoints.Customer.IdentifyByIdentity.IdentifyByIdentityRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.IdentifyByIdentity(System.Int32,NOBY.ApiContracts.CustomerIdentifyByIdentityRequest)">
             <summary>
             Identifikace klienta
             </summary>
@@ -529,7 +413,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.Identify(NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.Identify(NOBY.ApiContracts.CustomerIdentifyRequest)">
             <summary>
             Identifikace klienta
             </summary>
@@ -539,7 +423,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=E62ABB4D-8480-4b3e-BD13-1A1B83F5C740"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ValidateContact(NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ValidateContact(NOBY.ApiContracts.CustomerValidateContactRequest)">
             <summary>
             Validace emailu či telefonního čísla
             </summary>
@@ -548,7 +432,7 @@
             <a href="https://eacloud.ds.kb.cz/webea?m=1&amp;o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ProfileCheck(SharedTypes.Types.CustomerIdentity)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.ProfileCheck(NOBY.ApiContracts.SharedTypesCustomerIdentity)">
             <summary>
             Profile check s profilem identifikovaný
             </summary>
@@ -566,7 +450,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=6452CB93-41C7-450f-A20F-E8CB5208F1DE"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.UpdateCustomerDetailWithChanges(System.Int32,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.CustomerController.UpdateCustomerDetailWithChanges(System.Int32,NOBY.ApiContracts.CustomerUpdateCustomerDetailWithChangesRequest)">
             <summary>
             Uložení dat klienta (pro uložení změn lokálně)
             </summary>
@@ -575,179 +459,26 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=BB5766C4-CCC7-487e-B482-1B1C86D999F7"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.GetCustomerDetail.Dto.NaturalPersonModel.IsBrSubscribed">
-            <summary>
-            Přihlášen k aktualizaci dat ze základních registrů
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.IdentifyByIdentity.IdentifyByIdentityRequest.CustomerIdentity">
-            <summary>
-            Identita klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.FirstName">
-            <summary>
-            Jméno customera
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.LastName">
-            <summary>
-            Příjmení customera
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.DateOfBirth">
-            <summary>
-            Datum narození FO
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.IssuingCountryId">
-            <summary>
-            Země vydání dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.IdentificationDocumentTypeId">
-            <summary>
-            Typ dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.IdentificationDocumentNumber">
-            <summary>
-            Číslo dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.BirthNumber">
-            <summary>
-            Rodné číslo
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.Identify.IdentifyRequest.Identity">
-            <summary>
-            ID klienta v MP nebo KB
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.ProfileCheck.ProfileCheckResponse.IsCompliant">
-            <summary>
-            Příznak splnění profilu identifikovaný
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.BaseCustomer.FirstName">
-            <summary>
-            Jmeno klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.BaseCustomer.LastName">
-            <summary>
-            Prijmeni klienta
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.BaseCustomer.DateOfBirth">
-            <summary>
-            Datum narozeni FO
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.BaseCustomer.BirthNumber">
-            <summary>
-            Rodne cislo
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.BaseCustomer.NameJuridicalPerson">
-            <summary>
-            Nazev pravnicke osoby
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.BaseCustomer.Cin">
-            <summary>
-            IC pravnicke osoby
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.SearchData.IdentityId">
-            <summary>
-            [optional] ID klienta v MP nebo KB
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.SearchData.IssuingCountryId">
-            <summary>
-            [optional] Zeme vydani dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.SearchData.IdentificationDocumentTypeId">
-            <summary>
-            [optional] Type dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.Dto.SearchData.IdentificationDocumentNumber">
-            <summary>
-            [optional] Cislo dokladu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.SearchCustomersRequest.SearchData">
-            <summary>
-            Podle ceho se ma hledat
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.SearchCustomersRequest.Pagination">
-            <summary>
-            Nastaveni strankovani a razeni kolekce Cases.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.SearchCustomersResponse.Pagination">
-            <summary>
-            Informace o strankovani a razeni.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.SearchCustomers.SearchCustomersResponse.Rows">
-            <summary>
-            Kolekce nalezenych klientu.
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.isStoredModelDifferentToRequest(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.isStoredModelDifferentToRequest(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.ApiContracts.CustomerUpdateCustomerDetailWithChangesRequest)">
             <summary>
             Vraci true, pokud se zmenily zakladni udaje CustomerOnSA instance 
             (tj. pole, ktera jsou primo na entite, nikoliv v JSON datech)
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,DomainServices.HouseholdService.Contracts.Model.CustomerChangeData,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.DeltaComparerResult)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createMetadata(NOBY.ApiContracts.CustomerUpdateCustomerDetailWithChangesRequest,NOBY.ApiContracts.CustomerUpdateCustomerDetailWithChangesRequest,DomainServices.HouseholdService.Contracts.Model.CustomerChangeData,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.DeltaComparerResult)">
             <summary>
             Vytvori metadata CustomerOnSA
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.CreateDelta(NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.CreateDelta(NOBY.ApiContracts.CustomerUpdateCustomerDetailWithChangesRequest,NOBY.ApiContracts.CustomerUpdateCustomerDetailWithChangesRequest)">
             <summary>
             Vytvori JSON objekt, ktery obsahuje rozdil (deltu) mezi tim, co prislo v requestu a tim, co mame aktualne ulozene v CustomerOnSA a KB CM.
             </summary>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createAdditionalData(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest)">
+        <member name="M:NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesHandler.createAdditionalData(DomainServices.HouseholdService.Contracts.CustomerOnSA,NOBY.ApiContracts.CustomerUpdateCustomerDetailWithChangesRequest)">
             <summary>
             Vytvori / upravi JSON data v prop CustomerAdditionalData
             Data se upravuji na zaklade toho, co prijde v requestu.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest.Contact">
-            <summary>
-            telefonní číslo s mezinárodní předvolbou nebo email
-            </summary>
-            <example>+420 777 457 283</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactRequest.ContactType">
-            <summary>
-            Typ kontatku
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsContactValid">
-            <summary>
-            Je kontakt validni?
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.ContactType">
-            <summary>
-            Typ kontatku
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Customer.ValidateContact.ValidateContactResponse.IsMobile">
-            <summary>
-            Je to mobilní číslo?
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipIds(System.Int64,System.Threading.CancellationToken)">

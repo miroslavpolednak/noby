@@ -4,7 +4,7 @@ using NOBY.Api.Endpoints.Customer.Shared;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
-internal sealed class UpdateCustomerDetailWithChangesRequestValidator : AbstractValidator<UpdateCustomerDetailWithChangesRequest>
+internal sealed class UpdateCustomerDetailWithChangesRequestValidator : AbstractValidator<CustomerUpdateCustomerDetailWithChangesRequest>
 {
     private const int CustomerValidationErrorCode = 90032;
 

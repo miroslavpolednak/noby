@@ -583,7 +583,347 @@
         }
       }
     },
-
+    "/api/v1/customer-on-sa/{customerOnSAId}/identity": {
+      "post": {
+        "tags": [ "Klient" ],
+        "summary": "Založení nového klienta",
+        "description": "Vytvoření Customer entity, která zaštiťuje KB customera a MPSS customera.<br /><br /><br />Na výstupu je Customer objekt s kompletními daty z KB CM.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=3DF2C802-9657-4400-9E31-E3B0D3E36E2D\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong>Rollback support</strong><br/>- volá CustomerOnSAService.UpdateCustomer() se snapshotem instance customera ze začátku requestu<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>CLIENT_Modify",
+        "operationId": "CreateCustomer",
+        "parameters": [
+          {
+            "name": "customerOnSAId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CustomerCreateCustomerRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerCreateCustomerResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/customer/search": {
+      "post": {
+        "tags": [ "Klient" ],
+        "summary": "Vyhledávání klientů",
+        "description": "Endpoint umožňuje:<br /><br />- hledat podle zadaných kriterií<br /><br />- nastavit stránkovaní<br /><br />- nastavit řazení [lastName]<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F2D0EA12-6E96-4eea-92A6-D179E99B0E2B\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>CLIENT_SearchPerson",
+        "operationId": "SearchCustomers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CustomerSearchCustomersRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerSearchCustomersResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/api/v1/customer/get": {
+      "post": {
+        "tags": [ "Klient" ],
+        "summary": "Detail klienta",
+        "description": "Vrátí detail klienta z KB CM / KonsDB.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea?m=1&o=7DE65D0D-8FAF-4c01-A6E1-04F69E90A753\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetCustomerDetail",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+                  }
+                ],
+                "description": "Identita klienta"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerGetCustomerDetailResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/customer-on-sa/{customerOnSAId}/identify-by-identity": {
+      "post": {
+        "tags": [ "Klient" ],
+        "summary": "Identifikace klienta",
+        "description": "Slouží pro identifikaci klienta.<br /><br />Možné použití pro hlavního dlužníka i pro spoludlužníka, na Domácnosti, na Modelaci hypotéky.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=EF40D23F-A77A-4a04-AA79-38779970393E\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong>Rollback support</strong><br/>- volá CustomerOnSAService.UpdateCustomer() se snapshotem instance customera ze začátku requestu<br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>CLIENT_Modify",
+        "operationId": "IdentifyByIdentity",
+        "parameters": [
+          {
+            "name": "customerOnSAId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CustomerIdentifyByIdentityRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/v1/customer/identify": {
+      "post": {
+        "tags": [ "Klient" ],
+        "summary": "Identifikace klienta",
+        "description": "Identikace customera probíhá provoláním <i>DS:</i> CustomerService/SearchCustomers a vrátí <b>právě jednoho nalezeného klienta</b>, případně null / HTTP 204 při nenalezení klienta v KB customer managementu.<br /><br /><br /><br />V případě shody s více klienty KB customer managementu dojde k vrácení chyby a zalogování duplicitních KBID.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=E62ABB4D-8480-4b3e-BD13-1A1B83F5C740\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>CLIENT_IdentifyPerson",
+        "operationId": "Identify",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CustomerIdentifyRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerInList"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/api/v1/contact/validate": {
+      "post": {
+        "tags": [ "Klient" ],
+        "summary": "Validace emailu či telefonního čísla",
+        "description": "Validace kontatů (email či telefon) pomocí <i>DS:</i> CustomerService/validateContacts. Pro telefonní čísla vrací i informaci, zda se jedná o mobilní číslo.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea?m=1&o=C74DFCBB-3F27-4bd1-A9D7-5DCE923AC862\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "ValidateContact",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CustomerValidateContactRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerValidateContactResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/customer/profile-check": {
+      "post": {
+        "tags": [ "Klient" ],
+        "summary": "Profile check s profilem identifikovaný",
+        "description": "Provolá <i>DS: CustomerService/profileCheck</i> s profilem 'Subjekt s identifikací' a vrátí informaci, zda profil splňuje.<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=F2992BC4-A1DB-4e57-B037-5F99244CC1D4\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png\" width=\"20\" height=\"20\" />Diagram v EA</a>",
+        "operationId": "ProfileCheck",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+                  }
+                ],
+                "description": "Identita klienta"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerProfileCheckResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/customer-on-sa/{customerOnSAId}": {
+      "get": {
+        "tags": [ "Klient" ],
+        "summary": "Získání dat klienta (s lokálními změnami)",
+        "description": "Vrací data klienta aktualizovaného o lokálně uložené změny. Podle kontextu produktu vracíme data z KB CM (pro červené produkty) nebo z KonsDB (pro modré produkty, prozatím nepodporováno).<br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=6452CB93-41C7-450f-A20F-E8CB5208F1DE\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>SALES_ARRANGEMENT_Access",
+        "operationId": "GetCustomerDetailWithChanges",
+        "parameters": [
+          {
+            "name": "customerOnSAId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerGetCustomerDetailWithChangesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "put": {
+        "tags": [ "Klient" ],
+        "summary": "Uložení dat klienta (pro uložení změn lokálně)",
+        "description": "Ukládá data klienta (deltu oproti KB CM pro červené produkty, do budoucna i deltu oproti KonsDB pro modré produkty). <br /><br /><a href=\"https://eacloud.ds.kb.cz/webea/index.php?m=1&o=BB5766C4-CCC7-487e-B482-1B1C86D999F7\"><img src=\"https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png\" width=\"20\" height=\"20\" />Diagram v EA</a><br/><br/><strong style=\"color:red;\">Required permissions</strong><br/>CLIENT_Modify",
+        "operationId": "UpdateCustomerDetailWithChanges",
+        "parameters": [
+          {
+            "name": "customerOnSAId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CustomerUpdateCustomerDetailWithChangesRequest"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/v1/customer-on-sa/{customerOnSAId}/income": {
       "post": {
         "tags": ["Klient - příjem"],
@@ -13107,7 +13447,852 @@
         },
         "additionalProperties": false
       },
-
+      "CustomerCreateCustomerRequest": {
+        "required": [
+          "birthDate",
+          "firstName",
+          "genderId",
+          "identificationDocument",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "hardCreate": {
+            "type": "boolean",
+            "description": "Příznak tvrdého vytvoření customera.",
+            "default": false,
+            "example": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date-time",
+            "example": "2000-02-01"
+          },
+          "firstName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Jméno",
+            "example": "Jidáš"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Příjmení",
+            "example": "Skočdopole"
+          },
+          "birthPlace": {
+            "minLength": 2,
+            "type": "string",
+            "description": "Místo narození",
+            "nullable": true,
+            "example": "Praha"
+          },
+          "genderId": {
+            "type": "integer",
+            "description": "Pohlaví\\n\\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>",
+            "format": "int32"
+          },
+          "citizenshipCountryId": {
+            "type": "integer",
+            "description": "Státní příslušnost/občanství",
+            "format": "int32",
+            "nullable": true,
+            "example": 16
+          },
+          "contacts": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesContacts"
+              }
+            ],
+            "nullable": true
+          },
+          "birthNumber": {
+            "type": "string",
+            "description": "Rodné číslo CZ",
+            "nullable": true
+          },
+          "primaryAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesAddress"
+              }
+            ],
+            "description": "Trvalá adresa v ČR",
+            "nullable": true
+          },
+          "identificationDocument": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesIdentificationDocumentFull"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerCreateCustomerResponse": {
+        "type": "object",
+        "properties": {
+          "isVerified": {
+            "type": "boolean",
+            "description": "Klient byl při založení ztotožněn v základních registrech"
+          },
+          "resultCode": {
+            "enum": [0, 1],
+            "type": "integer",
+            "description": "<small>Enum Values</small><ul><li>0 - Created</li><li>1 - Identified</li></ul>",
+            "format": "int32",
+            "x-enum-varnames": ["Created", "Identified"],
+            "x-enum-descriptions": ["Created", "Identified"],
+            "x-enumNames": ["Created", "Identified"]
+          },
+          "identities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "nullable": true
+          },
+          "naturalPerson": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerNaturalPersonModel"
+              }
+            ],
+            "nullable": true
+          },
+          "juridicalPerson": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerJuridicalPerson"
+              }
+            ],
+            "nullable": true
+          },
+          "legalCapacity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerLegalCapacityItem"
+              }
+            ],
+            "nullable": true
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesAddress"
+            },
+            "nullable": true
+          },
+          "contacts": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesContacts"
+              }
+            ],
+            "nullable": true
+          },
+          "identificationDocument": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesIdentificationDocumentFull"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerNaturalPersonBase": {
+        "type": "object",
+        "properties": {
+          "birthNumber": {
+            "type": "string",
+            "description": "Rodné číslo CZ",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Jméno",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Příjmení",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození",
+            "format": "date-time",
+            "nullable": true
+          },
+          "degreeBeforeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "degreeAfterId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "birthName": {
+            "type": "string",
+            "nullable": true
+          },
+          "placeOfBirth": {
+            "type": "string",
+            "description": "Místo narození",
+            "nullable": true
+          },
+          "birthCountryId": {
+            "type": "integer",
+            "description": "Stát narození",
+            "format": "int32",
+            "nullable": true
+          },
+          "gender": {
+            "enum": [0, 1, 2],
+            "type": "integer",
+            "description": "Pohlaví\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Male</li><li>2 - Female</li></ul>",
+            "format": "int32",
+            "x-enum-varnames": ["Unknown", "Male", "Female"],
+            "x-enum-descriptions": ["unknown", "muž","žena"],
+            "x-enumNames": ["Unknown", "Male", "Female"]
+          },
+          "maritalStatusId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "citizenshipCountriesId": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "description": "Státní příslušnost/občanství",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerNaturalPersonModel": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/CustomerNaturalPersonBase" }],
+        "properties": {
+          "isBrSubscribed": {
+            "type": "boolean",
+            "description": "Přihlášen k aktualizaci dat ze základních registrů",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerJuridicalPerson": {
+        "type": "object",
+        "properties": {
+          "cin": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "establishedOn": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerLegalCapacityItem": {
+        "type": "object",
+        "properties": {
+          "restrictionTypeId": {
+            "type": "integer",
+            "description": "Typ právního omezení klienta",
+            "format": "int32",
+            "nullable": true
+          },
+          "restrictionUntil": {
+            "type": "string",
+            "description": "Datum platnosti právního omezení klienta do",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerSearchCustomersRequest": {
+        "type": "object",
+        "properties": {
+          "searchData": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerSearchData"
+              }
+            ],
+            "description": "Podle ceho se ma hledat",
+            "nullable": true
+          },
+          "pagination": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesPaginationRequest"
+              }
+            ],
+            "description": "Nastaveni strankovani a razeni kolekce Cases.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerSearchCustomersResponse": {
+        "type": "object",
+        "properties": {
+          "pagination": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesPaginationResponse"
+              }
+            ],
+            "description": "Informace o strankovani a razeni.",
+            "nullable": true
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerInList"
+            },
+            "description": "Kolekce nalezenych klientu.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerInList": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Jmeno klienta",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Prijmeni klienta",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narozeni FO",
+            "format": "date-time",
+            "nullable": true
+          },
+          "birthNumber": {
+            "type": "string",
+            "description": "Rodne cislo",
+            "nullable": true
+          },
+          "nameJuridicalPerson": {
+            "type": "string",
+            "description": "Nazev pravnicke osoby",
+            "nullable": true
+          },
+          "cin": {
+            "type": "string",
+            "description": "IC pravnicke osoby",
+            "nullable": true
+          },
+          "identity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+              }
+            ],
+            "description": "Identita klienta",
+            "nullable": true
+          },
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "postcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerSearchData": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "Jmeno klienta",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Prijmeni klienta",
+            "nullable": true
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narozeni FO",
+            "format": "date-time",
+            "nullable": true
+          },
+          "birthNumber": {
+            "type": "string",
+            "description": "Rodne cislo",
+            "nullable": true
+          },
+          "nameJuridicalPerson": {
+            "type": "string",
+            "description": "Nazev pravnicke osoby",
+            "nullable": true
+          },
+          "cin": {
+            "type": "string",
+            "description": "IC pravnicke osoby",
+            "nullable": true
+          },
+          "identityId": {
+            "type": "integer",
+            "description": "[optional] ID klienta v MP nebo KB",
+            "format": "int64",
+            "nullable": true
+          },
+          "issuingCountryId": {
+            "type": "integer",
+            "description": "[optional] Zeme vydani dokladu",
+            "format": "int32",
+            "nullable": true
+          },
+          "identificationDocumentTypeId": {
+            "type": "integer",
+            "description": "[optional] Type dokladu",
+            "format": "int32",
+            "nullable": true
+          },
+          "identificationDocumentNumber": {
+            "type": "string",
+            "description": "[optional] Cislo dokladu",
+            "nullable": true
+          },
+          "contacts": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesContacts"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerGetCustomerDetailResponse": {
+        "type": "object",
+        "properties": {
+          "identities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+            },
+            "nullable": true
+          },
+          "naturalPerson": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerNaturalPersonModel"
+              }
+            ],
+            "nullable": true
+          },
+          "juridicalPerson": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerJuridicalPerson"
+              }
+            ],
+            "nullable": true
+          },
+          "legalCapacity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerLegalCapacityItem"
+              }
+            ],
+            "nullable": true
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesAddress"
+            },
+            "nullable": true
+          },
+          "contacts": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesContactsConfirmed"
+              }
+            ],
+            "nullable": true
+          },
+          "identificationDocument": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesIdentificationDocumentFull"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerGetCustomerDetailWithChangesResponse": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/CustomerDetailBase" }],
+        "properties": {
+          "emailAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesEmailConfirmed"
+              }
+            ],
+            "nullable": true
+          },
+          "mobilePhone": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesPhoneConfirmed"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerIdentifyRequest": {
+        "required": [
+          "dateOfBirth",
+          "firstName",
+          "identificationDocumentNumber",
+          "identificationDocumentTypeId",
+          "issuingCountryId",
+          "lastName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Jméno customera"
+          },
+          "lastName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Příjmení customera"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Datum narození FO",
+            "format": "date-time"
+          },
+          "issuingCountryId": {
+            "type": "integer",
+            "description": "Země vydání dokladu",
+            "format": "int32"
+          },
+          "identificationDocumentTypeId": {
+            "type": "integer",
+            "description": "Typ dokladu",
+            "format": "int32"
+          },
+          "identificationDocumentNumber": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Číslo dokladu"
+          },
+          "birthNumber": {
+            "type": "string",
+            "description": "Rodné číslo",
+            "nullable": true
+          },
+          "identity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+              }
+            ],
+            "description": "Identita klienta",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerIdentifyByIdentityRequest": {
+        "required": [
+          "customerIdentity"
+        ],
+        "type": "object",
+        "properties": {
+          "customerIdentity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesCustomerIdentity"
+              }
+            ],
+            "description": "Identita klienta"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerProfileCheckResponse": {
+        "type": "object",
+        "properties": {
+          "isCompliant": {
+            "type": "boolean",
+            "description": "Příznak splnění profilu identifikovaný"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerNaturalPerson": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/CustomerNaturalPersonBase" }],
+        "properties": {
+          "educationLevelId": {
+            "type": "integer",
+            "description": "Stupeň vzdělání",
+            "format": "int32",
+            "nullable": true
+          },
+          "professionCategoryId": {
+            "type": "integer",
+            "description": "Kategorie profese, validováno oproti číselníku ProfessionCategory (se zohledněním validních hodnot - IsValid a IsValidNoby)",
+            "format": "int32"
+          },
+          "professionId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "netMonthEarningAmountId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "netMonthEarningTypeId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "legalCapacity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerLegalCapacityItem"
+              }
+            ],
+            "nullable": true
+          },
+          "taxResidences": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerTaxResidenceItem"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerTaxResidenceCountryItem": {
+        "type": "object",
+        "properties": {
+          "countryId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "tin": {
+            "type": "string",
+            "nullable": true
+          },
+          "tinMissingReasonDescription": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerTaxResidenceItem": {
+        "type": "object",
+        "properties": {
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "residenceCountries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerTaxResidenceCountryItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerUpdateCustomerDetailWithChangesRequest": {
+        "type": "object",
+        "allOf": [{ "$ref": "#/components/schemas/CustomerDetailBase" }],
+        "properties": {
+          "emailAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesEmail"
+              }
+            ],
+            "format": "email",
+            "nullable": true
+          },
+          "mobilePhone": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesPhone"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerDetailBase": {
+        "type": "object",
+        "properties": {
+          "naturalPerson": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerNaturalPerson"
+              }
+            ],
+            "nullable": true
+          },
+          "juridicalPerson": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerJuridicalPerson"
+              }
+            ],
+            "nullable": true
+          },
+          "identificationDocument": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SharedTypesIdentificationDocumentFull"
+              }
+            ],
+            "nullable": true
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SharedTypesAddress"
+            },
+            "nullable": true
+          },
+          "legalCapacity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CustomerLegalCapacityItem"
+              }
+            ],
+            "description": "Objekt právního omezení",
+            "nullable": true
+          },
+          "isBrSubscribed": {
+            "type": "boolean",
+            "description": "Přihlášen k aktualizaci dat ze základních registrů",
+            "nullable": true
+          },
+          "hasRelationshipWithKB": {
+            "type": "boolean",
+            "description": "Zvláštní vztah ke Komerční bance",
+            "nullable": true
+          },
+          "hasRelationshipWithKBEmployee": {
+            "type": "boolean",
+            "description": "Osoba blízká zaměstnanci KB",
+            "nullable": true
+          },
+          "hasRelationshipWithCorporate": {
+            "type": "boolean",
+            "description": "Propojení s obchodní korporací",
+            "nullable": true
+          },
+          "isPoliticallyExposed": {
+            "type": "boolean",
+            "description": "Politicky exponovaná osoba",
+            "nullable": true
+          },
+          "isUSPerson": {
+            "type": "boolean",
+            "description": "Americký občan (FATCA)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerValidateContactRequest": {
+        "required": [
+          "contact",
+          "contactType"
+        ],
+        "type": "object",
+        "properties": {
+          "contact": {
+            "minLength": 1,
+            "type": "string",
+            "description": "telefonní číslo s mezinárodní předvolbou nebo email",
+            "example": "+420 777 457 283"
+          },
+          "contactType": {
+            "$ref": "#/components/schemas/EnumContactType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerValidateContactResponse": {
+        "type": "object",
+        "properties": {
+          "isContactValid": {
+            "type": "boolean",
+            "description": "Je kontakt validni?"
+          },
+          "contactType": {
+            "$ref": "#/components/schemas/EnumContactType"
+          },
+          "isMobile": {
+            "type": "boolean",
+            "description": "Je to mobilní číslo?",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "SharedTypesCustomerIdentity": {
         "type": "object",
         "properties": {
@@ -14362,6 +15547,14 @@
         "format": "int32",
         "x-enum-varnames": ["Unknown", "MortgageRetention", "MortgageRefixation", "MortgageLegalNotice", "MortgageExtraPayment"],
         "x-enumNames": ["Unknown", "MortgageRetention", "MortgageRefixation", "MortgageLegalNotice", "MortgageExtraPayment"]
+      },
+      "EnumContactType": {
+        "enum": [0, 1, 2],
+        "type": "integer",
+        "description": "Typ kontatku\n\n<small>Enum Values</small><ul><li>0 - Unknown</li><li>1 - Phone</li><li>2 - Email</li></ul>",
+        "format": "int32",
+        "x-enum-varnames": ["Unknown", "Phone", "Email"],
+        "x-enumNames": ["Unknown", "Phone", "Email"]
       }
     }
   }

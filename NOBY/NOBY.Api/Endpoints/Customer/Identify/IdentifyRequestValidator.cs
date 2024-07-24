@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
 internal sealed class IdentifyRequestValidator
-    : AbstractValidator<IdentifyRequest>
+    : AbstractValidator<CustomerIdentifyRequest>
 {
     public IdentifyRequestValidator()
     {

@@ -21,10 +21,10 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.CLIENT_Modify)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(CreateCustomer.CreateCustomerResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CustomerCreateCustomerResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<CreateCustomer.CreateCustomerResponse> CreateCustomer([FromRoute] int customerOnSAId, [FromBody] CreateCustomer.CreateCustomerRequest request)
+    public async Task<CustomerCreateCustomerResponse> CreateCustomer([FromRoute] int customerOnSAId, [FromBody] CustomerCreateCustomerRequest request)
         => await _mediator.Send(request.InfuseId(customerOnSAId));
 
     /// <summary>
@@ -43,9 +43,9 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(SearchCustomers.SearchCustomersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CustomerSearchCustomersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<SearchCustomers.SearchCustomersResponse?> SearchCustomers([FromBody] SearchCustomers.SearchCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerSearchCustomersResponse?> SearchCustomers([FromBody] CustomerSearchCustomersRequest request, CancellationToken cancellationToken)
         => await _mediator.Send(request, cancellationToken);
 
     /// <summary>
@@ -61,9 +61,9 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(GetCustomerDetail.GetCustomerDetailResponse), StatusCodes.Status200OK)]
-    public async Task<GetCustomerDetail.GetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypes.Types.CustomerIdentity request) 
-        => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(request.Id, request.Scheme));
+    [ProducesResponseType(typeof(CustomerGetCustomerDetailResponse), StatusCodes.Status200OK)]
+    public async Task<CustomerGetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypesCustomerIdentity identityRequest) 
+        => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(identityRequest));
 
     /// <summary>
     /// Identifikace klienta
@@ -80,7 +80,7 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] IdentifyByIdentity.IdentifyByIdentityRequest request)
+    public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] CustomerIdentifyByIdentityRequest request)
         => await _mediator.Send(request.InfuseId(customerOnSAId));
 
     /// <summary>
@@ -96,10 +96,10 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(SearchCustomers.Dto.CustomerInList), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CustomerInList), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<SearchCustomers.Dto.CustomerInList?> Identify([FromBody] Identify.IdentifyRequest request)
+    public async Task<CustomerInList?> Identify([FromBody] CustomerIdentifyRequest request)
         => await _mediator.Send(request);
 
     /// <summary>
@@ -113,8 +113,8 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(ValidateContact.ValidateContactResponse), StatusCodes.Status200OK)]
-    public async Task<ValidateContact.ValidateContactResponse> ValidateContact([FromBody] ValidateContact.ValidateContactRequest request)
+    [ProducesResponseType(typeof(CustomerValidateContactResponse), StatusCodes.Status200OK)]
+    public async Task<CustomerValidateContactResponse> ValidateContact([FromBody] CustomerValidateContactRequest request)
         => await _mediator.Send(request);
 
     /// <summary>
@@ -128,9 +128,9 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(ProfileCheck.ProfileCheckResponse), StatusCodes.Status200OK)]
-    public async Task<ProfileCheck.ProfileCheckResponse> ProfileCheck([FromBody] SharedTypes.Types.CustomerIdentity request)
-        => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(request.Id, request.Scheme));
+    [ProducesResponseType(typeof(CustomerProfileCheckResponse), StatusCodes.Status200OK)]
+    public async Task<CustomerProfileCheckResponse> ProfileCheck([FromBody] SharedTypesCustomerIdentity identityRequest)
+        => await _mediator.Send(new ProfileCheck.ProfileCheckRequest(identityRequest));
 
     /// <summary>
     /// Získání dat klienta (s lokálními změnami)
@@ -143,10 +143,10 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(GetCustomerDetailWithChanges.GetCustomerDetailWithChangesResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CustomerGetCustomerDetailWithChangesResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetCustomerDetailWithChanges.GetCustomerDetailWithChangesResponse> GetCustomerDetailWithChanges([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
+    public async Task<CustomerGetCustomerDetailWithChangesResponse> GetCustomerDetailWithChanges([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetCustomerDetailWithChanges.GetCustomerDetailWithChangesRequest(customerOnSAId), cancellationToken);
 
     /// <summary>
@@ -162,6 +162,6 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task UpdateCustomerDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] UpdateCustomerDetailWithChanges.UpdateCustomerDetailWithChangesRequest request)
+    public async Task UpdateCustomerDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] CustomerUpdateCustomerDetailWithChangesRequest request)
         => await _mediator.Send(request.InfuseId(customerOnSAId));
 }

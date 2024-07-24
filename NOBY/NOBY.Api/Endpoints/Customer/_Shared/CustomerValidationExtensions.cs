@@ -2,7 +2,6 @@
 using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using FluentValidation;
-using NOBY.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Shared;
 
@@ -10,7 +9,7 @@ internal static class CustomerValidationExtensions
 {
     public static async Task ValidateMobilePhone(
         this ICustomerServiceClient customerService,
-        PhoneNumberDto? mobilePhone,
+        SharedTypesPhone? mobilePhone,
         CancellationToken cancellationToken)
     {
         if (mobilePhone is null)
@@ -23,7 +22,7 @@ internal static class CustomerValidationExtensions
 
     public static async Task ValidateEmail(
         this ICustomerServiceClient customerService, 
-        EmailAddressDto? emailAddress, 
+        SharedTypesEmail? emailAddress, 
         CancellationToken cancellationToken)
     {
         if (emailAddress is null)
