@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Household.CreateHousehold;
 
 internal sealed class CreateHouseholdRequestValidator
-    : AbstractValidator<CreateHouseholdRequest>
+    : AbstractValidator<HouseholdCreateHouseholdRequest>
 {
     public CreateHouseholdRequestValidator()
     {

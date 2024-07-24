@@ -9153,6 +9153,351 @@ namespace NOBY.ApiContracts
 
     }
 
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdCreateHouseholdRequest
+    {
+        /// <summary>
+        /// ID typu domacnosti. Ciselnik HouseholdTypes
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdTypeId")]
+        public int HouseholdTypeId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdCustomerInHousehold : HouseholdCustomerBase
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("maritalStatusId")]
+        public int? MaritalStatusId { get; set; } = default!;
+
+        /// <summary>
+        /// Prijmy customera
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("incomes")]
+        public List<HouseholdIncomeBaseData>? Incomes { get; set; } = default!;
+
+        /// <summary>
+        /// Role klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("roleId")]
+        public int RoleId { get; set; } = default!;
+
+        /// <summary>
+        /// Příznak zamknutí příjmů daného CustomerOnSA
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lockedIncome")]
+        public bool LockedIncome { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("lockedIncomeDateTime")]
+        public System.DateTime? LockedIncomeDateTime { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("isIdentificationRequested")]
+        public bool IsIdentificationRequested { get; set; } = default!;
+
+        /// <summary>
+        /// Identity klienta v KB nebo MP
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identities")]
+        public List<SharedTypesCustomerIdentity>? Identities { get; set; } = default!;
+
+        /// <summary>
+        /// Zavazky customera
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("obligations")]
+        public List<CustomerObligationObligationFull>? Obligations { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdGetHouseholdResponse
+    {
+        /// <summary>
+        /// ID domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdId")]
+        public int HouseholdId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int SalesArrangementId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("caseId")]
+        public long CaseId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("areCustomersPartners")]
+        public bool AreCustomersPartners { get; set; } = default!;
+
+        /// <summary>
+        /// Sekce Ostatni parametry
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("data")]
+        public HouseholdData? Data { get; set; } = default!;
+
+        /// <summary>
+        /// Sekce Vydaje domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("expenses")]
+        public HouseholdExpenses? Expenses { get; set; } = default!;
+
+        /// <summary>
+        /// Klient 1= sef domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customer1")]
+        public HouseholdCustomerInHousehold? Customer1 { get; set; } = default!;
+
+        /// <summary>
+        /// Klient 2= spoludluznik
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customer2")]
+        public HouseholdCustomerInHousehold? Customer2 { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdIncomeBaseData
+    {
+        /// <summary>
+        /// Celkova castka prijmu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("sum")]
+        public double? Sum { get; set; } = default!;
+
+        /// <summary>
+        /// Kod meny
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("currencyCode")]
+        public string? CurrencyCode { get; set; } = default!;
+
+        /// <summary>
+        /// ID prijmu, pokud se jedna o jiz ulozeny prijem. NULL pokud se jedna o novy prijem.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("incomeId")]
+        public int? IncomeId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("incomeSource")]
+        public string? IncomeSource { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("hasProofOfIncome")]
+        public bool? HasProofOfIncome { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("incomeTypeId")]
+        public EnumIncomeTypes IncomeTypeId { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Sekce Ostatni parametry
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdData
+    {
+        /// <summary>
+        /// Počet dětí 0-10 let
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("childrenUpToTenYearsCount")]
+        public int? ChildrenUpToTenYearsCount { get; set; } = default!;
+
+        /// <summary>
+        /// Počet dětí nad 10 let
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("childrenOverTenYearsCount")]
+        public int? ChildrenOverTenYearsCount { get; set; } = default!;
+
+        /// <summary>
+        /// Vypořádání majetku. Ciselnik ???
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("propertySettlementId")]
+        public int? PropertySettlementId { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("areBothPartnersDeptors")]
+        public bool? AreBothPartnersDeptors { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Sekce Vydaje
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdExpenses
+    {
+        /// <summary>
+        /// sporeni
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("savingExpenseAmount")]
+        public int? SavingExpenseAmount { get; set; } = default!;
+
+        /// <summary>
+        /// pojisteni
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("insuranceExpenseAmount")]
+        public int? InsuranceExpenseAmount { get; set; } = default!;
+
+        /// <summary>
+        /// naklady_na_bydleni
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("housingExpenseAmount")]
+        public int? HousingExpenseAmount { get; set; } = default!;
+
+        /// <summary>
+        /// ostatni_vydaje
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("otherExpenseAmount")]
+        public int? OtherExpenseAmount { get; set; } = default!;
+
+    }
+
+    /// <summary>
+    /// Domacnost v seznamu domacnosti - pro vytvoreni tab listu
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdInList
+    {
+        /// <summary>
+        /// ID domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdId")]
+        public int HouseholdId { get; set; } = default!;
+
+        /// <summary>
+        /// ID typu domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdTypeId")]
+        public int HouseholdTypeId { get; set; } = default!;
+
+        /// <summary>
+        /// Typ domacnosti slovne
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("householdTypeName")]
+        public string? HouseholdTypeName { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdCustomerBase
+    {
+        /// <summary>
+        /// ID entity pokud jiz existuje
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerOnSAId")]
+        public int? CustomerOnSAId { get; set; } = default!;
+
+        /// <summary>
+        /// Jmeno klienta, pokud se ma zalozit novy CustomerOnSA
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Prijmeni klienta, pokud se ma zalozit novy CustomerOnSA
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
+        public System.DateTime? DateOfBirth { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdCustomer : HouseholdCustomerBase
+    {
+        /// <summary>
+        /// Příznak zamknutí příjmů daného CustomerOnSA
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lockedIncome")]
+        public bool LockedIncome { get; set; } = default!;
+
+        /// <summary>
+        /// Identita klienta
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("identity")]
+        public SharedTypesCustomerIdentity? Identity { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdUpdateCustomersRequest
+    {
+        /// <summary>
+        /// ID hlavniho frajera v domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customer1")]
+        public HouseholdCustomer? Customer1 { get; set; } = default!;
+
+        /// <summary>
+        /// ID spoludluznika
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customer2")]
+        public HouseholdCustomer? Customer2 { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdUpdateCustomersResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerOnSAId1")]
+        public int? CustomerOnSAId1 { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerOnSAId2")]
+        public int? CustomerOnSAId2 { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HouseholdUpdateHouseholdRequest
+    {
+        /// <summary>
+        /// Sekce Ostatni parametry
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("data")]
+        public HouseholdData? Data { get; set; } = default!;
+
+        /// <summary>
+        /// Sekce Vydaje domacnosti
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("expenses")]
+        public HouseholdExpenses? Expenses { get; set; } = default!;
+
+    }
+
     /// <summary>
     /// Identita klienta
     /// </summary>

@@ -3,10 +3,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateHousehold;
 
-internal sealed class UpdateHouseholdHandler
-    : IRequestHandler<UpdateHouseholdRequest>
+internal sealed class UpdateHouseholdHandler : IRequestHandler<HouseholdUpdateHouseholdRequest>
 {
-    public async Task Handle(UpdateHouseholdRequest request, CancellationToken cancellationToken)
+    public async Task Handle(HouseholdUpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
 

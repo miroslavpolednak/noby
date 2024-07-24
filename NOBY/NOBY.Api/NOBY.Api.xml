@@ -802,91 +802,6 @@
             Načtení seznamu obecných dokumentů, které je možné stáhnout a vyplnit. <br /><br />
             </remarks>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.HouseholdTypeId">
-            <summary>
-            ID typu domacnosti. Ciselnik HouseholdTypes
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest.HardCreate">
-            <summary>
-            Pouze pokud se vola handler z jineho handleru
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Incomes">
-            <summary>
-            Prijmy customera
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.RoleId">
-            <summary>
-            Role klienta
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.LockedIncome">
-            <summary>
-            Příznak zamknutí příjmů daného CustomerOnSA
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Identities">
-            <summary>
-            Identity klienta v KB nebo MP
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.CustomerInHousehold.Obligations">
-            <summary>
-            Zavazky customera
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.IncomeBaseData.Sum">
-            <summary>
-            Celkova castka prijmu
-            </summary>
-            <example>25000</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.IncomeBaseData.CurrencyCode">
-            <summary>
-            Kod meny
-            </summary>
-            <example>CZK</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.IncomeBaseData.IncomeId">
-            <summary>
-            ID prijmu, pokud se jedna o jiz ulozeny prijem. NULL pokud se jedna o novy prijem.
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.IncomeBaseData.IncomeTypeId">
-            <summary>
-            Typ prijmu
-            </summary>
-            <example>1</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.HouseholdId">
-            <summary>
-            ID domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Data">
-            <summary>
-            Sekce Ostatni parametry
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Expenses">
-            <summary>
-            Sekce Vydaje domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Customer1">
-            <summary>
-            Klient 1= sef domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse.Customer2">
-            <summary>
-            Klient 2= spoludluznik
-            </summary>
-        </member>
         <member name="T:NOBY.Api.Endpoints.Household.HouseholdController">
             <summary>
             Prace s domacnostmi a customery
@@ -901,7 +816,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B6359602-67D9-4d06-BF61-8FC85F9E082C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement-u</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.Api.Endpoints.Household.SharedDto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.ApiContracts.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.GetHousehold(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -912,7 +827,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A2A7CE0E-0E93-459e-B883-3947C26A3DB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
             </remarks>
             <param name="householdId">ID domacnosti</param>
-            <returns><see cref="T:NOBY.Api.Endpoints.Household.GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
+            <returns><see cref="T:NOBY.ApiContracts.HouseholdGetHouseholdResponse"/> Detail domacnosti</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.DeleteHousehold(System.Int32)">
             <summary>
@@ -925,7 +840,7 @@
             <param name="householdId">ID domacnosti</param>
             <returns>ID smazané domacnosti</returns>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.CreateHousehold(System.Int32,NOBY.Api.Endpoints.Household.CreateHousehold.CreateHouseholdRequest)">
+        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.CreateHousehold(System.Int32,NOBY.ApiContracts.HouseholdCreateHouseholdRequest)">
             <summary>
             Vytvořeni nové domacnosti
             </summary>
@@ -934,7 +849,7 @@
             <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=72EEBC25-A403-42e9-9AFD-A48CCEBC179F"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a><br /><br />
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.UpdateHousehold(System.Int32,NOBY.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest)">
+        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.UpdateHousehold(System.Int32,NOBY.ApiContracts.HouseholdUpdateHouseholdRequest)">
             <summary>
             Update existující domácnosti
             </summary>
@@ -943,7 +858,7 @@
             </remarks>
             <param name="householdId">ID domácnosti</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.UpdateCustomers(System.Int32,NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest)">
+        <member name="M:NOBY.Api.Endpoints.Household.HouseholdController.UpdateCustomers(System.Int32,NOBY.ApiContracts.HouseholdUpdateCustomersRequest)">
             <summary>
             Update customeru na domácnosti
             </summary>
@@ -956,17 +871,7 @@
             <param name="householdId">ID domácnosti</param>
             <returns>CustomerOnSAId nalinkovanych customeru</returns>
         </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.LockedIncome">
-            <summary>
-            Příznak zamknutí příjmů daného CustomerOnSA
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.Dto.CustomerDto.Identity">
-            <summary>
-            Identita klienta, pokud se ma zalozit novy CustomerOnSA
-            </summary>
-        </member>
-        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.checkDoubledCustomers(System.Int32,NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest,System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.checkDoubledCustomers(System.Int32,NOBY.ApiContracts.HouseholdUpdateCustomersRequest,System.Threading.CancellationToken)">
             <summary>
             Kontrola zda nektery z customeru jiz nema pouzitou stejnou identitu
             </summary>
@@ -974,115 +879,6 @@
         <member name="M:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersHandler.deleteRelationships(System.Int64,System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Upravit relationship v KonsDb
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer1">
-            <summary>
-            ID hlavniho frajera v domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateCustomers.UpdateCustomersRequest.Customer2">
-            <summary>
-            ID spoludluznika
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest.Data">
-            <summary>
-            Sekce Ostatni parametry
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.UpdateHousehold.UpdateHouseholdRequest.Expenses">
-            <summary>
-            Sekce Vydaje domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.BaseCustomer.CustomerOnSAId">
-            <summary>
-            ID entity pokud jiz existuje
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.BaseCustomer.FirstName">
-            <summary>
-            Jmeno klienta, pokud se ma zalozit novy CustomerOnSA
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.BaseCustomer.LastName">
-            <summary>
-            Prijmeni klienta, pokud se ma zalozit novy CustomerOnSA
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.BaseCustomer.DateOfBirth">
-            <summary>
-            Datum narozeni klienta, pokud se ma zalozit novy CustomerOnSA
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.Household.SharedDto.HouseholdData">
-            <summary>
-            Sekce Ostatni parametry
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdData.ChildrenUpToTenYearsCount">
-            <summary>
-            Počet dětí 0-10 let
-            </summary>
-            <example>2</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdData.ChildrenOverTenYearsCount">
-            <summary>
-            Počet dětí nad 10 let
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdData.PropertySettlementId">
-            <summary>
-            Vypořádání majetku. Ciselnik ???
-            </summary>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.Household.SharedDto.HouseholdExpenses">
-            <summary>
-            Sekce Vydaje
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdExpenses.SavingExpenseAmount">
-            <summary>
-            sporeni
-            </summary>
-            <example>2500</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdExpenses.InsuranceExpenseAmount">
-            <summary>
-            pojisteni
-            </summary>
-            <example>453</example>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdExpenses.HousingExpenseAmount">
-            <summary>
-            naklady_na_bydleni
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdExpenses.OtherExpenseAmount">
-            <summary>
-            ostatni_vydaje
-            </summary>
-            <example>3300</example>
-        </member>
-        <member name="T:NOBY.Api.Endpoints.Household.SharedDto.HouseholdInList">
-            <summary>
-            Domacnost v seznamu domacnosti - pro vytvoreni tab listu
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdInList.HouseholdId">
-            <summary>
-            ID domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdInList.HouseholdTypeId">
-            <summary>
-            ID typu domacnosti
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.Household.SharedDto.HouseholdInList.HouseholdTypeName">
-            <summary>
-            Typ domacnosti slovne
             </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.Offer.CreateMortgageCase.CreateMortgageCaseHandler.updateSalesArrangementParameters(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -1593,7 +1389,7 @@
             Operace slouží k získání Sales Arrangements k danému ID obchodního případu (caseId).
             </remarks>
             <param name="caseId">ID Case-u</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="!:SharedDto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.ApiContracts.SalesArrangementGetSalesArrangementsItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetCustomersOnSa(System.Int32,System.Threading.CancellationToken)">
             <summary>
@@ -1603,7 +1399,7 @@
             Vrátí seznam klientů navázaných na SalesArrangement.
             </remarks>
             <param name="salesArrangementId">ID Sales Arrangement</param>
-            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="!:SharedDto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
+            <returns><see cref="T:System.Collections.Generic.List`1"/> where T : <see cref="T:NOBY.ApiContracts.SalesArrangementGetCustomersOnSaItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.SalesArrangementController.GetSalesArrangement(System.Int32,System.Threading.CancellationToken)">
             <summary>

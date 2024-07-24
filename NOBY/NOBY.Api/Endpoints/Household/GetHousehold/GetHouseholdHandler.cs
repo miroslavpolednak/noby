@@ -3,9 +3,9 @@
 namespace NOBY.Api.Endpoints.Household.GetHousehold;
 
 internal sealed class GetHouseholdHandler
-    : IRequestHandler<GetHouseholdRequest, GetHouseholdResponse>
+    : IRequestHandler<GetHouseholdRequest, HouseholdGetHouseholdResponse>
 {
-    public async Task<GetHouseholdResponse> Handle(GetHouseholdRequest request, CancellationToken cancellationToken)
+    public async Task<HouseholdGetHouseholdResponse> Handle(GetHouseholdRequest request, CancellationToken cancellationToken)
     {
         // nacist ulozenou domacnost
         var household = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
@@ -23,7 +23,7 @@ internal sealed class GetHouseholdHandler
         return response;
     }
 
-    private async Task<CustomerInHousehold?> getCustomer(int customerOnSAId, CancellationToken cancellationToken)
+    private async Task<HouseholdCustomerInHousehold?> getCustomer(int customerOnSAId, CancellationToken cancellationToken)
     {
         var customer = await _customerOnSAService.GetCustomer(customerOnSAId, cancellationToken);
         return customer?.ToApiResponse();
