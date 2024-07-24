@@ -48,7 +48,7 @@
             </remarks>
             <param name="caseId">ID Case-u</param>
         </member>
-        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest)">
+        <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CreateSalesArrangement(System.Int64,NOBY.ApiContracts.SalesArrangementCreateSalesArrangementRequest)">
             <summary>
             Vytvoření servisního SalesArrangement-u
             </summary>
@@ -1319,16 +1319,6 @@
             <remarks>
             Operace slouží k vygenerování dokumentu mimořádné splátky
             </remarks>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest.SalesArrangementTypeId">
-            <summary>
-            Typ žádosti - číselník SalesArrangementType
-            </summary>
-        </member>
-        <member name="P:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementResponse.SalesArrangementId">
-            <summary>
-            ID Sales Arrangement
-            </summary>
         </member>
         <member name="M:NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.DrawingValidator.Validate(System.Threading.CancellationToken)">
             <remarks>

@@ -4,7 +4,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRetention;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
-using NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 using NOBY.Api.Endpoints.Refinancing.GetAvailableFixedRatePeriods;
 using NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPaymentList;
 

@@ -9,7 +9,6 @@ using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Model;
 using NOBY.Api.Endpoints.Customer.Shared;
-using NOBY.Dto.Customer;
 using NOBY.Services.Customer;
 using NOBY.Services.SigningHelper;
 

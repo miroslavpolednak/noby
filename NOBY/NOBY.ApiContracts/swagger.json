@@ -8556,6 +8556,31 @@
         },
         "additionalProperties": false
       },
+      "SalesArrangementCreateSalesArrangementRequest": {
+        "required": [
+          "salesArrangementTypeId"
+        ],
+        "type": "object",
+        "properties": {
+          "salesArrangementTypeId": {
+            "type": "integer",
+            "description": "Typ žádosti - číselník SalesArrangementType",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SalesArrangementCreateSalesArrangementResponse": {
+        "type": "object",
+        "properties": {
+          "salesArrangementId": {
+            "type": "integer",
+            "description": "ID Sales Arrangement",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
       "SalesArrangementGetSalesArrangementsItem": {
         "type": "object",
         "properties": {

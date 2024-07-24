@@ -2917,6 +2917,30 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementCreateSalesArrangementRequest
+    {
+        /// <summary>
+        /// Typ žádosti - číselník SalesArrangementType
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementTypeId")]
+        public int SalesArrangementTypeId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class SalesArrangementCreateSalesArrangementResponse
+    {
+        /// <summary>
+        /// ID Sales Arrangement
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
+        public int SalesArrangementId { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class SalesArrangementGetSalesArrangementsItem
     {
 

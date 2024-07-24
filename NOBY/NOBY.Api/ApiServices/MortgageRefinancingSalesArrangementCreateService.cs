@@ -23,7 +23,7 @@ internal sealed class MortgageRefinancingSalesArrangementCreateService(
 		// pokud SA neexistuje
 		if (!saId.HasValue)
 		{
-			var createdSAId = await _mediator.Send(new Endpoints.SalesArrangement.CreateSalesArrangement.CreateSalesArrangementRequest
+			var createdSAId = await _mediator.Send(new SalesArrangementCreateSalesArrangementRequest
 			{
 				CaseId = caseId,
 				SalesArrangementTypeId = (int)salesArrangementType

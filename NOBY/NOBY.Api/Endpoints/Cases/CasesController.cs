@@ -1,7 +1,5 @@
 ﻿using Asp.Versioning;
 using NOBY.Api.Endpoints.Cases.GetCaseDocumentsFlag;
-using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
-using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Cases;
@@ -62,11 +60,11 @@ public class CasesController(IMediator _mediator) : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Sales Arrangement" })]
-    [ProducesResponseType(typeof(CreateSalesArrangementResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SalesArrangementCreateSalesArrangementResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=B3D75222-1F0D-4dc6-A228-BD237F42CA44")]
-    public async Task<CreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] CreateSalesArrangementRequest request)
+    public async Task<SalesArrangementCreateSalesArrangementResponse> CreateSalesArrangement([FromRoute] long caseId, [FromBody] SalesArrangementCreateSalesArrangementRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
 
     /// <summary>
