@@ -86,7 +86,7 @@ internal sealed class MpHomeDetailMapper(
     private static Contracts.IdentificationDocument? mapIdentificationDocument(PartnerResponse partner)
     {
         var idDoc = partner.IdentificationDocuments?.FirstOrDefault();
-        if (idDoc is null)
+        if (idDoc is null || idDoc.Type == IdentificationCardType.Undefined)
         {
             return null;
         }
