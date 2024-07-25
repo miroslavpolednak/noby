@@ -62,7 +62,7 @@ public class WsseSoapPasswordDigestSecurityHeader(string username, string passwo
         var createdBytes = Encoding.UTF8.GetBytes(_created);
 
         // Convert the password to bytes
-        var passwordBytes = SHA384.HashData(Encoding.UTF8.GetBytes(password));
+        var passwordBytes = Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(password)));
 
         // Combine nonce, created, and password
         var combinedBytes = new byte[nonceBytes.Length + createdBytes.Length + passwordBytes.Length];
