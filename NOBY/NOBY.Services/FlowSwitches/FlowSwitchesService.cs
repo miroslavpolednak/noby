@@ -30,17 +30,17 @@ internal sealed class FlowSwitchesService(
         return existingSwitches;
     }
 
-    public Dictionary<FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
+    public Dictionary<FlowSwitchesGroups, ApiContracts.Dto.FlowSwitchGroup> GetFlowSwitchesGroups(IList<DomainServices.SalesArrangementService.Contracts.FlowSwitch> flowSwitchesOnSA)
     {
         flowSwitchesOnSA ??= [];
-        var result = new Dictionary<FlowSwitchesGroups, Dto.FlowSwitches.FlowSwitchGroup>();
+        var result = new Dictionary<FlowSwitchesGroups, ApiContracts.Dto.FlowSwitchGroup>();
 
         var allFlowSwitches = getFlowSwitches();
         var allFlowSwitchGroups = getFlowSwitchGroups();
 
         foreach (var group in allFlowSwitchGroups)
         {
-            var resultGroup = new Dto.FlowSwitches.FlowSwitchGroup
+            var resultGroup = new ApiContracts.Dto.FlowSwitchGroup
             {
                 IsVisible = resolveStatus(group.IsVisibleFlowSwitches, group.IsVisibleDefault),
                 IsActive = resolveStatus(group.IsActiveFlowSwitches, group.IsActiveDefault),

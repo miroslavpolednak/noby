@@ -1,4 +1,4 @@
-﻿namespace NOBY.Dto.FlowSwitches;
+﻿namespace NOBY.ApiContracts.Dto;
 
 public sealed class FlowSwitchGroup
 {

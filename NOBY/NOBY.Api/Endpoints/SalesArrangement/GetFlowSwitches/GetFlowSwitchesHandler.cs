@@ -187,7 +187,7 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private static SalesArrangementGetFlowSwitchesResponseItemButton createSectionButton(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItemButton createSectionButton(ApiContracts.Dto.FlowSwitchGroup group)
     {
         return new()
         {
@@ -195,7 +195,7 @@ internal sealed class GetFlowSwitchesHandler(
         };
     }
 
-    private static SalesArrangementGetFlowSwitchesResponseItem createSection(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItem createSection(ApiContracts.Dto.FlowSwitchGroup group)
     {
         return new()
         {
