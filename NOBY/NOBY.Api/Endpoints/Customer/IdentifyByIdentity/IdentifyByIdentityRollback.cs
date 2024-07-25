@@ -8,9 +8,9 @@ internal sealed class IdentifyByIdentityRollback(
     IRollbackBag _bag,
     ILogger<IdentifyByIdentityRollback> _logger,
     ICustomerOnSAServiceClient _customerOnSAService)
-        : IRollbackAction<IdentifyByIdentityRequest>
+        : IRollbackAction<CustomerIdentifyByIdentityRequest>
 {
-    public async Task ExecuteRollback(Exception exception, IdentifyByIdentityRequest request, CancellationToken cancellationToken = default)
+    public async Task ExecuteRollback(Exception exception, CustomerIdentifyByIdentityRequest request, CancellationToken cancellationToken = default)
     {
         _logger.RollbackHandlerStarted(nameof(IdentifyByIdentityRollback));
 

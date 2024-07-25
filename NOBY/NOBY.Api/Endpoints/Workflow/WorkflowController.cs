@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using NOBY.Api.Endpoints.Workflow.GetCurrentHandoverTask;
-using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;

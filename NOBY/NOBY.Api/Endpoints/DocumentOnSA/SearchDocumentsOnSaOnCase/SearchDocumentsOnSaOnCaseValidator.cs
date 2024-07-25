@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using NOBY.Api.Endpoints.DocumentOnSA.Search;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.SearchDocumentsOnSaOnCase;
 

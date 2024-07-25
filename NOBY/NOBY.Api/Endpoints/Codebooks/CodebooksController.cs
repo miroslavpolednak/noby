@@ -1,8 +1,5 @@
 ﻿using Asp.Versioning;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CodebookService.Contracts.v1;
-using Microsoft.Extensions.Azure;
-using NOBY.Infrastructure.Swagger;
 
 namespace NOBY.Api.Endpoints.Codebooks;
 

@@ -30,9 +30,9 @@ internal sealed class GetCustomersOnSaHandler(
             };
             
             // pokud nema identitu, ani nevolej customerSvc
-            if (t.CustomerIdentifiers is not null && t.CustomerIdentifiers.Count != 0)
+            if (t.CustomerIdentifiers.Count != 0)
             {
-                c.Identities = t.CustomerIdentifiers?.Select(x => (SharedTypesCustomerIdentity)x).ToList();
+                c.Identities = t.CustomerIdentifiers.Select(x => (SharedTypesCustomerIdentity)x!).ToList();
 
                 // zavolat customer svc pro detail
                 //TODO nejak prioritizovat schemata?

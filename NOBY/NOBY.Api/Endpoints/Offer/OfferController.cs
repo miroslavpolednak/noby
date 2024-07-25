@@ -20,9 +20,10 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferSimulateMortgageRefixationOfferListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DAE69855-3C72-4ec4-8332-81E91814FA47")]
-    public async Task<OfferSimulateMortgageRefixationOfferListResponse> SimulateMortgageRefixationOfferList([FromRoute] long caseId, [FromBody] OfferSimulateMortgageRefixationOfferListRequest request)
+    public async Task<OfferSimulateMortgageRefixationOfferListResponse?> SimulateMortgageRefixationOfferList([FromRoute] long caseId, [FromBody] OfferSimulateMortgageRefixationOfferListRequest request)
         => await _mediator.Send((request ?? new()).InfuseId(caseId));
 
     /// <summary>

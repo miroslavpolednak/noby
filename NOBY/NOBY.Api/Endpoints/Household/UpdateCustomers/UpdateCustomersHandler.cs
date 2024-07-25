@@ -10,9 +10,9 @@ using NOBY.Services.SigningHelper;
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
 internal sealed class UpdateCustomersHandler
-    : IRequestHandler<UpdateCustomersRequest, UpdateCustomersResponse>
+    : IRequestHandler<HouseholdUpdateCustomersRequest, HouseholdUpdateCustomersResponse>
 {
-    public async Task<UpdateCustomersResponse> Handle(UpdateCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<HouseholdUpdateCustomersResponse> Handle(HouseholdUpdateCustomersRequest request, CancellationToken cancellationToken)
     {
         // detail domacnosti - kontrola existence (404)
         var householdInstance = await _householdService.GetHousehold(request.HouseholdId, cancellationToken);
@@ -81,7 +81,7 @@ internal sealed class UpdateCustomersHandler
 
         await _flowSwitchManager.SaveFlowSwitches(householdInstance.SalesArrangementId, cancellationToken);
 
-        return new UpdateCustomersResponse
+        return new HouseholdUpdateCustomersResponse
         {
             CustomerOnSAId1 = c1.OnHouseholdCustomerOnSAId,
             CustomerOnSAId2 = c2.OnHouseholdCustomerOnSAId
@@ -91,7 +91,7 @@ internal sealed class UpdateCustomersHandler
     /// <summary>
     /// Kontrola zda nektery z customeru jiz nema pouzitou stejnou identitu
     /// </summary>
-    private async Task<List<__HO.CustomerOnSA>> checkDoubledCustomers(int salesArrangementId, UpdateCustomersRequest request, CancellationToken cancellationToken)
+    private async Task<List<__HO.CustomerOnSA>> checkDoubledCustomers(int salesArrangementId, HouseholdUpdateCustomersRequest request, CancellationToken cancellationToken)
     {
         var allHouseholds = await _householdService.GetHouseholdList(salesArrangementId, cancellationToken);
         var allCustomers = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
@@ -114,7 +114,7 @@ internal sealed class UpdateCustomersHandler
     }
 
     private async Task<Dto.CrudResult> crudCustomer(
-        Dto.CustomerDto? customer,
+        HouseholdCustomer? customer,
         int salesArrangementId,
         bool isProductSA,
         long caseId,

@@ -19,14 +19,14 @@ public class HouseholdController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=B6359602-67D9-4d06-BF61-8FC85F9E082C"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement-u</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="HouseholdInList"/> Seznam domacnosti pro dany Sales Arrangement</returns>
     [HttpGet("household/list/{salesArrangementId:long}")]
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new [] { "Domácnost" })]
-    [ProducesResponseType(typeof(List<SharedDto.HouseholdInList>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<HouseholdInList>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<List<SharedDto.HouseholdInList>> GetHouseholds([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<List<HouseholdInList>> GetHouseholds([FromRoute] int salesArrangementId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHouseholds.GetHouseholdsRequest(salesArrangementId), cancellationToken);
 
     /// <summary>
@@ -37,14 +37,14 @@ public class HouseholdController : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=A2A7CE0E-0E93-459e-B883-3947C26A3DB9"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramsequence.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     /// <param name="householdId">ID domacnosti</param>
-    /// <returns><see cref="GetHousehold.GetHouseholdResponse"/> Detail domacnosti</returns>
+    /// <returns><see cref="HouseholdGetHouseholdResponse"/> Detail domacnosti</returns>
     [HttpGet("household/{householdId:long}")]
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
-    [ProducesResponseType(typeof(GetHousehold.GetHouseholdResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(HouseholdGetHouseholdResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<GetHousehold.GetHouseholdResponse> GetHousehold([FromRoute] int householdId, CancellationToken cancellationToken)
+    public async Task<HouseholdGetHouseholdResponse> GetHousehold([FromRoute] int householdId, CancellationToken cancellationToken)
         => await _mediator.Send(new GetHousehold.GetHouseholdRequest(householdId), cancellationToken);
 
     /// <summary>
@@ -76,8 +76,8 @@ public class HouseholdController : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
-    [ProducesResponseType(typeof(SharedDto.HouseholdInList), StatusCodes.Status200OK)]
-    public async Task<SharedDto.HouseholdInList> CreateHousehold([FromRoute] int salesArrangementId, [FromBody] CreateHousehold.CreateHouseholdRequest? request)
+    [ProducesResponseType(typeof(HouseholdInList), StatusCodes.Status200OK)]
+    public async Task<HouseholdInList> CreateHousehold([FromRoute] int salesArrangementId, [FromBody] HouseholdCreateHouseholdRequest? request)
         => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>
@@ -93,7 +93,7 @@ public class HouseholdController : ControllerBase
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task UpdateHousehold([FromRoute] int householdId, [FromBody] UpdateHousehold.UpdateHouseholdRequest? request)
+    public async Task UpdateHousehold([FromRoute] int householdId, [FromBody] HouseholdUpdateHouseholdRequest? request)
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new NobyValidationException("Payload is empty"));
 
     /// <summary>
@@ -111,10 +111,10 @@ public class HouseholdController : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = new[] { "Domácnost" })]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [ProducesResponseType(typeof(UpdateCustomers.UpdateCustomersResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(HouseholdUpdateCustomersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<UpdateCustomers.UpdateCustomersResponse> UpdateCustomers([FromRoute] int householdId, [FromBody] UpdateCustomers.UpdateCustomersRequest? request)
+    public async Task<HouseholdUpdateCustomersResponse> UpdateCustomers([FromRoute] int householdId, [FromBody] HouseholdUpdateCustomersRequest? request)
         => await _mediator.Send(request?.InfuseId(householdId) ?? throw new NobyValidationException("Payload is empty"));
 
     private readonly IMediator _mediator;

@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.Annotations;
 using System.ComponentModel.DataAnnotations;
 

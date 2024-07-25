@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
 public class IdentifyByIdentityRequestValidator
-    : AbstractValidator<IdentifyByIdentityRequest>
+    : AbstractValidator<CustomerIdentifyByIdentityRequest>
 {
     public IdentifyByIdentityRequestValidator()
     {

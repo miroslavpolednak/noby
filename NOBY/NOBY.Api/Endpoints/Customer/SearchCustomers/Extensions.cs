@@ -1,14 +1,12 @@
-﻿using SharedTypes.Types;
-using SharedTypes.GrpcTypes;
+﻿using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 using Google.Protobuf.Collections;
-using NOBY.Api.Endpoints.Customer.SearchCustomers.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.SearchCustomers;
 
 internal static class Extensions
 {
-    public static DomainServices.CustomerService.Contracts.SearchCustomersRequest ToDomainServiceRequest(this Dto.SearchData request)
+    public static DomainServices.CustomerService.Contracts.SearchCustomersRequest ToDomainServiceRequest(this CustomerSearchData request)
     {
         var model = new DomainServices.CustomerService.Contracts.SearchCustomersRequest
         {
@@ -86,7 +84,7 @@ internal static class Extensions
     {
         if (identity is not null)
         {
-            customer.Identity = new CustomerIdentity(identity.IdentityId, identity.IdentityScheme.ToString());
+            customer.Identity = identity;
         }
         return customer;
     }

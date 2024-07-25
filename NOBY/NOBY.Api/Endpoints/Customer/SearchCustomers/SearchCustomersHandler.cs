@@ -1,14 +1,13 @@
 ﻿using CIS.Core.Types;
-using CIS.Infrastructure.WebApi.Types;
 using DomainServices.CustomerService.Clients;
 using __Customer = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.SearchCustomers;
 
 internal sealed class SearchCustomersHandler
-    : IRequestHandler<SearchCustomersRequest, SearchCustomersResponse?>
+    : IRequestHandler<CustomerSearchCustomersRequest, CustomerSearchCustomersResponse?>
 {
-    public async Task<SearchCustomersResponse?> Handle(SearchCustomersRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerSearchCustomersResponse?> Handle(CustomerSearchCustomersRequest request, CancellationToken cancellationToken)
     {
         // vytvorit informaci o strankovani / razeni
         var paginable = Paginable
@@ -23,10 +22,10 @@ internal sealed class SearchCustomersHandler
 
         if (searchResult.Customers.Count != 0)
         {
-            return new SearchCustomersResponse
+            return new CustomerSearchCustomersResponse
             {
                 Rows = searchResult.Customers.ToApiResponse(),
-                Pagination = new PaginationResponse(request.Pagination as IPaginableRequest ?? paginable, searchResult.Customers.Count)
+                Pagination = new SharedTypesPaginationResponse(request.Pagination as IPaginableRequest ?? paginable, searchResult.Customers.Count)
             };
         }
 

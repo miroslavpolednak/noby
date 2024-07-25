@@ -1,15 +1,13 @@
-﻿using SharedTypes.GrpcTypes;
-using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.SearchCustomers;
-using NOBY.Api.Endpoints.Customer.SearchCustomers.Dto;
 
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
 internal sealed class IdentifyHandler
-    : IRequestHandler<IdentifyRequest, CustomerInList?>
+    : IRequestHandler<CustomerIdentifyRequest, CustomerInList?>
 {
-    public async Task<CustomerInList?> Handle(IdentifyRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerInList?> Handle(CustomerIdentifyRequest request, CancellationToken cancellationToken)
     {
         var dsRequest = new DomainServices.CustomerService.Contracts.SearchCustomersRequest
         {
@@ -32,7 +30,7 @@ internal sealed class IdentifyHandler
         // ID klienta
         if (request.Identity is not null && request.Identity.Id > 0)
         {
-            dsRequest.Identity = new Identity(request.Identity.Id, request.Identity.Scheme);
+            dsRequest.Identity = request.Identity;
         }
 
         // zavolat sluzbu

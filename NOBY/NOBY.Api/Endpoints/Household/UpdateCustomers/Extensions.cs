@@ -4,7 +4,7 @@ namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
 internal static class Extensions
 {
-    public static CustomerOnSABase ToDomainServiceRequest(this Dto.CustomerDto customer, CustomerOnSA? currentCustomer = null)
+    public static CustomerOnSABase ToDomainServiceRequest(this HouseholdCustomer customer, CustomerOnSA? currentCustomer = null)
     {
         var model = new CustomerOnSABase
         {

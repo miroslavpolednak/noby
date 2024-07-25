@@ -1,6 +1,5 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
-using NOBY.Infrastructure.Swagger;
 
 namespace NOBY.Api.Endpoints.Users;
 

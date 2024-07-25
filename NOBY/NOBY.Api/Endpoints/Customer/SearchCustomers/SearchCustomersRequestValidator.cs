@@ -1,10 +1,10 @@
-﻿using CIS.Infrastructure.WebApi.Validation;
-using FluentValidation;
+﻿using FluentValidation;
+using NOBY.Api.Validators;
 
 namespace NOBY.Api.Endpoints.Customer.SearchCustomers;
 
 internal sealed class SearchCustomersRequestValidator
-    : AbstractValidator<SearchCustomersRequest>
+    : AbstractValidator<CustomerSearchCustomersRequest>
 {
     public SearchCustomersRequestValidator()
     {

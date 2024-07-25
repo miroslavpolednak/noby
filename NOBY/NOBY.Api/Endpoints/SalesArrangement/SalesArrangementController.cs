@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.SalesArrangement;
@@ -103,7 +102,7 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// Operace slouží k získání Sales Arrangements k danému ID obchodního případu (caseId).
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.SalesArrangementListItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="SalesArrangementGetSalesArrangementsItem"/> Seznam zakladních informací o všech Sales Arrangements pro daný Case.</returns>
     [HttpGet("list/{caseId:long}")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
@@ -120,7 +119,7 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// Vrátí seznam klientů navázaných na SalesArrangement.
     /// </remarks>
     /// <param name="salesArrangementId">ID Sales Arrangement</param>
-    /// <returns><see cref="List{T}"/> where T : <see cref="SharedDto.CustomerListItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
+    /// <returns><see cref="List{T}"/> where T : <see cref="SalesArrangementGetCustomersOnSaItem"/> Seznam klientů vč. všech jejich dat dotažených z CM atd.</returns>
     [HttpGet("{salesArrangementId:int}/customers")]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]

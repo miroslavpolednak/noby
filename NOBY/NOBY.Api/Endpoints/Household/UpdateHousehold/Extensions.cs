@@ -4,7 +4,7 @@ namespace NOBY.Api.Endpoints.Household.UpdateHousehold;
 
 internal static class Extensions
 {
-    public static __Contracts.HouseholdData? ToDomainServiceRequest(this SharedDto.HouseholdData? model)
+    public static __Contracts.HouseholdData? ToDomainServiceRequest(this HouseholdData? model)
         => model is null ? null : new __Contracts.HouseholdData()
         {
             ChildrenOverTenYearsCount = model.ChildrenOverTenYearsCount,
@@ -13,7 +13,7 @@ internal static class Extensions
             AreBothPartnersDeptors = model.AreBothPartnersDeptors
         };
 
-    public static __Contracts.Expenses? ToDomainServiceRequest(this SharedDto.HouseholdExpenses? model)
+    public static __Contracts.Expenses? ToDomainServiceRequest(this HouseholdExpenses? model)
         => model is null ? null : new __Contracts.Expenses()
         {
             HousingExpenseAmount = model.HousingExpenseAmount,

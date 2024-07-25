@@ -1,13 +1,15 @@
-﻿using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.CustomerService.Contracts;
+using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Model;
-using NOBY.Dto.Customer;
-using NOBY.Dto;
+using NOBY.ApiContracts;
+using SharedTypes.GrpcTypes;
+using SharedTypes.Types;
 
 namespace NOBY.Services.Customer;
 
 public static class CustomerMapper
 {
-    public static CustomerChangeData? MapCustomerDtoToChangeData<TCustomerDetail>(TCustomerDetail? customerDto) where TCustomerDetail : BaseCustomerDetail
+    public static CustomerChangeData? MapCustomerDtoToChangeData<TCustomerDetail>(TCustomerDetail? customerDto) where TCustomerDetail : CustomerDetailBase
     {
         if (customerDto is null)
             return null;
@@ -25,7 +27,7 @@ public static class CustomerMapper
                 BirthName = customerDto.NaturalPerson.BirthName,
                 PlaceOfBirth = customerDto.NaturalPerson.PlaceOfBirth,
                 BirthCountryId = customerDto.NaturalPerson.BirthCountryId,
-                Gender = customerDto.NaturalPerson.Gender,
+                Gender = (Genders)(int)customerDto.NaturalPerson.Gender,
                 MaritalStatusId = customerDto.NaturalPerson.MaritalStatusId,
                 CitizenshipCountriesId = customerDto.NaturalPerson.CitizenshipCountriesId,
                 EducationLevelId = customerDto.NaturalPerson.EducationLevelId,
@@ -40,7 +42,7 @@ public static class CustomerMapper
                 },
                 TaxResidences = customerDto.NaturalPerson.TaxResidences is null ? null : new NaturalPersonDelta.TaxResidenceDelta()
                 {
-                    ValidFrom = customerDto.NaturalPerson.TaxResidences.validFrom,
+                    ValidFrom = customerDto.NaturalPerson.TaxResidences.ValidFrom,
                     ResidenceCountries = customerDto.NaturalPerson.TaxResidences.ResidenceCountries?.Select(c => new NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta
                     {
                         CountryId = c.CountryId,
@@ -54,15 +56,15 @@ public static class CustomerMapper
                 IdentificationDocumentTypeId = customerDto.IdentificationDocument.IdentificationDocumentTypeId ?? 0,
                 IssuingCountryId = customerDto.IdentificationDocument.IssuingCountryId,
                 IssuedBy = customerDto.IdentificationDocument.IssuedBy,
-                ValidTo = customerDto.IdentificationDocument.ValidTo,
-                IssuedOn = customerDto.IdentificationDocument.IssuedOn,
+                ValidTo = customerDto.IdentificationDocument.ValidTo?.ToDateTime(TimeOnly.MinValue),
+                IssuedOn = customerDto.IdentificationDocument.IssuedOn?.ToDateTime(TimeOnly.MinValue),
                 RegisterPlace = customerDto.IdentificationDocument.RegisterPlace,
-                Number = customerDto.IdentificationDocument.Number
+                Number = customerDto.IdentificationDocument.Number ?? string.Empty,
             },
-            Addresses = customerDto.Addresses?.ToList(),
+            Addresses = customerDto.Addresses?.Select(a => (GrpcAddress)a!).Select(a => (Address)a!).ToList(),
         };
 
-        if (customerDto is ICustomerDetailConfirmedContacts confirmedContactsDetail)
+        if (customerDto is CustomerGetCustomerDetailWithChangesResponse confirmedContactsDetail)
         {
             changeData.MobilePhone = confirmedContactsDetail.MobilePhone is null ? null : new MobilePhoneDelta
             {
@@ -76,7 +78,7 @@ public static class CustomerMapper
             };
         }
 
-        if (customerDto is ICustomerDetailContacts contactsDetail)
+        if (customerDto is CustomerUpdateCustomerDetailWithChangesRequest contactsDetail)
         {
             changeData.MobilePhone = contactsDetail.MobilePhone is null ? null : new MobilePhoneDelta
             {
@@ -93,17 +95,17 @@ public static class CustomerMapper
         return changeData;
     }
 
-    public static TCustomerDetail MapCustomerToResponseDto<TCustomerDetail>(DomainServices.CustomerService.Contracts.CustomerDetailResponse dsCustomer, CustomerOnSA customerOnSA) where TCustomerDetail : BaseCustomerDetail
+    public static TCustomerDetail MapCustomerToResponseDto<TCustomerDetail>(CustomerDetailResponse dsCustomer, CustomerOnSA customerOnSA) where TCustomerDetail : CustomerDetailBase
     {
         var newCustomer = (TCustomerDetail)Activator.CreateInstance(typeof(TCustomerDetail))!;
 
-        NaturalPerson person = new();
+        CustomerNaturalPerson person = new();
         dsCustomer.NaturalPerson?.FillResponseDto(person);
         person.EducationLevelId = dsCustomer.NaturalPerson?.EducationLevelId;
-        person.TaxResidences = new TaxResidenceItem
+        person.TaxResidences = new CustomerTaxResidenceItem
         {
-            validFrom = dsCustomer.NaturalPerson?.TaxResidence?.ValidFrom,
-            ResidenceCountries = dsCustomer.NaturalPerson?.TaxResidence?.ResidenceCountries.Select(c => new TaxResidenceCountryItem
+            ValidFrom = dsCustomer.NaturalPerson?.TaxResidence?.ValidFrom,
+            ResidenceCountries = dsCustomer.NaturalPerson?.TaxResidence?.ResidenceCountries.Select(c => new CustomerTaxResidenceCountryItem
             {
                 CountryId = c.CountryId,
                 Tin = c.Tin,
@@ -125,55 +127,64 @@ public static class CustomerMapper
         newCustomer.NaturalPerson = person;
         newCustomer.JuridicalPerson = null;
         newCustomer.IdentificationDocument = dsCustomer.IdentificationDocument?.ToResponseDto();
-        newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (SharedTypes.Types.Address)t!).ToList();
+        newCustomer.Addresses = dsCustomer.Addresses?.Select(t => (SharedTypesAddress)t!).ToList();
 
         // https://jira.kb.cz/browse/HFICH-4200
         // docasne reseni nez se CM rozmysli jak na to
-        newCustomer.LegalCapacity = new LegalCapacityItem
+        newCustomer.LegalCapacity = new CustomerLegalCapacityItem
         {
             RestrictionTypeId = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionTypeId,
             RestrictionUntil = customerOnSA.CustomerAdditionalData?.LegalCapacity?.RestrictionUntil
         };
 
-        if (newCustomer is ICustomerDetailConfirmedContacts confirmedContactsDetail)
+        var email = GetEmail(dsCustomer);
+        var phone = GetPhone(dsCustomer);
+
+        if (newCustomer is CustomerGetCustomerDetailWithChangesResponse confirmedContactsDetail)
         {
-            confirmedContactsDetail.EmailAddress = getEmail<EmailAddressConfirmedDto>(dsCustomer);
-            confirmedContactsDetail.MobilePhone = getPhone<PhoneNumberConfirmedDto>(dsCustomer);
+            confirmedContactsDetail.EmailAddress = email is null ? null : new SharedTypesEmailConfirmed
+            {
+                EmailAddress = email.Email.EmailAddress,
+                IsConfirmed = email.Email.IsEmailConfirmed
+            };
+
+            confirmedContactsDetail.MobilePhone = phone is null ? null : new SharedTypesPhoneConfirmed
+            {
+                PhoneNumber = phone.Mobile.PhoneNumber,
+                PhoneIDC = phone.Mobile.PhoneIDC,
+                IsConfirmed = phone.Mobile.IsPhoneConfirmed
+            };
         }
-        else if (newCustomer is ICustomerDetailContacts contactsDetail)
+        else if (newCustomer is CustomerUpdateCustomerDetailWithChangesRequest contactsDetail)
         {
-            contactsDetail.EmailAddress = getEmail<EmailAddressDto>(dsCustomer);
-            contactsDetail.MobilePhone = getPhone<PhoneNumberDto>(dsCustomer);
+            contactsDetail.IsEmailConfirmed = email?.Email.IsEmailConfirmed ?? false;
+            contactsDetail.IsPhoneConfirmed = phone?.Mobile.IsPhoneConfirmed ?? false;
+
+            contactsDetail.EmailAddress = email is null ? null : new SharedTypesEmail
+            {
+                EmailAddress = email.Email.EmailAddress
+            };
+            contactsDetail.MobilePhone = phone is null ? null : new SharedTypesPhone
+            {
+                PhoneNumber = phone.Mobile.PhoneNumber,
+                PhoneIDC = phone.Mobile.PhoneIDC
+            };
         }
 
         return newCustomer;
     }
 
-    private static TPhone? getPhone<TPhone>(DomainServices.CustomerService.Contracts.CustomerDetailResponse customer) where TPhone : IPhoneNumberDto
+    private static Contact? GetPhone(CustomerDetailResponse customer)
     {
         var phone = customer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Mobil);
-        if (string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber)) 
-            return default;
 
-        var newPhone = (TPhone)Activator.CreateInstance(typeof(TPhone))!;
-        newPhone.IsConfirmed = phone.Mobile.IsPhoneConfirmed;
-        newPhone.PhoneNumber = phone.Mobile.PhoneNumber;
-        newPhone.PhoneIDC = phone.Mobile.PhoneIDC;
-
-        return newPhone;
+        return string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber) ? default : phone;
     }
 
-    private static TEmail? getEmail<TEmail>(DomainServices.CustomerService.Contracts.CustomerDetailResponse customer) where TEmail : IEmailAddressDto
+    private static Contact? GetEmail(CustomerDetailResponse customer)
     {
         var email = customer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
-        if (string.IsNullOrEmpty(email?.Email?.EmailAddress)) 
-            return default;
 
-        var newEmail = (TEmail)Activator.CreateInstance(typeof(TEmail))!;
-        newEmail.IsConfirmed = email.Email.IsEmailConfirmed;
-        newEmail.EmailAddress = email.Email.EmailAddress;
-
-        return newEmail;
-
+        return string.IsNullOrEmpty(email?.Email?.EmailAddress) ? default : email;
     }
 }
