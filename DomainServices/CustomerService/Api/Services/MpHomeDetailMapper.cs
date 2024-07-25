@@ -53,7 +53,7 @@ internal sealed class MpHomeDetailMapper(
                 LastName = partner.Lastname,
                 GenderId = (int)(partner.Gender == GenderEnum.Male ? Genders.Male : Genders.Female),
                 DateOfBirth = partner.DateOfBirth,
-                PlaceOfBirth = partner.PlaceOfBirth,
+                PlaceOfBirth = partner.PlaceOfBirth ?? "",
                 DegreeBeforeId = titles1.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeBefore, StringComparison.OrdinalIgnoreCase))?.Id,
                 DegreeAfterId = titles2.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeAfter, StringComparison.OrdinalIgnoreCase))?.Id,
                 IsPoliticallyExposed = partner.Pep,
