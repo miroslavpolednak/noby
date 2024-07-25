@@ -24,9 +24,9 @@ internal sealed class MpHomeDetailMapper(
                 Identity = new SharedTypes.GrpcTypes.Identity(partner.Id, IdentitySchemes.Mp),
                 NaturalPerson = new NaturalPersonBasicInfo
                 {
-                    BirthNumber = partner.BirthNumber,
-                    FirstName = partner.Name,
-                    LastName = partner.Lastname,
+                    BirthNumber = partner.BirthNumber ?? "",
+                    FirstName = partner.Name ?? "",
+                    LastName = partner.Lastname ?? "",
                     GenderId = (int)(partner.Gender == GenderEnum.Male ? Genders.Male : Genders.Female),
                     DateOfBirth = partner.DateOfBirth
                 },
@@ -48,9 +48,9 @@ internal sealed class MpHomeDetailMapper(
             Identities = { getIdentities(partner.Id, partner.KbId) },
             NaturalPerson = new()
             {
-                BirthNumber = partner.BirthNumber,
-                FirstName = partner.Name,
-                LastName = partner.Lastname,
+                BirthNumber = partner.BirthNumber ?? "",
+                FirstName = partner.Name ?? "",
+                LastName = partner.Lastname ?? "",
                 GenderId = (int)(partner.Gender == GenderEnum.Male ? Genders.Male : Genders.Female),
                 DateOfBirth = partner.DateOfBirth,
                 PlaceOfBirth = partner.PlaceOfBirth ?? "",
