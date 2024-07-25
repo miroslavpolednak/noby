@@ -21,6 +21,7 @@ internal sealed class GetCaseDetailHandler(
     {
         // vytahnout Case z DB
         var model = await _dbContext.Cases
+            .Include(t => t.ActiveTasks)
             .Where(t => t.CaseId == request.CaseId)
             .AsNoTracking()
             .Select(DatabaseExpressions.CaseDetail())
@@ -28,6 +29,20 @@ internal sealed class GetCaseDetailHandler(
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         Helpers.ThrowIfCaseIsCancelled(model.State);
+
+        // get active tasks - nejde delat pres EF kvuli Grpc kolekci
+        var tasks = await _dbContext
+            .ActiveTasks
+            .Where(t => t.CaseId == request.CaseId)
+            .AsNoTracking()
+            .Select(t => new ActiveTask
+            {
+                TaskId = t.TaskId,
+                TaskIdSb = t.TaskIdSb,
+                TaskTypeId = t.TaskTypeId
+            })
+            .ToListAsync(cancellation);
+        model.Tasks.AddRange(tasks);
 
         // auditni log
         if (_currentUser.IsAuthenticated && _currentUser.User!.Id != model.CaseOwner.UserId
