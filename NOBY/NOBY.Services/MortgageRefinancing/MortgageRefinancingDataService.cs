@@ -55,9 +55,13 @@ public sealed class MortgageRefinancingDataService(
 
         var processes = await _caseService.GetProcessList(caseId, cancellationToken);
 
-        if (processes?.Any(t => t.ProcessId != processId && (t.StateIdSB is not 30) && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing && t.RefinancingType == (int)refinancingType) ?? false)
+        if (processes?.Any(t => 
+            t.ProcessId != processId 
+            && (t.StateIdSB is not 30) 
+            && t.ProcessTypeId == (int)WorkflowProcesses.Refinancing 
+            && t.RefinancingType == (int)refinancingType) ?? false)
         {
-            throw new NobyValidationException(90061, "Nestandardní přístup do kalkulace bez kontextu žádosti", "Vstupujete do kalkulace nestandardním způsobem a bez navázaného kontextu žádosti. Vraťte se na Rozcestník a vstupte standardním způsobem.");
+            throw new NobyValidationException(90061);
         }
 
         if (processId.HasValue)
@@ -79,11 +83,11 @@ public sealed class MortgageRefinancingDataService(
             // validace stavu refinancovani
             if (refinancingType == EnumRefinancingTypes.MortgageExtraPayment && refinancingState is not (EnumRefinancingStates.RozpracovanoVNoby or EnumRefinancingStates.Dokonceno or EnumRefinancingStates.Zruseno))
             {
-                throw new NobyValidationException(90032);
+                throw new NobyValidationException(90070);
             }
             else if (refinancingType != EnumRefinancingTypes.MortgageExtraPayment && refinancingState is (EnumRefinancingStates.Zruseno or EnumRefinancingStates.Dokonceno))
             {
-                throw new NobyValidationException(90032, $"RefinancingState is not allowed: {refinancingState}");
+                throw new NobyValidationException(90070);
             }
 
             result.SalesArrangement = salesArrangement;

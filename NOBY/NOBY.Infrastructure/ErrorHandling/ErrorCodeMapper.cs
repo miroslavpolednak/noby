@@ -70,12 +70,15 @@ public sealed class ErrorCodeMapper
             { 90058, new("Mimořádná splátka je zakázaná") },
             { 90059, new("Interní refinancování je zakázáno") },
             { 90060, new("Sleva na úrokové sazbě je vyšší než úroková sazba.") },
-            { 90061, new("") },
+            { 90061, new("Nestandardní přístup do kalkulace bez kontextu žádosti", "Vstupujete do kalkulace nestandardním způsobem a bez navázaného kontextu žádosti. Vraťte se na Rozcestník a vstupte standardním způsobem.") },
             { 90062, new("Nelze generovat dokument - blíží se termín refixace", "Není povoleno generovat dokument ve lhůtě 14 dní do nadcházející refixace.") },
             { 90064, new("Vložte alespoň jeden soubor") },
             { 90065, new("Vložte povinnou přílohu, tj. 2x fotografie nemovitosti (1x interiér + 1x exteriér) a doklad o výměře bytové jednotky") },
             { 90066, new("Výše mimořádné splátky je větší než zbývající jistina, vyberte celkové splacení nebo upravte částku.") },
-            { 90067, new("Modré produkty jsou zakázány.") }
+            { 90067, new("Modré produkty jsou zakázány.") },
+            { 90068, new("Nelze vygenerovat dodatek, protože hlavní dlužník či spoludlužníci nemají vyplněn jeden nebo více kontaktů. Doplňte klientům email resp. telefon (hlavní telefon) přes aplikaci CURE, počkete na synchronizaci kontaktů do systému Starbuild a generování dodatku opakujte.") },
+            { 90069, new("--DS error--") },
+            { 90070, new("") }
         };
 
         Messages = messages.AsReadOnly();
@@ -90,7 +93,8 @@ public sealed class ErrorCodeMapper
             { 17102, new ErrorCodeDsToApiItem(90024, false) },
             { 10020, new ErrorCodeDsToApiItem(90034, true)  },
             { 18087, new ErrorCodeDsToApiItem(90039, false) },
-            { 19043, new ErrorCodeDsToApiItem(90021, false) }
+            { 19043, new ErrorCodeDsToApiItem(90021, false) },
+            { 16082, new ErrorCodeDsToApiItem(90069, true) },
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();
