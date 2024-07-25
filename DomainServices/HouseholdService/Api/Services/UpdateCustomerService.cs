@@ -5,7 +5,10 @@ using ExternalServices.Eas.V1;
 namespace DomainServices.HouseholdService.Api.Services;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
-internal sealed class UpdateCustomerService
+internal sealed class UpdateCustomerService(
+    IEasClient _easClient,
+    ICustomerServiceClient _customerService,
+    ICodebookServiceClient _codebookService)
 {
     public async Task TryCreateMpIdentity(Database.Entities.CustomerOnSA entity, CancellationToken cancellationToken)
     {
@@ -30,31 +33,23 @@ internal sealed class UpdateCustomerService
                 : ExternalServices.Eas.Dto.ClientDataModel.ClientTypes.FO
         };
 
-        int? id = (await _easClient.CreateNewOrGetExisingClient(model, cancellationToken)).Id;
-
-        if (id.HasValue)
+        var createdClient = await _easClient.CreateNewOrGetExisingClient(model, cancellationToken);
+        
+        // kontrola zda si EAS nepriradilo jine KBID
+        if (dbIdentity.IdentityId != createdClient.KbId)
         {
-            entity.Identities ??= new List<Database.Entities.CustomerOnSAIdentity>();
+            throw new CisValidationException(ErrorCodeMapper.EasKbDifference, $"Vybraného klienta nelze použít, použijte místo něj klienta {createdClient.FirstName} {createdClient.LastName}, {createdClient.BirthNumber} s KBID {createdClient.KbId}.");
+        }
+
+        if ((createdClient?.Id ?? 0) > 0)
+        {
+            entity.Identities ??= [];
             entity.Identities.Add(new Database.Entities.CustomerOnSAIdentity
             {
                 CustomerOnSAId = entity.CustomerOnSAId,
-                IdentityId = id.Value,
+                IdentityId = createdClient!.Id,
                 IdentityScheme = IdentitySchemes.Mp,
             });
         }
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly IEasClient _easClient;
-
-    public UpdateCustomerService(
-        IEasClient easClient,
-        ICustomerServiceClient customerService,
-        ICodebookServiceClient codebookService)
-    {
-        _codebookService = codebookService;
-        _easClient = easClient;
-        _customerService = customerService;
     }
 }
