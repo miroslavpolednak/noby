@@ -52,9 +52,6 @@ public class WsseSoapPasswordDigestSecurityHeader(string username, string passwo
 
     private string ComputePasswordDigest()
     {
-
-#pragma warning disable CA5350
-
         // Decode the Base64 nonce
         var nonceBytes = Convert.FromBase64String(_nonce);
 
@@ -62,7 +59,7 @@ public class WsseSoapPasswordDigestSecurityHeader(string username, string passwo
         var createdBytes = Encoding.UTF8.GetBytes(_created);
 
         // Convert the password to bytes
-        var passwordBytes = Convert.FromBase64String(Convert.ToBase64String(Encoding.UTF8.GetBytes(password)));
+        var passwordBytes = Encoding.UTF8.GetBytes(Convert.ToBase64String(Encoding.UTF8.GetBytes(password)));
 
         // Combine nonce, created, and password
         var combinedBytes = new byte[nonceBytes.Length + createdBytes.Length + passwordBytes.Length];
@@ -71,6 +68,7 @@ public class WsseSoapPasswordDigestSecurityHeader(string username, string passwo
         Buffer.BlockCopy(passwordBytes, 0, combinedBytes, nonceBytes.Length + createdBytes.Length, passwordBytes.Length);
 
         // Compute SHA-1 hash
+#pragma warning disable CA5350
         var hashBytes = SHA1.HashData(combinedBytes);
 #pragma warning restore CA5350
 
