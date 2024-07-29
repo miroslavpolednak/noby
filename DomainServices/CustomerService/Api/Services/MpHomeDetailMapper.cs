@@ -8,37 +8,6 @@ internal sealed class MpHomeDetailMapper(
     IMediator _mediator,
     ICodebookServiceClient _codebookService)
 {
-    public async Task<List<SearchCustomersItem>> MapSearchResponse(List<PartnerResponse>? partners, CancellationToken cancellationToken)
-    {
-        if (partners is null)
-        {
-            return [];
-        }
-
-        var response = new List<SearchCustomersItem>(partners.Count);
-
-        foreach (PartnerResponse partner in partners)
-        {
-            var p = new SearchCustomersItem
-            {
-                Identity = new SharedTypes.GrpcTypes.Identity(partner.Id, IdentitySchemes.Mp),
-                NaturalPerson = new NaturalPersonBasicInfo
-                {
-                    BirthNumber = partner.BirthNumber ?? "",
-                    FirstName = partner.Name ?? "",
-                    LastName = partner.Lastname ?? "",
-                    GenderId = (int)(partner.Gender == GenderEnum.Male ? Genders.Male : Genders.Female),
-                    DateOfBirth = partner.DateOfBirth
-                },
-                IdentificationDocument = mapIdentificationDocument(partner),
-                Address = await mapAddress(partner.Addresses.FirstOrDefault(), cancellationToken)
-            };
-            response.Add(p);
-        }
-
-        return response;
-    }
-
     public async Task<CustomerDetailResponse> MapDetailResponse(PartnerResponse partner, CancellationToken cancellationToken)
     {
         var titles1 = await _codebookService.AcademicDegreesBefore(cancellationToken);

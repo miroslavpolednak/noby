@@ -25,7 +25,7 @@ internal sealed class SearchCustomersHandler(
         return response;
     }
 
-    private async Task<List<SearchCustomersItem>> searchMpHome(SearchCustomersRequest request, CancellationToken cancellationToken)
+    private async Task<List<CustomerDetailResponse>> searchMpHome(SearchCustomersRequest request, CancellationToken cancellationToken)
     {
 #pragma warning disable CS8601 // Possible null reference assignment.
         var searchRequest = new global::ExternalServices.MpHome.V1.Contracts.PartnerSearchRequest
@@ -46,6 +46,11 @@ internal sealed class SearchCustomersHandler(
 #pragma warning restore CS8601 // Possible null reference assignment.
         var response = await _mpHome.SearchPartners(searchRequest, cancellationToken);
 
-        return await _mpHomeDetailMapper.MapSearchResponse(response, cancellationToken);
+        List<CustomerDetailResponse> result = [];
+        foreach (var partner in response!)
+        {
+            result.Add(await _mpHomeDetailMapper.MapDetailResponse(partner, cancellationToken));
+        }
+        return result;
     }
 }

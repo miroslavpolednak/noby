@@ -40,14 +40,14 @@ internal sealed class IdentifyHandler
         {
             var customer = searchResult.Customers.First();
 
-            return new CustomerInList().FillBaseData(customer).FillIdentification(customer.Identity);
+            return new CustomerInList().FillBaseData(customer);
         }
 
         if (searchResult.Customers.Count == 0)
             return null;
 
         _logger.LogInformation("More than 1 client found");
-        throw new NobyValidationException($"More than 1 client found: {string.Join(", ", searchResult.Customers.Select(t => t.Identity?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}", 409);
+        throw new NobyValidationException($"More than 1 client found: {string.Join(", ", searchResult.Customers.Select(t => t.Identities?.FirstOrDefault()?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}", 409);
     }
 
     private readonly ILogger<IdentifyHandler> _logger;

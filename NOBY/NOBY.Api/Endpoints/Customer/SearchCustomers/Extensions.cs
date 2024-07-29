@@ -6,9 +6,9 @@ namespace NOBY.Api.Endpoints.Customer.SearchCustomers;
 
 internal static class Extensions
 {
-    public static DomainServices.CustomerService.Contracts.SearchCustomersRequest ToDomainServiceRequest(this CustomerSearchData request)
+    public static SearchCustomersRequest ToDomainServiceRequest(this CustomerSearchData request)
     {
-        var model = new DomainServices.CustomerService.Contracts.SearchCustomersRequest
+        var model = new SearchCustomersRequest
         {
             NaturalPerson = new NaturalPersonSearch
             {
@@ -59,33 +59,24 @@ internal static class Extensions
         return model;
     }
     
-    public static List<CustomerInList> ToApiResponse(this RepeatedField<SearchCustomersItem> request)
+    public static List<CustomerInList> ToApiResponse(this RepeatedField<CustomerDetailResponse> request)
     {
-        return request.Select(t => (new CustomerInList())
-            .FillBaseData(t)
-            .FillIdentification(t.Identity)
-            ).ToList();
+        return request.Select(t => (new CustomerInList()).FillBaseData(t)).ToList();
     }
 
-    internal static CustomerInList FillBaseData(this CustomerInList customer, SearchCustomersItem result)
+    public static CustomerInList FillBaseData(this CustomerInList customer, CustomerDetailResponse t)
     {
-        customer.FirstName = result.NaturalPerson?.FirstName;
-        customer.LastName = result.NaturalPerson?.LastName;
-        customer.Street = result.Address?.Street;
-        customer.City = result.Address?.City;
-        customer.Postcode = result.Address?.Postcode;
-        customer.BirthNumber = result.NaturalPerson?.BirthNumber;
-        customer.DateOfBirth = result.NaturalPerson?.DateOfBirth;
-        
-        return customer;
-    }
+        var address = t.Addresses.FirstOrDefault();
 
-    internal static CustomerInList FillIdentification(this CustomerInList customer, Identity? identity)
-    {
-        if (identity is not null)
-        {
-            customer.Identity = identity;
-        }
+        customer.FirstName = t.NaturalPerson?.FirstName;
+        customer.LastName = t.NaturalPerson?.LastName;
+        customer.Street = address?.Street;
+        customer.City = address?.City;
+        customer.Postcode = address?.Postcode;
+        customer.BirthNumber = t.NaturalPerson?.BirthNumber;
+        customer.DateOfBirth = t.NaturalPerson?.DateOfBirth;
+        customer.Identity = t.Identities.FirstOrDefault();
+
         return customer;
     }
 }
