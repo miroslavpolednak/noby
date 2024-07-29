@@ -33,6 +33,7 @@ internal sealed class MpHomeDetailMapper(
                 IdentificationDocument = mapIdentificationDocument(partner),
                 Address = await mapAddress(partner.Addresses.FirstOrDefault(), cancellationToken)
             };
+            response.Add(p);
         }
 
         return response;
