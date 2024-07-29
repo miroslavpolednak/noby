@@ -40,6 +40,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
                 
                 var item = RefinancingSharedOfferDetail.CreateRefixationOffer(offer);
                 item.InterestRateDiscount = result.SimulationInputs.InterestRateDiscount;
+                item.InterestRateDiscounted = result.SimulationInputs.InterestRateDiscount != null ? result.SimulationInputs.InterestRate - result.SimulationInputs.InterestRateDiscount : null;
                 item.LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted;
 
                 finalOffers.Add(item);

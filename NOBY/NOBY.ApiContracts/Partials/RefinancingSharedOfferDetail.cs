@@ -13,6 +13,7 @@ public partial class RefinancingSharedOfferDetail
             FixedRatePeriod = offer.MortgageRefixation.SimulationInputs.FixedRatePeriod,
             InterestRate = offer.MortgageRefixation.SimulationInputs.InterestRate,
             InterestRateDiscount = offer.MortgageRefixation.SimulationInputs.InterestRateDiscount,
+            InterestRateDiscounted = offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != null ? offer.MortgageRefixation.SimulationInputs.InterestRate - offer.MortgageRefixation.SimulationInputs.InterestRateDiscount : null,
             LoanPaymentAmount = offer.MortgageRefixation.SimulationResults.LoanPaymentAmount,
             LoanPaymentAmountDiscounted = offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted != offer.MortgageRefixation.SimulationResults.LoanPaymentAmount ? offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted : null
         };
