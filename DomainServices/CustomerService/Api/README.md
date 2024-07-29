@@ -7,6 +7,7 @@ grpcurl -insecure -d "{\"CustomerProfileCode\":\"IDENTIFIED_SUBJECT\",\"Identity
 
 grpcurl -insecure -d "{\"Mandant\":2,\"NaturalPerson\":{\"LastName\":\"Dvořák\"}}" -H "Authorization: Basic YTph" 127.0.0.1:30004 DomainServices.CustomerService.V1.CustomerService/SearchCustomers
 grpcurl -insecure -d "{\"Identity\":{\"identityId\":951077476,\"identityScheme\":2},\"Mandant\":2,\"NaturalPerson\":{\"FirstName\":\"\",\"LastName\":\"\",\"BirthNumber\":\"\"}}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30004 DomainServices.CustomerService.V1.CustomerService/SearchCustomers
+grpcurl -insecure -d "{\"Mandant\":1,\"NaturalPerson\":{\"FirstName\":\"ALEX\",\"LastName\":\"MADAGASKAR\"}}" -H "Authorization: Basic WFhfTk9CWV9STVRfVVNSX1RFU1Q6cHBtbGVzbnJUV1lTRFlHRFIhOTg1Mzg1MzU2MzQ1NDQ=" 172.30.35.51:30004 DomainServices.CustomerService.V1.CustomerService/SearchCustomers
 grpcurl -insecure -d "{\"Identity\":{\"identityId\":928532258,\"identityScheme\":2}}" -H "Authorization: Basic YTph" 172.30.35.51:5005 DomainServices.CustomerService.V1.CustomerService/SearchCustomers
 grpcurl -insecure -d "{\"IdentificationDocument\":{\"IdentificationDocumentTypeId\":1,\"IssuingCountryId\":16,\"Number\":\"54324525432\"}}" -H "Authorization: Basic YTph" 172.30.35.51:5005 DomainServices.CustomerService.V1.CustomerService/SearchCustomers
         

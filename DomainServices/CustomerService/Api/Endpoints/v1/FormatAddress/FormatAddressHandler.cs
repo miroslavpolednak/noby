@@ -17,14 +17,14 @@ internal sealed class FormatAddressHandler(ICodebookServiceClient _codebookServi
                                                   countryName)
         };
 
-        static string JoinAddressValues(params string[] values) => string.Join(", ", values.Where(str => !string.IsNullOrWhiteSpace(str)));
+        static string JoinAddressValues(params string?[] values) => string.Join(", ", values.Where(str => !string.IsNullOrWhiteSpace(str)));
     }
 
-    private async Task<string> CountryName(int countryId, CancellationToken cancellationToken)
+    private async Task<string?> CountryName(int countryId, CancellationToken cancellationToken)
     {
         var countries = await _codebookService.Countries(cancellationToken);
 
-        return countries.First(c => c.Id == countryId).LongName;
+        return countries.FirstOrDefault(c => c.Id == countryId)?.LongName;
     }
 
     private static string CreateStreetPart(SharedTypes.GrpcTypes.GrpcAddress address)
