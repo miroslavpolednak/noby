@@ -43,6 +43,7 @@ internal sealed class SimulateMortgageRetentionHandler(
             OfferId = result.OfferId,
             InterestRate = interestRate,
             InterestRateDiscount = request.InterestRateDiscount,
+            InterestRateDiscounted = request.InterestRateDiscount.HasValue ? interestRate - request.InterestRateDiscount.Value : null,
             LoanPaymentAmount = result.SimulationResults.LoanPaymentAmount,
             LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted,
             FeeAmount = dsRequest.BasicParameters.FeeAmount,
