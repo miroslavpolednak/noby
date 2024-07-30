@@ -2984,7 +2984,7 @@ public partial class getByOtherIdsRequest
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstanceReference", Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
+[System.Xml.Serialization.XmlTypeAttribute(TypeName = "ProductInstanceReference1", Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
 public partial class ProductInstanceReference1
 {
 
