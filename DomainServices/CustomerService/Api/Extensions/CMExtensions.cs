@@ -10,7 +10,7 @@ public static class CMExtensions
         return string.IsNullOrWhiteSpace(str) ? null : str;
     }
 
-    public static Contact ToContract(this __MpHome.ContactResponse contact)
+    public static Contact? ToContract(this __MpHome.ContactResponse contact)
     {
         var item = new Contact
         {
@@ -36,7 +36,7 @@ public static class CMExtensions
                 break;
 
             default:
-                throw new NotImplementedException($"ContactTypeId {item.ContactTypeId} not implemented");
+                return default; 
         }
 
         return item;
