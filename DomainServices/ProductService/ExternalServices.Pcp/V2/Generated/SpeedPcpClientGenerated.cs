@@ -921,6 +921,47 @@ public partial class OtherMktItemInstanceId
 [System.Xml.Serialization.XmlIncludeAttribute(typeof(MktItemInstanceIdByAccount))]
 [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
 [System.Diagnostics.DebuggerStepThroughAttribute()]
+[System.Xml.Serialization.XmlTypeAttribute(Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO/getByOtherId")]
+public partial class OtherMktItemInstanceId1
+{
+
+    private string classField;
+
+    private string idField;
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0, Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
+    public string @class
+    {
+        get
+        {
+            return this.classField;
+        }
+        set
+        {
+            this.classField = value;
+        }
+    }
+
+    /// <remarks/>
+    [System.Xml.Serialization.XmlElementAttribute(Order = 1, Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO")]
+    public string id
+    {
+        get
+        {
+            return this.idField;
+        }
+        set
+        {
+            this.idField = value;
+        }
+    }
+}
+
+/// <remarks/>
+[System.Xml.Serialization.XmlIncludeAttribute(typeof(MktItemInstanceIdByAccount))]
+[System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.1.0")]
+[System.Diagnostics.DebuggerStepThroughAttribute()]
 public partial class OtherMktItemInstanceId3
 {
 
@@ -2988,11 +3029,11 @@ public partial class getByOtherIdsRequest
 public partial class ProductInstanceReference1
 {
 
-    private OtherMktItemInstanceId otherMktItemInstanceIdField;
+    private OtherMktItemInstanceId1 otherMktItemInstanceIdField;
 
     /// <remarks/>
-    [System.Xml.Serialization.XmlElementAttribute(Order = 0)]
-    public OtherMktItemInstanceId otherMktItemInstanceId
+    [System.Xml.Serialization.XmlElementAttribute(Order = 0, Namespace = "http://kb.cz/ProductInstanceBEService/v2/DTO/getByOtherId")]
+    public OtherMktItemInstanceId1 otherMktItemInstanceId
     {
         get
         {

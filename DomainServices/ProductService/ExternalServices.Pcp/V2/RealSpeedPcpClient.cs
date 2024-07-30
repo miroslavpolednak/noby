@@ -32,7 +32,7 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
 
                 var result = await Client.getByOtherIdsAsync(CreateSystemIdentity(), CreateTraceContext(), GetByOtherIdsRequest(caseId));
 
-                return result.getByOtherIdsResponse.productInstanceList;
+                return result.getByOtherIdsResponse?.productInstanceList ?? [];
             }
         });  
     }
@@ -111,7 +111,7 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
             [
                 new ProductInstanceReference1
                 {
-                    otherMktItemInstanceId = new OtherMktItemInstanceId
+                    otherMktItemInstanceId = new OtherMktItemInstanceId1
                     {
                         @class = "ID",
                         id = caseId.ToString(CultureInfo.InvariantCulture)
