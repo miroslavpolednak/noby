@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "swagger.json",
+      "url": "../../../MPSS-FOMS-OAS/FEAPI.json",
       "output": null,
       "newLineBehavior": "Auto"
     }

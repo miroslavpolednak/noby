@@ -1,39 +1,39 @@
 ﻿namespace NOBY.ApiContracts;
 
-public partial class SharedTypesWorkflowTaskDetailAmendments
+public partial class SharedTypesWorkflowTaskDetailAmendmentsOneOf
 {
-    public static SharedTypesWorkflowTaskDetailAmendments Create(SharedTypesWorkflowAmendmentsConsultationData? model)
+    public static SharedTypesWorkflowTaskDetailAmendmentsOneOf Create(SharedTypesWorkflowAmendmentsConsultationData? model)
     {
-        return new SharedTypesWorkflowTaskDetailAmendments
+        return new()
         {
-            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendments.ConsultationData),
+            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendmentsOneOf.ConsultationData),
             ConsultationData = model
         };
     }
 
-    public static SharedTypesWorkflowTaskDetailAmendments Create(SharedTypesWorkflowAmendmentsPriceException? model)
+    public static SharedTypesWorkflowTaskDetailAmendmentsOneOf Create(SharedTypesWorkflowAmendmentsPriceException? model)
     {
-        return new SharedTypesWorkflowTaskDetailAmendments
+        return new()
         {
-            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendments.PriceException),
+            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendmentsOneOf.PriceException),
             PriceException = model
         };
     }
 
-    public static SharedTypesWorkflowTaskDetailAmendments Create(SharedTypesWorkflowAmendmentsRequest? model)
+    public static SharedTypesWorkflowTaskDetailAmendmentsOneOf Create(SharedTypesWorkflowAmendmentsRequest? model)
     {
-        return new SharedTypesWorkflowTaskDetailAmendments
+        return new()
         {
-            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendments.Request),
+            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendmentsOneOf.Request),
             Request = model
         };
     }
 
-    public static SharedTypesWorkflowTaskDetailAmendments Create(SharedTypesWorkflowAmendmentsSigning? model)
+    public static SharedTypesWorkflowTaskDetailAmendmentsOneOf Create(SharedTypesWorkflowAmendmentsSigning? model)
     {
-        return new SharedTypesWorkflowTaskDetailAmendments
+        return new()
         {
-            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendments.Signing),
+            Discriminator = nameof(SharedTypesWorkflowTaskDetailAmendmentsOneOf.Signing),
             Signing = model
         };
     }
