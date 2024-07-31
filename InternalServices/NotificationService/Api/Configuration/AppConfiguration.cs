@@ -29,6 +29,8 @@ internal sealed class EmailSenders
     public List<string> Mcs { get; set; } = new();
 
     public List<string> Mpss { get; set; } = new();
+
+    public Dictionary<string, string> AddressMapping { get; set; } = new();
 }
 
 internal sealed class KafkaTopics
