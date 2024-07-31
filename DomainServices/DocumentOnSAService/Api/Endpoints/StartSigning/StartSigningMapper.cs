@@ -216,7 +216,7 @@ public class StartSigningMapper
             var kbIdentityId = identityOnCase!.IdentityId;
             var customersResponse = await _productServiceClient.GetCustomersOnProduct(caseId, cancellationToken);
             var customer = customersResponse.Customers.Single(c => c.CustomerIdentifiers.Any(i => i.IdentityId == kbIdentityId));
-            var mpIndentity = customer.CustomerIdentifiers.GetKbIdentity();
+            var mpIndentity = customer.CustomerIdentifiers.GetMpIdentity();
             return mpIndentity.IdentityId.ToString(CultureInfo.InvariantCulture);
         }
     }
