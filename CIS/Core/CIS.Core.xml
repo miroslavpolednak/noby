@@ -476,7 +476,15 @@
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
         </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisException.#ctor(System.Int32,System.String,System.Exception)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
         <member name="M:CIS.Core.Exceptions.BaseCisException.#ctor(System.String,System.String)">
+            <param name="exceptionCode">CIS error kód</param>
+            <param name="message">Chybová zpráva</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.BaseCisException.#ctor(System.String,System.String,System.Exception)">
             <param name="exceptionCode">CIS error kód</param>
             <param name="message">Chybová zpráva</param>
         </member>
@@ -626,6 +634,11 @@
             <param name="requestUri">URI jehož volání selhalo</param>
             <param name="message">Textový popis chyby</param>
         </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExternalServiceServerErrorException.#ctor(System.String,System.String,System.String,System.Exception)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="requestUri">URI jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
+        </member>
         <member name="T:CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException">
             <summary>
             Služba třetí strany (ExternalServices) není dostupná - např. špatné URL volané služby, nebo volaná služba vůbec neběží.
@@ -642,6 +655,11 @@
             </summary>
         </member>
         <member name="M:CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException.#ctor(System.String,System.String,System.String)">
+            <param name="serviceName">Název služby, která selhala</param>
+            <param name="requestUri">URI jehož volání selhalo</param>
+            <param name="message">Textový popis chyby</param>
+        </member>
+        <member name="M:CIS.Core.Exceptions.ExternalServices.CisExternalServiceUnavailableException.#ctor(System.String,System.String,System.String,System.Exception)">
             <param name="serviceName">Název služby, která selhala</param>
             <param name="requestUri">URI jehož volání selhalo</param>
             <param name="message">Textový popis chyby</param>

@@ -9,6 +9,11 @@ namespace DomainServices.ProductService.ExternalServices.Pcp.V1;
 internal sealed class RealPcpClient 
     : IPcpClient
 {
+    public Task<ProductInstance3[]> GetByOtherIds(long caseId, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(Array.Empty<ProductInstance3>());
+    }
+
     public async Task<string> CreateProduct(long caseId, long customerKbId, string pcpProductId, CancellationToken cancellationToken = default(CancellationToken))
     {
         string soap = _soapEnvelopeStart + getHeader() + $@"<soapenv:Body>

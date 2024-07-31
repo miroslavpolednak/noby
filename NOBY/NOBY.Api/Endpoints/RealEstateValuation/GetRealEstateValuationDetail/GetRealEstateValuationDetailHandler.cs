@@ -178,12 +178,12 @@ internal sealed class GetRealEstateValuationDetailHandler(
         };
     }
 
-    private static RealEstateValuationSharedSpecificDetails? getSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
+    private static RealEstateValuationSharedSpecificDetailsOneOf? getSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
     {
         return valuationDetail.SpecificDetailCase switch
         {
-            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.HouseAndFlatDetails => RealEstateValuationSharedSpecificDetails.Create(createHouseAndFlatDetails(valuationDetail.HouseAndFlatDetails)),
-            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.ParcelDetails => RealEstateValuationSharedSpecificDetails.Create(createParcelDetails(valuationDetail.ParcelDetails)),
+            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.HouseAndFlatDetails => RealEstateValuationSharedSpecificDetailsOneOf.Create(createHouseAndFlatDetails(valuationDetail.HouseAndFlatDetails)),
+            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.ParcelDetails => RealEstateValuationSharedSpecificDetailsOneOf.Create(createParcelDetails(valuationDetail.ParcelDetails)),
             __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.None => default,
             _ => throw new NotImplementedException()
         };

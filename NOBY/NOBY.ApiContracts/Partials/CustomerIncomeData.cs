@@ -1,30 +1,30 @@
 ﻿namespace NOBY.ApiContracts;
 
-public partial class CustomerIncomeData
+public partial class CustomerIncomeDataOneOf
 {
-    public static CustomerIncomeData Create(CustomerIncomeSharedDataEmployement? model)
+    public static CustomerIncomeDataOneOf Create(CustomerIncomeSharedDataEmployement? model)
     {
-        return new CustomerIncomeData
+        return new CustomerIncomeDataOneOf
         {
-            Discriminator = nameof(CustomerIncomeData.Employment),
+            Discriminator = nameof(CustomerIncomeDataOneOf.Employment),
             Employment = model
         };
     }
 
-    public static CustomerIncomeData Create(CustomerIncomeSharedDataOther? model)
+    public static CustomerIncomeDataOneOf Create(CustomerIncomeSharedDataOther? model)
     {
-        return new CustomerIncomeData
+        return new CustomerIncomeDataOneOf
         {
-            Discriminator = nameof(CustomerIncomeData.Other),
+            Discriminator = nameof(CustomerIncomeDataOneOf.Other),
             Other = model
         };
     }
 
-    public static CustomerIncomeData Create(CustomerIncomeSharedDataEntrepreneur? model)
+    public static CustomerIncomeDataOneOf Create(CustomerIncomeSharedDataEntrepreneur? model)
     {
-        return new CustomerIncomeData
+        return new CustomerIncomeDataOneOf
         {
-            Discriminator = nameof(CustomerIncomeData.Entrepreneur),
+            Discriminator = nameof(CustomerIncomeDataOneOf.Entrepreneur),
             Entrepreneur = model
         };
     }

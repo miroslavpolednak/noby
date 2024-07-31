@@ -1,21 +1,21 @@
 ﻿namespace NOBY.ApiContracts;
 
-public partial class RealEstateValuationSharedSpecificDetails
+public partial class RealEstateValuationSharedSpecificDetailsOneOf
 {
-    public static RealEstateValuationSharedSpecificDetails? Create(RealEstateValuationSharedSpecificDetailsHouseAndFlat? model)
+    public static RealEstateValuationSharedSpecificDetailsOneOf? Create(RealEstateValuationSharedSpecificDetailsHouseAndFlat? model)
     {
-        return new RealEstateValuationSharedSpecificDetails
+        return new()
         {
-            Discriminator = nameof(RealEstateValuationSharedSpecificDetails.HouseAndFlat),
+            Discriminator = nameof(RealEstateValuationSharedSpecificDetailsOneOf.HouseAndFlat),
             HouseAndFlat = model
         };
     }
 
-    public static RealEstateValuationSharedSpecificDetails? Create(RealEstateValuationSharedSpecificDetailsParcel? model)
+    public static RealEstateValuationSharedSpecificDetailsOneOf? Create(RealEstateValuationSharedSpecificDetailsParcel? model)
     {
-        return new RealEstateValuationSharedSpecificDetails
+        return new()
         {
-            Discriminator = nameof(RealEstateValuationSharedSpecificDetails.Parcel),
+            Discriminator = nameof(RealEstateValuationSharedSpecificDetailsOneOf.Parcel),
             Parcel = model
         };
     }

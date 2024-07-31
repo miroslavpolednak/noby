@@ -63,7 +63,7 @@ internal sealed class GetCurrentPriceExceptionHandler(
                 TaskDetail = new()
                 {
                     ProcessNameLong = process?.ProcessNameLong ?? "",
-                    Amendments = SharedTypesWorkflowTaskDetailAmendments.Create(amendment)
+                    Amendments = SharedTypesWorkflowTaskDetailAmendmentsOneOf.Create(amendment)
                 },
                 Task = new()
                 {

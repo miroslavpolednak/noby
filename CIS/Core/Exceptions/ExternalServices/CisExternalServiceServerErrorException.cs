@@ -27,6 +27,16 @@ public sealed class CisExternalServiceServerErrorException
         ServiceName = serviceName;
     }
 
+    /// <param name="serviceName">Název služby, která selhala</param>
+    /// <param name="requestUri">URI jehož volání selhalo</param>
+    /// <param name="message">Textový popis chyby</param>
+    public CisExternalServiceServerErrorException(string serviceName, string requestUri, string message, Exception innerException)
+        : base(15, message, innerException)
+    {
+        RequestUri = requestUri;
+        ServiceName = serviceName;
+    }
+
     public CisExternalServiceServerErrorException(string serviceName)
         : this(DefaultExceptionCode, serviceName)
     { }

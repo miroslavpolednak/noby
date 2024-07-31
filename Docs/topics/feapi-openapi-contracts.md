@@ -123,6 +123,8 @@ OneOf funkčnost v OpenApi nepoužíváme, protože do C# generuje špatně kód
 Abychom dokázali tuto funkčnost nahradit, používáme podobný přístup jako Protobuf.
 OneOf je tedy objekt, který má tolik vlastností, kolika typů může výsledek nabývat.
 
+> Objekt zastupující OneOf v OAS má vždy suffix **OneOf**.
+
 K vytvořenému objektu, který zastupuje všechny OneOf typy přidáváme vlastnost `discriminator`, která obsahuje název objektu, který je v dané instanci naplněn.
 
 Ukázka OpenApi specifikace:
@@ -132,7 +134,7 @@ Ukázka OpenApi specifikace:
 	...
 	"properties": {
 		"amendments": {
-			"$ref": "#/components/schemas/SharedTypesWorkflowTaskDetailAmendments",
+			"$ref": "#/components/schemas/SharedTypesWorkflowTaskDetailAmendmentsOneOf",
 			"description": "OneOf",
 			"nullable": true
 		}
@@ -141,7 +143,7 @@ Ukázka OpenApi specifikace:
 }
 
 // implementace OneOf objektu
-"SharedTypesWorkflowTaskDetailAmendments": {
+"SharedTypesWorkflowTaskDetailAmendmentsOneOf": {
 	"type": "object",
 	"properties": {
 		"discriminator": {

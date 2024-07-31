@@ -3020,12 +3020,12 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("parameters")]
-        public SalesArrangementUpdateParametersParameters? Parameters { get; set; } = default!;
+        public SalesArrangementUpdateParametersParametersOneOf? Parameters { get; set; } = default!;
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SalesArrangementUpdateParametersParameters
+    public partial class SalesArrangementUpdateParametersParametersOneOf
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
@@ -3920,12 +3920,12 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("parameters")]
-        public SalesArrangementGetSalesArrangementParameters? Parameters { get; set; } = default!;
+        public SalesArrangementGetSalesArrangementParametersOneOf? Parameters { get; set; } = default!;
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SalesArrangementGetSalesArrangementParameters
+    public partial class SalesArrangementGetSalesArrangementParametersOneOf
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
@@ -5044,7 +5044,7 @@ namespace NOBY.ApiContracts
         public RealEstateValuationSharedLoanPurposeDetail? LoanPurposeDetails { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("specificDetails")]
-        public RealEstateValuationSharedSpecificDetails? SpecificDetails { get; set; } = default!;
+        public RealEstateValuationSharedSpecificDetailsOneOf? SpecificDetails { get; set; } = default!;
 
     }
 
@@ -5403,17 +5403,17 @@ namespace NOBY.ApiContracts
     /// Objekty SpecificDetails jsou řízeny business logikou &lt;a href="https://wiki.kb.cz/pages/viewpage.action?pageId=644560135"&gt;Ocenění nemovitosti - varianty nemovitostí&lt;/a&gt;.&lt;br /&gt;Objekt HouseAndFlatDetails bude použit v případě, že jde o variantu nemovitosti HF.&lt;br /&gt;Objekt ParcelDetails bude použit v případě, že jde o variantu nemovitosti P.&lt;br /&gt;Pokud jde o variantu nemovitosti O, nebude použit ani jeden z objektů SpecificDetails.
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class RealEstateValuationSharedSpecificDetails
+    public partial class RealEstateValuationSharedSpecificDetailsOneOf
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("houseAndFlat")]
-        public RealEstateValuationSharedSpecificDetailsHouseAndFlat HouseAndFlat { get; set; } = default!;
+        public RealEstateValuationSharedSpecificDetailsHouseAndFlat? HouseAndFlat { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("parcel")]
-        public RealEstateValuationSharedSpecificDetailsParcel Parcel { get; set; } = default!;
+        public RealEstateValuationSharedSpecificDetailsParcel? Parcel { get; set; } = default!;
 
     }
 
@@ -5728,7 +5728,7 @@ namespace NOBY.ApiContracts
         public RealEstateValuationSharedLoanPurposeDetail? LoanPurposeDetails { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("specificDetails")]
-        public RealEstateValuationSharedSpecificDetails? SpecificDetails { get; set; } = default!;
+        public RealEstateValuationSharedSpecificDetailsOneOf? SpecificDetails { get; set; } = default!;
 
     }
 
@@ -7412,7 +7412,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("data")]
-        public CustomerIncomeData? Data { get; set; } = default!;
+        public CustomerIncomeDataOneOf? Data { get; set; } = default!;
 
     }
 
@@ -7423,7 +7423,7 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CustomerIncomeData
+    public partial class CustomerIncomeDataOneOf
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
@@ -7604,7 +7604,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("data")]
-        public CustomerIncomeData? Data { get; set; } = default!;
+        public CustomerIncomeDataOneOf? Data { get; set; } = default!;
 
     }
 
@@ -10125,12 +10125,12 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("amendments")]
-        public SharedTypesWorkflowTaskDetailAmendments? Amendments { get; set; } = default!;
+        public SharedTypesWorkflowTaskDetailAmendmentsOneOf? Amendments { get; set; } = default!;
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.8.0 (NJsonSchema v11.0.1.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class SharedTypesWorkflowTaskDetailAmendments
+    public partial class SharedTypesWorkflowTaskDetailAmendmentsOneOf
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]

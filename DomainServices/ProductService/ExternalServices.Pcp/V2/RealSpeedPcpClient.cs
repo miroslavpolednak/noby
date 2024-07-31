@@ -22,6 +22,21 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
 
     protected override string ServiceName => "PcpSpeed";
 
+    public async Task<ProductInstance3[]> GetByOtherIds(long caseId, CancellationToken cancellationToken = default)
+    {
+        return await callMethod(async () =>
+        {
+            using (new OperationContextScope(Client.InnerChannel))
+            {
+                AddSecurityHeader();
+
+                var result = await Client.getByOtherIdsAsync(CreateSystemIdentity(), CreateTraceContext(), GetByOtherIdsRequest(caseId));
+
+                return result.getByOtherIdsResponse?.productInstanceList ?? [];
+            }
+        });  
+    }
+
     public async Task<string> CreateProduct(long caseId, long customerKbId, string pcpObjectCode, CancellationToken cancellationToken = default)
     {
         return await callMethod(async () =>
@@ -86,6 +101,24 @@ internal sealed class RealSpeedPcpClient : SoapClientBase<ProductInstanceBEServi
             OperationContext.Current.OutgoingMessageHeaders.Add(
                 new WsseSoapPasswordTextSecurityHeader(Configuration.Username!, Configuration.Password!, NonceGenerator.GetNonce(), DateTime.Now));
         }
+    }
+
+    private static getByOtherIdsRequest GetByOtherIdsRequest(long caseId)
+    {
+        return new getByOtherIdsRequest
+        {
+            productInstanceReferenceList =
+            [
+                new ProductInstanceReference1
+                {
+                    otherMktItemInstanceId = new OtherMktItemInstanceId1
+                    {
+                        @class = "ID",
+                        id = caseId.ToString(CultureInfo.InvariantCulture)
+                    }
+                }
+            ]
+        };
     }
 
 	private static updateRequest UpdateRequest(string pcpId, long customerKbId)
