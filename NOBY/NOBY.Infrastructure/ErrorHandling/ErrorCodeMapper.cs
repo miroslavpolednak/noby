@@ -76,7 +76,7 @@ public sealed class ErrorCodeMapper
             { 90065, new("Vložte povinnou přílohu, tj. 2x fotografie nemovitosti (1x interiér + 1x exteriér) a doklad o výměře bytové jednotky") },
             { 90066, new("Výše mimořádné splátky je větší než zbývající jistina, vyberte celkové splacení nebo upravte částku.") },
             { 90067, new("Modré produkty jsou zakázány.") },
-            { 90068, new("Nelze vygenerovat dodatek, protože hlavní dlužník či spoludlužníci nemají vyplněn jeden nebo více kontaktů. Doplňte klientům email resp. telefon (hlavní telefon) přes aplikaci CURE, počkete na synchronizaci kontaktů do systému Starbuild a generování dodatku opakujte.") },
+            { 90068, new("Nelze vygenerovat dodatek, protože hlavní dlužník či spoludlužníci nemají vyplněn jeden nebo více kontaktů. Doplňte klientům email resp. telefon (hlavní telefon) přes aplikaci CURE, počkejte na synchronizaci kontaktů do systému Starbuild a generování dodatku opakujte.") },
             { 90069, new("--DS error--") },
             { 90070, new("Stav rozpracované žádosti se změnil na pozadí, vraťte se detail obchodního případu a pokračujte standardním průchodem přes aplikaci.") }
         };
