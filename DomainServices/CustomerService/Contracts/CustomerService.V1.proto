@@ -12,6 +12,7 @@ import "Messages/CustomerList.proto";
 import "Messages/SearchCustomers.proto";
 import "Messages/ValidateContact.proto";
 import "Messages/FormatAddress.proto";
+import "Messages/UpdateContacts.proto";
 import "google/protobuf/empty.proto";
 
 service CustomerService {
@@ -24,4 +25,5 @@ service CustomerService {
    rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);
    rpc ValidateContact(ValidateContactRequest) returns (ValidateContactResponse);
    rpc FormatAddress(FormatAddressRequest) returns (FormatAddressResponse);
+   rpc UpdateContacts(UpdateContactsRequest) returns (google.protobuf.Empty);
 }
