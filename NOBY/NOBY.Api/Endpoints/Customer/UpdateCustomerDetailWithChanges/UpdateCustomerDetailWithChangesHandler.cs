@@ -64,7 +64,8 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<C
 
         await UpdateBasicCustomerData(request, customerInfo.CustomerOnSA, cancellationToken);
 
-        if (customerInfo.CustomerDetail.CustomerIdentification?.IdentificationMethodId is not 1 and 8)
+        var customerIdentification = customerInfo.CustomerDetail.CustomerIdentification;
+        if ((customerIdentification?.IdentificationMethodId is not 1 and not 8) || customerIdentification.IdentificationDate is null || string.IsNullOrWhiteSpace(customerIdentification.CzechIdentificationNumber))
         {
             var user = await _userServiceClient.GetUser(_userAccessor.User!.Id, cancellationToken);
 
@@ -271,8 +272,19 @@ internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<C
 
         var hasDifferences = false;
         ModelComparers.CompareObjects(requestCustomerChangeData?.IdentificationDocument, originalCustomerChangeData?.IdentificationDocument, ref hasDifferences, obj => delta.IdentificationDocument = obj);
-        ModelComparers.CompareObjects(requestCustomerChangeData?.CustomerIdentification, originalCustomerChangeData?.CustomerIdentification, ref hasDifferences, obj => delta.CustomerIdentification = obj);
         ModelComparers.CompareObjects(requestCustomerChangeData?.Addresses, originalCustomerChangeData?.Addresses, ref hasDifferences, obj => delta.Addresses = obj);
+
+        if (request.CustomerIdentification is not null)
+        {
+            delta.CustomerIdentification = new()
+            {
+                IdentificationMethodId = request.CustomerIdentification.IdentificationMethodId,
+                IdentificationDate = request.CustomerIdentification.IdentificationDate,
+                CzechIdentificationNumber = request.CustomerIdentification.CzechIdentificationNumber
+            };
+
+            hasDifferences = true;
+        }
 
         // tohle je zajimavost - do delty ukladame zmeny jen u kontaktu, ktere nejsou v CM jako IsConfirmed=true
         if (!(originalModel?.IsEmailConfirmed ?? false))

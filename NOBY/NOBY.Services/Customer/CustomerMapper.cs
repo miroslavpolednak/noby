@@ -13,7 +13,7 @@ public static class CustomerMapper
     {
         if (customerDto is null)
             return null;
-
+        
         var changeData = new CustomerChangeData
         {
             NaturalPerson = customerDto.NaturalPerson is null ? null : new NaturalPersonDelta()
