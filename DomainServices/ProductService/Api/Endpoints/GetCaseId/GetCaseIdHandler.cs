@@ -34,7 +34,7 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
         },
           cancellationToken);
 
-        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount.AccountNumber);
+        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount?.AccountNumber);
     }
 
     private async Task<long> getCaseIdByPcpId(string pcpId, CancellationToken cancellationToken)
