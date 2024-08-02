@@ -1,6 +1,19 @@
 # Generování kontraktů FE API z OpenApi specifikace
 
-## Základní nastavení
+## Práce se společnou OAS
+Sdílená dokumentace je v souboru **FEAPI.json**, který je v repository `OpenAPI`, branch `master`. 
+Tato verze OAS by měla zrcadlit stav v `master` branch NOBY DEV.
+
+Flow zadávání změna v OAS:
+1) ITA definuje změny ve vlastní feature branch
+2) feature branch projde review ze strany BE a FE DEV. 
+3) 
+    a) následně je buď feature branch rovnou mergována do `OpenAPI/master`
+    b) nebo na něm bude probíhat vývoj ze strany DEV. Jakmile je vývoj ukončen, DEV merguje feature branch do `OpenAPI/master`.
+
+Ideálně bude v rámci DevOps pipelines existovat proces, který během buildu aplikace zkompiluje aktuální OAS z OpenAPI repa a nedovolí nasadit aplikaci, pokud se kontrakty mezi aplikací a OAS budou lišit.
+
+## Základní nastavení OAS
 - každé schéma musí obsahovat `"additionalProperties": false`, jinak se do C# bude generovat slovník ostatních vlastností.
 - důsledně používáme `"nullable": true` v případě, že se jedná o nullable property nebo schéma.
 
@@ -18,7 +31,6 @@
 ```
 
 ## Jmenné konvence
-
 Název objektu (OpenApi schématu) je složen z namespace (části aplikace v kontextu které je objekt používán), názvu endpointu a suffixu.  
 Např. *CustomerIncomeCreateIncomeRequest* je složen takto:
 

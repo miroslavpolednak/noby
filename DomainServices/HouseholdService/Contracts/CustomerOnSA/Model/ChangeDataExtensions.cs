@@ -6,6 +6,11 @@ namespace DomainServices.HouseholdService.Contracts;
 
 public static class ChangeDataExtensions
 {
+    private static readonly JsonSerializerOptions _deserializerOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     private static readonly JsonSerializerOptions _serializerOptions = new()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
@@ -16,7 +21,7 @@ public static class ChangeDataExtensions
         if (string.IsNullOrWhiteSpace(customerOnSA.CustomerChangeData))
             return null;
 
-        return customerOnSA.InternalCustomerChangeData ??= JsonSerializer.Deserialize<CustomerChangeData>(customerOnSA.CustomerChangeData);
+        return customerOnSA.InternalCustomerChangeData ??= JsonSerializer.Deserialize<CustomerChangeData>(customerOnSA.CustomerChangeData, _deserializerOptions);
     }
 
     public static void UpdateCustomerChangeDataObject(this UpdateCustomerDetailRequest customerUpdate, CustomerChangeData? changeData)
