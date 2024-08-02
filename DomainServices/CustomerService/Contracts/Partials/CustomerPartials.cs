@@ -36,3 +36,6 @@ public partial class ValidateContactRequest
 
 public partial class FormatAddressRequest : MediatR.IRequest<FormatAddressResponse>, CIS.Core.Validation.IValidatableRequest
 { }
+
+public partial class UpdateContactsRequest : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
+{ }

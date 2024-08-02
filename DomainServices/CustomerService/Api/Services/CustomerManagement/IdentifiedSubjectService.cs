@@ -13,7 +13,7 @@ namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 internal sealed class IdentifiedSubjectService
 {
     private readonly ExternalServices.CustomerManagement.V2.ICustomerManagementClient _customerManagement;
-    private readonly CMContacts.IContactClient _contactClient;
+    private readonly CustomerManagementContactService _contactService;
     private readonly ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient _identifiedSubjectClient;
     private readonly ICodebookServiceClient _codebook;
     private readonly CustomerManagementErrorMap _errorMap;
@@ -29,14 +29,14 @@ internal sealed class IdentifiedSubjectService
     private List<GenericCodebookResponse.Types.GenericCodebookItem> _incomeMainTypesAML = null!;
 
     public IdentifiedSubjectService(ExternalServices.CustomerManagement.V2.ICustomerManagementClient customerManagement,
-                                    CMContacts.IContactClient contactClient,
+                                    CustomerManagementContactService contactService,
                                     ExternalServices.IdentifiedSubjectBr.V1.IIdentifiedSubjectBrClient identifiedSubjectClient, 
                                     ICodebookServiceClient codebook,
                                     CustomerManagementErrorMap errorMap,
                                     ExternalServices.Kyc.V1.IKycClient kycClient)
     {
         _customerManagement = customerManagement;
-        _contactClient = contactClient;
+        _contactService = contactService;
         _identifiedSubjectClient = identifiedSubjectClient;
         _codebook = codebook;
         _errorMap = errorMap;
@@ -56,7 +56,7 @@ internal sealed class IdentifiedSubjectService
 
         var customerIdentity = new SharedTypes.GrpcTypes.Identity(CustomerManagementErrorMap.ResolveAndThrowIfError(response.Result!), IdentitySchemes.Kb);
 
-        await CreateEmail(customerIdentity.IdentityId, request.Contacts, cancellationToken);
+        await _contactService.CreateEmail(customerIdentity.IdentityId, request.Contacts, cancellationToken);
 
         return new CreateCustomerResponse
         {
@@ -79,7 +79,7 @@ internal sealed class IdentifiedSubjectService
         identifiedSubject.TemporaryStay = CreateTemporaryStayAddress(customer.TemporaryStay);
 
         await _identifiedSubjectClient.UpdateIdentifiedSubject(customerId, identifiedSubject, cancellationToken);
-        await UpdateEmail(customerId, request.Contacts, cancellationToken);
+        await _contactService.UpdateEmail(customerId, request.Contacts, cancellationToken);
 
         // https://jira.kb.cz/browse/HFICH-3555
         await callSetSocialCharacteristics(customerId, request, cancellationToken);
@@ -172,33 +172,6 @@ internal sealed class IdentifiedSubjectService
         async Task ProfessionTypes() => _professionTypes = await _codebook.ProfessionTypes(cancellationToken);
         async Task NetMonthEarnings() => _netMonthEarnings = await _codebook.NetMonthEarnings(cancellationToken);
         async Task IncomeMainTypesAML() => _incomeMainTypesAML = await _codebook.IncomeMainTypesAML(cancellationToken);
-    }
-
-    private async Task CreateEmail(long customerId, IEnumerable<Contact> contacts, CancellationToken cancellationToken)
-    {
-        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
-
-        if (email is null)
-            return;
-
-        await _contactClient.CreateOrUpdateContact(customerId, 15, email.Email.EmailAddress, cancellationToken);
-        await _contactClient.CreateOrUpdateContact(customerId, 7, email.Email.EmailAddress, cancellationToken);
-    }
-
-    private async Task UpdateEmail(long customerId, IEnumerable<Contact> contacts, CancellationToken cancellationToken)
-    {
-        var email = contacts.FirstOrDefault(c => c.ContactTypeId == (int)ContactTypes.Email);
-
-        if (email is null)
-            return;
-
-        var cmContacts = await _contactClient.LoadContacts(customerId, cancellationToken);
-
-        if (cmContacts.Any(c => c is { ContactMethodCode: 7, Confirmed: true }))
-            return;
-
-        await _contactClient.CreateOrUpdateContact(customerId, 15, email.Email.EmailAddress, cancellationToken);
-        await _contactClient.CreateOrUpdateContact(customerId, 7, email.Email.EmailAddress, cancellationToken);
     }
 
     private __Contracts.IdentifiedSubject BuildCreateRequest(CreateCustomerRequest request)

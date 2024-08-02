@@ -10,31 +10,33 @@ public static class CMExtensions
         return string.IsNullOrWhiteSpace(str) ? null : str;
     }
 
-    public static Contact ToContract(this __MpHome.ContactResponse contact)
+    public static Contact? ToContract(this __MpHome.ContactResponse contact)
     {
         var item = new Contact
         {
-            IsPrimary = contact.Primary,
-            ContactTypeId = (int)contact.Type
+            IsPrimary = contact.Primary
         };
 
-        switch (item.ContactTypeId)
+        switch (contact.Type)
         {
-            case (int)ContactTypes.Mobil:
+            case __MpHome.ContactType.Mobile:
                 if (string.IsNullOrWhiteSpace(contact.Value))
                     item.Mobile = new MobilePhoneItem();
                 else if (contact.Value.Length == 9)
                     item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value, PhoneIDC = "" };
                 else
                     item.Mobile = new MobilePhoneItem { PhoneNumber = contact.Value[^9..].Trim(), PhoneIDC = contact.Value[..^9].Trim() };
+
+                item.ContactTypeId = (int)ContactTypes.Mobil;
                 break;
 
-            case (int)ContactTypes.Email:
+            case __MpHome.ContactType.Email:
                 item.Email = new EmailAddressItem { EmailAddress = contact.Value ?? "" };
+                item.ContactTypeId = (int)ContactTypes.Email;
                 break;
 
             default:
-                throw new NotImplementedException($"ContactTypeId {item.ContactTypeId} not implemented");
+                return default; 
         }
 
         return item;

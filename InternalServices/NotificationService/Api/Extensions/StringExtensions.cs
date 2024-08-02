@@ -41,4 +41,13 @@ internal static partial class StringExtensions
 
         return phoneNumber;
     }
+
+    public static string ResolveSenderEmail(this string originalSenderEmail, Dictionary<string, string> _emailSenderMapping)
+    {
+        if (_emailSenderMapping.TryGetValue(originalSenderEmail, out string? translatedSenderEmail))
+        {
+            return translatedSenderEmail;
+        }
+        return originalSenderEmail;
+    }
 }

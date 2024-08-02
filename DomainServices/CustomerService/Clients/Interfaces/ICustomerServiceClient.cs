@@ -77,4 +77,6 @@ public interface ICustomerServiceClient
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<string> FormatAddress(GrpcAddress address, CancellationToken cancellationToken = default);
+
+    Task UpdateContacts(Identity identity, IEnumerable<Contact> contacts, CancellationToken cancellationToken = default);
 }

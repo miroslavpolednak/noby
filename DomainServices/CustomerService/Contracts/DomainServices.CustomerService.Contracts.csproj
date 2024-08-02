@@ -16,6 +16,7 @@
 
 	<ItemGroup>
 	  <None Remove="Messages\Contacts.proto" />
+	  <None Remove="Messages\UpdateContacts.proto" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -47,5 +48,6 @@
 		<Protobuf Include="Messages/UpdateCustomerIdentifiers.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/ValidateContact.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/FormatAddress.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
+		<Protobuf Include="Messages/UpdateContacts.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>
 </Project>

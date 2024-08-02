@@ -47,7 +47,7 @@ internal sealed class MpHomeDetailMapper(
 
         if (partner.Contacts is not null)
         {
-            customer.Contacts.AddRange(partner.Contacts.Select(t => t.ToContract()));
+            customer.Contacts.AddRange(partner.Contacts.Select(t => t.ToContract()).Where(contact => contact is not null));
         }
 
         return customer;
