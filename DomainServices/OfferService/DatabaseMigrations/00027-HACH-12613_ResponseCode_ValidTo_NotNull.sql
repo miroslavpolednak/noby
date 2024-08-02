@@ -1,0 +1,1 @@
+ALTER TABLE [OfferService].[dbo].[ResponseCode] ALTER COLUMN ValidTo DATE NOT NULL
