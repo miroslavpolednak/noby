@@ -29,8 +29,8 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
     {
         var results = await _mpHomeClient.SearchCases(new CaseSearchRequest
         {
-            AccountPrefix = paymentAccount.Prefix.PadLeft(6, '0'),
-            AccountNumber = paymentAccount.AccountNumber.PadLeft(10, '0')
+            AccountPrefix = paymentAccount?.Prefix?.PadLeft(6, '0'),
+            AccountNumber = paymentAccount?.AccountNumber?.PadLeft(10, '0')
         },
           cancellationToken);
 
