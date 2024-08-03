@@ -3,6 +3,7 @@ using CIS.InternalServices.NotificationService.Api.Endpoints.v1.Common;
 using CIS.InternalServices.NotificationService.LegacyContracts.Email;
 using FluentValidation;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v1.Email.Validators;
 
@@ -49,10 +50,12 @@ internal sealed class SendEmailRequestValidator : AbstractValidator<SendEmailReq
             .SetValidator(new EmailContentValidator(appConfiguration))
                 .WithErrorCode(ErrorCodeMapper.ContentInvalid);
 
-        RuleFor(request => request.Attachments.Count)
-            .LessThanOrEqualTo(10)
-                .WithErrorCode(ErrorCodeMapper.AttachmentsCountLimitExceeded);
-        
+        RuleFor(request => request.Attachments)
+            .Must(t => t.Count <= 10)
+            .WithErrorCode(ErrorCodeMapper.AttachmentsCountLimitExceeded)
+            .Must(t => t.Sum(x => x.Binary.GetSizeInBytesFromBase64()) <= appConfiguration.EmailSizeLimits.PayloadV1)
+            .WithErrorCode(ErrorCodeMapper.AttachmentsSizeExceeded);
+
         RuleForEach(request => request.Attachments)
             .SetValidator(new EmailAttachmentValidator())
                 .WithErrorCode(ErrorCodeMapper.AttachmentsInvalid);

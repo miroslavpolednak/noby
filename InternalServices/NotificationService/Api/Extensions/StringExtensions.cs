@@ -50,4 +50,12 @@ internal static partial class StringExtensions
         }
         return originalSenderEmail;
     }
+
+    public static int GetSizeInBytesFromBase64(this string base64string)
+    {
+        if (string.IsNullOrEmpty(base64string))
+            return 0;
+
+        return (int)Math.Ceiling((double)base64string.Length / 4) * 3;
+    }
 }
