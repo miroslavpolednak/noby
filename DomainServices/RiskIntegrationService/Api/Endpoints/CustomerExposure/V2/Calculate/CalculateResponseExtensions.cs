@@ -65,6 +65,25 @@ internal static class CalculateResponseExtensions
             MaturityDate = item.MaturityDate?.DateTime
         };
 
+    public static _V2.CustomerExposureExistingKBGroupItem ToServiceResponse(this _C4M.ExistingKBGroupExposureFopItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
+        => new _V2.CustomerExposureExistingKBGroupItem
+        {
+            BankAccount = getBankAccountFromIdentifier(item.ProductId),
+            LoanType = obligationLaExposures.FirstOrDefault(t => t.RdmCode == item.LoanType)?.Id,
+            LoanTypeCategory = obligationLaExposures.FirstOrDefault(t => t.RdmCode == item.LoanType)?.ObligationTypeId,
+            CustomerRoleId = customerRoles.FirstOrDefault(c => c.RdmCode == item.CustomerRoleCode)?.Id,
+            LoanAmount = item.LoanAmount?.Value,
+            DrawingAmount = item.DrawingAmount?.Value,
+            LoanBalanceAmount = item.LoanBalanceAmount?.Value,
+            LoanOffBalanceAmount = item.LoanOffBalanceAmount?.Value,
+            LoanOnBalanceAmount = item.LoanOnBalanceAmount?.Value,
+            ExposureAmount = item.ExposureAmount?.Value,
+            InstallmentAmount = item.InstallmentAmount?.Value,
+            IsSecured = item.IsSecured,
+            ContractDate = item.ContractDate?.DateTime,
+            MaturityDate = item.MaturityDate?.DateTime
+        };
+
     public static _V2.CustomerExposureRequestedKBGroupItem ToServiceResponse(this _C4M.RequestedKBGroupExposureItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
         => new _V2.CustomerExposureRequestedKBGroupItem
         {
@@ -75,7 +94,10 @@ internal static class CalculateResponseExtensions
             LoanAmount = item.LoanAmount?.Value,
             InstallmentAmount = item.InstallmentAmount?.Value,
             StatusCode = item.StatusCode,
-            IsSecured = item.IsSecured
+            IsSecured = item.IsSecured,
+            RequestDate = item.RequestDate?.DateTime,
+            AppendixAccNbr = item.AppendixAccNbr,
+            AppendixCode = item.AppendixCode
         };
 
     public static _V2.CustomerExposureExistingCBCBItem ToServiceResponse(this _C4M.ExistingCBCBExposureItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
