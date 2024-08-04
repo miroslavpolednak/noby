@@ -10,6 +10,7 @@ using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.SbWebApi.Dto.Refinancing;
 using ExternalServices.SbWebApi.V1;
 using NOBY.Services.MortgageRefinancing;
+using PublicHoliday;
 using SharedTypes.GrpcTypes;
 using _contract = DomainServices.SalesArrangementService.Contracts;
 
@@ -57,7 +58,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler(
     {
         var offer = await _offerService.GetOffer(offerId, cancellationToken);
 
-        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < DateTime.UtcNow.ToLocalTime().Date)
+        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < new CzechRepublicPublicHoliday().NextWorkingDay(DateTime.Now, 3).AddDays(1))
             throw new NobyValidationException(90055);
 
         var simulationRequest = new SimulateMortgageExtraPaymentRequest
