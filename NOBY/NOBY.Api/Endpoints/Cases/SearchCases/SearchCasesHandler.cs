@@ -26,7 +26,7 @@ internal sealed class SearchCasesHandler(
         DomainServices.CaseService.Contracts.SearchCasesResponse result;
 
         if (filterStates?.Any() ?? true)
-            result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, getStatesFilter(request.FilterId), request.Term, cancellationToken);
+            result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, filterStates, request.Term, cancellationToken);
         else
             result = new DomainServices.CaseService.Contracts.SearchCasesResponse 
             { 
