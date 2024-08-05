@@ -29,7 +29,9 @@ public class KafkaFlowConfiguration
 
     public int TimeBetweenTriesMs { get; set; } = 500;
 
-    public int BufferSize { get; set; } = 2;
+    public int BufferSize { get; set; } = 5;
+
+    public int WorkersCount { get; set; } = 10;
 
     public AdminConfiguration? Admin { get; set; }
 

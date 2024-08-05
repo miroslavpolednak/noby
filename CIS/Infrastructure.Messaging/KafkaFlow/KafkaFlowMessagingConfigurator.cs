@@ -78,7 +78,7 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
     {
         consumer.WithAutoOffsetReset(AutoOffsetReset.Earliest)
                 .WithGroupId(_settings.GroupId).WithManualMessageCompletion()
-                .WithBufferSize(_settings.Configuration.BufferSize).WithWorkersCount(10)
+                .WithBufferSize(_settings.Configuration.BufferSize).WithWorkersCount(_settings.Configuration.WorkersCount)
                 .AddMiddlewares(m =>
                 {
                     m.AddAtBeginning<ActivitySourceMiddleware>(MiddlewareLifetime.Message);
