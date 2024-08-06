@@ -16,7 +16,7 @@ internal sealed class CreateExistingCaseRequestValidator
 
         RuleFor(t => t.State)
             .NotEmpty()
-            .Must(t => FastEnum.IsDefined((CaseStates)t))
+            .Must(t => FastEnum.IsDefined((EnumCaseStates)t))
             .WithErrorCode(ErrorCodeMapper.InvalidCaseState);
 
         RuleFor(t => t.Data)

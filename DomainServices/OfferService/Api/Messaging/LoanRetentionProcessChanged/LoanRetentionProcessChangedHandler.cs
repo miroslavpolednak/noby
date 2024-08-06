@@ -55,7 +55,7 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
         }
 
         var processes = await _caseService.GetProcessList(caseId);
-        var refixationProcess = processes.FirstOrDefault(p => p.ProcessId == processId && p.RefinancingType == (int)RefinancingTypes.MortgageRefixation);
+        var refixationProcess = processes.FirstOrDefault(p => p.ProcessId == processId && p.RefinancingType == (int)EnumRefinancingTypes.MortgageRefixation);
 
         if (refixationProcess is null)
             return;
@@ -63,14 +63,14 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
         var refixationOffers = await _dbContext.Offers
                                                .Where(o => o.CaseId == caseId
                                                            && o.OfferType == (int)OfferTypes.MortgageRefixation && o.ValidTo > DateTime.Now
-                                                           && !((OfferFlagTypes)o.Flags).HasFlag(OfferFlagTypes.LegalNotice))
+                                                           && !((EnumOfferFlagTypes)o.Flags).HasFlag(EnumOfferFlagTypes.LegalNotice))
                                                .ToListAsync();
 
         var offersData = (await _documentDataStorage.GetList<Database.DocumentDataEntities.MortgageRefixationData, int>(refixationOffers.Select(o => o.OfferId).ToArray())).ToDictionary(k => k.EntityId);
 
         foreach (var offer in refixationOffers)
         {
-            offer.Flags = RemoveOfferFlags((OfferFlagTypes)offer.Flags);
+            offer.Flags = RemoveOfferFlags((EnumOfferFlagTypes)offer.Flags);
 
             var offerDataObj = offersData[offer.OfferId].Data;
 
@@ -83,9 +83,9 @@ internal sealed class LoanRetentionProcessChangedHandler : IMessageHandler<cz.mp
         await _dbContext.SaveChangesAsync();
     }
 
-    private static int RemoveOfferFlags(OfferFlagTypes flags)
+    private static int RemoveOfferFlags(EnumOfferFlagTypes flags)
     {
-        flags &= ~(OfferFlagTypes.Selected | OfferFlagTypes.Liked | OfferFlagTypes.Communicated);
+        flags &= ~(EnumOfferFlagTypes.Selected | EnumOfferFlagTypes.Liked | EnumOfferFlagTypes.Communicated);
 
         return (int)flags;
     }

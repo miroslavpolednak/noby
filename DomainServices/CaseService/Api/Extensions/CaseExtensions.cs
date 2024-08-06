@@ -82,22 +82,22 @@ internal static class CaseExtensions
         switch (taskType)
         {
             case 3 when taskSubType == 1:
-                result.RefinancingType = (int)RefinancingTypes.MortgageRetention;
+                result.RefinancingType = (int)EnumRefinancingTypes.MortgageRetention;
                 result.MortgageRetention = GetRetentionProcess(taskData);
                 break;
 
             case 3 when taskSubType == 2:
-                result.RefinancingType = (int)RefinancingTypes.MortgageRefixation;
+                result.RefinancingType = (int)EnumRefinancingTypes.MortgageRefixation;
                 result.MortgageRefixation = GetRefixationProcess(taskData);
                 break;
 
             case 3 when taskSubType == 3:
-                result.RefinancingType = (int)RefinancingTypes.MortgageLegalNotice;
+                result.RefinancingType = (int)EnumRefinancingTypes.MortgageLegalNotice;
                 result.MortgageLegalNotice = GetLegalNoticeProcess(taskData);
                 break;
 
             case 4:
-                result.RefinancingType = (int)RefinancingTypes.MortgageExtraPayment;
+                result.RefinancingType = (int)EnumRefinancingTypes.MortgageExtraPayment;
                 result.MortgageExtraPayment = GetExtraPaymentProcess(taskData);
                 break;
         }

@@ -6,18 +6,18 @@ public class LoanApplicationCustomerIncomes
 {
     private readonly CustomerOnSA _customerOnSA;
     private readonly IReadOnlyDictionary<int, Income> _incomes;
-    private readonly ILookup<CustomerIncomeTypes, IncomeInList> _customerIncomes;
+    private readonly ILookup<EnumIncomeTypes, IncomeInList> _customerIncomes;
 
     public LoanApplicationCustomerIncomes(CustomerOnSA customerOnSA, IReadOnlyDictionary<int, Income> incomes)
     {
         _customerOnSA = customerOnSA;
         _incomes = incomes;
 
-        _customerIncomes = customerOnSA.Incomes.ToLookup(i => (CustomerIncomeTypes)i.IncomeTypeId);
+        _customerIncomes = customerOnSA.Incomes.ToLookup(i => (EnumIncomeTypes)i.IncomeTypeId);
 
         Employments = GetEmploymentIncomes();
         Entrepreneur = GetEntrepreneurIncome();
-        Rent = _customerIncomes[CustomerIncomeTypes.Rent].FirstOrDefault();
+        Rent = _customerIncomes[EnumIncomeTypes.Rent].FirstOrDefault();
         Others = GetOtherIncomes();
     }
 
@@ -34,13 +34,13 @@ public class LoanApplicationCustomerIncomes
     public List<OtherIncome> Others { get; }
 
     private List<EmploymentIncomes> GetEmploymentIncomes() => 
-        _customerIncomes[CustomerIncomeTypes.Employement].Select(incomeInList => new EmploymentIncomes(incomeInList, _incomes[incomeInList.IncomeId])).ToList();
+        _customerIncomes[EnumIncomeTypes.Employement].Select(incomeInList => new EmploymentIncomes(incomeInList, _incomes[incomeInList.IncomeId])).ToList();
 
     private EntrepreneurIncome? GetEntrepreneurIncome() => 
-        _customerIncomes[CustomerIncomeTypes.Entrepreneur].Select(incomeInList => new EntrepreneurIncome(incomeInList, _incomes[incomeInList.IncomeId])).FirstOrDefault();
+        _customerIncomes[EnumIncomeTypes.Entrepreneur].Select(incomeInList => new EntrepreneurIncome(incomeInList, _incomes[incomeInList.IncomeId])).FirstOrDefault();
 
     private List<OtherIncome> GetOtherIncomes() =>
-        _customerIncomes[CustomerIncomeTypes.Other].Select(incomeInList => new OtherIncome(incomeInList, _incomes[incomeInList.IncomeId])).ToList();
+        _customerIncomes[EnumIncomeTypes.Other].Select(incomeInList => new OtherIncome(incomeInList, _incomes[incomeInList.IncomeId])).ToList();
 
     public class EmploymentIncomes
     {

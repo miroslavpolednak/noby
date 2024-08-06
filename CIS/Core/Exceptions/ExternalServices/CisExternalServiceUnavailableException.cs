@@ -30,6 +30,16 @@ public sealed class CisExternalServiceUnavailableException
         ServiceName = serviceName;
     }
 
+    /// <param name="serviceName">Název služby, která selhala</param>
+    /// <param name="requestUri">URI jehož volání selhalo</param>
+    /// <param name="message">Textový popis chyby</param>
+    public CisExternalServiceUnavailableException(string serviceName, string requestUri, string message, Exception innerException)
+        : base(5, message, innerException)
+    {
+        RequestUri = requestUri;
+        ServiceName = serviceName;
+    }
+
     public CisExternalServiceUnavailableException(string serviceName)
         : this(DefaultExceptionCode, serviceName)
     { }

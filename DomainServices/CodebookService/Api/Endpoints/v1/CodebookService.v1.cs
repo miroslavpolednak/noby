@@ -39,18 +39,18 @@ internal partial class CodebookService
 
     public override Task<RefinancingStatesResponse> RefinancingStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
     {
-        var items = FastEnum.GetValues<SharedTypes.Enums.RefinancingStates>()
-           .Where(t => t != SharedTypes.Enums.RefinancingStates.Unknown)
+        var items = FastEnum.GetValues<SharedTypes.Enums.EnumRefinancingStates>()
+           .Where(t => t != SharedTypes.Enums.EnumRefinancingStates.Unknown)
            .Select(t => new RefinancingStatesResponse.Types.RefinancingStatesItem
            {
                Id = (int)t,
                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                Indicator = t switch 
                { 
-                   SharedTypes.Enums.RefinancingStates.RozpracovanoVNoby or SharedTypes.Enums.RefinancingStates.PodpisNOBY => 1,
-                   SharedTypes.Enums.RefinancingStates.Zruseno => 2,
-                   SharedTypes.Enums.RefinancingStates.Dokonceno => 3,
-                   SharedTypes.Enums.RefinancingStates.RozpracovanoVSB or SharedTypes.Enums.RefinancingStates.PredanoRC2 or SharedTypes.Enums.RefinancingStates.PodpisSB => 4,
+                   SharedTypes.Enums.EnumRefinancingStates.RozpracovanoVNoby or SharedTypes.Enums.EnumRefinancingStates.PodpisNOBY => 1,
+                   SharedTypes.Enums.EnumRefinancingStates.Zruseno => 2,
+                   SharedTypes.Enums.EnumRefinancingStates.Dokonceno => 3,
+                   SharedTypes.Enums.EnumRefinancingStates.RozpracovanoVSB or SharedTypes.Enums.EnumRefinancingStates.PredanoRC2 or SharedTypes.Enums.EnumRefinancingStates.PodpisSB => 4,
                    _ => throw new ArgumentException("Can't get indicator for RefinancingState")
                }
                
@@ -67,7 +67,7 @@ internal partial class CodebookService
         => Helpers.GetGenericItems<SharedTypes.Enums.RefixationOfferTypes>();
 
     public override Task<GenericCodebookResponse> RefinancingTypes(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<SharedTypes.Enums.RefinancingTypes>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.EnumRefinancingTypes>(true);
 
     public override Task<GenericCodebookResponse> HandoverTypeDetails(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context) => 
         Helpers.GetGenericItems<SharedTypes.Enums.HandoverTypeDetail>(true);
@@ -103,7 +103,7 @@ internal partial class CodebookService
         => _db.GetItems<BankCodesResponse, BankCodesResponse.Types.BankCodeItem>();
 
     public override Task<GenericCodebookResponse> CaseStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-        => Helpers.GetGenericItems<SharedTypes.Enums.CaseStates>(true);
+        => Helpers.GetGenericItems<SharedTypes.Enums.EnumCaseStates>(true);
 
     public override Task<GenericCodebookResponse> ClassificationOfEconomicActivities(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetGenericItems();
@@ -135,7 +135,7 @@ internal partial class CodebookService
     public override Task<CustomerRolesResponse> CustomerRoles(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new CustomerRolesResponse()).AddItems(
             FastEnum
-                .GetValues<SharedTypes.Enums.CustomerRoles>()
+                .GetValues<SharedTypes.Enums.EnumCustomerRoles>()
                 .Select(t => new Contracts.v1.CustomerRolesResponse.Types.CustomerRoleItem()
                 {
                     Id = (int)t,
@@ -143,9 +143,9 @@ internal partial class CodebookService
                     RdmCode = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.ShortName ?? "",
                     NameNoby = t switch
                     {
-                        SharedTypes.Enums.CustomerRoles.Debtor => "Hlavní žadatel",
-                        SharedTypes.Enums.CustomerRoles.Codebtor => "Spoludlužník",
-                        SharedTypes.Enums.CustomerRoles.Garantor => "Ručitel",
+                        SharedTypes.Enums.EnumCustomerRoles.Debtor => "Hlavní žadatel",
+                        SharedTypes.Enums.EnumCustomerRoles.Codebtor => "Spoludlužník",
+                        SharedTypes.Enums.EnumCustomerRoles.Garantor => "Ručitel",
                         _ => ""
                     },
                 }))
@@ -610,7 +610,7 @@ internal partial class CodebookService
     public override Task<SalesArrangementStatesResponse> SalesArrangementStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new SalesArrangementStatesResponse()).AddItems(
             FastEnum
-                .GetValues<SharedTypes.Enums.SalesArrangementStates>()
+                .GetValues<SharedTypes.Enums.EnumSalesArrangementStates>()
                 .Select(t => new SalesArrangementStatesResponse.Types.SalesArrangementStateItem()
                 {
                     Id = (int)t,

@@ -12,9 +12,9 @@ internal sealed class UpdateMortgageRefixationHandler(
 	ISalesArrangementServiceClient _salesArrangementService,
 	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementCreateService,
 	MortgageRefinancingWorkflowService _retentionWorkflowService)
-        : IRequestHandler<UpdateMortgageRefixationRequest, NOBY.Dto.Refinancing.RefinancingLinkResult>
+        : IRequestHandler<RefinancingUpdateMortgageRefixationRequest, RefinancingSharedOfferLinkResult>
 {
-    public async Task<NOBY.Dto.Refinancing.RefinancingLinkResult> Handle(UpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingSharedOfferLinkResult> Handle(RefinancingUpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         decimal? interestRateDiscount = request.InterestRateDiscount == 0 ? null : request.InterestRateDiscount;
 
@@ -39,21 +39,21 @@ internal sealed class UpdateMortgageRefixationHandler(
         // presimulovat modelace
         await updateOffers(request, interestRateDiscount, cancellationToken);
 
-        return new NOBY.Dto.Refinancing.RefinancingLinkResult
+        return new()
 		{
             SalesArrangementId = salesArrangement.SalesArrangementId,
             ProcessId = salesArrangement.ProcessId!.Value
         };
     }
 
-    private async Task updateOffers(UpdateMortgageRefixationRequest request, decimal? interestRateDiscount, CancellationToken cancellationToken)
+    private async Task updateOffers(RefinancingUpdateMortgageRefixationRequest request, decimal? interestRateDiscount, CancellationToken cancellationToken)
     {
         var offers = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, false, cancellationToken);
 
         foreach (var offer in offers)
         {
             // mame ulozenou jinou slevu ze sazby nez je v requestu
-            if (!((OfferFlagTypes)offer.Data.Flags).HasFlag(OfferFlagTypes.LegalNotice)
+            if (!((EnumOfferFlagTypes)offer.Data.Flags).HasFlag(EnumOfferFlagTypes.LegalNotice)
                 && offer.MortgageRefixation.SimulationInputs.InterestRateDiscount != interestRateDiscount)
             {
                 var simulationRequest = new SimulateMortgageRefixationRequest
@@ -71,7 +71,7 @@ internal sealed class UpdateMortgageRefixationHandler(
         }
     }
 
-    private Task updateSalesArrangementParameters(UpdateMortgageRefixationRequest request, _SA salesArrangement, CancellationToken cancellationToken)
+    private Task updateSalesArrangementParameters(RefinancingUpdateMortgageRefixationRequest request, _SA salesArrangement, CancellationToken cancellationToken)
     {
         salesArrangement.Refixation.IndividualPriceCommentLastVersion = request.IndividualPriceCommentLastVersion;
         salesArrangement.Refixation.Comment = request.Comment;

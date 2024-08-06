@@ -14,35 +14,17 @@ using _SA = DomainServices.SalesArrangementService.Contracts.SalesArrangement;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument;
 
-internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<GenerateRefixationDocumentRequest>
+internal sealed class GenerateRefixationDocumentHandler(
+    ICodebookServiceClient _codebookService,
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    IProductServiceClient _productService,
+    ISbWebApiClient _sbWebApi,
+    MortgageRefinancingDocumentService _refinancingDocumentService)
+        : IRequestHandler<RefinancingGenerateRefixationDocumentRequest>
 {
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly IProductServiceClient _productService;
-    private readonly ISbWebApiClient _sbWebApi;
-    private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
-
-    public GenerateRefixationDocumentHandler(
-        ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        IProductServiceClient productService,
-        ISbWebApiClient sbWebApi,
-        MortgageRefinancingDocumentService refinancingDocumentService)
-    {
-        _codebookService = codebookService;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _productService = productService;
-        _sbWebApi = sbWebApi;
-        _refinancingDocumentService = refinancingDocumentService;
-    }
-
-    public async Task Handle(GenerateRefixationDocumentRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RefinancingGenerateRefixationDocumentRequest request, CancellationToken cancellationToken)
     {
         var product = await _productService.GetMortgage(request.CaseId, cancellationToken);
 
@@ -68,10 +50,10 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         else
             await GenerateInterestRateNotificationDocument(salesArrangement, offer, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
-    private async Task ValidateSignatureTypeDetailId(GenerateRefixationDocumentRequest request, GetMortgageResponse product, CancellationToken cancellationToken)
+    private async Task ValidateSignatureTypeDetailId(RefinancingGenerateRefixationDocumentRequest request, GetMortgageResponse product, CancellationToken cancellationToken)
     {
         var signatureTypeDetails = await _codebookService.SignatureTypeDetails(cancellationToken);
         var fixedRateValidToDate = ((DateTime?)product.Mortgage.FixedRateValidTo ?? DateTime.Now).Date;
@@ -98,7 +80,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
     {
         var offers = await _offerService.GetOfferList(caseId, OfferTypes.MortgageRefixation, cancellationToken: cancellationToken);
 
-        var selectedOffer = offers.FirstOrDefault(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Selected))
+        var selectedOffer = offers.FirstOrDefault(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Selected))
                             ?? throw new NobyValidationException(90032, "No offer was selected");
 
         if ((DateTime)selectedOffer.MortgageRefixation.SimulationInputs.InterestRateValidFrom < DateTime.UtcNow.ToLocalTime().Date || (DateTime?)selectedOffer.Data.ValidTo < DateTime.UtcNow.ToLocalTime().Date)
@@ -128,7 +110,7 @@ internal sealed class GenerateRefixationDocumentHandler : IRequestHandler<Genera
         await _caseService.UpdateTask(updateRequest, cancellationToken);
     }
 
-    private async Task UpdateSAParameters(GenerateRefixationDocumentRequest request, _SA salesArrangement, CancellationToken cancellationToken)
+    private async Task UpdateSAParameters(RefinancingGenerateRefixationDocumentRequest request, _SA salesArrangement, CancellationToken cancellationToken)
     {
         salesArrangement.Refixation.SignatureTypeDetailId = request.SignatureTypeDetailId;
         salesArrangement.Refixation.SignatureDeadline = request.SignatureDeadline;

@@ -1,27 +1,25 @@
-﻿using SharedTypes.GrpcTypes;
-using DomainServices.CustomerService.Clients;
-using NOBY.Dto.Customer;
+﻿using DomainServices.CustomerService.Clients;
 using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail;
 
 internal sealed class GetCustomerDetailHandler
-    : IRequestHandler<GetCustomerDetailRequest, GetCustomerDetailResponse>
+    : IRequestHandler<GetCustomerDetailRequest, CustomerGetCustomerDetailResponse>
 {
-    public async Task<GetCustomerDetailResponse> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerGetCustomerDetailResponse> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
     {
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
-        var result = await _customerService.GetCustomerDetail(new Identity(request.Id, request.Scheme), cancellationToken);
+        var result = await _customerService.GetCustomerDetail(request.Identity, cancellationToken);
 
-        Dto.NaturalPersonModel person = new();
+        CustomerNaturalPersonModel person = new();
         result.NaturalPerson?.FillResponseDto(person);
         person.IsBrSubscribed = result.NaturalPerson?.IsBrSubscribed;
     
-        return new GetCustomerDetailResponse
+        return new CustomerGetCustomerDetailResponse
         {
             NaturalPerson = person,
             JuridicalPerson = null,
-            LegalCapacity = result.NaturalPerson?.LegalCapacity is null ? null : new LegalCapacityItem
+            LegalCapacity = result.NaturalPerson?.LegalCapacity is null ? null : new CustomerLegalCapacityItem
             {
                 RestrictionTypeId = result.NaturalPerson.LegalCapacity.RestrictionTypeId,
                 RestrictionUntil = result.NaturalPerson.LegalCapacity.RestrictionUntil
@@ -29,7 +27,7 @@ internal sealed class GetCustomerDetailHandler
             IdentificationDocument = result.IdentificationDocument?.ToResponseDto(),
             Contacts = result.Contacts?.ToResponseDto(),
             Addresses = result.Addresses?.Where(t => t.AddressTypeId != (int)AddressTypes.Other)
-                              .Select(t => (SharedTypes.Types.Address)t!).ToList()
+                              .Select(t => (SharedTypesAddress)t!).ToList()
         };
     }
 

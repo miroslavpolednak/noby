@@ -12,7 +12,7 @@ public interface IPreorderServiceClient
 
     Task<bool> RevaluationCheck(Contracts.OnlineRevaluationCheckRequestDTO request, CancellationToken cancellationToken = default);
 
-    Task<List<SharedTypes.Enums.RealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default);
+    Task<List<SharedTypes.Enums.EnumRealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Upload souboru s prilohou

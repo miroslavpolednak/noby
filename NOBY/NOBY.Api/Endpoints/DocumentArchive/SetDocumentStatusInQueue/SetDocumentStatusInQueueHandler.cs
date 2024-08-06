@@ -2,15 +2,9 @@
 
 namespace NOBY.Api.Endpoints.DocumentArchive.SetDocumentStatusInQueue;
 
-public class SetDocumentStatusInQueueHandler : IRequestHandler<SetDocumentStatusInQueueRequest>
+public class SetDocumentStatusInQueueHandler(IDocumentArchiveServiceClient _client) 
+    : IRequestHandler<SetDocumentStatusInQueueRequest>
 {
-    private readonly IDocumentArchiveServiceClient _client;
-
-    public SetDocumentStatusInQueueHandler(IDocumentArchiveServiceClient client)
-    {
-        _client = client;
-    }
-
     public async Task Handle(SetDocumentStatusInQueueRequest request, CancellationToken cancellationToken)
     {
         await _client.SetDocumentStatusInQueue(new()

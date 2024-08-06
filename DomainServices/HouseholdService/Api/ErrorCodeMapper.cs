@@ -32,6 +32,7 @@ internal sealed class ErrorCodeMapper
     public const int IncomeIdIsEmpty =                  16055;
     public const int Customer2WithoutCustomer1 =        16056;
     public const int HouseholdIdIsEmpty =               16080;
+    public const int EasKbDifference = 16082;
 
     public static IErrorCodesDictionary Init()
     {

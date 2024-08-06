@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "laa-loan-application-exposure-service",
-    "description": "RISK LAA Risk-business-case Service",
+    "description": "RISK LAA Loan-application-exposure Service\n                                \\\n                                Build Date: 03-07-2024 17:42:29",
     "termsOfService": "https://www.kb.cz/api/terms",
     "contact": {
       "name": "KB RISK API Team",
@@ -13,14 +13,14 @@
       "name": "KB API 1.0",
       "url": "https://www.kb.cz/api/license/LICENSE-1.0.html"
     },
-    "version": "3.0.0-SNAPSHOT",
+    "version": "3.1.2",
     "x-type-mappgings": {
       "ResourceIdentifier": "cz.kb.risk.datatypes.ResourceIdentifier"
     }
   },
   "servers": [
     {
-      "url": "/laa-loan-application-exposure-service-3.0.0/api",
+      "url": "/laa-loan-application-exposure-service-3.1.2/api",
       "description": "default context"
     }
   ],
@@ -30,7 +30,7 @@
         "tags": [
           "LoanApplicationExposure"
         ],
-        "description": "Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti (Loan Applicaiton).",
+        "description": "Metoda vypočítá data související s angažovaností jednotlivých účastníků úvěrové žádosti.",
         "operationId": "LoanApplicationExposure_loanApplicationExposureCalculation",
         "requestBody": {
           "description": "body",
@@ -40,7 +40,8 @@
                 "$ref": "#/components/schemas/LoanApplicationRelatedExposure"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "400": {
@@ -152,7 +153,7 @@
           },
           "value": {
             "type": "number",
-          "format": "decimal",
+"format": "decimal",
             "description": "Value of the Amount\n"
           }
         },
@@ -239,7 +240,79 @@
             "format": "date-time"
           }
         },
-        "description": "Obchody FOP"
+        "description": "Existující úvěr v JPU"
+      },
+      "ExistingKBGroupExposureFopItem": {
+        "type": "object",
+        "properties": {
+          "accType": {
+            "type": "string",
+            "description": "Typ účtu\n"
+          },
+          "contractDate": {
+            "type": "string",
+            "description": "Datum poskytnutí obchodu\n",
+            "format": "date-time"
+          },
+          "customerRoleCode": {
+            "type": "string",
+            "description": "Role klienta v obchodu\n"
+          },
+          "diApplicationNumber": {
+            "type": "string",
+            "description": "Aplikace\n"
+          },
+          "drawingAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "exposureAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "isSecured": {
+            "type": "boolean",
+            "description": "Indikátor zajištění\n"
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanAmountPastDue": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanBalanceAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanOffBalanceAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanOnBalanceAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanType": {
+            "type": "string",
+            "description": "Typ úvěru\n"
+          },
+          "maturityDate": {
+            "type": "string",
+            "description": "Datum splatnosti obchodu\n",
+            "format": "date-time"
+          },
+          "noOfDaysPastDue": {
+            "type": "integer",
+            "description": "Počet dní po splatnosti na úvěrovém účtu.\n",
+            "format": "int64"
+          },
+          "productClusterCode": {
+            "type": "string",
+            "description": "Cluster kód úvěru\n"
+          },
+          "productId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Existující úvěr v KB skupině"
       },
       "ExistingKBGroupExposureItem": {
         "type": "object",
@@ -303,7 +376,7 @@
             "$ref": "#/components/schemas/ResourceIdentifier"
           }
         },
-        "description": "Obchody FOP"
+        "description": "Existující úvěr v KB skupině"
       },
       "ExposureSummaryForApproval": {
         "type": "object",
@@ -321,7 +394,7 @@
             "$ref": "#/components/schemas/Amount"
           }
         },
-        "description": "exposureSummary"
+        "description": "Agregovaná angažovanost žádosti"
       },
       "LoanApplicationCounterparty": {
         "type": "object",
@@ -338,61 +411,61 @@
           },
           "existingCBCBJuridicalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOP\n",
+            "description": "Dokončené Obchody FOP v ramci jiných peněžních ústavů.\n",
             "items": {
               "$ref": "#/components/schemas/ExistingCBCBExposureItem"
             }
           },
           "existingCBCBNaturalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOO\n",
+            "description": "Dokončené Obchody FOO v ramci jiných peněžních ústavů.\n",
             "items": {
               "$ref": "#/components/schemas/ExistingCBCBExposureItem"
             }
           },
           "existingKBGroupJuridicalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOP\n",
+            "description": "Dokončené Obchody FOP v ramci KB.\n",
             "items": {
-              "$ref": "#/components/schemas/ExistingKBGroupExposureItem"
+              "$ref": "#/components/schemas/ExistingKBGroupExposureFopItem"
             }
           },
           "existingKBGroupNaturalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOO\n",
+            "description": "Dokončené Obchody FOO v ramci KB.\n",
             "items": {
               "$ref": "#/components/schemas/ExistingKBGroupExposureItem"
             }
           },
           "loanApplicationCounterpartyId": {
             "type": "integer",
-            "description": "ID loanApplicationCounterparty\n",
+            "description": "Identifikace klienta v rámci dané žádosti (korelační id)\n",
             "format": "int64"
           },
           "requestedCBCBJuridicalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOP\n",
+            "description": "Rozpracované Obchody FOP v ramci jiných peněžních ústavů.\n",
             "items": {
               "$ref": "#/components/schemas/RequestedCBCBExposureItem"
             }
           },
           "requestedCBCBNaturalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOO\n",
+            "description": "Rozpracované Obchody FOO v ramci jiných peněžních ústavů.\n",
             "items": {
               "$ref": "#/components/schemas/RequestedCBCBExposureItem"
             }
           },
           "requestedKBGroupJuridicalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOP\n",
+            "description": "Rozpracované Obchody FOP v ramci KB.\n",
             "items": {
               "$ref": "#/components/schemas/RequestedKBGroupExposureItem"
             }
           },
           "requestedKBGroupNaturalPersonExposureItem": {
             "type": "array",
-            "description": "Obchody FOO\n",
+            "description": "Rozpracované Obchody FOO v ramci KB.\n",
             "items": {
               "$ref": "#/components/schemas/RequestedKBGroupExposureItem"
             }
@@ -402,7 +475,7 @@
             "description": "Role klienta v žádosti\n"
           }
         },
-        "description": "Seznam klientů v domácnosti"
+        "description": "Aplikační data jednotlivých klientů domácnosti"
       },
       "LoanApplicationDealer": {
         "required": [
@@ -436,12 +509,13 @@
           },
           "loanApplicationSnapshotId": {
             "type": "string",
-            "description": "loanApplicationSnapshotId\nNotNull"
+            "description": " Loan application verze\nNotNull"
           },
           "riskBusinessCaseId": {
             "$ref": "#/components/schemas/ResourceIdentifier"
           }
-        }
+        },
+        "description": "Hlavní vstupní objekt služby"
       },
       "LoanApplicationRelatedExposureResult": {
         "type": "object",
@@ -456,7 +530,8 @@
               "$ref": "#/components/schemas/LoanApplicationCounterparty"
             }
           }
-        }
+        },
+        "description": "Hlavní výstupní objekt služby"
       },
       "RequestedCBCBExposureItem": {
         "type": "object",
@@ -491,9 +566,14 @@
             "type": "string",
             "description": "Konečná splatnost\n",
             "format": "date-time"
+          },
+          "requestDate": {
+            "type": "string",
+            "description": "Datum založení obchodního případu\n",
+            "format": "date-time"
           }
         },
-        "description": "Obchody FOP"
+        "description": "Žádost o úvěr v JPU"
       },
       "RequestedKBGroupExposureItem": {
         "type": "object",
@@ -501,6 +581,15 @@
           "accType": {
             "type": "string",
             "description": "Typ účtu\n"
+          },
+          "appendixAccNbr": {
+            "type": "string",
+            "description": "Číslo účtu v účetním systému, ke kterém je tvořen dodatek\n"
+          },
+          "appendixCode": {
+            "type": "integer",
+            "description": "Rozlišení nového obchodu a typu dodatku\n\n",
+            "format": "int64"
           },
           "customerRoleCode": {
             "type": "string",
@@ -528,6 +617,11 @@
             "type": "string",
             "description": "Cluster kód úvěru\n"
           },
+          "requestDate": {
+            "type": "string",
+            "description": "Datum založení obchodního případu\n",
+            "format": "date-time"
+          },
           "riskBusinessCaseId": {
             "$ref": "#/components/schemas/ResourceIdentifier"
           },
@@ -536,7 +630,7 @@
             "description": "Stav rozpracovaného obchodu v C4M\n"
           }
         },
-        "description": "Obchody FOP"
+        "description": "Žádost o úvěr v KB skupině"
       },
       "ResourceIdentifier": {
         "pattern": "^urn:ri:(\\w+)\\.(\\w+)\\.(\\w+)\\.([\\w+-.]*)(~(\\w+))?",

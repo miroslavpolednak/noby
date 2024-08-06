@@ -1,6 +1,4 @@
-﻿using NOBY.Dto.RealEstateValuation;
-
-namespace NOBY.Api.Endpoints.RealEstateValuation;
+﻿namespace NOBY.Api.Endpoints.RealEstateValuation;
 
 internal static class RealEstateValuationHelpers
 {

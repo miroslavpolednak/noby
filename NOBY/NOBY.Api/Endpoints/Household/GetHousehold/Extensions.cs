@@ -5,8 +5,8 @@ namespace NOBY.Api.Endpoints.Household.GetHousehold;
 
 internal static class Extensions
 {
-    public static GetHouseholdResponse ToApiResponse(this __Contracts.Household household)
-        => new GetHouseholdResponse
+    public static HouseholdGetHouseholdResponse ToApiResponse(this __Contracts.Household household)
+        => new HouseholdGetHouseholdResponse
         {
             HouseholdId = household.HouseholdId,
             SalesArrangementId = household.SalesArrangementId,
@@ -15,11 +15,11 @@ internal static class Extensions
             Expenses = household.Expenses?.mapExpenses()
         };
 
-    public static CustomerInHousehold? ToApiResponse(this __Contracts.CustomerOnSA model)
-        => new CustomerInHousehold()
+    public static HouseholdCustomerInHousehold? ToApiResponse(this __Contracts.CustomerOnSA model)
+        => new HouseholdCustomerInHousehold()
         {
             CustomerOnSAId = model.CustomerOnSAId,
-            Identities = model.CustomerIdentifiers?.Select(t => new SharedTypes.Types.CustomerIdentity(t.IdentityId, (int)t.IdentityScheme)).ToList(),
+            Identities = model.CustomerIdentifiers?.Select(t => (SharedTypesCustomerIdentity)t!).ToList(),
             FirstName = model.FirstNameNaturalPerson,
             LastName = model.Name,
             DateOfBirth = model.DateOfBirthNaturalPerson,
@@ -27,20 +27,20 @@ internal static class Extensions
             MaritalStatusId = model.MaritalStatusId,
             LockedIncome = model.LockedIncomeDateTime is not null,
             LockedIncomeDateTime = model.LockedIncomeDateTime,
-            Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new IncomeBaseData
+            Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new HouseholdIncomeBaseData
             {
                 Sum = x.Sum,
                 CurrencyCode = x.CurrencyCode,
                 IncomeId = x.IncomeId,
                 IncomeSource = x.IncomeSource,
                 HasProofOfIncome = x.HasProofOfIncome,
-                IncomeTypeId = (SharedTypes.Enums.CustomerIncomeTypes)x.IncomeTypeId
+                IncomeTypeId = (SharedTypes.Enums.EnumIncomeTypes)x.IncomeTypeId
             }).ToList(),
             Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()
         };
 
-    static SharedDto.HouseholdExpenses? mapExpenses(this __Contracts.Expenses model)
-        => new SharedDto.HouseholdExpenses()
+    static HouseholdExpenses? mapExpenses(this __Contracts.Expenses model)
+        => new()
             {
                 InsuranceExpenseAmount = model.InsuranceExpenseAmount,
                 SavingExpenseAmount = model.SavingExpenseAmount,
@@ -48,8 +48,8 @@ internal static class Extensions
                 OtherExpenseAmount = model.OtherExpenseAmount
             };
 
-    static SharedDto.HouseholdData? mapData(this __Contracts.HouseholdData model)
-        => new SharedDto.HouseholdData()
+    static HouseholdData? mapData(this __Contracts.HouseholdData model)
+        => new()
             {
                 AreBothPartnersDeptors = model.AreBothPartnersDeptors,
                 PropertySettlementId = model.PropertySettlementId,

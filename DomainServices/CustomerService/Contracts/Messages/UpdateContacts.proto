@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+package DomainServices.CustomerService;
+option csharp_namespace = "DomainServices.CustomerService.Contracts";
+
+import "Identity.proto";
+import "Messages/Contacts.proto";
+
+message UpdateContactsRequest {
+	cis.types.Identity Identity = 1;
+
+	repeated Contact Contacts = 2;
+}

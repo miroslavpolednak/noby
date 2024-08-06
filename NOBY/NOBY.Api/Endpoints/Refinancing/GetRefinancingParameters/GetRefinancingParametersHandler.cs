@@ -5,7 +5,6 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using NOBY.Dto.Refinancing;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
@@ -15,13 +14,13 @@ internal sealed class GetRefinancingParametersHandler(
     IProductServiceClient _productService,
     ISalesArrangementServiceClient _salesArrangementService,
     ICodebookServiceClient _codebookService)
-        : IRequestHandler<GetRefinancingParametersRequest, GetRefinancingParametersResponse>
+        : IRequestHandler<GetRefinancingParametersRequest, RefinancingGetRefinancingParametersResponse>
 {
-    public async Task<GetRefinancingParametersResponse> Handle(GetRefinancingParametersRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingGetRefinancingParametersResponse> Handle(GetRefinancingParametersRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
 
-        if (caseInstance.State is not (int)CaseStates.InDisbursement and not (int)CaseStates.InAdministration)
+        if (caseInstance.State is not (int)EnumCaseStates.InDisbursement and not (int)EnumCaseStates.InAdministration)
         {
             throw new NobyValidationException(90032);
         }
@@ -69,14 +68,14 @@ internal sealed class GetRefinancingParametersHandler(
                 FixedRateValidTo = getFixedRateValidTo(),
                 FixedRatePeriod = mortgage.Refixation?.FixedRatePeriod
             },
-            RefinancingProcesses = mergeOfSaAndProcess.Select(s => new Dto.RefinancingProcess
+            RefinancingProcesses = mergeOfSaAndProcess.Select(s => new RefinancingGetRefinancingParametersProcess
             {
                 SalesArrangementId = s.Sa?.SalesArrangementId,
                 ProcessDetail = getProcessDetail(s.Process, s.Sa, mortgage, eaCodesMain, refinancingTypes, refinancingStates)
             }).ToList()
         };
 
-        DateTime? getFixedRateValidFrom()
+        DateOnly? getFixedRateValidFrom()
         {
             // retence
             if (mortgage.Retention?.LoanInterestRate is not null)
@@ -86,7 +85,7 @@ internal sealed class GetRefinancingParametersHandler(
             // refixace
             else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
             {
-                return ((DateTime)mortgage.FixedRateValidTo).AddDays(1);
+                return ((DateOnly)mortgage.FixedRateValidTo!).AddDays(1);
             }
             else
             {
@@ -94,7 +93,7 @@ internal sealed class GetRefinancingParametersHandler(
             }
         }
 
-        DateTime? getFixedRateValidTo()
+        DateOnly? getFixedRateValidTo()
         {
             // retence
             if (mortgage.Retention?.LoanInterestRate is not null)
@@ -104,7 +103,7 @@ internal sealed class GetRefinancingParametersHandler(
             // refixace
             else if (mortgage.Refixation?.FixedRatePeriod is not null && mortgage.FixedRateValidTo is not null)
             {
-                return ((DateTime)mortgage.FixedRateValidTo).AddMonths(mortgage.Refixation.FixedRatePeriod.Value);
+                return ((DateOnly)mortgage.FixedRateValidTo!).AddMonths(mortgage.Refixation.FixedRatePeriod.Value);
             }
             else
             {
@@ -124,7 +123,7 @@ internal sealed class GetRefinancingParametersHandler(
         return null;
     }
 
-    private static ProcessDetail getProcessDetail(
+    private static RefinancingGetRefinancingParametersProcessDetail getProcessDetail(
         ProcessTask process, 
         DomainServices.SalesArrangementService.Contracts.SalesArrangement? sa,
         MortgageData? mortgage,
@@ -132,9 +131,9 @@ internal sealed class GetRefinancingParametersHandler(
         List<DomainServices.CodebookService.Contracts.v1.GenericCodebookResponse.Types.GenericCodebookItem> refinancingTypes,
         List<DomainServices.CodebookService.Contracts.v1.RefinancingStatesResponse.Types.RefinancingStatesItem> refinancingStates)
     {
-        var state = RefinancingHelper.GetRefinancingState((SalesArrangementStates)(sa?.State ?? 0), sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process);
+        var state = RefinancingHelper.GetRefinancingState((EnumSalesArrangementStates)(sa?.State ?? 0), sa?.Refixation?.ManagedByRC2 ?? sa?.Retention?.ManagedByRC2 ?? false, process);
 
-        ProcessDetail detail = new()
+        RefinancingGetRefinancingParametersProcessDetail detail = new()
         {
             ProcessId = process.ProcessId,
             RefinancingTypeId = RefinancingHelper.GetRefinancingType(process),

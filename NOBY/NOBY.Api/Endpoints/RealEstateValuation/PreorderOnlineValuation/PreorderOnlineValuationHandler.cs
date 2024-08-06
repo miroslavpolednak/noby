@@ -8,7 +8,7 @@ internal sealed class PreorderOnlineValuationHandler(IRealEstateValuationService
     public async Task Handle(RealEstateValuationPreorderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
         var revInstance = await _realEstateValuationService.ValidateRealEstateValuationId(request.RealEstateValuationId, false, cancellationToken);
-        if ((revInstance.PossibleValuationTypeId is null || !revInstance.PossibleValuationTypeId.Contains((int)RealEstateValuationTypes.Online))
+        if ((revInstance.PossibleValuationTypeId is null || !revInstance.PossibleValuationTypeId.Contains((int)SharedTypes.Enums.EnumRealEstateValuationTypes.Online))
             || revInstance.PreorderId.HasValue)
         {
             throw new NobyValidationException(90032, "RealEstateValuation type not allowed");

@@ -33,7 +33,7 @@ internal sealed class FormsService
         return _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);
     }
 
-    public Task UpdateSalesArrangementState(int salesArrangementId, SalesArrangementStates state, CancellationToken cancellationToken)
+    public Task UpdateSalesArrangementState(int salesArrangementId, EnumSalesArrangementStates state, CancellationToken cancellationToken)
     {
         var request = new UpdateSalesArrangementStateRequest
         {

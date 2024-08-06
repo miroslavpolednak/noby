@@ -1,0 +1,550 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "laa-loan-application-exposure-service",
+    "description": "RISK LAA Risk-business-case Service",
+    "termsOfService": "https://www.kb.cz/api/terms",
+    "contact": {
+      "name": "KB RISK API Team",
+      "url": "https://wiki.kb.cz/confluence/pages/viewpage.action?pageId=253305685",
+      "email": "kbsq4fut@ds.kb.cz"
+    },
+    "license": {
+      "name": "KB API 1.0",
+      "url": "https://www.kb.cz/api/license/LICENSE-1.0.html"
+    },
+    "version": "3.0.0-SNAPSHOT",
+    "x-type-mappgings": {
+      "ResourceIdentifier": "cz.kb.risk.datatypes.ResourceIdentifier"
+    }
+  },
+  "servers": [
+    {
+      "url": "/laa-loan-application-exposure-service-3.0.0/api",
+      "description": "default context"
+    }
+  ],
+  "paths": {
+    "/loan-application-exposure-calculation": {
+      "put": {
+        "tags": [
+          "LoanApplicationExposure"
+        ],
+        "description": "Vrátí data související s angažovaností jednotlivých účastníků úvěrové žádosti (Loan Applicaiton).",
+        "operationId": "LoanApplicationExposure_loanApplicationExposureCalculation",
+        "requestBody": {
+          "description": "body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoanApplicationRelatedExposure"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "408": {
+            "description": "Request Timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoanApplicationRelatedExposureResult"
+                }
+              }
+            }
+          }
+        },
+        "x-operation-name": "loanApplicationExposureCalculation"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Amount": {
+        "required": [
+          "currencyCode"
+        ],
+        "type": "object",
+        "properties": {
+          "currencyCode": {
+            "type": "string",
+            "description": "Currency code of the Amount (ISO 4217), e.g. 'CZK', 'EUR'\nNotNull"
+          },
+          "value": {
+            "type": "number",
+          "format": "decimal",
+            "description": "Value of the Amount\n"
+          }
+        },
+        "description": "Amount"
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "type": "integer",
+            "description": "usually unused and replaced by the error codes categorization",
+            "format": "int32",
+            "example": 10,
+            "deprecated": true
+          },
+          "code": {
+            "type": "string",
+            "description": "code of the error that occured, with or without an hirarchical categorization",
+            "example": "CRAB.PLATFORM.PATTERN.LOCKING.OPTIMISTIC.CONCURRENT_MODIFICATION"
+          },
+          "detail": {
+            "type": "object",
+            "description": "an optional error detail with a custom schema discriminated by the type-discriminator"
+          },
+          "httpStatusCode": {
+            "type": "integer",
+            "description": "copy of the http-status-code",
+            "format": "int32",
+            "example": 409
+          },
+          "message": {
+            "type": "string",
+            "description": "plain-text message description related to the given error code and intended for better issue-solving only"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "unique error ID",
+            "example": "7e81204c-9b76-4224-b82a-f2706dd9efcf"
+          }
+        },
+        "description": "The unified error model",
+        "readOnly": true
+      },
+      "ExistingCBCBExposureItem": {
+        "type": "object",
+        "properties": {
+          "cbcbContractId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "cbcbDataLastUpdate": {
+            "type": "string",
+            "description": "Datum poslední aktualizace dat v CBCB\n",
+            "format": "date-time"
+          },
+          "contractDate": {
+            "type": "string",
+            "description": "Datum poskytnutí\n",
+            "format": "date-time"
+          },
+          "customerRoleCode": {
+            "type": "string",
+            "description": "Role klienta v obchodu\n"
+          },
+          "exposureAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "kbGroupInstanceCode": {
+            "type": "string",
+            "description": "Produkt poskytnutý v rámci skupiny KB\n"
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanType": {
+            "type": "string",
+            "description": "Typ úvěru\n"
+          },
+          "maturityDate": {
+            "type": "string",
+            "description": "Konečná splatnost\n",
+            "format": "date-time"
+          }
+        },
+        "description": "Obchody FOP"
+      },
+      "ExistingKBGroupExposureItem": {
+        "type": "object",
+        "properties": {
+          "accType": {
+            "type": "string",
+            "description": "Typ účtu\n"
+          },
+          "contractDate": {
+            "type": "string",
+            "description": "Datum poskytnutí obchodu\n",
+            "format": "date-time"
+          },
+          "customerRoleCode": {
+            "type": "string",
+            "description": "Role klienta v obchodu\n"
+          },
+          "diApplicationNumber": {
+            "type": "string",
+            "description": "Aplikace\n"
+          },
+          "drawingAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "exposureAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "isSecured": {
+            "type": "boolean",
+            "description": "Indikátor zajištění\n"
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanBalanceAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanOffBalanceAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanOnBalanceAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanType": {
+            "type": "string",
+            "description": "Typ úvěru\n"
+          },
+          "maturityDate": {
+            "type": "string",
+            "description": "Datum splatnosti obchodu\n",
+            "format": "date-time"
+          },
+          "productClusterCode": {
+            "type": "string",
+            "description": "Cluster kód úvěru\n"
+          },
+          "productId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Obchody FOP"
+      },
+      "ExposureSummaryForApproval": {
+        "type": "object",
+        "properties": {
+          "totalExistingExposureKB": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "totalExistingExposureKBNaturalPerson": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "totalExistingExposureKBNonPurpose": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "totalExistingExposureUnsecured": {
+            "$ref": "#/components/schemas/Amount"
+          }
+        },
+        "description": "exposureSummary"
+      },
+      "LoanApplicationCounterparty": {
+        "type": "object",
+        "properties": {
+          "cbcbRegisterCalled": {
+            "type": "boolean",
+            "description": "Příznak zda byly provolány registry\n"
+          },
+          "cbcbReportId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "customerId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "existingCBCBJuridicalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOP\n",
+            "items": {
+              "$ref": "#/components/schemas/ExistingCBCBExposureItem"
+            }
+          },
+          "existingCBCBNaturalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOO\n",
+            "items": {
+              "$ref": "#/components/schemas/ExistingCBCBExposureItem"
+            }
+          },
+          "existingKBGroupJuridicalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOP\n",
+            "items": {
+              "$ref": "#/components/schemas/ExistingKBGroupExposureItem"
+            }
+          },
+          "existingKBGroupNaturalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOO\n",
+            "items": {
+              "$ref": "#/components/schemas/ExistingKBGroupExposureItem"
+            }
+          },
+          "loanApplicationCounterpartyId": {
+            "type": "integer",
+            "description": "ID loanApplicationCounterparty\n",
+            "format": "int64"
+          },
+          "requestedCBCBJuridicalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOP\n",
+            "items": {
+              "$ref": "#/components/schemas/RequestedCBCBExposureItem"
+            }
+          },
+          "requestedCBCBNaturalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOO\n",
+            "items": {
+              "$ref": "#/components/schemas/RequestedCBCBExposureItem"
+            }
+          },
+          "requestedKBGroupJuridicalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOP\n",
+            "items": {
+              "$ref": "#/components/schemas/RequestedKBGroupExposureItem"
+            }
+          },
+          "requestedKBGroupNaturalPersonExposureItem": {
+            "type": "array",
+            "description": "Obchody FOO\n",
+            "items": {
+              "$ref": "#/components/schemas/RequestedKBGroupExposureItem"
+            }
+          },
+          "roleCode": {
+            "type": "string",
+            "description": "Role klienta v žádosti\n"
+          }
+        },
+        "description": "Seznam klientů v domácnosti"
+      },
+      "LoanApplicationDealer": {
+        "required": [
+          "companyId",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "companyId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        },
+        "description": "Zprostředkovatel"
+      },
+      "LoanApplicationRelatedExposure": {
+        "required": [
+          "loanApplicationId",
+          "loanApplicationSnapshotId",
+          "riskBusinessCaseId"
+        ],
+        "type": "object",
+        "properties": {
+          "loanApplicationDealer": {
+            "$ref": "#/components/schemas/LoanApplicationDealer"
+          },
+          "loanApplicationId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "loanApplicationSnapshotId": {
+            "type": "string",
+            "description": "loanApplicationSnapshotId\nNotNull"
+          },
+          "riskBusinessCaseId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          }
+        }
+      },
+      "LoanApplicationRelatedExposureResult": {
+        "type": "object",
+        "properties": {
+          "exposureSummary": {
+            "$ref": "#/components/schemas/ExposureSummaryForApproval"
+          },
+          "loanApplicationCounterparty": {
+            "type": "array",
+            "description": "Seznam klientů v domácnosti\n",
+            "items": {
+              "$ref": "#/components/schemas/LoanApplicationCounterparty"
+            }
+          }
+        }
+      },
+      "RequestedCBCBExposureItem": {
+        "type": "object",
+        "properties": {
+          "cbcbContractId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "cbcbDataLastUpdate": {
+            "type": "string",
+            "description": "Datum poslední aktualizace dat v CBCB\n",
+            "format": "date-time"
+          },
+          "customerRoleCode": {
+            "type": "string",
+            "description": "Role klienta v obchod\n"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "kbGroupInstanceCode": {
+            "type": "string",
+            "description": "Produkt poskytnutý v rámci skupiny KB\n"
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanType": {
+            "type": "string",
+            "description": "Typ úvěru\n"
+          },
+          "maturityDate": {
+            "type": "string",
+            "description": "Konečná splatnost\n",
+            "format": "date-time"
+          }
+        },
+        "description": "Obchody FOP"
+      },
+      "RequestedKBGroupExposureItem": {
+        "type": "object",
+        "properties": {
+          "accType": {
+            "type": "string",
+            "description": "Typ účtu\n"
+          },
+          "customerRoleCode": {
+            "type": "string",
+            "description": "Role klienta v obchodu\n"
+          },
+          "diApplicationNumber": {
+            "type": "string",
+            "description": "Aplikace\n"
+          },
+          "installmentAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "isSecured": {
+            "type": "boolean",
+            "description": "Indikátor zajištění\n"
+          },
+          "loanAmount": {
+            "$ref": "#/components/schemas/Amount"
+          },
+          "loanType": {
+            "type": "string",
+            "description": "Typ úvěru\n"
+          },
+          "productClusterCode": {
+            "type": "string",
+            "description": "Cluster kód úvěru\n"
+          },
+          "riskBusinessCaseId": {
+            "$ref": "#/components/schemas/ResourceIdentifier"
+          },
+          "statusCode": {
+            "type": "string",
+            "description": "Stav rozpracovaného obchodu v C4M\n"
+          }
+        },
+        "description": "Obchody FOP"
+      },
+      "ResourceIdentifier": {
+        "pattern": "^urn:ri:(\\w+)\\.(\\w+)\\.(\\w+)\\.([\\w+-.]*)(~(\\w+))?",
+        "type": "string",
+        "description": "The URN identifier of a resource is an universal scalar/string representation of a resource identifier in a system instance",
+        "format": "urn:ri:INSTANCE.DOMAIN.RESOURCE.ID~VARIANT",
+        "example": "urn:ri:KBCZ.CRMD.CreditRiskModel.837051596914429952"
+      }
+    }
+  }
+}

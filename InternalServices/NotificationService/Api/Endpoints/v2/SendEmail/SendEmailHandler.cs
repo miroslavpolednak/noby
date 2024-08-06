@@ -27,6 +27,9 @@ internal sealed class SendEmailHandler(
         var notificationId = Guid.NewGuid();
         _logger.NotificationRequestReceived(notificationId, NotificationChannels.Email);
 
+        // zmenit emailovou adresu odesilatele, pokud je namapovana
+        request.From.Value = request.From.Value.ResolveSenderEmail(_appConfiguration.EmailSenders.AddressMapping);
+
         var domainName = request.From.Value.GetDomainFromEmail();
         // kontrola na domenu uz je ve validatoru
         var senderType = _appConfiguration.EmailSenders.Mcs.Contains(domainName, StringComparer.OrdinalIgnoreCase) ? Mandants.Kb : Mandants.Mp;

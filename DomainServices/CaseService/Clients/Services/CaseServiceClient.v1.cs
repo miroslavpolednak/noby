@@ -180,9 +180,9 @@ internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClie
         return await _service.CreateTaskAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task<CaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default)
+    public async Task<EnumCaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default)
     {
-        return (CaseStates)(await _service.CancelCaseAsync(new CancelCaseRequest
+        return (EnumCaseStates)(await _service.CancelCaseAsync(new CancelCaseRequest
         {
             CaseId = caseId,
             IsUserInvoked = isUserInvoked,

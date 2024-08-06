@@ -1,6 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.RealEstateValuationService.Clients;
-using NOBY.Dto.RealEstateValuation;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.UpdateRealEstateValuationDetail;
@@ -89,12 +88,12 @@ internal sealed class UpdateRealEstateValuationDetailHandler(
         if (valuationDetail.ValuationStateId is not (6 or 7))
             throw new NobyValidationException(90032, "The valuation has bad state");
 
-        if (caseInstance.State == (int)CaseStates.InProgress && request.LoanPurposeDetails is not null)
+        if (caseInstance.State == (int)EnumCaseStates.InProgress && request.LoanPurposeDetails is not null)
         {
             throw new NobyValidationException(90032, "The LoanPurposeDetails has to be null when the case is in progress");
         }
 
-        if (caseInstance.State == (int)CaseStates.InProgress && request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate)
+        if (caseInstance.State == (int)EnumCaseStates.InProgress && request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate)
         {
             throw new NobyValidationException(90032, "request.IsLoanRealEstate != valuationDetail.IsLoanRealEstate");
         }

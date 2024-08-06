@@ -23,7 +23,7 @@ internal sealed class EmailAddressFromValidator
             .SetValidator(new EmailAddressValidator());
 
         RuleFor(emailAddress => emailAddress.Value)
-            .Must(email => _allowedDomainNames.Contains(email.GetDomainFromEmail(), StringComparer.OrdinalIgnoreCase))
+            .Must(email => _allowedDomainNames.Contains(email.ResolveSenderEmail(appConfiguration.EmailSenders.AddressMapping).GetDomainFromEmail(), StringComparer.OrdinalIgnoreCase))
             .WithMessage($"Allowed domain names for sender: {string.Join(", ", _allowedDomainNames)}.");
     }
 }

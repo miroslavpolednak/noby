@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "fromDocument": {
-      "url": "swagger.json",
+      "url": "../../../MPSS-FOMS-OAS/FEAPI.json",
       "output": null,
       "newLineBehavior": "Auto"
     }
@@ -47,7 +47,8 @@
       "className": "{controller}Client",
       "operationGenerationMode": "MultipleClientsFromOperationId",
       "additionalNamespaceUsages": [
-        "System.Collections.Generic"
+        "System.Collections.Generic",
+        "SharedTypes.Enums"
       ],
       "additionalContractNamespaceUsages": [],
       "generateOptionalParameters": false,
@@ -79,7 +80,16 @@
       "jsonLibrary": "SystemTextJson",
       "generateDefaultValues": true,
       "generateDataAnnotations": true,
-      "excludedTypeNames": [],
+      "excludedTypeNames": [
+        "EnumCaseStates",
+        "EnumCustomerRoles",
+        "EnumIncomeTypes",
+        "EnumSalesArrangementStates",
+        "EnumRealEstateValuationTypes",
+        "EnumOfferFlagTypes",
+        "EnumRefinancingStates",
+        "EnumRefinancingTypes"
+      ],
       "excludedParameterNames": [],
       "handleReferences": false,
       "generateImmutableArrayProperties": false,

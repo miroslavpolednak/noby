@@ -4,10 +4,13 @@ using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;
 
-internal sealed class IdentifyByIdentityRollback
-    : IRollbackAction<IdentifyByIdentityRequest>
+internal sealed class IdentifyByIdentityRollback(
+    IRollbackBag _bag,
+    ILogger<IdentifyByIdentityRollback> _logger,
+    ICustomerOnSAServiceClient _customerOnSAService)
+        : IRollbackAction<CustomerIdentifyByIdentityRequest>
 {
-    public async Task ExecuteRollback(Exception exception, IdentifyByIdentityRequest request, CancellationToken cancellationToken = default)
+    public async Task ExecuteRollback(Exception exception, CustomerIdentifyByIdentityRequest request, CancellationToken cancellationToken = default)
     {
         _logger.RollbackHandlerStarted(nameof(IdentifyByIdentityRollback));
 
@@ -25,18 +28,4 @@ internal sealed class IdentifyByIdentityRollback
     public bool OverrideThrownException { get => false; }
 
     public const string BagKeyCustomerOnSA = "BagKeyCustomerOnSA";
-
-    private readonly IRollbackBag _bag;
-    private readonly ILogger<IdentifyByIdentityRollback> _logger;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    
-    public IdentifyByIdentityRollback(
-        IRollbackBag bag,
-        ILogger<IdentifyByIdentityRollback> logger,
-        ICustomerOnSAServiceClient customerOnSAService)
-    {
-        _logger = logger;
-        _bag = bag;
-        _customerOnSAService = customerOnSAService;
-    }
 }

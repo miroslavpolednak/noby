@@ -1,6 +1,19 @@
 # Generování kontraktů FE API z OpenApi specifikace
 
-## Základní nastavení
+## Práce se společnou OAS
+Sdílená dokumentace je v souboru **FEAPI.json**, který je v repository `OpenAPI`, branch `master`. 
+Tato verze OAS by měla zrcadlit stav v `master` branch NOBY DEV.
+
+Flow zadávání změna v OAS:
+1) ITA definuje změny ve vlastní feature branch
+2) feature branch projde review ze strany BE a FE DEV. 
+3) 
+    a) následně je buď feature branch rovnou mergována do `OpenAPI/master`
+    b) nebo na něm bude probíhat vývoj ze strany DEV. Jakmile je vývoj ukončen, DEV merguje feature branch do `OpenAPI/master`.
+
+Ideálně bude v rámci DevOps pipelines existovat proces, který během buildu aplikace zkompiluje aktuální OAS z OpenAPI repa a nedovolí nasadit aplikaci, pokud se kontrakty mezi aplikací a OAS budou lišit.
+
+## Základní nastavení OAS
 - každé schéma musí obsahovat `"additionalProperties": false`, jinak se do C# bude generovat slovník ostatních vlastností.
 - důsledně používáme `"nullable": true` v případě, že se jedná o nullable property nebo schéma.
 
@@ -18,7 +31,6 @@
 ```
 
 ## Jmenné konvence
-
 Název objektu (OpenApi schématu) je složen z namespace (části aplikace v kontextu které je objekt používán), názvu endpointu a suffixu.  
 Např. *CustomerIncomeCreateIncomeRequest* je složen takto:
 
@@ -123,6 +135,8 @@ OneOf funkčnost v OpenApi nepoužíváme, protože do C# generuje špatně kód
 Abychom dokázali tuto funkčnost nahradit, používáme podobný přístup jako Protobuf.
 OneOf je tedy objekt, který má tolik vlastností, kolika typů může výsledek nabývat.
 
+> Objekt zastupující OneOf v OAS má vždy suffix **OneOf**.
+
 K vytvořenému objektu, který zastupuje všechny OneOf typy přidáváme vlastnost `discriminator`, která obsahuje název objektu, který je v dané instanci naplněn.
 
 Ukázka OpenApi specifikace:
@@ -132,7 +146,7 @@ Ukázka OpenApi specifikace:
 	...
 	"properties": {
 		"amendments": {
-			"$ref": "#/components/schemas/SharedTypesWorkflowTaskDetailAmendments",
+			"$ref": "#/components/schemas/SharedTypesWorkflowTaskDetailAmendmentsOneOf",
 			"description": "OneOf",
 			"nullable": true
 		}
@@ -141,7 +155,7 @@ Ukázka OpenApi specifikace:
 }
 
 // implementace OneOf objektu
-"SharedTypesWorkflowTaskDetailAmendments": {
+"SharedTypesWorkflowTaskDetailAmendmentsOneOf": {
 	"type": "object",
 	"properties": {
 		"discriminator": {
@@ -175,6 +189,7 @@ Ukázka výsledného JSONu:
 Kontrakty a partial třídy pro FE API jsou generovány z OpenApi specifikace a jsou umístěny v projektu **NOBY.ApiContracts** v souboru **Contracts.cs**.
 Kontrakty jsou vygenerovány pomocí nástroje *NSwag*, nastavení pro NSwag je uloženo v souboru **settings.nswag** v projektu *NOBY.ApiContracts*.
 
+## Adresář PartialRequests
 Projekt **NOBY.ApiContracts** dále obsahuje rozšíření (partial classes) pro třídy vygenerované *NSwagem*.
 Zejména se jedná o Mediatr requesty u kterých je potřeba implementovat rozhraní `IRequest`, případně metodu `InfuseId`.
 Partial třídy requestů jsou umístěny v adresáři **PartialRequests**.
@@ -195,3 +210,16 @@ public partial class CustomerIncomeCreateIncomeRequest : IRequest<int>
     }
 }
 ```
+
+## Adresář Partials
+V adresáři Partials jsou umístěné partial classes, které obsahují další logiku jinou než implementaci IRequest.
+Zejména se jedná o implicitní / explicitní operátory atd.
+
+## Enumy sdílené v řešení mimo FE API
+Pokud je v kontraktu FE API použit enum, který je sdílený i v rámci doménových / interních služeb, chováme se k němu jinak než ke standardním enumům v OAS.
+
+V OAS je enum definován jako každý jiný enum, nicméně navíc vytváříme jeho obraz i v projektu *SharedTypes* kde je definován jako standardní C# enum. 
+Následně pak v nastavení NSwagu tento enum vyjmeme z generovaných typů v nastavení "Exluded Type Names".
+Enumy v tomto režimu vždy prefixujeme "**Enum**", tj. místo `CaseStates` je název `EnumCaseStates`.
+
+> Příkladem takového enumu je EnumCaseStates v `SharedTypes.Enums.EnumCaseStates`.

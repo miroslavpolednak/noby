@@ -7,21 +7,21 @@ namespace NOBY.Api.Endpoints.Refinancing.GetMortgageExtraPayment;
 internal sealed class GetMortgageExtraPaymentHandler(
     IOfferServiceClient _offerService,
     MortgageRefinancingDataService _refinancingDataService)
-    : IRequestHandler<GetMortgageExtraPaymentRequest, GetMortgageExtraPaymentResponse>
+    : IRequestHandler<GetMortgageExtraPaymentRequest, RefinancingGetMortgageExtraPaymentResponse>
 {
-    public async Task<GetMortgageExtraPaymentResponse> Handle(GetMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingGetMortgageExtraPaymentResponse> Handle(GetMortgageExtraPaymentRequest request, CancellationToken cancellationToken)
     {
         // sesbirat vsechna potrebna data
-        var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, RefinancingTypes.MortgageExtraPayment, cancellationToken);
+        var data = await _refinancingDataService.GetRefinancingData(request.CaseId, request.ProcessId, EnumRefinancingTypes.MortgageExtraPayment, cancellationToken);
 
         // vytvorit a naplnit zaklad response modelu
-        var response = data.UpdateBaseResponseModel(new GetMortgageExtraPaymentResponse());
+        var response = data.UpdateBaseResponseModel(new RefinancingGetMortgageExtraPaymentResponse());
 
         // extr payment specific data
-        response.Document = await _refinancingDataService.CreateSigningDocument(data, RefinancingTypes.MortgageExtraPayment, data.Process?.MortgageExtraPayment?.DocumentEACode, data.Process?.MortgageExtraPayment?.DocumentId);
+        response.Document = await _refinancingDataService.CreateSigningDocument(data, EnumRefinancingTypes.MortgageExtraPayment, data.Process?.MortgageExtraPayment?.DocumentEACode, data.Process?.MortgageExtraPayment?.DocumentId);
         response.IndividualPriceCommentLastVersion = data.SalesArrangement?.ExtraPayment?.IndividualPriceCommentLastVersion;
         response.ExtraPaymentAmount = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmountIncludingFee ?? 0M;
-		response.ExtraPaymentAmountIncludingFee = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmountIncludingFee ?? 0M;
+		//response.ExtraPaymentAmountIncludingFee = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmountIncludingFee ?? 0M; //deprecated
 		response.ExtraPaymentDate = DateOnly.FromDateTime(data.Process.MortgageExtraPayment?.ExtraPaymentDate ?? DateTime.MinValue);
         response.IsExtraPaymentFullyRepaid = data.Process.MortgageExtraPayment?.IsFinalExtraPayment ?? false;
         response.PrincipalAmount = (decimal?)data.Process.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M;
@@ -29,7 +29,7 @@ internal sealed class GetMortgageExtraPaymentHandler(
         // handover
         if (data.SalesArrangement?.ExtraPayment?.HandoverTypeDetailId != null)
         {
-            response.Handover = new GetMortgageExtraPaymentResponse.HandoverObject
+            response.Handover = new()
             {
                 FirstName = data.SalesArrangement.ExtraPayment.Client?.FirstName ?? "",
                 LastName = data.SalesArrangement.ExtraPayment.Client?.LastName ?? "",
@@ -40,7 +40,7 @@ internal sealed class GetMortgageExtraPaymentHandler(
         if ((data.Process.MortgageExtraPayment?.ExtraPaymentAgreements?.Count ?? 0) > 0)
         {
             response.Agreements = data.Process.MortgageExtraPayment!.ExtraPaymentAgreements
-                .Select(t => new GetMortgageExtraPaymentResponse.AgreementDocument
+                .Select(t => new RefinancingGetMortgageExtraPaymentResponseAgreementDocument
                 {
                     DocumentEACode = t.AgreementEACode.GetValueOrDefault(),
                     DocumentId = t.AgreementDocumentId

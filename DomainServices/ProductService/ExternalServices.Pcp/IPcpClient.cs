@@ -5,6 +5,8 @@ namespace DomainServices.ProductService.ExternalServices.Pcp;
 public interface IPcpClient
     : IExternalServiceClient
 {
+    Task<ProductInstance3[]> GetByOtherIds(long caseId, CancellationToken cancellationToken = default);
+
     Task<string> CreateProduct(long caseId, long customerKbId, string pcpProductIdOrObjectCode, CancellationToken cancellationToken = default);
 
 	Task<string> UpdateProduct(string pcpId, long customerKbId, CancellationToken cancellationToken = default);

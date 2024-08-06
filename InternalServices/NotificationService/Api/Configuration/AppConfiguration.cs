@@ -15,6 +15,8 @@ internal sealed class AppConfiguration
     public KafkaTopics KafkaTopics { get; set; } = null!;
 
     public RateLimit RateLimit { get; set; } = null!;
+
+    public EmailSizeLimits EmailSizeLimits { get; set; } = null!;
 }
 
 internal sealed class Consumer
@@ -29,6 +31,17 @@ internal sealed class EmailSenders
     public List<string> Mcs { get; set; } = new();
 
     public List<string> Mpss { get; set; } = new();
+
+    public Dictionary<string, string> AddressMapping { get; set; } = new();
+}
+
+internal sealed class EmailSizeLimits
+{
+    public int PayloadV1 { get; set; }
+
+    public int Attachments { get; set; }
+
+    public int Content { get; set; }
 }
 
 internal sealed class KafkaTopics

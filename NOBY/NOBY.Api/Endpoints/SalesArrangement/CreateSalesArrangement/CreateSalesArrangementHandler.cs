@@ -1,9 +1,9 @@
 ﻿namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
 
 internal sealed class CreateSalesArrangementHandler
-    : IRequestHandler<CreateSalesArrangementRequest, CreateSalesArrangementResponse>
+    : IRequestHandler<SalesArrangementCreateSalesArrangementRequest, SalesArrangementCreateSalesArrangementResponse>
 {
-    public async Task<CreateSalesArrangementResponse> Handle(CreateSalesArrangementRequest request, CancellationToken cancellationToken)
+    public async Task<SalesArrangementCreateSalesArrangementResponse> Handle(SalesArrangementCreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         // validace prav
         await validatePermissions(request, cancellationToken);
@@ -20,13 +20,13 @@ internal sealed class CreateSalesArrangementHandler
         // post procesing
         await builder.PostCreateProcessing(newSaId, cancellationToken);
 
-        return new CreateSalesArrangementResponse
+        return new SalesArrangementCreateSalesArrangementResponse
         {
             SalesArrangementId = newSaId
         };
     }
 
-    private async Task validatePermissions(CreateSalesArrangementRequest request, CancellationToken cancellationToken)
+    private async Task validatePermissions(SalesArrangementCreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
         // kontrola na kategorii
         var saCategory = (await _codebookService.SalesArrangementTypes(cancellationToken))

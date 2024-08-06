@@ -39,7 +39,7 @@ public class LinkEArchivIdToDocumentOnSAHandler : IRequestHandler<LinkEArchivIdT
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSaEntity.SalesArrangementId, cancellationToken);
         // SA state
-        if (salesArrangement.State == SalesArrangementStates.InSigning.ToByte())
+        if (salesArrangement.State == EnumSalesArrangementStates.InSigning.ToByte())
         {
             await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
         }

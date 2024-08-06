@@ -131,7 +131,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
     }
 
     /// <summary>
-    /// Obchody FOP
+    /// Existující úvěr v JPU
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ExistingCBCBExposureItem
@@ -230,7 +230,160 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
     }
 
     /// <summary>
-    /// Obchody FOP
+    /// Existující úvěr v KB skupině
+    /// </summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class ExistingKBGroupExposureFopItem
+    {
+        /// <summary>
+        /// Typ účtu
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("accType")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string AccType { get; set; }
+
+        /// <summary>
+        /// Datum poskytnutí obchodu
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("contractDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTimeOffset? ContractDate { get; set; }
+
+        /// <summary>
+        /// Role klienta v obchodu
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("customerRoleCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string CustomerRoleCode { get; set; }
+
+        /// <summary>
+        /// Aplikace
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("diApplicationNumber")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string DiApplicationNumber { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("drawingAmount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount DrawingAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("exposureAmount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount ExposureAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("installmentAmount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount InstallmentAmount { get; set; }
+
+        /// <summary>
+        /// Indikátor zajištění
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isSecured")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public bool IsSecured { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount LoanAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanAmountPastDue")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount LoanAmountPastDue { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanBalanceAmount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount LoanBalanceAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanOffBalanceAmount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount LoanOffBalanceAmount { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanOnBalanceAmount")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public Amount LoanOnBalanceAmount { get; set; }
+
+        /// <summary>
+        /// Typ úvěru
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("loanType")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string LoanType { get; set; }
+
+        /// <summary>
+        /// Datum splatnosti obchodu
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("maturityDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTimeOffset? MaturityDate { get; set; }
+
+        /// <summary>
+        /// Počet dní po splatnosti na úvěrovém účtu.
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("noOfDaysPastDue")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long NoOfDaysPastDue { get; set; }
+
+        /// <summary>
+        /// Cluster kód úvěru
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("productClusterCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string ProductClusterCode { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("productId")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^urn:ri:(\w+)\.(\w+)\.(\w+)\.([\w+-.]*)(~(\w+))?")]
+        public string ProductId { get; set; }
+
+        private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
+
+        [System.Text.Json.Serialization.JsonExtensionData]
+        public System.Collections.Generic.IDictionary<string, object> AdditionalProperties
+        {
+            get { return _additionalProperties ?? (_additionalProperties = new System.Collections.Generic.Dictionary<string, object>()); }
+            set { _additionalProperties = value; }
+        }
+
+    }
+
+    /// <summary>
+    /// Existující úvěr v KB skupině
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ExistingKBGroupExposureItem
@@ -368,7 +521,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
     }
 
     /// <summary>
-    /// exposureSummary
+    /// Agregovaná angažovanost žádosti
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class ExposureSummaryForApproval
@@ -406,7 +559,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
     }
 
     /// <summary>
-    /// Seznam klientů v domácnosti
+    /// Aplikační data jednotlivých klientů domácnosti
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LoanApplicationCounterparty
@@ -434,7 +587,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public string CustomerId { get; set; }
 
         /// <summary>
-        /// Obchody FOP
+        /// Dokončené Obchody FOP v ramci jiných peněžních ústavů.
         /// <br/>
         /// </summary>
 
@@ -444,7 +597,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public System.Collections.Generic.ICollection<ExistingCBCBExposureItem> ExistingCBCBJuridicalPersonExposureItem { get; set; }
 
         /// <summary>
-        /// Obchody FOO
+        /// Dokončené Obchody FOO v ramci jiných peněžních ústavů.
         /// <br/>
         /// </summary>
 
@@ -454,17 +607,17 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public System.Collections.Generic.ICollection<ExistingCBCBExposureItem> ExistingCBCBNaturalPersonExposureItem { get; set; }
 
         /// <summary>
-        /// Obchody FOP
+        /// Dokončené Obchody FOP v ramci KB.
         /// <br/>
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("existingKBGroupJuridicalPersonExposureItem")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Collections.Generic.ICollection<ExistingKBGroupExposureItem> ExistingKBGroupJuridicalPersonExposureItem { get; set; }
+        public System.Collections.Generic.ICollection<ExistingKBGroupExposureFopItem> ExistingKBGroupJuridicalPersonExposureItem { get; set; }
 
         /// <summary>
-        /// Obchody FOO
+        /// Dokončené Obchody FOO v ramci KB.
         /// <br/>
         /// </summary>
 
@@ -474,7 +627,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public System.Collections.Generic.ICollection<ExistingKBGroupExposureItem> ExistingKBGroupNaturalPersonExposureItem { get; set; }
 
         /// <summary>
-        /// ID loanApplicationCounterparty
+        /// Identifikace klienta v rámci dané žádosti (korelační id)
         /// <br/>
         /// </summary>
 
@@ -484,7 +637,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public long LoanApplicationCounterpartyId { get; set; }
 
         /// <summary>
-        /// Obchody FOP
+        /// Rozpracované Obchody FOP v ramci jiných peněžních ústavů.
         /// <br/>
         /// </summary>
 
@@ -494,7 +647,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public System.Collections.Generic.ICollection<RequestedCBCBExposureItem> RequestedCBCBJuridicalPersonExposureItem { get; set; }
 
         /// <summary>
-        /// Obchody FOO
+        /// Rozpracované Obchody FOO v ramci jiných peněžních ústavů.
         /// <br/>
         /// </summary>
 
@@ -504,7 +657,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public System.Collections.Generic.ICollection<RequestedCBCBExposureItem> RequestedCBCBNaturalPersonExposureItem { get; set; }
 
         /// <summary>
-        /// Obchody FOP
+        /// Rozpracované Obchody FOP v ramci KB.
         /// <br/>
         /// </summary>
 
@@ -514,7 +667,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public System.Collections.Generic.ICollection<RequestedKBGroupExposureItem> RequestedKBGroupJuridicalPersonExposureItem { get; set; }
 
         /// <summary>
-        /// Obchody FOO
+        /// Rozpracované Obchody FOO v ramci KB.
         /// <br/>
         /// </summary>
 
@@ -576,6 +729,9 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
 
     }
 
+    /// <summary>
+    /// Hlavní vstupní objekt služby
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LoanApplicationRelatedExposure
     {
@@ -593,7 +749,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         public string LoanApplicationId { get; set; }
 
         /// <summary>
-        /// loanApplicationSnapshotId
+        ///  Loan application verze
         /// <br/>NotNull
         /// </summary>
 
@@ -621,6 +777,9 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
 
     }
 
+    /// <summary>
+    /// Hlavní výstupní objekt služby
+    /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class LoanApplicationRelatedExposureResult
     {
@@ -652,7 +811,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
     }
 
     /// <summary>
-    /// Obchody FOP
+    /// Žádost o úvěr v JPU
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class RequestedCBCBExposureItem
@@ -724,6 +883,16 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public System.DateTimeOffset? MaturityDate { get; set; }
 
+        /// <summary>
+        /// Datum založení obchodního případu
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requestDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTimeOffset? RequestDate { get; set; }
+
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 
         [System.Text.Json.Serialization.JsonExtensionData]
@@ -736,7 +905,7 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
     }
 
     /// <summary>
-    /// Obchody FOP
+    /// Žádost o úvěr v KB skupině
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.5.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class RequestedKBGroupExposureItem
@@ -750,6 +919,27 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string AccType { get; set; }
+
+        /// <summary>
+        /// Číslo účtu v účetním systému, ke kterém je tvořen dodatek
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("appendixAccNbr")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public string AppendixAccNbr { get; set; }
+
+        /// <summary>
+        /// Rozlišení nového obchodu a typu dodatku
+        /// <br/>
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("appendixCode")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public long AppendixCode { get; set; }
 
         /// <summary>
         /// Role klienta v obchodu
@@ -810,6 +1000,16 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.CustomerExposur
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string ProductClusterCode { get; set; }
+
+        /// <summary>
+        /// Datum založení obchodního případu
+        /// <br/>
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("requestDate")]
+
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        public System.DateTimeOffset? RequestDate { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("riskBusinessCaseId")]
 

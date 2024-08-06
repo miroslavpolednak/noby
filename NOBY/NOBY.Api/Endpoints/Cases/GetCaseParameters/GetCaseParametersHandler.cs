@@ -37,7 +37,7 @@ internal sealed class GetCaseParametersHandler(
             };
         }
 
-        response.CaseParameters.AddRange(caseInstance.State == (int)CaseStates.InProgress
+        response.CaseParameters.AddRange(caseInstance.State == (int)EnumCaseStates.InProgress
             ? await getCaseInProgress(caseInstance, saList, cancellationToken)
             : await getCaseFromSb(caseInstance, cancellationToken));
 
@@ -180,9 +180,9 @@ internal sealed class GetCaseParametersHandler(
 
     private static readonly int[] _allowedSAStates =
     [
-        (int)SalesArrangementStates.InSigning,
-        (int)SalesArrangementStates.ToSend,
-        (int)SalesArrangementStates.NewArrangement,
-        (int)SalesArrangementStates.InProgress 
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.ToSend,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress 
     ];
 }

@@ -126,7 +126,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
-        if (documentOnSa.Source != Source.Workflow && salesArrangement.State != SalesArrangementStates.InSigning.ToByte())
+        if (documentOnSa.Source != Source.Workflow && salesArrangement.State != EnumSalesArrangementStates.InSigning.ToByte())
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
 
         var signatureDate = _dateTime.GetLocalNow().DateTime;
@@ -245,12 +245,13 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         var customersOnSa = await GetCustomersOnSa(household, cancellationToken);
         foreach (var customerOnSa in customersOnSa)
         {
+            var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
             var customerChangeMetadata = await GetCustomerOnSaMetadata(documentOnSa, customerOnSa, cancellationToken);
+
             if (customerChangeMetadata.CustomerChangeMetadata.WereClientDataChanged)
             {
                 try
                 {
-                    var customerDetail = await _customerService.GetCustomerDetail(customerOnSa.CustomerIdentifiers.GetKbIdentity(), cancellationToken);
                     _customerChangeDataMerger.MergeClientData(customerDetail, customerOnSa);
 
                     //Do not update TaxResidence (event do not send TaxResidence already set in CM)
@@ -276,6 +277,10 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
                     await CreateWfTask(customerOnSa, salesArrangement, exp.Message, cancellationToken);
                     errorsOfCustomerUpdate.Add(true);
                 }
+            }
+            else
+            {
+                await _customerService.UpdateContacts(customerOnSa.CustomerIdentifiers.GetKbIdentity(), customerDetail.Contacts, cancellationToken);
             }
         }
 

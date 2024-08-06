@@ -98,12 +98,12 @@ public static class TracingExtensions
         return builder;
     }
 
-    private static string[] _exludedRequestPaths = new[]
-    {
+    private static readonly string[] _exludedRequestPaths =
+    [
         "/grpc.reflection.v1alpha.ServerReflection/ServerReflectionInfo",
         "/grpc.health.v1.Health/Check",
         "/health.html"
-    };
+    ];
 
     internal const string _configurationTelemetryKey = "CisTelemetry:Tracing";
 }

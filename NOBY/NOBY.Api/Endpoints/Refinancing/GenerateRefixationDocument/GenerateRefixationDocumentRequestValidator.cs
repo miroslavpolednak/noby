@@ -3,7 +3,8 @@ using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRefixationDocument;
 
-internal sealed class GenerateRefixationDocumentRequestValidator : AbstractValidator<GenerateRefixationDocumentRequest>
+internal sealed class GenerateRefixationDocumentRequestValidator 
+    : AbstractValidator<RefinancingGenerateRefixationDocumentRequest>
 {
     public GenerateRefixationDocumentRequestValidator(IFeatureManager featureManager)
     {
@@ -11,7 +12,7 @@ internal sealed class GenerateRefixationDocumentRequestValidator : AbstractValid
              () =>
              {
                  RuleFor(x => x.SignatureDeadline)
-                     .GreaterThanOrEqualTo(DateTime.UtcNow.AddDays(1).Date)
+                     .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1).Date))
                      .WithErrorCode(90032)
                      .WithMessage("SignatureDeadline is lower than current time");
              });

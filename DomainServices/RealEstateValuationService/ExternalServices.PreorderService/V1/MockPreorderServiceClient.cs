@@ -22,7 +22,7 @@ internal sealed class MockPreorderServiceClient
         throw new NotImplementedException();
     }
 
-    public Task<List<RealEstateValuationTypes>> GetValuationTypes(AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
+    public Task<List<EnumRealEstateValuationTypes>> GetValuationTypes(AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

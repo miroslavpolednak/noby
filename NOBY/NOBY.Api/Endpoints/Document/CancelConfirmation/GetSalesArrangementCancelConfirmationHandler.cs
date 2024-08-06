@@ -6,15 +6,15 @@ using NOBY.Api.Endpoints.Document.SharedDto;
 
 namespace NOBY.Api.Endpoints.Document.CancelConfirmation;
 
-internal sealed class GetSalesArrangementCancelConfirmationHandler : IRequestHandler<GetSalesArrangementCancelConfirmationRequest, ReadOnlyMemory<byte>>
+internal sealed class GetSalesArrangementCancelConfirmationHandler(
+    IMediator _mediator,
+    ICurrentUserAccessor _currentUser,
+    ICustomerOnSAServiceClient _customerOnSaService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICaseServiceClient _caseService,
+    DocumentManager _documentManager) 
+    : IRequestHandler<GetSalesArrangementCancelConfirmationRequest, ReadOnlyMemory<byte>>
 {
-    private readonly IMediator _mediator;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly DocumentManager _documentManager;
-
     public async Task<ReadOnlyMemory<byte>> Handle(GetSalesArrangementCancelConfirmationRequest cancelConfirmationRequest, CancellationToken cancellationToken)
     {
         var customerOnSa = await _customerOnSaService.GetCustomer(cancelConfirmationRequest.InputParameters.CustomerOnSaId!.Value, cancellationToken);
@@ -37,21 +37,5 @@ internal sealed class GetSalesArrangementCancelConfirmationHandler : IRequestHan
         };
 
         return await _mediator.Send(generalDocumentRequest, cancellationToken);
-    }
-
-    public GetSalesArrangementCancelConfirmationHandler(
-        IMediator mediator,
-        ICurrentUserAccessor currentUser,
-        ICustomerOnSAServiceClient customerOnSaService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICaseServiceClient caseService,
-        DocumentManager documentManager)
-    {
-        _mediator = mediator;
-        _currentUser = currentUser;
-        _customerOnSaService = customerOnSaService;
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
-        _documentManager = documentManager;
     }
 }

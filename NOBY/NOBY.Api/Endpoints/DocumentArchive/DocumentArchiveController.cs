@@ -10,15 +10,9 @@ namespace NOBY.Api.Endpoints.DocumentArchive;
 [ApiController]
 [Route("api/v{v:apiVersion}")]
 [ApiVersion(1)]
-public class DocumentArchiveController : ControllerBase
+public class DocumentArchiveController(IMediator _mediator) 
+    : ControllerBase
 {
-    private readonly IMediator _mediator;
-
-    public DocumentArchiveController(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     /// <summary>
     /// Načtení dokumentu z archivu nebo starbuildu
     /// </summary>

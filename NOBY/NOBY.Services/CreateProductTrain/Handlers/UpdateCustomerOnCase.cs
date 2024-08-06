@@ -12,7 +12,7 @@ internal sealed class UpdateCustomerOnCase
         // detail customera
         var customerInstance = await _customerService.GetCustomer(customerOnSAId, cancellationToken);
 
-        if (customerInstance.CustomerRoleId == (int)CustomerRoles.Debtor)
+        if (customerInstance.CustomerRoleId == (int)EnumCustomerRoles.Debtor)
         {
             // update case detailu
             await _caseService.UpdateCustomerData(caseId, new _Case.CustomerData

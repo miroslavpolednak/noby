@@ -1,11 +1,11 @@
 ﻿using Google.Protobuf.Collections;
-using NOBY.Dto;
+using NOBY.ApiContracts;
 
 namespace NOBY.Services.Customer;
 
 public static class CustomerExtensions
 {
-    public static void FillResponseDto(this DomainServices.CustomerService.Contracts.NaturalPerson person, NOBY.Dto.BaseNaturalPerson transformedModel)
+    public static void FillResponseDto(this DomainServices.CustomerService.Contracts.NaturalPerson person, CustomerNaturalPersonBase transformedModel)
     {
         transformedModel.FirstName = person.FirstName;
         transformedModel.LastName = person.LastName;
@@ -16,17 +16,17 @@ public static class CustomerExtensions
         transformedModel.BirthName = person.BirthName;
         transformedModel.BirthNumber = person.BirthNumber;
         transformedModel.PlaceOfBirth = person.PlaceOfBirth;
-        transformedModel.Gender = (SharedTypes.Enums.Genders)person.GenderId;
+        transformedModel.Gender = (CustomerNaturalPersonBaseGender)person.GenderId;
         transformedModel.BirthCountryId = person.BirthCountryId;
         transformedModel.CitizenshipCountriesId = person.CitizenshipCountriesId?.Select(t => t).ToList();
     }
 
-    public static ContactsConfirmedDto? ToResponseDto(this RepeatedField<DomainServices.CustomerService.Contracts.Contact>? contacts)
+    public static SharedTypesContactsConfirmed? ToResponseDto(this RepeatedField<DomainServices.CustomerService.Contracts.Contact>? contacts)
     {
         if (contacts is null || contacts.Count == 0)
             return null;
 
-        var model = new ContactsConfirmedDto();
+        var model = new SharedTypesContactsConfirmed();
 
         var email = contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
         if (!string.IsNullOrEmpty(email?.Email?.EmailAddress))
@@ -52,7 +52,7 @@ public static class CustomerExtensions
         return model;
     }
 
-    public static DomainServices.CustomerService.Contracts.IdentificationDocument ToDomainService(this IdentificationDocumentFull document)
+    public static DomainServices.CustomerService.Contracts.IdentificationDocument ToDomainService(this SharedTypesIdentificationDocumentFull document)
         => new()
         {
             IssuingCountryId = document.IssuingCountryId,
@@ -63,7 +63,7 @@ public static class CustomerExtensions
             ValidTo = document.ValidTo
         };
 
-    public static IdentificationDocumentFull ToResponseDto(this DomainServices.CustomerService.Contracts.IdentificationDocument document)
+    public static SharedTypesIdentificationDocumentFull ToResponseDto(this DomainServices.CustomerService.Contracts.IdentificationDocument document)
         => new()
         {
             IssuingCountryId = document.IssuingCountryId ?? 0,

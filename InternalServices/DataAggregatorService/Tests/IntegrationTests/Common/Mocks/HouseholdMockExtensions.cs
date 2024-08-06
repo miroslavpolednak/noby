@@ -18,8 +18,8 @@ public static class HouseholdMockExtensions
 
         householdServiceClient.GetHouseholdList(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new List<Household> { householdMain, householdCodebtor });
 
-        var customerOnSaDebtor = CreateCustomer(householdMain.CustomerOnSAId1!.Value, CustomerRoles.Debtor);
-        var customerOnSaCodebtor = CreateCustomer(householdMain.CustomerOnSAId2!.Value, CustomerRoles.Debtor);
+        var customerOnSaDebtor = CreateCustomer(householdMain.CustomerOnSAId1!.Value, EnumCustomerRoles.Debtor);
+        var customerOnSaCodebtor = CreateCustomer(householdMain.CustomerOnSAId2!.Value, EnumCustomerRoles.Debtor);
 
         customerOnSAServiceClient.GetCustomer(Arg.Is(householdMain.CustomerOnSAId1!.Value), Arg.Any<CancellationToken>()).Returns(customerOnSaDebtor);
         customerOnSAServiceClient.GetCustomer(Arg.Is<int>(id => id != householdMain.CustomerOnSAId1!.Value), Arg.Any<CancellationToken>()).Returns(customerOnSaCodebtor);
@@ -27,11 +27,11 @@ public static class HouseholdMockExtensions
         customerOnSAServiceClient.GetCustomerList(Arg.Any<int>(), Arg.Any<CancellationToken>()).ReturnsForAnyArgs(new List<CustomerOnSA>
         {
             customerOnSaDebtor, customerOnSaCodebtor,
-            CreateCustomer(householdCodebtor.CustomerOnSAId1!.Value, CustomerRoles.Codebtor),
-            CreateCustomer(householdCodebtor.CustomerOnSAId2!.Value, CustomerRoles.Codebtor)
+            CreateCustomer(householdCodebtor.CustomerOnSAId1!.Value, EnumCustomerRoles.Codebtor),
+            CreateCustomer(householdCodebtor.CustomerOnSAId2!.Value, EnumCustomerRoles.Codebtor)
         });
 
-        CustomerOnSA CreateCustomer(int customerSaId, CustomerRoles role)
+        CustomerOnSA CreateCustomer(int customerSaId, EnumCustomerRoles role)
         {
             var customer = fixture.Build<CustomerOnSA>()
                                   .With(c => c.CustomerOnSAId, customerSaId)

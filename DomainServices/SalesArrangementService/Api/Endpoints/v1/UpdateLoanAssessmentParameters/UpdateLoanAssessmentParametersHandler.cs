@@ -58,9 +58,9 @@ internal sealed class UpdateLoanAssessmentParametersHandler(
         }
 
         // pokud je zadost NEW, zmenit na InProgress
-        if (entity.State == (int)SalesArrangementStates.NewArrangement)
+        if (entity.State == (int)EnumSalesArrangementStates.NewArrangement)
         {
-            entity.State = (int)SalesArrangementStates.InProgress;
+            entity.State = (int)EnumSalesArrangementStates.InProgress;
         }
 
         // ulozeni zmen

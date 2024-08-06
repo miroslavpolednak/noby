@@ -97,6 +97,8 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
     public const int ContentInvalid = 360;
     public const int AttachmentsCountLimitExceeded = 361;
     public const int AttachmentsInvalid = 362;
+    public const int AttachmentsSizeExceeded = 363;
+    public const int ContentSizeExceeded = 364;
 
     // Send sms
     public const int SmsPhoneNumberRequired = 370;
@@ -194,8 +196,10 @@ internal sealed class ErrorCodeMapper : ErrorCodeMapperBase
             { SubjectInvalid, $"Invalid {nameof(SendEmailRequest.Subject)}." },
             { ContentRequired, $"{nameof(SendEmailRequest.Content)} required." },
             { ContentInvalid, $"Invalid {nameof(SendEmailRequest.Content)}." },
+            { ContentSizeExceeded, $"{nameof(SendEmailRequest.Content)} size exceeded limit." },
             { AttachmentsCountLimitExceeded, $"Maximum count of {nameof(SendEmailRequest.Attachments)} is 10." },
             { AttachmentsInvalid, $"Invalid {nameof(SendEmailRequest.Attachments)}." },
+            { AttachmentsSizeExceeded, $"{nameof(SendEmailRequest.Attachments)} size exceeded limit." },
 
             { SmsPhoneNumberRequired, $"{nameof(SendSmsRequest.PhoneNumber)} required." },
             { SmsPhoneNumberInvalid, $"Invalid {nameof(SendSmsRequest.PhoneNumber)}." },

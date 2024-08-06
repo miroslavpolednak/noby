@@ -7,26 +7,13 @@ using System.Net;
 
 namespace NOBY.Api.Endpoints.DocumentArchive.GetDocument;
 
-public class GetDocumentHandler : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
+public class GetDocumentHandler(
+    ICurrentUserAccessor _currentUserAccessor,
+    IDocumentArchiveServiceClient _documentArchiveService,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    ILogger<GetDocumentHandler> _logger) 
+    : IRequestHandler<GetDocumentRequest, GetDocumentResponse>
 {
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ILogger<GetDocumentHandler> _logger;
-
-    public GetDocumentHandler(
-        ICurrentUserAccessor currentUserAccessor,
-        IDocumentArchiveServiceClient documentArchiveService,
-        IDocumentOnSAServiceClient documentOnSaService,
-        ILogger<GetDocumentHandler> logger
-          )
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _documentArchiveService = documentArchiveService;
-        _documentOnSAService = documentOnSaService;
-        _logger = logger;
-    }
-
     public async Task<GetDocumentResponse> Handle(GetDocumentRequest request, CancellationToken cancellationToken)
     {
         return request.Source switch

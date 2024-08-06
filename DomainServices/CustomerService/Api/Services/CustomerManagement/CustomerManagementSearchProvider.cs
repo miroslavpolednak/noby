@@ -1,27 +1,19 @@
-﻿using SharedTypes.Enums;
-using DomainServices.CodebookService.Clients;
+﻿using DomainServices.CodebookService.Clients;
 using CM = DomainServices.CustomerService.ExternalServices.CustomerManagement.V2;
 using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CustomerService.Api.Services.CustomerManagement;
 
 [ScopedService, SelfService]
-internal sealed class CustomerManagementSearchProvider
+internal sealed class CustomerManagementSearchProvider(
+    CM.ICustomerManagementClient _customerManagement, 
+    ICodebookServiceClient _codebook)
 {
-    private readonly CM.ICustomerManagementClient _customerManagement;
-    private readonly ICodebookServiceClient _codebook;
-
     private List<CountriesResponse.Types.CountryItem> _countries = null!;
     private List<GendersResponse.Types.GenderItem> _genders = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
-    public CustomerManagementSearchProvider(CM.ICustomerManagementClient customerManagement, ICodebookServiceClient codebook)
-    {
-        _customerManagement = customerManagement;
-        _codebook = codebook;
-    }
-
-    public async Task<IEnumerable<SearchCustomersItem>> Search(SearchCustomersRequest searchRequest, CancellationToken cancellationToken)
+    public async Task<IEnumerable<CustomerDetailResponse>> Search(SearchCustomersRequest searchRequest, CancellationToken cancellationToken)
     {
         await InitializeCodebooks(cancellationToken);
 
@@ -30,12 +22,19 @@ internal sealed class CustomerManagementSearchProvider
         return foundCustomers.Where(c => c.Party.NaturalPersonAttributes is not null)
                              .Select(c =>
                              {
-                                 var item = new SearchCustomersItem
+                                 var item = new CustomerDetailResponse
                                  {
-                                     Identity = new SharedTypes.GrpcTypes.Identity(c.CustomerId, IdentitySchemes.Kb),
-                                     NaturalPerson = CreateNaturalPerson(c.Party.NaturalPersonAttributes),
+                                     NaturalPerson = new NaturalPerson
+                                     {
+                                         BirthNumber = c.Party.NaturalPersonAttributes.CzechBirthNumber ?? string.Empty,
+                                         DateOfBirth = c.Party.NaturalPersonAttributes.BirthDate,
+                                         FirstName = c.Party.NaturalPersonAttributes.FirstName ?? string.Empty,
+                                         LastName = c.Party.NaturalPersonAttributes.Surname ?? string.Empty,
+                                         GenderId = _genders.FirstOrDefault(t => t.KbCmCode == c.Party.NaturalPersonAttributes.GenderCode)?.Id ?? 0
+                                     },
                                      IdentificationDocument = CreateIdentificationDocument(c.PrimaryIdentificationDocument)
                                  };
+                                 item.Identities.Add(new SharedTypes.GrpcTypes.Identity(c.CustomerId, IdentitySchemes.Kb));
 
                                  FillAddressData(item, c.PrimaryAddress?.AddressLinePoint);
 
@@ -82,18 +81,6 @@ internal sealed class CustomerManagementSearchProvider
         return cmRequest;
     }
 
-    private NaturalPersonBasicInfo CreateNaturalPerson(CM.Contracts.NaturalPersonAttributesSearch customer)
-    {
-        return new NaturalPersonBasicInfo
-        {
-            BirthNumber = customer.CzechBirthNumber ?? string.Empty,
-            DateOfBirth = customer.BirthDate,
-            FirstName = customer.FirstName ?? string.Empty,
-            LastName = customer.Surname ?? string.Empty,
-            GenderId = _genders.FirstOrDefault(t => t.KbCmCode == customer.GenderCode)?.Id ?? 0
-        };
-    }
-
     private IdentificationDocument? CreateIdentificationDocument(CM.Contracts.IdentificationDocument? document)
     {
         if (document is null)
@@ -116,17 +103,17 @@ internal sealed class CustomerManagementSearchProvider
         };
     }
 
-    private void FillAddressData(SearchCustomersItem result, CM.Contracts.AddressLinePoint? address)
+    private void FillAddressData(CustomerDetailResponse result, CM.Contracts.AddressLinePoint? address)
     {
         if (address is null)
             return;
 
-        result.Address = new SharedTypes.GrpcTypes.GrpcAddress
+        result.Addresses.Add(new SharedTypes.GrpcTypes.GrpcAddress
         {
             Street = address.Street ?? string.Empty,
             City = address.City ?? string.Empty,
             Postcode = address.PostCode ?? string.Empty,
             CountryId = _countries.FirstOrDefault(t => t.ShortName == address.CountryCode)?.Id
-        };
+        });
     }
 }

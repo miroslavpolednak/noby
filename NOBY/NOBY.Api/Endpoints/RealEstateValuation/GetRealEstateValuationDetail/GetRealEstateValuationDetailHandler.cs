@@ -4,7 +4,6 @@ using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RealEstateValuationService.Clients;
 using Google.Protobuf.Collections;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
-using NOBY.Dto.RealEstateValuation;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
@@ -36,7 +35,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
             RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
             RealEstateValuationDetail = new()
             {
-                CaseInProgress = caseInstance.State == (int)CaseStates.InProgress,
+                CaseInProgress = caseInstance.State == (int)EnumCaseStates.InProgress,
                 RealEstateVariant = getRealEstateVariant(valuationDetail.RealEstateTypeId),
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new RealEstateValuationSharedLoanPurposeDetail 
@@ -144,7 +143,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
             RealEstateTypeId = valuationDetail.RealEstateTypeId,
             RealEstateTypeIcon = RealEstateValuationHelpers.GetRealEstateTypeIcon(valuationDetail.RealEstateTypeId),
             ValuationStateId = valuationDetail.ValuationStateId,
-            ValuationStateIndicator = (EnumRealEstateValuationStateIndicators)state.Indicator,
+            ValuationStateIndicator = (EnumStateIndicators)state.Indicator,
             ValuationStateName = state.Name,
             IsLoanRealEstate = valuationDetail.IsLoanRealEstate,
             RealEstateStateId = valuationDetail.RealEstateStateId,
@@ -179,12 +178,12 @@ internal sealed class GetRealEstateValuationDetailHandler(
         };
     }
 
-    private static RealEstateValuationSharedSpecificDetails? getSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
+    private static RealEstateValuationSharedSpecificDetailsOneOf? getSpecificDetailsObject(__Contracts.RealEstateValuationDetail valuationDetail)
     {
         return valuationDetail.SpecificDetailCase switch
         {
-            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.HouseAndFlatDetails => RealEstateValuationSharedSpecificDetails.Create(createHouseAndFlatDetails(valuationDetail.HouseAndFlatDetails)),
-            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.ParcelDetails => RealEstateValuationSharedSpecificDetails.Create(createParcelDetails(valuationDetail.ParcelDetails)),
+            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.HouseAndFlatDetails => RealEstateValuationSharedSpecificDetailsOneOf.Create(createHouseAndFlatDetails(valuationDetail.HouseAndFlatDetails)),
+            __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.ParcelDetails => RealEstateValuationSharedSpecificDetailsOneOf.Create(createParcelDetails(valuationDetail.ParcelDetails)),
             __Contracts.RealEstateValuationDetail.SpecificDetailOneofCase.None => default,
             _ => throw new NotImplementedException()
         };

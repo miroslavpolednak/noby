@@ -3,23 +3,23 @@
 namespace NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom;
 
 internal sealed class GetInterestRatesValidFromHandler(InterestRatesValidFromService _ratesValidFromService)
-    : IRequestHandler<GetInterestRatesValidFromRequest, GetInterestRatesValidFromResponse>
+    : IRequestHandler<GetInterestRatesValidFromRequest, RefinancingGetInterestRatesValidFromResponse>
 {
-    public async Task<GetInterestRatesValidFromResponse> Handle(GetInterestRatesValidFromRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingGetInterestRatesValidFromResponse> Handle(GetInterestRatesValidFromRequest request, CancellationToken cancellationToken)
     {
-        var result = await _ratesValidFromService.GetValidityDates(request.CaseId, cancellationToken);
+        var (date1, date2) = await _ratesValidFromService.GetValidityDates(request.CaseId, cancellationToken);
 
-        return new GetInterestRatesValidFromResponse
+        return new()
         {
             InterestRatesValidFrom = 
             [
-                new GetInterestRatesValidFromResponseItem 
+                new RefinancingGetInterestRatesValidFromResponseItem
                 { 
-                    InterestRateValidFrom = result.Date1.ToDateTime(new TimeOnly())
+                    InterestRateValidFrom = date1
                 },
-                new GetInterestRatesValidFromResponseItem 
+                new RefinancingGetInterestRatesValidFromResponseItem
                 { 
-                    InterestRateValidFrom = result.Date2.ToDateTime(new TimeOnly()), 
+                    InterestRateValidFrom = date2, 
                     IsDefault = true 
                 }
             ]

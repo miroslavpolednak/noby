@@ -45,7 +45,7 @@ internal sealed class RealPreorderServiceClient
         return model.RevaluationRequired;
     }
 
-    public async Task<List<SharedTypes.Enums.RealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
+    public async Task<List<SharedTypes.Enums.EnumRealEstateValuationTypes>> GetValuationTypes(Contracts.AvailableValuationTypesRequestDTO request, CancellationToken cancellationToken = default)
     {
         var response = await _httpClient
             .PostAsJsonAsync(getUrl(_httpClient.BaseAddress!, "lookup/valuationtypes"), request, cancellationToken)
@@ -54,12 +54,12 @@ internal sealed class RealPreorderServiceClient
         var acvResponse = await response.EnsureSuccessStatusAndReadJson<List<string>>(StartupExtensions.ServiceName, cancellationToken);
         return acvResponse.Select(t => getEnum(t.AsSpan())).ToList();
 
-        SharedTypes.Enums.RealEstateValuationTypes getEnum(ReadOnlySpan<char> s)
+        SharedTypes.Enums.EnumRealEstateValuationTypes getEnum(ReadOnlySpan<char> s)
             => s switch
             {
-                "MODEL" => SharedTypes.Enums.RealEstateValuationTypes.Online,
-                "DTS" => SharedTypes.Enums.RealEstateValuationTypes.Dts,
-                "STANDARD" => SharedTypes.Enums.RealEstateValuationTypes.Standard,
+                "MODEL" => SharedTypes.Enums.EnumRealEstateValuationTypes.Online,
+                "DTS" => SharedTypes.Enums.EnumRealEstateValuationTypes.Dts,
+                "STANDARD" => SharedTypes.Enums.EnumRealEstateValuationTypes.Standard,
                 _ => throw new CisExternalServiceValidationException(0, $"Unknown result '{s}'")
             };
     }

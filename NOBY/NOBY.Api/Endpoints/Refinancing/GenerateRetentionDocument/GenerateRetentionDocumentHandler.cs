@@ -9,29 +9,15 @@ using _contract = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument;
 
-public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentionDocumentRequest>
+public class GenerateRetentionDocumentHandler(
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    ICodebookServiceClient _codebookService,
+    ISbWebApiClient _sbWebApi,
+    MortgageRefinancingDocumentService _refinancingDocumentService)
+        : IRequestHandler<RefinancingGenerateRetentionDocumentRequest>
 {
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISbWebApiClient _sbWebApi;
-    private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
-
-    public GenerateRetentionDocumentHandler(
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        ICodebookServiceClient codebookService,
-        ISbWebApiClient sbWebApi,
-        MortgageRefinancingDocumentService refinancingDocumentService)
-    {
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _codebookService = codebookService;
-        _sbWebApi = sbWebApi;
-        _refinancingDocumentService = refinancingDocumentService;
-    }
-
-    public async Task Handle(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RefinancingGenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
     {
         await ValidateSignatureTypeDetailId(request, cancellationToken);
 
@@ -47,10 +33,10 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
 
         await GenerateRetentionDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
-    private async Task ValidateSignatureTypeDetailId(GenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
+    private async Task ValidateSignatureTypeDetailId(RefinancingGenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
     {
         var signatureTypeDetail = (await _codebookService.SignatureTypeDetails(cancellationToken)).SingleOrDefault(s => s.Id == request.SignatureTypeDetailId);
 
@@ -91,7 +77,7 @@ public class GenerateRetentionDocumentHandler : IRequestHandler<GenerateRetentio
         }, cancellationToken);
     }
 
-    private async Task UpdateSaParams(GenerateRetentionDocumentRequest request, _contract.SalesArrangement sa, CancellationToken cancellationToken)
+    private async Task UpdateSaParams(RefinancingGenerateRetentionDocumentRequest request, _contract.SalesArrangement sa, CancellationToken cancellationToken)
     {
         sa.Retention.SignatureTypeDetailId = request.SignatureTypeDetailId;
         sa.Retention.SignatureDeadline = request.SignatureDeadline;

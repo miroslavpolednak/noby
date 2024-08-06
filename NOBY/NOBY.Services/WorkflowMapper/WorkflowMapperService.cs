@@ -23,7 +23,7 @@ internal sealed class WorkflowMapperService(
             ProcessNameLong = task.ProcessNameLong,
             StateName = task.StateName,
             ProcessTypeId = task.ProcessTypeId,
-            StateIndicator = task.StateIndicator.HasValue ? (EnumWorkflowTaskStateIndicators)task.StateIndicator : EnumWorkflowTaskStateIndicators.Unknown //TODO co je default stav?
+            StateIndicator = task.StateIndicator.HasValue ? (EnumStateIndicators)task.StateIndicator : EnumStateIndicators.Unknown //TODO co je default stav?
         };
     }
 
@@ -45,7 +45,7 @@ internal sealed class WorkflowMapperService(
             StateId = taskState.Id,
             StateName = taskState.Name,
             StateFilter = (EnumWorkflowTaskStateFilters)taskState.Filter,
-            StateIndicator = (EnumWorkflowTaskStateIndicators)taskState.Indicator
+            StateIndicator = (EnumStateIndicators)taskState.Indicator
         };
     }
 
@@ -64,10 +64,10 @@ internal sealed class WorkflowMapperService(
             }).ToList(),
             Amendments = taskDetailItem.AmendmentsCase switch
             {
-                _Case.TaskDetailItem.AmendmentsOneofCase.Request => SharedTypesWorkflowTaskDetailAmendments.Create(mapAmendmentsRequest(taskDetailItem.Request)),
-                _Case.TaskDetailItem.AmendmentsOneofCase.Signing => SharedTypesWorkflowTaskDetailAmendments.Create(await mapAmendmentsSigning(task, taskDetailItem.Signing, cancellationToken)),
-                _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => SharedTypesWorkflowTaskDetailAmendments.Create(mapAmendmentsConsultationData(taskDetailItem.ConsultationData)),
-                _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => SharedTypesWorkflowTaskDetailAmendments.Create(await mapAmendmentsPriceException(task.DecisionId, taskDetailItem.PriceException, cancellationToken)),
+                _Case.TaskDetailItem.AmendmentsOneofCase.Request => SharedTypesWorkflowTaskDetailAmendmentsOneOf.Create(mapAmendmentsRequest(taskDetailItem.Request)),
+                _Case.TaskDetailItem.AmendmentsOneofCase.Signing => SharedTypesWorkflowTaskDetailAmendmentsOneOf.Create(await mapAmendmentsSigning(task, taskDetailItem.Signing, cancellationToken)),
+                _Case.TaskDetailItem.AmendmentsOneofCase.ConsultationData => SharedTypesWorkflowTaskDetailAmendmentsOneOf.Create(mapAmendmentsConsultationData(taskDetailItem.ConsultationData)),
+                _Case.TaskDetailItem.AmendmentsOneofCase.PriceException => SharedTypesWorkflowTaskDetailAmendmentsOneOf.Create(await mapAmendmentsPriceException(task.DecisionId, taskDetailItem.PriceException, cancellationToken)),
                 _ => null
             }
         };

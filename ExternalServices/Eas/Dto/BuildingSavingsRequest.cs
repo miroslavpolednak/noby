@@ -5,7 +5,7 @@ namespace ExternalServices.Eas.Dto;
 
 public class BuildingSavingsRequest
 {
-    private const string DateFormat = "DD.MM.yyyy";
+    private const string DateFormat = "dd.MM.yyyy";
 
     public int? MarketingActionCode { get; set; }
 

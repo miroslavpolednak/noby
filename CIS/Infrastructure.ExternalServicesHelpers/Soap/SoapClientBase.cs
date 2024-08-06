@@ -84,13 +84,13 @@ public abstract class SoapClientBase<TSoapClient, TSoapClientChannel> : IDisposa
         {
             return await fce();
         }
-        catch (Exception ex) when (ex is InvalidOperationException || ex is EndpointNotFoundException)
+        catch (Exception ex) when (ex is InvalidOperationException or EndpointNotFoundException)
         {
-            throw new CisExternalServiceUnavailableException(ServiceName, nameof(callMethod), ex.Message);
+            throw new CisExternalServiceUnavailableException(ServiceName, nameof(callMethod), $"{ex.Message} {ex.InnerException?.Message}".Trim(), ex);
         }
-        catch (Exception ex) when (ex is FaultException || ex is TimeoutException)
+        catch (Exception ex) when (ex is FaultException or TimeoutException)
         {
-            throw new CisExternalServiceServerErrorException(ServiceName, nameof(callMethod), ex.Message);
+            throw new CisExternalServiceServerErrorException(ServiceName, nameof(callMethod), $"{ex.Message} {ex.InnerException?.Message}".Trim(), ex);
         }
     }
 }

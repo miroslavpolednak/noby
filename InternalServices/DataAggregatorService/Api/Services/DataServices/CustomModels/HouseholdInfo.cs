@@ -44,13 +44,13 @@ internal class HouseholdInfo
 
         CustomersOnSa.Add(customerOnSA);
 
-        switch ((CustomerRoles)customerOnSA.CustomerRoleId)
+        switch ((EnumCustomerRoles)customerOnSA.CustomerRoleId)
         {
-            case CustomerRoles.Debtor:
+            case EnumCustomerRoles.Debtor:
                 Debtor = customerOnSA;
                 break;
 
-            case CustomerRoles.Codebtor:
+            case EnumCustomerRoles.Codebtor:
                 Codebtor = customerOnSA;
                 break;
 

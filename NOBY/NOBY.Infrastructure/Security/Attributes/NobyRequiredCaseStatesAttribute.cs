@@ -4,9 +4,9 @@
 public sealed class NobyRequiredCaseStatesAttribute
     : Attribute
 {
-    public CaseStates[] CaseStates { get; init; }
+    public EnumCaseStates[] CaseStates { get; init; }
 
-    public NobyRequiredCaseStatesAttribute(params CaseStates[] caseStates)
+    public NobyRequiredCaseStatesAttribute(params EnumCaseStates[] caseStates)
     {
         CaseStates = caseStates;
     }

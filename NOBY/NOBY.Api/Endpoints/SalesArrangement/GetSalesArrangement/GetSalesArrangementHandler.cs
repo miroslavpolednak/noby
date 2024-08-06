@@ -44,38 +44,38 @@ internal sealed class GetSalesArrangementHandler(
         };
     }
 
-    static SalesArrangementGetSalesArrangementParameters? getParameters(_SA.SalesArrangement saInstance)
+    static SalesArrangementGetSalesArrangementParametersOneOf? getParameters(_SA.SalesArrangement saInstance)
         => saInstance.ParametersCase switch
         {
-            _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.Mortgage => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 Mortgage = saInstance.Mortgage.ToApiResponse()
             },
-            _SA.SalesArrangement.ParametersOneofCase.Drawing => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.Drawing => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 Drawing = saInstance.Drawing.ToApiResponse()
             },
-            _SA.SalesArrangement.ParametersOneofCase.GeneralChange => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.GeneralChange => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 GeneralChange = saInstance.GeneralChange.ToApiResponse()
             },
-            _SA.SalesArrangement.ParametersOneofCase.HUBN => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.HUBN => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 Hubn = saInstance.HUBN.ToApiResponse()
             },
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 CustomerChange = saInstance.CustomerChange.ToApiResponse()
             },
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602A => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602A => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 CustomerChange3602 = saInstance.CustomerChange3602A.ToApiResponse()
             },
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602B => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602B => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 CustomerChange3602 = saInstance.CustomerChange3602B.ToApiResponse()
             },
-            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602C => new SalesArrangementGetSalesArrangementParameters
+            _SA.SalesArrangement.ParametersOneofCase.CustomerChange3602C => new SalesArrangementGetSalesArrangementParametersOneOf
             {
                 CustomerChange3602 = saInstance.CustomerChange3602C.ToApiResponse()
             },

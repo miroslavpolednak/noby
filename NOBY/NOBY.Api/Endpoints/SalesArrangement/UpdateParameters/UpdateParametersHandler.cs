@@ -103,9 +103,9 @@ internal sealed class UpdateParametersHandler(
                 }
             }
 
-            if (saInstance.State != (int)SalesArrangementStates.InProgress)
+            if (saInstance.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress)
             {
-                await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SalesArrangementStates.InProgress, cancellationToken);
+                await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress, cancellationToken);
             }
         }
         else
@@ -125,8 +125,8 @@ internal sealed class UpdateParametersHandler(
 
     private static readonly int[] _disallowedStates =
     [
-        (int)SalesArrangementStates.Cancelled,
-        (int)SalesArrangementStates.Disbursed,
-        (int)SalesArrangementStates.InApproval
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.Disbursed,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.InApproval
     ];
 }

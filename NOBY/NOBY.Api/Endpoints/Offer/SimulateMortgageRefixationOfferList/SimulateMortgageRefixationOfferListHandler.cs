@@ -5,15 +5,18 @@ namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixationOfferList;
 internal sealed class SimulateMortgageRefixationOfferListHandler(
     IOfferServiceClient _offerService, 
     TimeProvider _timeProvider)
-        : IRequestHandler<OfferSimulateMortgageRefixationOfferListRequest, OfferSimulateMortgageRefixationOfferListResponse>
+        : IRequestHandler<OfferSimulateMortgageRefixationOfferListRequest, OfferSimulateMortgageRefixationOfferListResponse?>
 {
-    public async Task<OfferSimulateMortgageRefixationOfferListResponse> Handle(OfferSimulateMortgageRefixationOfferListRequest request, CancellationToken cancellationToken)
+    public async Task<OfferSimulateMortgageRefixationOfferListResponse?> Handle(OfferSimulateMortgageRefixationOfferListRequest request, CancellationToken cancellationToken)
     {
         decimal? interestRateDiscount = request.InterestRateDiscount == 0 ? null : request.InterestRateDiscount;
 
         var offers = (await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken))
             .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
+
+        if (!offers.Any())
+            return default;
 
         List<RefinancingSharedOfferDetail> finalOffers = [];
 
@@ -37,6 +40,7 @@ internal sealed class SimulateMortgageRefixationOfferListHandler(
                 
                 var item = RefinancingSharedOfferDetail.CreateRefixationOffer(offer);
                 item.InterestRateDiscount = result.SimulationInputs.InterestRateDiscount;
+                item.InterestRateDiscounted = result.SimulationInputs.InterestRateDiscount != null ? result.SimulationInputs.InterestRate - result.SimulationInputs.InterestRateDiscount : null;
                 item.LoanPaymentAmountDiscounted = result.SimulationResults.LoanPaymentAmountDiscounted;
 
                 finalOffers.Add(item);

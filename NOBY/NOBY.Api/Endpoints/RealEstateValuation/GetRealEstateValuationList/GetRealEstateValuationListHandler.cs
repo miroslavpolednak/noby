@@ -20,7 +20,7 @@ internal sealed class GetRealEstateValuationListHandler(
 
         // dopocitana oceneni na zaklade dat v SA
         List<RealEstateValuationSharedRealEstateValuationListItem>? computedValuations = null;
-        if (caseInstance.State == (int)CaseStates.InProgress)
+        if (caseInstance.State == (int)EnumCaseStates.InProgress)
         {
             computedValuations = await getComputedValuations(request.CaseId, cancellationToken);
         }
@@ -67,7 +67,7 @@ internal sealed class GetRealEstateValuationListHandler(
                 RealEstateTypeId = t.RealEstateTypeId,
                 RealEstateTypeIcon = RealEstateValuationHelpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
                 ValuationStateId = state.Id,
-                ValuationStateIndicator = (EnumRealEstateValuationStateIndicators)state.Indicator,
+                ValuationStateIndicator = (EnumStateIndicators)state.Indicator,
                 ValuationStateName = state.Name,
                 IsLoanRealEstate = true,
                 DeveloperAllowed = developer.IsDeveloperAllowed
@@ -95,7 +95,7 @@ internal sealed class GetRealEstateValuationListHandler(
                 RealEstateTypeId = t.RealEstateTypeId,
                 RealEstateTypeIcon = RealEstateValuationHelpers.GetRealEstateTypeIcon(t.RealEstateTypeId),
                 ValuationStateId = t.ValuationStateId,
-                ValuationStateIndicator = (EnumRealEstateValuationStateIndicators)state.Indicator,
+                ValuationStateIndicator = (EnumStateIndicators)state.Indicator,
                 ValuationStateName = state.Name,
                 IsLoanRealEstate = t.IsLoanRealEstate,
                 RealEstateStateId = t.RealEstateStateId,

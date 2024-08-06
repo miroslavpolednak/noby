@@ -41,4 +41,21 @@ internal static partial class StringExtensions
 
         return phoneNumber;
     }
+
+    public static string ResolveSenderEmail(this string originalSenderEmail, Dictionary<string, string> _emailSenderMapping)
+    {
+        if (_emailSenderMapping.TryGetValue(originalSenderEmail, out string? translatedSenderEmail))
+        {
+            return translatedSenderEmail;
+        }
+        return originalSenderEmail;
+    }
+
+    public static int GetSizeInBytesFromBase64(this string base64string)
+    {
+        if (string.IsNullOrEmpty(base64string))
+            return 0;
+
+        return (int)Math.Ceiling((double)base64string.Length / 4) * 3;
+    }
 }

@@ -19,12 +19,12 @@ internal sealed class GetIncomeHandler(ICustomerOnSAServiceClient _customerServi
         };
     }
 
-    static CustomerIncomeData? getData(_HO.Income incomeInstance)
+    static CustomerIncomeDataOneOf? getData(_HO.Income incomeInstance)
         => incomeInstance.DataCase switch
         {
-            _HO.Income.DataOneofCase.Employement => CustomerIncomeData.Create(incomeInstance.Employement.ToApiResponse()),
-            _HO.Income.DataOneofCase.Other => CustomerIncomeData.Create(incomeInstance.Other.ToApiResponse()),
-            _HO.Income.DataOneofCase.Entrepreneur => CustomerIncomeData.Create(incomeInstance.Entrepreneur.ToApiResponse()),
+            _HO.Income.DataOneofCase.Employement => CustomerIncomeDataOneOf.Create(incomeInstance.Employement.ToApiResponse()),
+            _HO.Income.DataOneofCase.Other => CustomerIncomeDataOneOf.Create(incomeInstance.Other.ToApiResponse()),
+            _HO.Income.DataOneofCase.Entrepreneur => CustomerIncomeDataOneOf.Create(incomeInstance.Entrepreneur.ToApiResponse()),
             _ => null
         };
 }

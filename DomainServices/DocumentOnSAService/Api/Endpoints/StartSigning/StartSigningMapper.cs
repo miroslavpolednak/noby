@@ -25,8 +25,10 @@ using DomainServices.DocumentOnSAService.Api.Extensions;
 using SharedTypes.Enums;
 using FastEnumUtility;
 using DomainServices.ProductService.Clients;
-using Google.Protobuf.Collections;
 using SharedTypes.Extensions;
+using Google.Protobuf.Collections;
+using DomainServices.CustomerService.Contracts;
+using DomainServices.ProductService.Contracts;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
@@ -83,16 +85,22 @@ public class StartSigningMapper
         };
     }
 
-    public async Task<PrepareDocumentRequest> MapPrepareDocumentRequest(DocumentOnSa documentOnSa, long caseId, CancellationToken cancellationToken)
+    public async Task<PrepareDocumentRequest> MapPrepareDocumentRequest(DocumentOnSa documentOnSa, SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var currentUser = await _userServiceClient.GetUser(_currentUser.User!.Id, cancellationToken);
         var documentType = (await _codebookServiceClient.DocumentTypes(cancellationToken)).Single(s => s.Id == documentOnSa.DocumentTypeId);
-        var caseObj = await _caseServiceClient.GetCaseDetail(caseId, cancellationToken);
+        var caseObj = await _caseServiceClient.GetCaseDetail(salesArrangement.CaseId, cancellationToken);
+
+        GetCustomersOnProductResponse? customersOnProductResponse = null;
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.CustomerChange)
+        {
+            customersOnProductResponse = await _productServiceClient.GetCustomersOnProduct(salesArrangement.CaseId, cancellationToken);
+        }
 
         var request = new PrepareDocumentRequest
         {
-            ExternalId = await GetExternalId(caseId, cancellationToken),
-            AdditionalData = $"case_id:{caseId}",
+            ExternalId = await GetExternalId(salesArrangement.CaseId, cancellationToken),
+            AdditionalData = $"case_id:{salesArrangement.CaseId}",
             CurrentUserInfo = new()
             {
                 Cpm = currentUser.UserInfo.Cpm,
@@ -101,10 +109,10 @@ public class StartSigningMapper
             },
             CreatorInfo = new()
             {
-				Cpm = currentUser.UserInfo.Cpm,
-				Icp = currentUser.UserInfo.Icp,
-				FullName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}"
-			},
+                Cpm = currentUser.UserInfo.Cpm,
+                Icp = currentUser.UserInfo.Icp,
+                FullName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}"
+            },
             DocumentData = new()
             {
                 DocumentTypeId = documentOnSa.DocumentTypeId!.Value,
@@ -116,8 +124,12 @@ public class StartSigningMapper
 
             ClientData = new()
         };
-        // Have CustomerOnSA 
-        if (documentOnSa.CustomerOnSAId1 is not null)
+
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.CustomerChange) // 9
+        {
+            await MapClientDataFromKonstDb(request.ClientData, customersOnProductResponse!, cancellationToken);
+        }
+        else if (documentOnSa.CustomerOnSAId1 is not null)// Have CustomerOnSA
         {
             var signingIdentity = documentOnSa.SigningIdentities.Single(s => s.SigningIdentityJson.CustomerOnSAId == documentOnSa.CustomerOnSAId1).SigningIdentityJson;
             MapClientData(request.ClientData, signingIdentity);
@@ -128,25 +140,64 @@ public class StartSigningMapper
             MapClientData(request.ClientData, signingIdentity.SigningIdentityJson);
         }
 
-        request.OtherClients = new();
-        if (documentOnSa.SigningIdentities.Count > 1)
+        request.OtherClients = [];
+
+        if (salesArrangement.SalesArrangementTypeId == (int)SalesArrangementTypes.CustomerChange) // 9
         {
-            var counter = 1;
-            foreach (var item in documentOnSa.SigningIdentities.Where(c => c.SigningIdentityJson.CustomerOnSAId != documentOnSa.CustomerOnSAId1))
-            {
-                var otherClient = new OtherClient
-                {
-                    Identities = item.SigningIdentityJson.CustomerIdentifiers.Select(p => new CustomerIdentity(p.IdentityId, p.IdentityScheme)),
-                    CodeIndex = ++counter,
-                    FullName = $"{item.SigningIdentityJson.FirstName} {item.SigningIdentityJson.LastName}",
-                    Phone = string.Concat(item.SigningIdentityJson.MobilePhone?.PhoneIDC, item.SigningIdentityJson.MobilePhone?.PhoneNumber),
-                    Email = item.SigningIdentityJson.EmailAddress
-                };
-                request.OtherClients.Add(otherClient);
-            };
+            await MapOtherClientsFromKonstDb(request.OtherClients, customersOnProductResponse!, cancellationToken);
+        }
+        else if (documentOnSa.SigningIdentities.Count > 1)
+        {
+            MapOtherClientsFromSigningIdentities(documentOnSa, request.OtherClients);
         }
 
         return request;
+    }
+
+    private async Task MapOtherClientsFromKonstDb(List<OtherClient> otherClients, GetCustomersOnProductResponse customersResponse, CancellationToken cancellationToken)
+    {
+        var relationshipCustomerProductTypes = await _codebookServiceClient.RelationshipCustomerProductTypes(cancellationToken);
+
+        var customersWithRelation = customersResponse.Customers.Select(c => new
+        {
+            customer = c,
+            relation = relationshipCustomerProductTypes.Single(r => r.Id == c.RelationshipCustomerProductTypeId)
+        });
+
+        var counter = 1;
+        foreach (var customerItem in customersWithRelation.Where(c => c.relation.RdmCode != "A")) //All customers without owner
+        {
+            var customer = await _customerServiceClient.GetCustomerDetail(customerItem.customer.CustomerIdentifiers.GetKbIdentity(), cancellationToken); //Kb indentita
+
+            var otherClient = new OtherClient
+            {
+                Identities = customerItem.customer.CustomerIdentifiers.Select(s => new CustomerIdentity(s.IdentityId, (IdentitySchemes)s.IdentityScheme)),
+                CodeIndex = ++counter,
+                FullName = $"{customer.NaturalPerson.FirstName} {customer.NaturalPerson.LastName}",
+                Phone = GetPhoneFromCustomerContacts(customer.Contacts),
+                Email = GetEmailFromCustomerContacts(customer.Contacts)
+            };
+
+            otherClients.Add(otherClient);
+        }
+    }
+
+    private static void MapOtherClientsFromSigningIdentities(DocumentOnSa documentOnSa, List<OtherClient> otherClients)
+    {
+        var counter = 1;
+        foreach (var item in documentOnSa.SigningIdentities.Where(c => c.SigningIdentityJson.CustomerOnSAId != documentOnSa.CustomerOnSAId1))
+        {
+            var otherClient = new OtherClient
+            {
+                Identities = item.SigningIdentityJson.CustomerIdentifiers.Select(p => new CustomerIdentity(p.IdentityId, p.IdentityScheme)),
+                CodeIndex = ++counter,
+                FullName = $"{item.SigningIdentityJson.FirstName} {item.SigningIdentityJson.LastName}",
+                Phone = string.Concat(item.SigningIdentityJson.MobilePhone?.PhoneIDC, item.SigningIdentityJson.MobilePhone?.PhoneNumber),
+                Email = item.SigningIdentityJson.EmailAddress
+            };
+
+            otherClients.Add(otherClient);
+        };
     }
 
     private async Task<string> GetExternalId(long caseId, CancellationToken cancellationToken)
@@ -165,9 +216,41 @@ public class StartSigningMapper
             var kbIdentityId = identityOnCase!.IdentityId;
             var customersResponse = await _productServiceClient.GetCustomersOnProduct(caseId, cancellationToken);
             var customer = customersResponse.Customers.Single(c => c.CustomerIdentifiers.Any(i => i.IdentityId == kbIdentityId));
-            var mpIndentity = customer.CustomerIdentifiers.GetKbIdentity();
+            var mpIndentity = customer.CustomerIdentifiers.GetMpIdentity();
             return mpIndentity.IdentityId.ToString(CultureInfo.InvariantCulture);
         }
+    }
+
+    private async Task MapClientDataFromKonstDb(ClientInfo clientData, GetCustomersOnProductResponse customersResponse, CancellationToken cancellationToken)
+    {
+        var relationshipCustomerProductTypes = await _codebookServiceClient.RelationshipCustomerProductTypes(cancellationToken);
+
+        var customersWithRelation = customersResponse.Customers.Select(c => new
+        {
+            customer = c,
+            relation = relationshipCustomerProductTypes.Single(r => r.Id == c.RelationshipCustomerProductTypeId)
+        });
+
+        var customerOwner = customersWithRelation.Single(c => c.relation.RdmCode == "A"); // A mean Owner (Hlavní dlužník)
+        var customer = await _customerServiceClient.GetCustomerDetail(customerOwner.customer.CustomerIdentifiers.GetKbIdentity(), cancellationToken); //Kb indentita
+
+        clientData.FullName = $"{customer.NaturalPerson.FirstName} {customer.NaturalPerson.LastName}";
+        clientData.BirthNumber = customer.NaturalPerson.BirthNumber;
+        clientData.Phone = GetPhoneFromCustomerContacts(customer.Contacts);
+        clientData.Email = GetEmailFromCustomerContacts(customer.Contacts);
+        clientData.Identities = customerOwner.customer.CustomerIdentifiers.Select(s => new CustomerIdentity(s.IdentityId, (IdentitySchemes)s.IdentityScheme));
+    }
+
+    private static string? GetEmailFromCustomerContacts(RepeatedField<Contact> contacts)
+    {
+        var emailContact = contacts.FirstOrDefault(c => c.DataCase == Contact.DataOneofCase.Email);
+        return emailContact?.Email.EmailAddress;
+    }
+
+    private static string? GetPhoneFromCustomerContacts(RepeatedField<Contact> contacts)
+    {
+        var phoneContact = contacts.FirstOrDefault(c => c.DataCase == Contact.DataOneofCase.Mobile);
+        return phoneContact is not null ? string.Concat(phoneContact.Mobile.PhoneIDC, phoneContact.Mobile.PhoneNumber) : null;
     }
 
     private static void MapClientData(ClientInfo clientData, SigningIdentityJson signingIdentity)

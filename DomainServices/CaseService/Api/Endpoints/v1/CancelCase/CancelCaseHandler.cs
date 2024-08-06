@@ -27,7 +27,7 @@ internal sealed class CancelCaseHandler(
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // Pokud stav case není 1 (příprava žádosti) vracíme chybu, nelze stornovat
-        if (entity.State != (int)CaseStates.InProgress)
+        if (entity.State != (int)EnumCaseStates.InProgress)
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.UnableToCancelCase, request.CaseId);
         }
@@ -46,12 +46,12 @@ internal sealed class CancelCaseHandler(
         await stopSigning(salesArrangementId, cancellation);
 
         // druh storna podle datumu prvniho podpisu
-        CaseStates newCaseState = await firstSignatureDateIsSet(salesArrangementId, documents, cancellation) ? CaseStates.ToBeCancelled : CaseStates.Cancelled;
+        EnumCaseStates newCaseState = await firstSignatureDateIsSet(salesArrangementId, documents, cancellation) ? EnumCaseStates.ToBeCancelled : EnumCaseStates.Cancelled;
 
 		// dojde k odeslání elektronicky podepsaných dokumentů do archivu (getDocumentsOnSAList nad produktovou žádostí zafiltrovaný na IsSigned = true a SignatureTypeId = 3 a IsArchived = false)
 		await setDocumentArchived(documents, cancellation);
 
-		if (newCaseState == CaseStates.ToBeCancelled) // pokud mame datum prvniho podpisu
+		if (newCaseState == EnumCaseStates.ToBeCancelled) // pokud mame datum prvniho podpisu
         {
             // odeslat do SB
             await _salesArrangementService.SendToCmp(salesArrangementId, true, cancellation);
@@ -147,7 +147,7 @@ internal sealed class CancelCaseHandler(
     private async Task<bool> isDebtorIdentified(int salesArrangementId, CancellationToken cancellationToken)
     {
         var debtor = (await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken))
-                .FirstOrDefault(t => t.CustomerRoleId == (int)CustomerRoles.Debtor);
+                .FirstOrDefault(t => t.CustomerRoleId == (int)EnumCustomerRoles.Debtor);
 
         return debtor?.CustomerIdentifiers?.Any() ?? false;
     }

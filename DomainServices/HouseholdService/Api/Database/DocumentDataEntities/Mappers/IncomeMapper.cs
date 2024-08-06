@@ -21,19 +21,19 @@ internal sealed class IncomeMapper
         {
             Sum = baseData?.Sum,
             CurrencyCode = baseData?.CurrencyCode,
-            IncomeTypeId = (CustomerIncomeTypes)incomeTypeId
+            IncomeTypeId = (EnumIncomeTypes)incomeTypeId
         };
 
-        model.HasProofOfIncome = (model.IncomeTypeId == CustomerIncomeTypes.Employement ? dataEmployement?.HasProofOfIncome : null) ?? false;
+        model.HasProofOfIncome = (model.IncomeTypeId == EnumIncomeTypes.Employement ? dataEmployement?.HasProofOfIncome : null) ?? false;
         model.IncomeSource = await getIncomeSource(model.IncomeTypeId, dataEmployement, dataOther, cancellationToken);
 
         switch (model.IncomeTypeId)
         {
-            case CustomerIncomeTypes.Employement:
+            case EnumIncomeTypes.Employement:
                 model.Employement = mapEmployementToData(dataEmployement);
                 break;
 
-            case CustomerIncomeTypes.Entrepreneur:
+            case EnumIncomeTypes.Entrepreneur:
                 model.Entrepreneur = new()
                 {
                     BirthNumber = dataEntrepreneur?.BirthNumber,
@@ -42,7 +42,7 @@ internal sealed class IncomeMapper
                 };
                 break;
 
-            case CustomerIncomeTypes.Other:
+            case EnumIncomeTypes.Other:
                 model.Other = new()
                 {
                     IncomeOtherTypeId = dataOther?.IncomeOtherTypeId
@@ -82,18 +82,18 @@ internal sealed class IncomeMapper
 
         switch (data.IncomeTypeId)
         {
-            case CustomerIncomeTypes.Employement:
+            case EnumIncomeTypes.Employement:
                 model.Employement = mapEmployementFromData(data.Employement!);
                 break;
 
-            case CustomerIncomeTypes.Other:
+            case EnumIncomeTypes.Other:
                 model.Other = new()
                 {
                     IncomeOtherTypeId = data.Other?.IncomeOtherTypeId
                 };
                 break;
 
-            case CustomerIncomeTypes.Entrepreneur:
+            case EnumIncomeTypes.Entrepreneur:
                 model.Entrepreneur = new()
                 {
                     BirthNumber = data.Entrepreneur?.BirthNumber,
@@ -102,7 +102,7 @@ internal sealed class IncomeMapper
                 };
                 break;
 
-            case CustomerIncomeTypes.Rent:
+            case EnumIncomeTypes.Rent:
                 model.Rent = new __Contracts.IncomeDataRent();
                 break;
 
@@ -159,14 +159,14 @@ internal sealed class IncomeMapper
     }
 
     private async Task<string?> getIncomeSource(
-        CustomerIncomeTypes incomeTypeId,
+        EnumIncomeTypes incomeTypeId,
         __Contracts.IncomeDataEmployement? dataEmployement,
         __Contracts.IncomeDataOther? dataOther,
         CancellationToken cancellationToken)
         => incomeTypeId switch
         {
-            CustomerIncomeTypes.Employement => string.IsNullOrEmpty(dataEmployement?.Employer.Name) ? "-" : dataEmployement?.Employer.Name,
-            CustomerIncomeTypes.Other => await getOtherIncomeName(dataOther?.IncomeOtherTypeId, cancellationToken),
+            EnumIncomeTypes.Employement => string.IsNullOrEmpty(dataEmployement?.Employer.Name) ? "-" : dataEmployement?.Employer.Name,
+            EnumIncomeTypes.Other => await getOtherIncomeName(dataOther?.IncomeOtherTypeId, cancellationToken),
             _ => "-"
         };
 

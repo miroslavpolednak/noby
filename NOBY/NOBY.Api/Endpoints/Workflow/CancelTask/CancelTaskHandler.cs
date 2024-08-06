@@ -57,7 +57,7 @@ internal sealed class CancelTaskHandler(
 
         if (saId.HasValue)
         {
-            await _salesArrangementService.UpdateSalesArrangementState(saId.Value, (int)SalesArrangementStates.Cancelled, cancellationToken);
+            await _salesArrangementService.UpdateSalesArrangementState(saId.Value, (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled, cancellationToken);
         }
     }
 

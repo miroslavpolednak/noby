@@ -71,20 +71,20 @@ internal sealed class StartTaskSigningHandler(
         {
             return await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
         }
-        else if (process.RefinancingType == (int)RefinancingTypes.MortgageRetention)
+        else if (process.RefinancingType == (int)EnumRefinancingTypes.MortgageRetention)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention
-                                                                                      && s.State != (int)SalesArrangementStates.Cancelled
-                                                                                      && s.State != (int)SalesArrangementStates.Finished);
+                                                                                      && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled
+                                                                                      && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished);
 
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
 
         }
-        else if (process.RefinancingType == (int)RefinancingTypes.MortgageRefixation)
+        else if (process.RefinancingType == (int)EnumRefinancingTypes.MortgageRefixation)
         {
             var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation
-                                                                                     && s.State != (int)SalesArrangementStates.Cancelled
-                                                                                     && s.State != (int)SalesArrangementStates.Finished);
+                                                                                     && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled
+                                                                                     && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished);
 
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
         }

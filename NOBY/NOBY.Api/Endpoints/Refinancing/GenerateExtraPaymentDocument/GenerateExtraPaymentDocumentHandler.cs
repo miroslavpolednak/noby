@@ -10,40 +10,22 @@ using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.SbWebApi.Dto.Refinancing;
 using ExternalServices.SbWebApi.V1;
 using NOBY.Services.MortgageRefinancing;
+using PublicHoliday;
 using SharedTypes.GrpcTypes;
 using _contract = DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument;
 
-internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<GenerateExtraPaymentDocumentRequest>
+internal sealed class GenerateExtraPaymentDocumentHandler(
+    ICodebookServiceClient _codebookService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    IProductServiceClient _productService,
+    ICustomerServiceClient _customerService,
+    ISbWebApiClient _sbWebApi,
+    MortgageRefinancingDocumentService _refinancingDocumentService) : IRequestHandler<RefinancingGenerateExtraPaymentDocumentRequest>
 {
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly IProductServiceClient _productService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ISbWebApiClient _sbWebApi;
-    private readonly MortgageRefinancingDocumentService _refinancingDocumentService;
-
-    public GenerateExtraPaymentDocumentHandler(
-        ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        IProductServiceClient productService,
-        ICustomerServiceClient customerService,
-        ISbWebApiClient sbWebApi,
-        MortgageRefinancingDocumentService refinancingDocumentService)
-    {
-        _codebookService = codebookService;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-        _productService = productService;
-        _customerService = customerService;
-        _sbWebApi = sbWebApi;
-        _refinancingDocumentService = refinancingDocumentService;
-    }
-
-    public async Task Handle(GenerateExtraPaymentDocumentRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RefinancingGenerateExtraPaymentDocumentRequest request, CancellationToken cancellationToken)
     {
         await ValidateHandoverTypeDetail(request, cancellationToken);
 
@@ -61,10 +43,10 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
 
         await GenerateCalculationDocuments(request, salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SalesArrangementStates.Finished, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished, cancellationToken);
     }
 
-    private async Task ValidateHandoverTypeDetail(GenerateExtraPaymentDocumentRequest request, CancellationToken cancellationToken)
+    private async Task ValidateHandoverTypeDetail(RefinancingGenerateExtraPaymentDocumentRequest request, CancellationToken cancellationToken)
     {
         var handoverTypeDetail = (await _codebookService.HandoverTypeDetails(cancellationToken)).SingleOrDefault(s => s.Id == request.HandoverTypeDetailId);
 
@@ -76,7 +58,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
     {
         var offer = await _offerService.GetOffer(offerId, cancellationToken);
 
-        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < DateTime.UtcNow.ToLocalTime().Date)
+        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < new CzechRepublicPublicHoliday().NextWorkingDay(DateTime.Now, 3).AddDays(1))
             throw new NobyValidationException(90055);
 
         var simulationRequest = new SimulateMortgageExtraPaymentRequest
@@ -116,7 +98,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
         return await _customerService.GetCustomerDetail(new Identity(clientKbId, IdentitySchemes.Kb), cancellationToken);
     }
 
-    private async Task UpdateSaParams(GenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, CustomerDetailResponse customerDetail, CancellationToken cancellationToken)
+    private async Task UpdateSaParams(RefinancingGenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, CustomerDetailResponse customerDetail, CancellationToken cancellationToken)
     {
         salesArrangement.ExtraPayment.HandoverTypeDetailId = request.HandoverTypeDetailId;
         salesArrangement.ExtraPayment.Client = new SalesArrangementParametersExtraPayment.Types.SalesArrangementParametersExtraPaymentClient
@@ -135,7 +117,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler : IRequestHandler<Gene
         await _salesArrangementService.UpdateSalesArrangementParameters(saRequest, cancellationToken);
     }
 
-    private async Task GenerateCalculationDocuments(GenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, GetOfferResponse offer, bool hasIndividualPricing, CancellationToken cancellationToken)
+    private async Task GenerateCalculationDocuments(RefinancingGenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, GetOfferResponse offer, bool hasIndividualPricing, CancellationToken cancellationToken)
     {
         var handoverTypeDetails = await _codebookService.HandoverTypeDetails(cancellationToken);
 

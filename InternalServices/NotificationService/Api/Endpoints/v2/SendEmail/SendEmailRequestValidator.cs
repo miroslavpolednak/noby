@@ -2,6 +2,7 @@
 using CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail.Validators;
 using CIS.InternalServices.NotificationService.Api.Validators;
 using FluentValidation;
+using System.Text;
 
 namespace CIS.InternalServices.NotificationService.Api.Endpoints.v2.SendEmail;
 
@@ -12,50 +13,55 @@ internal sealed class SendEmailRequestValidator
     {
         RuleFor(request => request.From)
             .NotNull()
-                .WithErrorCode(ErrorCodeMapper.FromRequired)
+            .WithErrorCode(ErrorCodeMapper.FromRequired)
             .SetValidator(new EmailAddressFromValidator(appConfiguration))
-                .WithErrorCode(ErrorCodeMapper.FromInvalid);
+            .WithErrorCode(ErrorCodeMapper.FromInvalid);
 
         RuleFor(request => request.To)
             .NotEmpty()
-                .WithErrorCode(ErrorCodeMapper.ToRequired)
+            .WithErrorCode(ErrorCodeMapper.ToRequired)
             .ForEach(to => to.SetValidator(new EmailAddressValidator()))
-                .WithErrorCode(ErrorCodeMapper.ToInvalid);
+            .WithErrorCode(ErrorCodeMapper.ToInvalid);
 
         RuleForEach(request => request.Bcc)
             .SetValidator(new EmailAddressValidator())
-                .WithErrorCode(ErrorCodeMapper.BccInvalid);
+            .WithErrorCode(ErrorCodeMapper.BccInvalid);
 
         RuleForEach(request => request.Cc)
             .SetValidator(new EmailAddressValidator())
-                .WithErrorCode(ErrorCodeMapper.CcInvalid);
+            .WithErrorCode(ErrorCodeMapper.CcInvalid);
 
         When(request => request.ReplyTo is not null, () =>
         {
             RuleFor(request => request.ReplyTo!)
                 .SetValidator(new EmailAddressValidator())
-                    .WithErrorCode(ErrorCodeMapper.ReplyToInvalid);
+                .WithErrorCode(ErrorCodeMapper.ReplyToInvalid);
         });
 
         RuleFor(request => request.Subject)
             .NotEmpty()
-                .WithErrorCode(ErrorCodeMapper.SubjectRequired)
+            .WithErrorCode(ErrorCodeMapper.SubjectRequired)
             .MaximumLength(400)
-                .WithErrorCode(ErrorCodeMapper.SubjectInvalid);
+            .WithErrorCode(ErrorCodeMapper.SubjectInvalid);
 
         RuleFor(request => request.Content)
-            .NotEmpty()
-                .WithErrorCode(ErrorCodeMapper.ContentRequired)
-            .SetValidator(new EmailContentValidator())
-                .WithErrorCode(ErrorCodeMapper.ContentInvalid);
+            .NotNull()
+            .WithErrorCode(ErrorCodeMapper.ContentRequired);
 
-        RuleFor(request => request.Attachments.Count)
-            .LessThanOrEqualTo(10)
-                .WithErrorCode(ErrorCodeMapper.AttachmentsCountLimitExceeded);
+        RuleFor(request => request.Content.Text)
+            .Must(t => Encoding.UTF8.GetByteCount(t) <= appConfiguration.EmailSizeLimits.Content)
+            .When(t => t.Content != null && !string.IsNullOrEmpty(t.Content.Text))
+            .WithErrorCode(ErrorCodeMapper.ContentSizeExceeded);
+
+        RuleFor(request => request.Attachments)
+            .Must(t => t.Count <= 10)
+            .WithErrorCode(ErrorCodeMapper.AttachmentsCountLimitExceeded)
+            .Must(t => t.Sum(x => x.Binary.Length) <= appConfiguration.EmailSizeLimits.Attachments)
+            .WithErrorCode(ErrorCodeMapper.AttachmentsSizeExceeded);
 
         RuleForEach(request => request.Attachments)
             .SetValidator(new EmailAttachmentValidator())
-                .WithErrorCode(ErrorCodeMapper.AttachmentsInvalid);
+            .WithErrorCode(ErrorCodeMapper.AttachmentsInvalid);
 
         RuleFor(request => request.Identifier)
             .SetValidator(new IdentifierValidator())

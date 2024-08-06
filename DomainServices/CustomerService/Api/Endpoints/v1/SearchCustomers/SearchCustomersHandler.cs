@@ -25,9 +25,8 @@ internal sealed class SearchCustomersHandler(
         return response;
     }
 
-    private async Task<List<SearchCustomersItem>> searchMpHome(SearchCustomersRequest request, CancellationToken cancellationToken)
+    private async Task<List<CustomerDetailResponse>> searchMpHome(SearchCustomersRequest request, CancellationToken cancellationToken)
     {
-#pragma warning disable CS8601 // Possible null reference assignment.
         var searchRequest = new global::ExternalServices.MpHome.V1.Contracts.PartnerSearchRequest
         {
             BirthNumber = request.NaturalPerson?.BirthNumber,
@@ -36,16 +35,22 @@ internal sealed class SearchCustomersHandler(
             Name = request.NaturalPerson?.FirstName,
             Mobile = $"{request.MobilePhone?.PhoneIDC}{request.MobilePhone?.PhoneNumber}",
             Email = request.Email?.EmailAddress,
-            IdentificationDocument = request.IdentificationDocument is null ? null : new()
+            IdentificationDocument = request.IdentificationDocument is null ? null! : new()
             {
                 Number = request.IdentificationDocument.Number,
                 IssuingCountryId = request.IdentificationDocument.IssuingCountryId,
                 Type = (global::ExternalServices.MpHome.V1.Contracts.IdentificationCardType)request.IdentificationDocument.IdentificationDocumentTypeId
-            }
+            },
+            PartnerIds = request.Identity is null ? null! : [request.Identity.IdentityId]
         };
-#pragma warning restore CS8601 // Possible null reference assignment.
+
         var response = await _mpHome.SearchPartners(searchRequest, cancellationToken);
 
-        return await _mpHomeDetailMapper.MapSearchResponse(response, cancellationToken);
+        List<CustomerDetailResponse> result = [];
+        foreach (var partner in response!)
+        {
+            result.Add(await _mpHomeDetailMapper.MapDetailResponse(partner, cancellationToken));
+        }
+        return result;
     }
 }

@@ -20,7 +20,7 @@ public class CodebookServiceMock
     }
 
     public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> CaseStates(CancellationToken cancellationToken = default)
-        => Helpers.GetGenericItems<SharedTypes.Enums.CaseStates>();
+        => Helpers.GetGenericItems<SharedTypes.Enums.EnumCaseStates>();
 
     public override Task<List<GenericCodebookResponse.Types.GenericCodebookItem>> AcademicDegreesBefore(CancellationToken cancellationToken = default)
     {

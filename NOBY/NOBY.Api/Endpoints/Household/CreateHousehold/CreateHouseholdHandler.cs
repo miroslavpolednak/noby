@@ -7,9 +7,9 @@ using _HO = DomainServices.HouseholdService.Contracts;
 namespace NOBY.Api.Endpoints.Household.CreateHousehold;
 
 internal sealed class CreateHouseholdHandler
-    : IRequestHandler<CreateHouseholdRequest, SharedDto.HouseholdInList>
+    : IRequestHandler<HouseholdCreateHouseholdRequest, HouseholdInList>
 {
-    public async Task<SharedDto.HouseholdInList> Handle(CreateHouseholdRequest request, CancellationToken cancellationToken)
+    public async Task<HouseholdInList> Handle(HouseholdCreateHouseholdRequest request, CancellationToken cancellationToken)
     {
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
         if (!saInstance.IsProductSalesArrangement() && !request.HardCreate)
@@ -41,7 +41,7 @@ internal sealed class CreateHouseholdHandler
         var customerResponse = await _customerOnSAService.CreateCustomer(new _HO.CreateCustomerRequest
         {
             SalesArrangementId = request.SalesArrangementId,
-            CustomerRoleId = (int)(request.HouseholdTypeId == (int)HouseholdTypes.Main ? CustomerRoles.Debtor : CustomerRoles.Codebtor),
+            CustomerRoleId = (int)(request.HouseholdTypeId == (int)HouseholdTypes.Main ? SharedTypes.Enums.EnumCustomerRoles.Debtor : SharedTypes.Enums.EnumCustomerRoles.Codebtor),
             Customer = new _HO.CustomerOnSABase()
         }, cancellationToken);
 
@@ -59,7 +59,7 @@ internal sealed class CreateHouseholdHandler
         // ulozit flow switches
         await _flowSwitchManager.SaveFlowSwitches(request.SalesArrangementId, cancellationToken);
 
-        return new SharedDto.HouseholdInList
+        return new HouseholdInList
         {
             HouseholdId = householdId,
             HouseholdTypeId = request.HouseholdTypeId,

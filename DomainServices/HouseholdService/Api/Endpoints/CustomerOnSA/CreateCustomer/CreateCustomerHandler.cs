@@ -34,7 +34,7 @@ internal sealed class CreateCustomerHandler(
             DateOfBirthNaturalPerson = request.Customer?.DateOfBirthNaturalPerson,
             SalesArrangementId = request.SalesArrangementId,
             CaseId = salesArrangement.CaseId,
-            CustomerRoleId = (CustomerRoles)request.CustomerRoleId,
+            CustomerRoleId = (EnumCustomerRoles)request.CustomerRoleId,
             LockedIncomeDateTime = request.Customer?.LockedIncomeDateTime,
             MaritalStatusId = request.Customer?.MaritalStatusId,
             Identities = request.Customer?.CustomerIdentifiers?.Select(t => new CustomerOnSAIdentity(t)).ToList()
@@ -43,6 +43,13 @@ internal sealed class CreateCustomerHandler(
         var kbIdentity = request.Customer?.CustomerIdentifiers?.GetKbIdentityOrDefault();
         var containsMpIdentity = request.Customer?.CustomerIdentifiers?.HasMpIdentity() ?? false;
 
+        // uz ma KB identitu, ale jeste nema MP identitu
+        if (kbIdentity is not null && !containsMpIdentity)
+        {
+            // zavolat EAS
+            await _updateService.TryCreateMpIdentity(entity, cancellationToken);
+        }
+
         // kontrola zda customer existuje v CM
         if (kbIdentity is not null)
         {
@@ -50,13 +57,6 @@ internal sealed class CreateCustomerHandler(
 
             // provolat sulm
             await _sulmClient.StartUse(kbIdentity.IdentityId, ExternalServices.Sulm.V1.ISulmClient.PurposeMPAP, cancellationToken);
-
-            // uz ma KB identitu, ale jeste nema MP identitu
-            if (!containsMpIdentity)
-            {
-                // zavolat EAS
-                await _updateService.TryCreateMpIdentity(entity, cancellationToken);
-            }
         }
 
         // ulozit do DB
@@ -68,7 +68,7 @@ internal sealed class CreateCustomerHandler(
         await saveDocumentData(entity.CustomerOnSAId, cancellationToken);
 
         // update case detailu
-        if (kbIdentity is not null && entity.CustomerRoleId == CustomerRoles.Debtor)
+        if (kbIdentity is not null && entity.CustomerRoleId == EnumCustomerRoles.Debtor)
         {
             await updateCase(salesArrangement.CaseId, entity, kbIdentity, cancellationToken);
         }
@@ -92,15 +92,15 @@ internal sealed class CreateCustomerHandler(
             _auditLogger.Log(
                 AuditEventTypes.Noby006,
                 "Identifikovaný klient byl přiřazen k žádosti",
-                identities: new List<AuditLoggerHeaderItem>
-                {
+                identities:
+                [
                     new("KBID", kbIdentity.IdentityId)
-                },
-                products: new List<AuditLoggerHeaderItem>
-                {
+                ],
+                products:
+                [
                     new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
                     new(AuditConstants.ProductNamesSalesArrangement, salesArrangement.SalesArrangementId)
-                }
+                ]
             );
         }
 

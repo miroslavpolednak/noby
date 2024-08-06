@@ -16,13 +16,14 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
-    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
+    [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferSimulateMortgageRefixationOfferListResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DAE69855-3C72-4ec4-8332-81E91814FA47")]
-    public async Task<OfferSimulateMortgageRefixationOfferListResponse> SimulateMortgageRefixationOfferList([FromRoute] long caseId, [FromBody] OfferSimulateMortgageRefixationOfferListRequest request)
+    public async Task<OfferSimulateMortgageRefixationOfferListResponse?> SimulateMortgageRefixationOfferList([FromRoute] long caseId, [FromBody] OfferSimulateMortgageRefixationOfferListRequest request)
         => await _mediator.Send((request ?? new()).InfuseId(caseId));
 
     /// <summary>
@@ -35,7 +36,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
-    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
+    [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferSimulateMortgageExtraPaymentResponse), StatusCodes.Status200OK)]
@@ -54,7 +55,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
-    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
+    [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(List<OfferSimulateMortgageRefixationResponse>), StatusCodes.Status200OK)]
@@ -73,7 +74,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [NobySkipCaseStateAndProductSAValidation]
-    [NobyRequiredCaseStates(CaseStates.InAdministration, CaseStates.InDisbursement)]
+    [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferSimulateMortgageRetentionResponse), StatusCodes.Status200OK)]
@@ -160,21 +161,6 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=0F7EBD29-3702-4289-8AD3-9C0A44A4449C")]
     public async Task<OfferCreateMortgageCaseResponse> CreateMortgageCase([FromBody] OfferCreateMortgageCaseRequest request)
         => await _mediator.Send(request ?? new());
-
-    /// <summary>
-    /// Nalinkuje novou modelaci na stávající SA.
-    /// </summary>
-    /// <remarks>
-    /// Nalinkuje novou modelaci na stávající SalesArrangement a uloží kontaktní informace pro nabídku. Pokud není identifikován hlavní dlužník, dojde k aktualizaci jména, příjmení a data narození. Pro identifikovaného dlužníka se data ignorují.
-    /// </remarks>
-    [HttpPut("offer/mortgage/sales-arrangement/{salesArrangementId:int}/link")]
-    [Produces(MediaTypeNames.Application.Json)]
-    [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [Obsolete("Use LinkMortgageOffer endpoint")]
-    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=8996A9D6-2732-4011-9152-0EAE7FEECE07")]
-    public async Task LinkModelation([FromRoute] int salesArrangementId, [FromBody] OfferLinkModelationRequest request)
-        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? new ());
 
     /// <summary>
     /// Nastavuje příznaky na modelaci.

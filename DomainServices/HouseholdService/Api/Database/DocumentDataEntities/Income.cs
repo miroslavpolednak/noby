@@ -8,7 +8,7 @@ internal sealed class Income
 {
     public int Version => 1;
 
-    public CustomerIncomeTypes IncomeTypeId { get; set; }
+    public EnumIncomeTypes IncomeTypeId { get; set; }
     public decimal? Sum { get; set; }
     public string? CurrencyCode { get; set; }
     public string? IncomeSource { get; set; }

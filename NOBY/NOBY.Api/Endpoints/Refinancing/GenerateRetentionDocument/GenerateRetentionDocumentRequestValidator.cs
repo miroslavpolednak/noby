@@ -3,7 +3,8 @@ using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateRetentionDocument;
 
-internal sealed class GenerateRetentionDocumentRequestValidator : AbstractValidator<GenerateRetentionDocumentRequest>
+internal sealed class GenerateRetentionDocumentRequestValidator 
+    : AbstractValidator<RefinancingGenerateRetentionDocumentRequest>
 {
     public GenerateRetentionDocumentRequestValidator(IFeatureManager featureManager)
     {

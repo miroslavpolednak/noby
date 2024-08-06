@@ -6,10 +6,10 @@ import "google/protobuf/wrappers.proto";
 
 import "Identity.proto";
 import "Mandants.proto";
-import "GrpcAddress.proto";
 import "Messages/NaturalPerson.proto";
 import "Messages/IdentificationDocument.proto";
 import "Messages/Contacts.proto";
+import "Messages/CustomerDetail.proto";
 
 message SearchCustomersRequest {
     cis.types.Identity Identity = 1;
@@ -22,12 +22,5 @@ message SearchCustomersRequest {
 }
 
 message SearchCustomersResponse {
-    repeated SearchCustomersItem Customers = 1;
-}
-
-message SearchCustomersItem {
-    cis.types.Identity Identity = 1;
-    NaturalPersonBasicInfo NaturalPerson = 2;
-    IdentificationDocument IdentificationDocument = 3;
-    cis.types.GrpcAddress Address = 4;
+    repeated CustomerDetailResponse Customers = 1;
 }

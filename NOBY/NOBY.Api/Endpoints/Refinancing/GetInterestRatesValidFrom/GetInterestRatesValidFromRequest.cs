@@ -1,15 +1,6 @@
 ﻿namespace NOBY.Api.Endpoints.Refinancing.GetInterestRatesValidFrom;
 
-internal sealed class GetInterestRatesValidFromRequest
-    : IRequest<GetInterestRatesValidFromResponse>
+internal sealed record GetInterestRatesValidFromRequest(long CaseId)
+    : IRequest<RefinancingGetInterestRatesValidFromResponse>
 {
-    /// <summary>
-    /// ID Case-u
-    /// </summary>
-    public long CaseId { get; init; }
-
-    public GetInterestRatesValidFromRequest(long caseId)
-    {
-        CaseId = caseId;
-    }
 }

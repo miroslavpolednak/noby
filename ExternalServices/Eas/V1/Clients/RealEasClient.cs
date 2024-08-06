@@ -7,6 +7,7 @@ using ExternalServices.Eas.V1.EasWrapper;
 using System.ServiceModel.Channels;
 using CIS.Core.Exceptions;
 using CIS.Infrastructure.ExternalServicesHelpers.Soap;
+using System.Globalization;
 
 namespace ExternalServices.Eas.V1;
 
@@ -55,13 +56,15 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
             var result = await Client.GetKlientData_NewKlientAsync(request).WithCancellation(cancellationToken);
 
             if (result.GetKlientData_NewKlientResult is null || result.GetKlientData_NewKlientResult.Length == 0)
-                throw new CIS.Core.Exceptions.CisValidationException(9104, "EAS GetKlientData_NewKlientResult is empty");
+            {
+                throw new CisValidationException(9104, "EAS GetKlientData_NewKlientResult is empty");
+            }
 
             var r = result.GetKlientData_NewKlientResult[0];
 
             if (r.return_val != 0)
             {
-                throw new CIS.Core.Exceptions.CisValidationException(9105, $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}");
+                throw new CisValidationException(9105, $"Incorrect inputs to EAS NewKlient {r.return_val}: {r.return_info}");
             }
 
             var differentProps = ModelExtensions.FindDifferentProps(request[0], r);
@@ -71,7 +74,14 @@ internal sealed class RealEasClient : SoapClientBase<EAS_WS_SB_ServicesClient, I
                 _logger.ExternalServiceResponseError(message);
             }
 
-            return new CreateNewOrGetExisingClientResponse { Id = r.klient_id, BirthNumber = r.rodne_cislo_ico };
+            return new CreateNewOrGetExisingClientResponse 
+            { 
+                Id = r.klient_id, 
+                KbId = string.IsNullOrEmpty(r.kb_id) ? null : Convert.ToInt64(r.kb_id, CultureInfo.InvariantCulture),
+                BirthNumber = r.rodne_cislo_ico,
+                FirstName = r.meno,
+                LastName = r.priezvisko
+            };
         });
     }
 

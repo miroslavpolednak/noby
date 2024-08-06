@@ -49,7 +49,6 @@
     <ProjectReference Include="..\..\DomainServices\SalesArrangementService\Clients\DomainServices.SalesArrangementService.Clients.csproj" />
     <ProjectReference Include="..\..\DomainServices\UserService\Clients\DomainServices.UserService.Clients.csproj" />
     <ProjectReference Include="..\NOBY.Database\NOBY.Database.csproj" />
-    <ProjectReference Include="..\NOBY.Dto\NOBY.Dto.csproj" />
   </ItemGroup>
 
 </Project>

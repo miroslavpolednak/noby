@@ -45,10 +45,10 @@ internal sealed class DeleteSalesArrangementHandler(
 
     private static readonly int[] _allowedSAStates =
     [
-        (int)SalesArrangementStates.InProgress,
-        (int)SalesArrangementStates.NewArrangement,
-        (int)SalesArrangementStates.InSigning,
-        (int)SalesArrangementStates.ToSend
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning,
+        (int)SharedTypes.Enums.EnumSalesArrangementStates.ToSend
     ];
 
     private static readonly int[] _householdDeleteSATypes =

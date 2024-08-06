@@ -66,4 +66,9 @@ internal sealed class CustomerService : ICustomerServiceClient
 
         return response.SingleLineAddress;
     }
+
+    public async Task UpdateContacts(Identity identity, IEnumerable<Contact> contacts, CancellationToken cancellationToken = default)
+    {
+        await _service.UpdateContactsAsync(new UpdateContactsRequest { Identity = identity, Contacts = { contacts } }, cancellationToken: cancellationToken);
+    }
 }

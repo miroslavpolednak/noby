@@ -4,27 +4,14 @@ using NOBY.Api.Endpoints.Document.SharedDto;
 
 namespace NOBY.Api.Endpoints.Document.GetOffer;
 
-internal sealed class GetOfferHandler : IRequestHandler<GetOfferRequest, ReadOnlyMemory<byte>>
+internal sealed class GetOfferHandler(
+    DocumentGenerator _documentGenerator,
+    DocumentManager _documentManager,
+    DocumentArchiveManager _documentArchiveManager,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService) 
+    : IRequestHandler<GetOfferRequest, ReadOnlyMemory<byte>>
 {
-    private readonly DocumentGenerator _documentGenerator;
-    private readonly DocumentManager _documentManager;
-    private readonly DocumentArchiveManager _documentArchiveManager;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-
-    public GetOfferHandler(DocumentGenerator documentGenerator,
-                           DocumentManager documentManager,
-                           DocumentArchiveManager documentArchiveManager,
-                           ISalesArrangementServiceClient salesArrangementService,
-                           IOfferServiceClient offerService)
-    {
-        _documentGenerator = documentGenerator;
-        _documentManager = documentManager;
-        _documentArchiveManager = documentArchiveManager;
-        _salesArrangementService = salesArrangementService;
-        _offerService = offerService;
-    }
-
     public async Task<ReadOnlyMemory<byte>> Handle(GetOfferRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(request.InputParameters.SalesArrangementId!.Value, cancellationToken);

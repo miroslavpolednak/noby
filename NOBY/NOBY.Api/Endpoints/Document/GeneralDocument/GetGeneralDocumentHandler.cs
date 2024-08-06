@@ -3,17 +3,11 @@ using NOBY.Api.Endpoints.Document.SharedDto;
 
 namespace NOBY.Api.Endpoints.Document.GeneralDocument;
 
-internal sealed class GetGeneralDocumentHandler : IRequestHandler<GetGeneralDocumentRequest, ReadOnlyMemory<byte>>
+internal sealed class GetGeneralDocumentHandler(
+    ISalesArrangementServiceClient _salesArrangementService, 
+    DocumentGenerator _documentGenerator) 
+    : IRequestHandler<GetGeneralDocumentRequest, ReadOnlyMemory<byte>>
 {
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DocumentGenerator _documentGenerator;
-
-    public GetGeneralDocumentHandler(ISalesArrangementServiceClient salesArrangementService, DocumentGenerator documentGenerator)
-    {
-        _salesArrangementService = salesArrangementService;
-        _documentGenerator = documentGenerator;
-    }
-
     public async Task<ReadOnlyMemory<byte>> Handle(GetGeneralDocumentRequest request, CancellationToken cancellationToken)
     {
         if (request.InputParameters.SalesArrangementId.HasValue)

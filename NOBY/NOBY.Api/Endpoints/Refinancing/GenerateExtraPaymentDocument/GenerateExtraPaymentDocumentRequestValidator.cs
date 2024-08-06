@@ -3,7 +3,7 @@ using Microsoft.FeatureManagement;
 
 namespace NOBY.Api.Endpoints.Refinancing.GenerateExtraPaymentDocument;
 
-internal sealed class GenerateExtraPaymentDocumentRequestValidator : AbstractValidator<GenerateExtraPaymentDocumentRequest>
+internal sealed class GenerateExtraPaymentDocumentRequestValidator : AbstractValidator<RefinancingGenerateExtraPaymentDocumentRequest>
 {
     public GenerateExtraPaymentDocumentRequestValidator(IFeatureManager featureManager)
     {

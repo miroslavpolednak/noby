@@ -74,8 +74,8 @@ internal sealed class GetFlowSwitchesHandler(
         string name(int id)
             => cb.First(t => t.Id == id).Name;
 
-        EnumWorkflowTaskStateIndicators ind(int id)
-            => (EnumWorkflowTaskStateIndicators)cb.First(t => t.Id == id).Indicator;
+        EnumStateIndicators ind(int id)
+            => (EnumStateIndicators)cb.First(t => t.Id == id).Indicator;
     }
 
     private static void adjustIndividualPrice(SalesArrangementGetFlowSwitchesResponse response, List<DomainServices.SalesArrangementService.Contracts.FlowSwitch> existingSwitches)
@@ -187,7 +187,7 @@ internal sealed class GetFlowSwitchesHandler(
         }
     }
 
-    private static SalesArrangementGetFlowSwitchesResponseItemButton createSectionButton(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItemButton createSectionButton(ApiContracts.Dto.FlowSwitchGroup group)
     {
         return new()
         {
@@ -195,7 +195,7 @@ internal sealed class GetFlowSwitchesHandler(
         };
     }
 
-    private static SalesArrangementGetFlowSwitchesResponseItem createSection(NOBY.Dto.FlowSwitches.FlowSwitchGroup group)
+    private static SalesArrangementGetFlowSwitchesResponseItem createSection(ApiContracts.Dto.FlowSwitchGroup group)
     {
         return new()
         {

@@ -26,4 +26,13 @@ public class CustomerExposureRequestedKBGroupItem
 
     [ProtoMember(8)]
     public string? StatusCode { get; set; }
+
+    [ProtoMember(9)]
+    public DateTime? RequestDate { get; set; }
+
+    [ProtoMember(10)]
+    public long? AppendixCode { get; set; }
+
+    [ProtoMember(11)]
+    public string? AppendixAccNbr { get; set; }
 }

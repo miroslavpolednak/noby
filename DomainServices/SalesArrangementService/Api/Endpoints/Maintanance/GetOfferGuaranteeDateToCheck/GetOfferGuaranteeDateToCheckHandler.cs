@@ -32,9 +32,9 @@ internal sealed class GetOfferGuaranteeDateToCheckHandler(
 
     private static int[] _saStates = 
     [ 
-        (int)SalesArrangementStates.InProgress,
-        (int)SalesArrangementStates.NewArrangement, 
-        (int)SalesArrangementStates.InSigning, 
-        (int)SalesArrangementStates.ToSend 
+        (int)EnumSalesArrangementStates.InProgress,
+        (int)EnumSalesArrangementStates.NewArrangement, 
+        (int)EnumSalesArrangementStates.InSigning, 
+        (int)EnumSalesArrangementStates.ToSend 
     ];
 }

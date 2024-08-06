@@ -3,7 +3,7 @@
 internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
     : IRequestHandler<GetCaseIdRequest, GetCaseIdResponse>
 {
-	public async Task<GetCaseIdResponse> Handle(GetCaseIdRequest request, CancellationToken cancellationToken)
+    public async Task<GetCaseIdResponse> Handle(GetCaseIdRequest request, CancellationToken cancellationToken)
     {
         var caseId = request.RequestParametersCase switch
         {
@@ -13,9 +13,9 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
             _ => throw new NotImplementedException()
         };
 
-        return new GetCaseIdResponse 
-        { 
-            CaseId = caseId 
+        return new GetCaseIdResponse
+        {
+            CaseId = caseId
         };
     }
 
@@ -27,8 +27,14 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
 
     private async Task<long> getCaseIdByPaymentAccount(PaymentAccountObject paymentAccount, CancellationToken cancellationToken)
     {
-		var results = await _mpHomeClient.SearchCases(new CaseSearchRequest { AccountPrefix = paymentAccount.Prefix, AccountNumber = paymentAccount.AccountNumber }, cancellationToken);
-		return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount.AccountNumber);
+        var results = await _mpHomeClient.SearchCases(new CaseSearchRequest
+        {
+            AccountPrefix = paymentAccount?.Prefix?.PadLeft(6, '0'),
+            AccountNumber = paymentAccount?.AccountNumber?.PadLeft(10, '0')
+        },
+          cancellationToken);
+
+        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount?.AccountNumber);
     }
 
     private async Task<long> getCaseIdByPcpId(string pcpId, CancellationToken cancellationToken)

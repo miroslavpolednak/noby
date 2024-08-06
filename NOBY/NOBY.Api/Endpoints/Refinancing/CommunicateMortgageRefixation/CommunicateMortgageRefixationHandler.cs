@@ -1,6 +1,5 @@
 ﻿using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
-using NOBY.Dto.Refinancing;
 using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
@@ -8,17 +7,17 @@ namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
 internal sealed class CommunicateMortgageRefixationHandler(
 	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementService, 
     IOfferServiceClient _offerService) 
-    : IRequestHandler<CommunicateMortgageRefixationRequest, RefinancingLinkResult>
+    : IRequestHandler<CommunicateMortgageRefixationRequest, RefinancingSharedOfferLinkResult>
 {
-	public async Task<RefinancingLinkResult> Handle(CommunicateMortgageRefixationRequest request, CancellationToken cancellationToken)
+	public async Task<RefinancingSharedOfferLinkResult> Handle(CommunicateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         // ziskat existujici nebo zalozit novy SA
         var sa = await _salesArrangementService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
 
 		var offerList = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken: cancellationToken);
 
-        var currentOffers = offerList.Where(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Current)).ToList();
-        var communicatedOffers = offerList.Where(o => ((OfferFlagTypes)o.Data.Flags).HasFlag(OfferFlagTypes.Communicated)).ToList();
+        var currentOffers = offerList.Where(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Current)).ToList();
+        var communicatedOffers = offerList.Where(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Communicated)).ToList();
 
         await _offerService.DeleteOfferList(communicatedOffers.Except(currentOffers).Select(o => o.Data.OfferId), cancellationToken);
 
@@ -28,7 +27,7 @@ internal sealed class CommunicateMortgageRefixationHandler(
             {
                 OfferId = offer.Data.OfferId,
                 ValidTo = new[] { DateTime.UtcNow.AddDays(45), (DateTime)offer.MortgageRefixation.BasicParameters.FixedRateValidTo }.Min(),
-                Flags = (int)OfferFlagTypes.Current | (int)OfferFlagTypes.Communicated
+                Flags = (int)EnumOfferFlagTypes.Current | (int)EnumOfferFlagTypes.Communicated
             };
 
             if (offer.Data.Origin is not OfferOrigins.BigDataPlatform)
@@ -39,7 +38,7 @@ internal sealed class CommunicateMortgageRefixationHandler(
             await _offerService.UpdateOffer(updateOfferRequest, cancellationToken);
         }
 
-        return new RefinancingLinkResult
+        return new()
 		{
             SalesArrangementId = sa.SalesArrangementId,
             ProcessId = sa.ProcessId

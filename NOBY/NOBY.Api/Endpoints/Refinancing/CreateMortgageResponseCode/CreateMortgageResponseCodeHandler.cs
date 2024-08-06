@@ -9,9 +9,9 @@ internal sealed class CreateMortgageResponseCodeHandler(
     IProductServiceClient _productService,
     IOfferServiceClient _offerService, 
     ICodebookServiceClient _codebookService)
-        : IRequestHandler<CreateMortgageResponseCodeRequest>
+        : IRequestHandler<RefinancingCreateMortgageResponseCodeRequest>
 {
-    public async Task Handle(CreateMortgageResponseCodeRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RefinancingCreateMortgageResponseCodeRequest request, CancellationToken cancellationToken)
     {
         var responseCode = (await _codebookService.ResponseCodeTypes(cancellationToken))
             .First(t => t.Id == request.ResponseCodeTypeId);

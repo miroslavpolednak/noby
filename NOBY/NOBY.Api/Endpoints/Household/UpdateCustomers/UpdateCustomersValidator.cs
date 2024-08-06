@@ -3,7 +3,7 @@
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
 internal sealed class UpdateCustomersValidator
-    : AbstractValidator<UpdateCustomersRequest>
+    : AbstractValidator<HouseholdUpdateCustomersRequest>
 {
     public UpdateCustomersValidator()
     {

@@ -8,36 +8,6 @@ internal sealed class MpHomeDetailMapper(
     IMediator _mediator,
     ICodebookServiceClient _codebookService)
 {
-    public async Task<List<SearchCustomersItem>> MapSearchResponse(List<PartnerResponse>? partners, CancellationToken cancellationToken)
-    {
-        if (partners is null)
-        {
-            return [];
-        }
-
-        var response = new List<SearchCustomersItem>(partners.Count);
-
-        foreach (PartnerResponse partner in partners)
-        {
-            var p = new SearchCustomersItem
-            {
-                Identity = new SharedTypes.GrpcTypes.Identity(partner.Id, IdentitySchemes.Mp),
-                NaturalPerson = new NaturalPersonBasicInfo
-                {
-                    BirthNumber = partner.BirthNumber,
-                    FirstName = partner.Name,
-                    LastName = partner.Lastname,
-                    GenderId = (int)(partner.Gender == GenderEnum.Male ? Genders.Male : Genders.Female),
-                    DateOfBirth = partner.DateOfBirth
-                },
-                IdentificationDocument = mapIdentificationDocument(partner),
-                Address = await mapAddress(partner.Addresses.FirstOrDefault(), cancellationToken)
-            };
-        }
-
-        return response;
-    }
-
     public async Task<CustomerDetailResponse> MapDetailResponse(PartnerResponse partner, CancellationToken cancellationToken)
     {
         var titles1 = await _codebookService.AcademicDegreesBefore(cancellationToken);
@@ -48,12 +18,12 @@ internal sealed class MpHomeDetailMapper(
             Identities = { getIdentities(partner.Id, partner.KbId) },
             NaturalPerson = new()
             {
-                BirthNumber = partner.BirthNumber,
-                FirstName = partner.Name,
-                LastName = partner.Lastname,
+                BirthNumber = partner.BirthNumber ?? "",
+                FirstName = partner.Name ?? "",
+                LastName = partner.Lastname ?? "",
                 GenderId = (int)(partner.Gender == GenderEnum.Male ? Genders.Male : Genders.Female),
                 DateOfBirth = partner.DateOfBirth,
-                PlaceOfBirth = partner.PlaceOfBirth,
+                PlaceOfBirth = partner.PlaceOfBirth ?? "",
                 DegreeBeforeId = titles1.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeBefore, StringComparison.OrdinalIgnoreCase))?.Id,
                 DegreeAfterId = titles2.FirstOrDefault(t => string.Equals(t.Name, partner.DegreeAfter, StringComparison.OrdinalIgnoreCase))?.Id,
                 IsPoliticallyExposed = partner.Pep,
@@ -77,7 +47,7 @@ internal sealed class MpHomeDetailMapper(
 
         if (partner.Contacts is not null)
         {
-            customer.Contacts.AddRange(partner.Contacts.Select(t => t.ToContract()));
+            customer.Contacts.AddRange(partner.Contacts.Select(t => t.ToContract()).Where(contact => contact is not null));
         }
 
         return customer;
@@ -86,7 +56,7 @@ internal sealed class MpHomeDetailMapper(
     private static Contracts.IdentificationDocument? mapIdentificationDocument(PartnerResponse partner)
     {
         var idDoc = partner.IdentificationDocuments?.FirstOrDefault();
-        if (idDoc is null)
+        if (idDoc is null || idDoc.Type == IdentificationCardType.Undefined)
         {
             return null;
         }
