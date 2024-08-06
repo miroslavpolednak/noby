@@ -1,6 +1,8 @@
-﻿namespace DomainServices.ProductService.Api.Endpoints.SearchProducts;
+﻿using DomainServices.CodebookService.Clients;
 
-internal sealed class SearchProductsHandler(IMpHomeClient _mpHomeClient)
+namespace DomainServices.ProductService.Api.Endpoints.SearchProducts;
+
+internal sealed class SearchProductsHandler(IMpHomeClient _mpHomeClient, ICodebookServiceClient _codebookService)
     : IRequestHandler<SearchProductsRequest, SearchProductsResponse>
 {
     public async Task<SearchProductsResponse> Handle(SearchProductsRequest request, CancellationToken cancellationToken)
@@ -12,11 +14,13 @@ internal sealed class SearchProductsHandler(IMpHomeClient _mpHomeClient)
         };
         var results = await _mpHomeClient.SearchCases(mpHomeRequest, cancellationToken);
 
+        var productTypes = await _codebookService.ProductTypes(cancellationToken);
+
         return new SearchProductsResponse
         {
             Products = 
             {
-                results?.Select(t => new SearchProductsResponse.Types.SearchProductsItem
+                results?.Where(t => productTypes.Any(p => p.Id == t.ProductTypeId)).Select(t => new SearchProductsResponse.Types.SearchProductsItem
                 {
                     CaseId = t.CaseId,
                     ContractRelationshipTypeId = t.ContractRelationshipTypeId.GetValueOrDefault()
