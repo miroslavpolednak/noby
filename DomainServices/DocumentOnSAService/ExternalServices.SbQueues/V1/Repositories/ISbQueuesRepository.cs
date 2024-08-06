@@ -11,7 +11,7 @@ public interface ISbQueuesRepository : IExternalServiceClient
 
     Task<Document?> GetDocumentByExternalId(string documentId, bool getMetadataOnly, CancellationToken cancellationToken);
 
-    Task UpdateAttachmentProcessingDate(long documentId, DateTime? processingDate, CancellationToken cancellationToken);
+    Task UpdateAttachmentProcessingDate(long attachmentId, DateTime? processingDate, CancellationToken cancellationToken);
 
     Task UpdateDocumentProcessingDate(long documentId, DateTime? processingDate, CancellationToken cancellationToken);
 

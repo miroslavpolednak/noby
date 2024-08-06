@@ -64,21 +64,21 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         """
            UPDATE dbo.SB_ATTACHMENT_INFO_S 
            SET DATUM_ZPRACOVANIA = @DateTime 
-           WHERE DOCUMENT_ID = @DocumentId
+           WHERE ATTACHMENT_ID = @AttachmentId AND CONSUMER = 'NOBY' 
            """;
 
     public const string _updateDocumentProcessingDateSql =
         """
             UPDATE dbo.SB_DOCUMENT_INFO_S 
             SET DATUM_ZPRACOVANIA = @DateTime 
-            WHERE DOCUMENT_ID = @DocumentId
+            WHERE DOCUMENT_ID = @DocumentId AND CONSUMER = 'NOBY'
             """;
 
     public const string _updateClientProcessingDateSql =
         """
             UPDATE dbo.SB_CLIENT_INFO_S 
             SET DATUM_ZPRACOVANIA = @DateTime
-            WHERE DOCUMENT_ID = @DocumentId
+            WHERE DOCUMENT_ID = @DocumentId AND CONSUMER = 'NOBY'
             """;
 
     public const string _getDocumentIdSql =
@@ -130,10 +130,10 @@ public class RealSbQueuesRepository : ISbQueuesRepository
         }
     }
 
-    public async Task UpdateAttachmentProcessingDate(long documentId, DateTime? processingDate, CancellationToken cancellationToken)
+    public async Task UpdateAttachmentProcessingDate(long attachmentId, DateTime? processingDate, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("@DocumentId", documentId, DbType.Int64, ParameterDirection.Input);
+        parameters.Add("@AttachmentId", attachmentId, DbType.Int64, ParameterDirection.Input);
         parameters.Add("@DateTime", processingDate, DbType.DateTime, ParameterDirection.Input);
 
         await _connectionProvider.ExecuteDapperQueryAsync(async c => await c.ExecuteAsync(_updateAttachmentProcessingDateSql, parameters), cancellationToken);
