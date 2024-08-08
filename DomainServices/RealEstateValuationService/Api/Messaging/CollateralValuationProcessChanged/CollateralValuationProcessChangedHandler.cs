@@ -9,27 +9,14 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged;
 
-internal sealed class CollateralValuationProcessHandler : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged>
+internal sealed class CollateralValuationProcessChangedHandler(
+    IDocumentDataStorage _documentDataStorage,
+    RealEstateValuationServiceDbContext _dbContext,
+    ICaseServiceClient _caseService,
+    IPreorderServiceClient _preorderServiceClient,
+    ILogger<CollateralValuationProcessChangedHandler> _logger) 
+    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged>
 {
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly ICaseServiceClient _caseService;
-    private readonly IPreorderServiceClient _preorderServiceClient;
-    private readonly ILogger<CollateralValuationProcessHandler> _logger;
-
-    public CollateralValuationProcessHandler(IDocumentDataStorage documentDataStorage,
-                                             RealEstateValuationServiceDbContext dbContext,
-                                             ICaseServiceClient caseService,
-                                             IPreorderServiceClient preorderServiceClient,
-                                             ILogger<CollateralValuationProcessHandler> logger)
-    {
-        _documentDataStorage = documentDataStorage;
-        _dbContext = dbContext;
-        _caseService = caseService;
-        _preorderServiceClient = preorderServiceClient;
-        _logger = logger;
-    }
-
     public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))

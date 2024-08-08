@@ -43,7 +43,7 @@ SharedComponents.GrpcServiceBuilder
                    msg.AddConsumerAvro(appConfiguration.SbWorkflowProcessTopic!,
                                        handlers =>
                                        {
-                                           handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged.CollateralValuationProcessHandler>();
+                                           handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged.CollateralValuationProcessChangedHandler>();
                                            handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedHandler>();
                                        });
                });

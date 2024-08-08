@@ -11,7 +11,7 @@ internal sealed class OrderOnlineValuationHandler(
     IPreorderServiceClient _preorderService,
     IUserServiceClient _userService,
     ICustomerServiceClient _customerService)
-        : IRequestHandler<OrderOnlineValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
+    : IRequestHandler<OrderOnlineValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderOnlineValuationRequest request, CancellationToken cancellationToken)
     {

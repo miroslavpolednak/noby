@@ -7,21 +7,12 @@ using KafkaFlow;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged;
 
-internal sealed class InformationRequestProcessChangedHandler  : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
+internal sealed class InformationRequestProcessChangedHandler(
+    RealEstateValuationServiceDbContext _dbContext,
+    ICaseServiceClient _caseService,
+    ILogger<InformationRequestProcessChangedHandler> _logger) 
+    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
 {
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ILogger<InformationRequestProcessChangedHandler> _logger;
-
-    public InformationRequestProcessChangedHandler(RealEstateValuationServiceDbContext dbContext,
-                                                   ICaseServiceClient caseService,
-                                                   ILogger<InformationRequestProcessChangedHandler> logger)
-    {
-        _dbContext = dbContext;
-        _caseService = caseService;
-        _logger = logger;
-    }
-
     public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
