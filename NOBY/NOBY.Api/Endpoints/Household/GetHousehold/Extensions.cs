@@ -6,7 +6,7 @@ namespace NOBY.Api.Endpoints.Household.GetHousehold;
 internal static class Extensions
 {
     public static HouseholdGetHouseholdResponse ToApiResponse(this __Contracts.Household household)
-        => new HouseholdGetHouseholdResponse
+        => new()
         {
             HouseholdId = household.HouseholdId,
             SalesArrangementId = household.SalesArrangementId,
@@ -16,7 +16,7 @@ internal static class Extensions
         };
 
     public static HouseholdCustomerInHousehold? ToApiResponse(this __Contracts.CustomerOnSA model)
-        => new HouseholdCustomerInHousehold()
+        => new()
         {
             CustomerOnSAId = model.CustomerOnSAId,
             Identities = model.CustomerIdentifiers?.Select(t => (SharedTypesCustomerIdentity)t!).ToList(),
@@ -27,6 +27,7 @@ internal static class Extensions
             MaritalStatusId = model.MaritalStatusId,
             LockedIncome = model.LockedIncomeDateTime is not null,
             LockedIncomeDateTime = model.LockedIncomeDateTime,
+            IsIdentificationRequested = !(model.CustomerIdentifiers?.Any() ?? false),
             Incomes = model.Incomes is null ? null : model.Incomes.Select(x => new HouseholdIncomeBaseData
             {
                 Sum = x.Sum,
@@ -36,7 +37,7 @@ internal static class Extensions
                 HasProofOfIncome = x.HasProofOfIncome,
                 IncomeTypeId = (SharedTypes.Enums.EnumIncomeTypes)x.IncomeTypeId
             }).ToList(),
-            Obligations = model.Obligations is null ? null : model.Obligations.Select(x => x.ToApiResponse()).ToList()
+            Obligations = model.Obligations?.Select(x => x.ToApiResponse()).ToList()
         };
 
     static HouseholdExpenses? mapExpenses(this __Contracts.Expenses model)
