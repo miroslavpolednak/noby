@@ -39,7 +39,7 @@ internal static class OrderRequestExtensions
         UserService.Contracts.User currentUser,
         Database.Entities.RealEstateValuation entity,
         SpecificDetailHouseAndFlatObject? houseAndFlat,
-        in Services.OrderAggregate.GetProductPropertiesResult productProps)
+        in Dto.GetProductPropertiesResult productProps)
     {
         model.ProductOwner = "01";
         model.ContactPersonName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}";

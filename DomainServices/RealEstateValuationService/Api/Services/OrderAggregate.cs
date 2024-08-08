@@ -4,6 +4,7 @@ using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Database.DocumentDataEntities;
+using DomainServices.RealEstateValuationService.Api.Dto;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using SharedComponents.DocumentDataStorage;
@@ -11,12 +12,21 @@ using SharedComponents.DocumentDataStorage;
 namespace DomainServices.RealEstateValuationService.Api.Services;
 
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
-internal sealed class OrderAggregate
+internal sealed class OrderAggregate(
+    Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper,
+    IDocumentDataStorage _documentDataStorage,
+    IProductServiceClient _productService,
+    ICodebookServiceClient _codebookService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    IOfferServiceClient _offerService,
+    RealEstateValuationServiceDbContext _dbContext,
+    ICaseServiceClient _caseService,
+    TimeProvider _timeProvider)
 {
     public async Task<
         (
         Database.Entities.RealEstateValuation REVEntity, 
-        Database.DocumentDataEntities.RealEstateValudationData? REVData,
+        RealEstateValudationData? REVData,
         long[]? RealEstateIds, 
         long[]? Attachments, 
         CaseService.Contracts.Case Case, 
@@ -157,41 +167,5 @@ internal sealed class OrderAggregate
             .OrderByDescending(t => t.AcvIdPriority)
             .FirstOrDefault(t => t.Id == loanPurposeId)
             ?.AcvId;
-    }
-
-    public sealed record GetProductPropertiesResult(decimal? CollateralAmount, decimal? LoanAmount, int? LoanDuration, string? LoanPurpose)
-    {
-    }
-
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly IProductServiceClient _productService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly ICaseServiceClient _caseService;
-    private readonly TimeProvider _timeProvider;
-
-    public OrderAggregate(
-        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
-        IDocumentDataStorage documentDataStorage,
-        IProductServiceClient productService,
-        ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService,
-        IOfferServiceClient offerService,
-        RealEstateValuationServiceDbContext dbContext,
-        ICaseServiceClient caseService,
-        TimeProvider timeProvider)
-    {
-        _mapper = mapper;
-        _documentDataStorage = documentDataStorage;
-        _productService = productService;
-        _codebookService = codebookService;
-        _offerService = offerService;
-        _salesArrangementService = salesArrangementService;
-        _caseService = caseService;
-        _dbContext = dbContext;
-        _timeProvider = timeProvider;
     }
 }
