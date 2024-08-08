@@ -7,8 +7,14 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.PreorderOnlineValuation;
 
-internal sealed class PreorderOnlineValuationHandler
-    : IRequestHandler<PreorderOnlineValuationRequest, Empty>
+internal sealed class PreorderOnlineValuationHandler(
+    RealEstateValuationDataMapper _mapperValuation,
+    ILogger<PreorderOnlineValuationHandler> _logger,
+    Services.OrderAggregate _aggregate,
+    ILuxpiServiceClient _luxpiServiceClient,
+    IPreorderServiceClient _preorderService,
+    RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<PreorderOnlineValuationRequest, Empty>
 {
     public async Task<Empty> Handle(PreorderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
@@ -136,28 +142,5 @@ internal sealed class PreorderOnlineValuationHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.LuxpiKbModelStatusFailed);
-    }
-
-    private readonly RealEstateValuationDataMapper _mapperValuation;
-    private readonly Services.OrderAggregate _aggregate;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly IPreorderServiceClient _preorderService;
-    private readonly ILuxpiServiceClient _luxpiServiceClient;
-    private readonly ILogger<PreorderOnlineValuationHandler> _logger;
-
-    public PreorderOnlineValuationHandler(
-        RealEstateValuationDataMapper mapperValuation,
-        ILogger<PreorderOnlineValuationHandler> logger,
-        Services.OrderAggregate aggregate,
-        ILuxpiServiceClient luxpiServiceClient, 
-        IPreorderServiceClient preorderService, 
-        RealEstateValuationServiceDbContext dbContext)
-    {
-        _mapperValuation = mapperValuation;
-        _logger = logger;
-        _aggregate = aggregate;
-        _dbContext = dbContext;
-        _preorderService = preorderService;
-        _luxpiServiceClient = luxpiServiceClient;
     }
 }

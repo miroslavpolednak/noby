@@ -4,8 +4,11 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.CreateRealEstateValuation;
 
-internal sealed class CreateRealEstateValuationHandler
-    : IRequestHandler<CreateRealEstateValuationRequest, CreateRealEstateValuationResponse>
+internal sealed class CreateRealEstateValuationHandler(
+    RealEstateValuationServiceDbContext _dbContext, 
+    CaseService.Clients.v1.ICaseServiceClient _caseService, 
+    IDocumentDataStorage _documentDataStorage)
+        : IRequestHandler<CreateRealEstateValuationRequest, CreateRealEstateValuationResponse>
 {
     public async Task<CreateRealEstateValuationResponse> Handle(CreateRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
@@ -50,16 +53,5 @@ internal sealed class CreateRealEstateValuationHandler
         };
     }
 
-    private static int[] _stateIdsForValidation = new[] { 4, 5 };
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public CreateRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext, CaseService.Clients.v1.ICaseServiceClient caseService, IDocumentDataStorage documentDataStorage)
-    {
-        _documentDataStorage = documentDataStorage;
-        _dbContext = dbContext;
-        _caseService = caseService;
-    }
+    private static readonly int[] _stateIdsForValidation = [4, 5];
 }

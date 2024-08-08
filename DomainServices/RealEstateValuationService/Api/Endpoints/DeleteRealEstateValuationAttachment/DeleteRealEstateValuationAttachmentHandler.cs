@@ -3,8 +3,11 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.DeleteRealEstateValuationAttachment;
 
-internal sealed class DeleteRealEstateValuationAttachmentHandler
-    : IRequestHandler<DeleteRealEstateValuationAttachmentRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteRealEstateValuationAttachmentHandler(
+    RealEstateValuationServiceDbContext _dbContext,
+    ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService,
+    ILogger<DeleteRealEstateValuationAttachmentHandler> _logger)
+        : IRequestHandler<DeleteRealEstateValuationAttachmentRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteRealEstateValuationAttachmentRequest request, CancellationToken cancellationToken)
     {
@@ -32,19 +35,5 @@ internal sealed class DeleteRealEstateValuationAttachmentHandler
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly ILogger<DeleteRealEstateValuationAttachmentHandler> _logger;
-    private readonly ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public DeleteRealEstateValuationAttachmentHandler(
-        RealEstateValuationServiceDbContext dbContext, 
-        ExternalServices.PreorderService.V1.IPreorderServiceClient preorderService,
-        ILogger<DeleteRealEstateValuationAttachmentHandler> logger)
-    {
-        _dbContext = dbContext;
-        _preorderService = preorderService;
-        _logger = logger;
     }
 }

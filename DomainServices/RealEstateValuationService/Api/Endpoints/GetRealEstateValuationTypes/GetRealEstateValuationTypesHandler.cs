@@ -5,8 +5,12 @@ using System.Threading;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationTypes;
 
-internal sealed class GetRealEstateValuationTypesHandler
-    : IRequestHandler<GetRealEstateValuationTypesRequest, GetRealEstateValuationTypesReponse>
+internal sealed class GetRealEstateValuationTypesHandler(
+    RealEstateValuationServiceDbContext _dbContext,
+    CodebookService.Clients.ICodebookServiceClient _codebookService,
+    ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService,
+    IMediator _mediator)
+        : IRequestHandler<GetRealEstateValuationTypesRequest, GetRealEstateValuationTypesReponse>
 {
     public async Task<GetRealEstateValuationTypesReponse> Handle(GetRealEstateValuationTypesRequest request, CancellationToken cancellationToken)
     {
@@ -92,22 +96,5 @@ internal sealed class GetRealEstateValuationTypesHandler
         }
 
         await _dbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    private readonly IMediator _mediator;
-    private readonly ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
-
-    public GetRealEstateValuationTypesHandler(
-        RealEstateValuationServiceDbContext dbContext, 
-        CodebookService.Clients.ICodebookServiceClient codebookService, 
-        ExternalServices.PreorderService.V1.IPreorderServiceClient preorderService, 
-        IMediator mediator)
-    {
-        _mediator = mediator;
-        _dbContext = dbContext;
-        _codebookService = codebookService;
-        _preorderService = preorderService;
     }
 }

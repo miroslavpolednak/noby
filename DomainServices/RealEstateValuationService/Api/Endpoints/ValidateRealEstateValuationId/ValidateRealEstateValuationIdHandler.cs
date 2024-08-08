@@ -3,8 +3,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.ValidateRealEstateValuationId;
 
-internal sealed class ValidateRealEstateValuationIdHandler
-    : IRequestHandler<ValidateRealEstateValuationIdRequest, ValidateRealEstateValuationIdResponse>
+internal sealed class ValidateRealEstateValuationIdHandler(RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<ValidateRealEstateValuationIdRequest, ValidateRealEstateValuationIdResponse>
 {
     public async Task<ValidateRealEstateValuationIdResponse> Handle(ValidateRealEstateValuationIdRequest request, CancellationToken cancellationToken)
     {
@@ -44,12 +44,5 @@ internal sealed class ValidateRealEstateValuationIdHandler
         }
 
         return response;
-    }
-
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public ValidateRealEstateValuationIdHandler(RealEstateValuationServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

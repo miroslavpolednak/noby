@@ -3,8 +3,10 @@ using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationDetailByOrderId;
 
-internal sealed class GetRealEstateValuationDetailByOrderIdHandler
-    : IRequestHandler<__Contracts.GetRealEstateValuationDetailByOrderIdRequest, __Contracts.RealEstateValuationDetail>
+internal sealed class GetRealEstateValuationDetailByOrderIdHandler(
+    RealEstateValuationServiceDbContext _dbContext, 
+    IMediator _mediator)
+        : IRequestHandler<__Contracts.GetRealEstateValuationDetailByOrderIdRequest, __Contracts.RealEstateValuationDetail>
 {
     public async Task<__Contracts.RealEstateValuationDetail> Handle(__Contracts.GetRealEstateValuationDetailByOrderIdRequest request, CancellationToken cancellationToken)
     {
@@ -19,14 +21,5 @@ internal sealed class GetRealEstateValuationDetailByOrderIdHandler
         { 
             RealEstateValuationId = id.RealEstateValuationId 
         }, cancellationToken);
-    }
-
-    private readonly IMediator _mediator;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public GetRealEstateValuationDetailByOrderIdHandler(RealEstateValuationServiceDbContext dbContext, IMediator mediator)
-    {
-        _dbContext = dbContext;
-        _mediator = mediator;
     }
 }

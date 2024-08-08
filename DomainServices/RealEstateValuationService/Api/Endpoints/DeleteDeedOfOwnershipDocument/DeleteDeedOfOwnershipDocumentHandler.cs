@@ -3,8 +3,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.DeleteDeedOfOwnershipDocument;
 
-internal sealed class DeleteDeedOfOwnershipDocumentHandler
-    : IRequestHandler<DeleteDeedOfOwnershipDocumentRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteDeedOfOwnershipDocumentHandler(RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<DeleteDeedOfOwnershipDocumentRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
@@ -18,12 +18,5 @@ internal sealed class DeleteDeedOfOwnershipDocumentHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public DeleteDeedOfOwnershipDocumentHandler(RealEstateValuationServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

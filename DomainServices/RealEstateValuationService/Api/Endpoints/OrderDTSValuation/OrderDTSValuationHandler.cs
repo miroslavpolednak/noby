@@ -6,8 +6,13 @@ using DomainServices.CustomerService.Clients;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.OrderDTSValuation;
 
-internal sealed class OrderDTSValuationHandler
-    : IRequestHandler<OrderDTSValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class OrderDTSValuationHandler(
+    Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper,
+    ICustomerServiceClient _customerService,
+    Services.OrderAggregate _aggregate,
+    IPreorderServiceClient _preorderService,
+    IUserServiceClient _userService)
+        : IRequestHandler<OrderDTSValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderDTSValuationRequest request, CancellationToken cancellationToken)
     {
@@ -60,25 +65,5 @@ internal sealed class OrderDTSValuationHandler
 
             return (await _preorderService.CreateOrder(orderRequest, cancellationToken)).OrderId;
         }
-    }
-
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
-    private readonly Services.OrderAggregate _aggregate;
-    private readonly IPreorderServiceClient _preorderService;
-    private readonly IUserServiceClient _userService;
-    private readonly ICustomerServiceClient _customerService;
-
-    public OrderDTSValuationHandler(
-        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper,
-        ICustomerServiceClient customerService,
-        Services.OrderAggregate aggregate,
-        IPreorderServiceClient preorderService,
-        IUserServiceClient userService)
-    {
-        _mapper = mapper;
-        _customerService = customerService;
-        _aggregate = aggregate;
-        _preorderService = preorderService;
-        _userService = userService;
     }
 }

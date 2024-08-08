@@ -6,8 +6,12 @@ using DomainServices.UserService.Clients;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.OrderOnlineValuation;
 
-internal sealed class OrderOnlineValuationHandler
-    : IRequestHandler<OrderOnlineValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class OrderOnlineValuationHandler(
+    Services.OrderAggregate _aggregate,
+    IPreorderServiceClient _preorderService,
+    IUserServiceClient _userService,
+    ICustomerServiceClient _customerService)
+        : IRequestHandler<OrderOnlineValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderOnlineValuationRequest request, CancellationToken cancellationToken)
     {
@@ -37,22 +41,5 @@ internal sealed class OrderOnlineValuationHandler
         await _aggregate.UpdateLocalSurveyDetailsOnly(request.RealEstateValuationId, entity.IsRevaluationRequired ? request.LocalSurveyDetails : null, revDetailData, cancellationToken);
     
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly Services.OrderAggregate _aggregate;
-    private readonly IPreorderServiceClient _preorderService;
-    private readonly IUserServiceClient _userService;
-    private readonly ICustomerServiceClient _customerService;
-
-    public OrderOnlineValuationHandler(
-        Services.OrderAggregate aggregate,
-        IPreorderServiceClient preorderService,
-        IUserServiceClient userService,
-        ICustomerServiceClient customerService)
-    {
-        _aggregate = aggregate;
-        _preorderService = preorderService;
-        _userService = userService;
-        _customerService = customerService;
     }
 }

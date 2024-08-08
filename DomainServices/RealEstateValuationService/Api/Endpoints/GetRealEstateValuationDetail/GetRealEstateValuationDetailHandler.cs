@@ -4,8 +4,11 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationDetail;
 
-internal sealed class GetRealEstateValuationDetailHandler
-    : IRequestHandler<GetRealEstateValuationDetailRequest, RealEstateValuationDetail>
+internal sealed class GetRealEstateValuationDetailHandler(
+    RealEstateValuationServiceDbContext _dbContext,
+    IDocumentDataStorage _documentDataStorage,
+    Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper)
+        : IRequestHandler<GetRealEstateValuationDetailRequest, RealEstateValuationDetail>
 {
     public async Task<RealEstateValuationDetail> Handle(GetRealEstateValuationDetailRequest request, CancellationToken cancellationToken)
     {
@@ -75,19 +78,5 @@ internal sealed class GetRealEstateValuationDetailHandler
                 CreatedOn = t.CreatedTime
             })
             .ToListAsync(cancellationToken);
-    }
-
-    private readonly Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper;
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public GetRealEstateValuationDetailHandler(
-        RealEstateValuationServiceDbContext dbContext, 
-        IDocumentDataStorage documentDataStorage,
-        Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper mapper)
-    {
-        _mapper = mapper;
-        _documentDataStorage = documentDataStorage;
-        _dbContext = dbContext;
     }
 }

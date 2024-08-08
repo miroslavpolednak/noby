@@ -3,8 +3,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.UpdateDeedOfOwnershipDocument;
 
-internal sealed class UpdateDeedOfOwnershipDocumentHandler
-    : IRequestHandler<UpdateDeedOfOwnershipDocumentRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateDeedOfOwnershipDocumentHandler(RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<UpdateDeedOfOwnershipDocumentRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
@@ -18,12 +18,5 @@ internal sealed class UpdateDeedOfOwnershipDocumentHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public UpdateDeedOfOwnershipDocumentHandler(RealEstateValuationServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

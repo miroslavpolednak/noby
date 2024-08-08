@@ -4,9 +4,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.AddDeedOfOwnershipDocument;
 
 #pragma warning disable CA1860 // Avoid using 'Enumerable.Any()' extension method
-
-internal sealed class AddDeedOfOwnershipDocumentHandler
-    : IRequestHandler<AddDeedOfOwnershipDocumentRequest, AddDeedOfOwnershipDocumentResponse>
+internal sealed class AddDeedOfOwnershipDocumentHandler(RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<AddDeedOfOwnershipDocumentRequest, AddDeedOfOwnershipDocumentResponse>
 {
     public async Task<AddDeedOfOwnershipDocumentResponse> Handle(AddDeedOfOwnershipDocumentRequest request, CancellationToken cancellationToken)
     {
@@ -37,12 +36,5 @@ internal sealed class AddDeedOfOwnershipDocumentHandler
         {
             DeedOfOwnershipDocumentId = entity.DeedOfOwnershipDocumentId
         };
-    }
-
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public AddDeedOfOwnershipDocumentHandler(RealEstateValuationServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

@@ -3,8 +3,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.UpdateStateByRealEstateValuation;
 
-internal sealed class UpdateStateByRealEstateValuationHandler
-    : IRequestHandler<UpdateStateByRealEstateValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class UpdateStateByRealEstateValuationHandler(RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<UpdateStateByRealEstateValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(UpdateStateByRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
@@ -19,12 +19,5 @@ internal sealed class UpdateStateByRealEstateValuationHandler
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public UpdateStateByRealEstateValuationHandler(RealEstateValuationServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

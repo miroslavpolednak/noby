@@ -3,8 +3,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetRealEstateValuationList;
 
-internal sealed class GetRealEstateValuationListHandler
-    : IRequestHandler<GetRealEstateValuationListRequest, GetRealEstateValuationListResponse>
+internal sealed class GetRealEstateValuationListHandler(RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<GetRealEstateValuationListRequest, GetRealEstateValuationListResponse>
 {
     public async Task<GetRealEstateValuationListResponse> Handle(GetRealEstateValuationListRequest request, CancellationToken cancellationToken)
     {
@@ -55,12 +55,5 @@ internal sealed class GetRealEstateValuationListHandler
         }));
 
         return response;
-    }
-
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public GetRealEstateValuationListHandler(RealEstateValuationServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }

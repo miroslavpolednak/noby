@@ -4,8 +4,12 @@ using SharedComponents.DocumentDataStorage;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.DeleteRealEstateValuation;
 
-internal sealed class DeleteRealEstateValuationHandler
-    : IRequestHandler<DeleteRealEstateValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
+internal sealed class DeleteRealEstateValuationHandler(
+    IDocumentDataStorage _documentDataStorage,
+    RealEstateValuationServiceDbContext _dbContext,
+    ILogger<DeleteRealEstateValuationHandler> _logger,
+    ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService)
+        : IRequestHandler<DeleteRealEstateValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(DeleteRealEstateValuationRequest request, CancellationToken cancellationToken)
     {
@@ -55,22 +59,5 @@ internal sealed class DeleteRealEstateValuationHandler
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
-    }
-
-    private readonly IDocumentDataStorage _documentDataStorage;
-    private readonly ILogger<DeleteRealEstateValuationHandler> _logger;
-    private readonly ExternalServices.PreorderService.V1.IPreorderServiceClient _preorderService;
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public DeleteRealEstateValuationHandler(
-        IDocumentDataStorage documentDataStorage,
-        RealEstateValuationServiceDbContext dbContext, 
-        ILogger<DeleteRealEstateValuationHandler> logger, 
-        ExternalServices.PreorderService.V1.IPreorderServiceClient preorderService)
-    {
-        _documentDataStorage = documentDataStorage;
-        _preorderService = preorderService;
-        _dbContext = dbContext;
-        _logger = logger;
     }
 }

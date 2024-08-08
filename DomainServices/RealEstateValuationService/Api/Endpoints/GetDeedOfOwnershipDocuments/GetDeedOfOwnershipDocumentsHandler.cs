@@ -3,8 +3,8 @@ using DomainServices.RealEstateValuationService.Contracts;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.GetDeedOfOwnershipDocuments;
 
-internal sealed class GetDeedOfOwnershipDocumentsHandler
-    : IRequestHandler<GetDeedOfOwnershipDocumentsRequest, GetDeedOfOwnershipDocumentsResponse>
+internal sealed class GetDeedOfOwnershipDocumentsHandler(RealEstateValuationServiceDbContext _dbContext)
+        : IRequestHandler<GetDeedOfOwnershipDocumentsRequest, GetDeedOfOwnershipDocumentsResponse>
 {
     public async Task<GetDeedOfOwnershipDocumentsResponse> Handle(GetDeedOfOwnershipDocumentsRequest request, CancellationToken cancellationToken)
     {
@@ -42,12 +42,5 @@ internal sealed class GetDeedOfOwnershipDocumentsHandler
         }));
 
         return response;
-    }
-
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-
-    public GetDeedOfOwnershipDocumentsHandler(RealEstateValuationServiceDbContext dbContext)
-    {
-        _dbContext = dbContext;
     }
 }
