@@ -5410,10 +5410,10 @@ namespace NOBY.ApiContracts
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("houseAndFlat")]
-        public RealEstateValuationSharedSpecificDetailsHouseAndFlat? HouseAndFlat { get; set; } = default!;
+        public RealEstateValuationSharedSpecificDetailsHouseAndFlat HouseAndFlat { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("parcel")]
-        public RealEstateValuationSharedSpecificDetailsParcel? Parcel { get; set; } = default!;
+        public RealEstateValuationSharedSpecificDetailsParcel Parcel { get; set; } = default!;
 
     }
 
