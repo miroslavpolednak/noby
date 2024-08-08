@@ -9,7 +9,12 @@ namespace DomainServices.CodebookService.Api.Database;
 
 #pragma warning disable CS8603 // Possible null reference return.
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
-internal sealed class DatabaseAggregate
+internal sealed class DatabaseAggregate(
+    IConnectionProvider selfDb,
+    Database.SqlQueryCollection sql,
+    IConnectionProvider<IKonsdbDapperConnectionProvider> konsdb,
+    IConnectionProvider<IXxdHfDapperConnectionProvider> xxdhf,
+    IConnectionProvider<IXxdDapperConnectionProvider> xxd)
 {
     public async Task<T> GetListWithParam<T>(object param, [CallerMemberName] string method = "")
         where T : class
@@ -84,24 +89,14 @@ internal sealed class DatabaseAggregate
     {
         SqlQueryCollection.DatabaseProviders.KonsDb => Konsdb,
         SqlQueryCollection.DatabaseProviders.XxdHf => Xxdhf,
+        SqlQueryCollection.DatabaseProviders.Xxd => Xxd,
         SqlQueryCollection.DatabaseProviders.Self => SelfDb,
         _ => throw new NotImplementedException()
     };
 
-    public readonly Database.SqlQueryCollection Sql;
-    public readonly IConnectionProvider SelfDb;
-    public readonly IConnectionProvider<IKonsdbDapperConnectionProvider> Konsdb;
-    public readonly IConnectionProvider<IXxdHfDapperConnectionProvider> Xxdhf;
-
-    public DatabaseAggregate(
-        IConnectionProvider selfDb,
-        Database.SqlQueryCollection sql,
-        IConnectionProvider<IKonsdbDapperConnectionProvider> konsdb,
-        IConnectionProvider<IXxdHfDapperConnectionProvider> xxdhf)
-    {
-        Sql = sql;
-        SelfDb = selfDb;
-        Konsdb = konsdb;
-        Xxdhf = xxdhf;
-    }
+    public readonly Database.SqlQueryCollection Sql = sql;
+    public readonly IConnectionProvider SelfDb = selfDb;
+    public readonly IConnectionProvider<IKonsdbDapperConnectionProvider> Konsdb = konsdb;
+    public readonly IConnectionProvider<IXxdHfDapperConnectionProvider> Xxdhf = xxdhf;
+    public readonly IConnectionProvider<IXxdDapperConnectionProvider> Xxd = xxd;
 }

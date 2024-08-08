@@ -23,6 +23,7 @@ SharedComponents.GrpcServiceBuilder
         builder.Services
             .AddDapper(builder.Configuration.GetConnectionString(CisGlobalConstants.DefaultConnectionStringKey)!)
             .AddDapper<IXxdHfDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxdhf")!)
+            .AddDapper<IXxdDapperConnectionProvider>(builder.Configuration.GetConnectionString("xxd")!)
             .AddDapper<IKonsdbDapperConnectionProvider>(builder.Configuration.GetConnectionString("konsDb")!);
 
         // seznam SQL dotazu
