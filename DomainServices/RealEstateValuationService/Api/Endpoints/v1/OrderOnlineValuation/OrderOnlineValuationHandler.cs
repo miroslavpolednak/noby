@@ -1,5 +1,4 @@
-﻿using DomainServices.CustomerService.Clients;
-using DomainServices.RealEstateValuationService.Api.Extensions;
+﻿using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
@@ -9,8 +8,7 @@ namespace DomainServices.RealEstateValuationService.Api.Endpoints.v1.OrderOnline
 internal sealed class OrderOnlineValuationHandler(
     Services.OrderAggregate _aggregate,
     IPreorderServiceClient _preorderService,
-    IUserServiceClient _userService,
-    ICustomerServiceClient _customerService)
+    IUserServiceClient _userService)
     : IRequestHandler<OrderOnlineValuationRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(OrderOnlineValuationRequest request, CancellationToken cancellationToken)
@@ -18,7 +16,8 @@ internal sealed class OrderOnlineValuationHandler(
         var (entity, revDetailData, realEstateIds, attachments, caseInstance, _) = await _aggregate.GetAggregatedData(request.RealEstateValuationId, cancellationToken);
 
         // klient
-        var customer = await _customerService.GetCustomerDetail(caseInstance.Customer.Identity, cancellationToken);
+        var customer = await _aggregate.GetCustomer(caseInstance.Customer.Identity, cancellationToken);
+
         // instance uzivatele
         var currentUser = await _userService.GetCurrentUser(cancellationToken);
 

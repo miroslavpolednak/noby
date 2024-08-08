@@ -2,7 +2,6 @@ using CIS.Infrastructure.Messaging;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.RealEstateValuationService.Api.Database;
 using DomainServices.RealEstateValuationService.Api.Endpoints.v1;
-using DomainServices.RealEstateValuationService.Api.Messaging;
 using DomainServices.RealEstateValuationService.ExternalServices;
 using SharedComponents.DocumentDataStorage;
 

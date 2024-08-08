@@ -2,13 +2,11 @@
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients;
-using DomainServices.CustomerService.Clients;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.v1.OrderStandardValuation;
 
 internal sealed class OrderStandardValuationHandler(
     Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper,
-    ICustomerServiceClient _customerService,
     Services.OrderAggregate _aggregate,
     IPreorderServiceClient _preorderService,
     IUserServiceClient _userService)
@@ -25,7 +23,7 @@ internal sealed class OrderStandardValuationHandler(
         // info o produktu
         var productProps = await _aggregate.GetProductProperties(caseInstance.State, caseInstance.CaseId, cancellationToken);
         // klient
-        var customer = await _customerService.GetCustomerDetail(caseInstance.Customer.Identity, cancellationToken);
+        var customer = await _aggregate.GetCustomer(caseInstance.Customer.Identity, cancellationToken);
 
         var orderRequest = new ExternalServices.PreorderService.V1.Contracts.StandardOrderRequestDTO
         {

@@ -1,5 +1,7 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
+using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Contracts.V1;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
@@ -14,6 +16,7 @@ namespace DomainServices.RealEstateValuationService.Api.Services;
 [CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
 internal sealed class OrderAggregate(
     Database.DocumentDataEntities.Mappers.RealEstateValuationDataMapper _mapper,
+    ICustomerServiceClient _customerService,
     IDocumentDataStorage _documentDataStorage,
     IProductServiceClient _productService,
     ICodebookServiceClient _codebookService,
@@ -23,6 +26,19 @@ internal sealed class OrderAggregate(
     ICaseServiceClient _caseService,
     TimeProvider _timeProvider)
 {
+    public async Task<CustomerService.Contracts.CustomerDetailResponse> GetCustomer(SharedTypes.GrpcTypes.Identity identity, CancellationToken cancellationToken)
+    {
+        SharedTypes.GrpcTypes.Identity finalIdentity = identity;
+        if (identity.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)
+        {
+            var c = await _customerService.GetCustomerDetail(identity, cancellationToken);
+            finalIdentity = c.Identities.FirstOrDefault(t => t.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb)
+                ?? throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.KbIdentityNotFound, identity.IdentityId);
+        }
+
+        return await _customerService.GetCustomerDetail(finalIdentity, cancellationToken);
+    }
+
     public async Task<
         (
         Database.Entities.RealEstateValuation REVEntity, 
@@ -74,7 +90,7 @@ internal sealed class OrderAggregate(
 
         // REV data
         var revDetailData = (await _documentDataStorage
-            .FirstOrDefaultByEntityId<Database.DocumentDataEntities.RealEstateValudationData, int>(realEstateValuationId, cancellationToken))
+            .FirstOrDefaultByEntityId<RealEstateValudationData, int>(realEstateValuationId, cancellationToken))
             ?.Data;
 
         return (entity, revDetailData, realEstateIds, attachments, caseInstance, addressPointId);

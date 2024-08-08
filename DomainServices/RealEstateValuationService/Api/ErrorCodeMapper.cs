@@ -23,8 +23,9 @@ internal sealed class ErrorCodeMapper
     public const int MaxValuationsForCase = 22015;
     public const int MissingRealEstateId = 22016;
     public const int LocalSurveyDetailsIsEmpty = 22018;
+    public const int KbIdentityNotFound = 22019;
     public const int LuxpiKbModelStatusFailed = 22202;
-
+    
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()
@@ -47,7 +48,8 @@ internal sealed class ErrorCodeMapper
             { MissingRealEstateId, "Missing RealEstateId" },
             { MaxValuationsForCase, "Too many RealEstateValuations where isLoanRealEstate is true" },
             { LuxpiKbModelStatusFailed, "KB Model Status Knocked Out" },
-            { LocalSurveyDetailsIsEmpty, "LocalSurveyDetails object is empty" }
+            { LocalSurveyDetailsIsEmpty, "LocalSurveyDetails object is empty" },
+            { KbIdentityNotFound, "KB identity not found for customer for MP ID {PropertyValue}" }
         });
 
         return Messages;
