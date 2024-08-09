@@ -1,7 +1,11 @@
 ﻿namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement;
 
-internal sealed class CreateSalesArrangementHandler
-    : IRequestHandler<SalesArrangementCreateSalesArrangementRequest, SalesArrangementCreateSalesArrangementResponse>
+internal sealed class CreateSalesArrangementHandler(
+    CreateSalesArrangementParametersFactory _createService,
+    DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
+    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
+    NOBY.Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization)
+        : IRequestHandler<SalesArrangementCreateSalesArrangementRequest, SalesArrangementCreateSalesArrangementResponse>
 {
     public async Task<SalesArrangementCreateSalesArrangementResponse> Handle(SalesArrangementCreateSalesArrangementRequest request, CancellationToken cancellationToken)
     {
@@ -22,7 +26,8 @@ internal sealed class CreateSalesArrangementHandler
 
         return new SalesArrangementCreateSalesArrangementResponse
         {
-            SalesArrangementId = newSaId
+            SalesArrangementId = newSaId,
+            ProcessId = createRequest.ProcessId
         };
     }
 
@@ -38,22 +43,5 @@ internal sealed class CreateSalesArrangementHandler
         }
 
         _salesArrangementAuthorization.ValidateRefinancingPermissions(request.SalesArrangementTypeId, UserPermissions.CHANGE_REQUESTS_RefinancingAccess, UserPermissions.CHANGE_REQUESTS_Access);
-    }
-
-    private readonly NOBY.Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService _salesArrangementAuthorization;
-    private readonly CreateSalesArrangementParametersFactory _createService;
-    private readonly DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
-
-    public CreateSalesArrangementHandler(
-        CreateSalesArrangementParametersFactory createService,
-        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
-        DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient salesArrangementService,
-        NOBY.Services.SalesArrangementAuthorization.ISalesArrangementAuthorizationService salesArrangementAuthorization)
-    {
-        _createService = createService;
-        _codebookService = codebookService;
-        _salesArrangementService = salesArrangementService;
-        _salesArrangementAuthorization = salesArrangementAuthorization;
     }
 }
