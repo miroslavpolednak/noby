@@ -254,6 +254,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql = DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql
 		DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql = DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql
 		DomainServices\OfferService\DatabaseMigrations\00025-HACH-12003_UpdateInterestratePrecision.sql = DomainServices\OfferService\DatabaseMigrations\00025-HACH-12003_UpdateInterestratePrecision.sql
+		DomainServices\OfferService\DatabaseMigrations\00026-HACH-12156.sql = DomainServices\OfferService\DatabaseMigrations\00026-HACH-12156.sql
+		DomainServices\OfferService\DatabaseMigrations\00027-HACH-11873_BuildingSavingsData.sql = DomainServices\OfferService\DatabaseMigrations\00027-HACH-11873_BuildingSavingsData.sql
+		DomainServices\OfferService\DatabaseMigrations\00027-HACH-12613_ResponseCode_ValidTo_NotNull.sql = DomainServices\OfferService\DatabaseMigrations\00027-HACH-12613_ResponseCode_ValidTo_NotNull.sql
+		DomainServices\OfferService\DatabaseMigrations\00028-HACH-12653_ImportFromBdp.sql = DomainServices\OfferService\DatabaseMigrations\00028-HACH-12653_ImportFromBdp.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
