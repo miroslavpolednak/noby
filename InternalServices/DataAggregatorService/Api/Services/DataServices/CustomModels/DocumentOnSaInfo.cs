@@ -52,5 +52,6 @@ internal class DocumentOnSaInfo
     private static DateTime? GetFirstSignatureDate(IEnumerable<DocumentOnSAToSign> documentsOnSa) =>
         documentsOnSa.Where(d => d.IsSigned).OrderBy(d => d.SignatureDateTime).Select(d => (DateTime?)d.SignatureDateTime.ToDateTime()).FirstOrDefault();
 
-    private static List<object> GetFormIdList(IEnumerable<DocumentOnSAToSign> documentsOnSa) => documentsOnSa.Select(d => new { d.FormId }).ToList<object>();
+    private static List<object> GetFormIdList(IEnumerable<DocumentOnSAToSign> documentsOnSa) =>
+        documentsOnSa.Where(d => !d.IsFinal).Select(d => new { d.FormId }).ToList<object>();
 }
