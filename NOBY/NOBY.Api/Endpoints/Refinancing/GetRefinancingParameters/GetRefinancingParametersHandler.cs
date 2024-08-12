@@ -132,11 +132,15 @@ internal sealed class GetRefinancingParametersHandler(
             if (sa is not null && process.StateIdSB == 30 && !process.Cancelled && sa.State != (int)EnumSalesArrangementStates.Finished)
             {
                 await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, (int)EnumSalesArrangementStates.Finished, cancellationToken);
+                // nastavit state do nacteneho SA
+                sa.State = (int)EnumSalesArrangementStates.Finished;
                 _logger.LogWarning("SalesArrangementState was updated. Synchronization with StarBuild did not occur before GetRefinaningParameters");
             }
             else if (sa is not null && process.StateIdSB == 30 && process.Cancelled && sa.State != (int)EnumSalesArrangementStates.Cancelled)
             {
                 await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, (int)EnumSalesArrangementStates.Cancelled, cancellationToken);
+                // nastavit state do nacteneho SA
+                sa.State = (int)EnumSalesArrangementStates.Cancelled;
                 _logger.LogWarning("SalesArrangementState was updated. Synchronization with StarBuild did not occur before GetRefinaningParameters");
             }
         }
