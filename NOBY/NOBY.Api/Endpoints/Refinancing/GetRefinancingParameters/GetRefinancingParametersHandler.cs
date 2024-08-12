@@ -5,11 +5,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.SalesArrangementService.Contracts.v1;
-using Microsoft.Extensions.Logging;
 using NOBY.Services.MortgageRefinancing;
-using System.Runtime.ExceptionServices;
-using System.Threading;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 
