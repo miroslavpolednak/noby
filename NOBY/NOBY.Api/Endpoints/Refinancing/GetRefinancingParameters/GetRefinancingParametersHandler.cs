@@ -5,11 +5,16 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts.v1;
+using Microsoft.Extensions.Logging;
 using NOBY.Services.MortgageRefinancing;
+using System.Runtime.ExceptionServices;
+using System.Threading;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
 
 internal sealed class GetRefinancingParametersHandler(
+    ILogger<GetRefinancingParametersHandler> _logger,
     ICaseServiceClient _caseService,
     IProductServiceClient _productService,
     ISalesArrangementServiceClient _salesArrangementService,
@@ -32,7 +37,11 @@ internal sealed class GetRefinancingParametersHandler(
         var caseDetail = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
 
         var refinancingProcessList = (await _caseService.GetProcessList(request.CaseId, cancellationToken))
-                                     .Where(p => p.ProcessTypeId is (int)WorkflowProcesses.Refinancing).ToList();
+                                     .Where(p => p.ProcessTypeId is (int)WorkflowProcesses.Refinancing)
+                                     .ToList();
+
+        // kontroly 12674
+        await fixSalesArrangementState(refinancingProcessList, saList, cancellationToken);
 
         var mergeOfSaAndProcess = await refinancingProcessList.SelectAsync(async pr => new
         {
@@ -108,6 +117,27 @@ internal sealed class GetRefinancingParametersHandler(
             else
             {
                 return null;
+            }
+        }
+    }
+
+    private async Task fixSalesArrangementState(List<ProcessTask>? processes, List<DomainServices.SalesArrangementService.Contracts.SalesArrangement> saList, CancellationToken cancellationToken)
+    {
+        if (processes is null) return;
+
+        foreach (var process in processes)
+        {
+            var sa = saList.FirstOrDefault(x => x.ProcessId == process.ProcessId);
+
+            if (sa is not null && process.StateIdSB == 30 && !process.Cancelled && sa.State != (int)EnumSalesArrangementStates.Finished)
+            {
+                await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, (int)EnumSalesArrangementStates.Finished, cancellationToken);
+                _logger.LogWarning("SalesArrangementState was updated. Synchronization with StarBuild did not occur before GetRefinaningParameters");
+            }
+            else if (sa is not null && process.StateIdSB == 30 && process.Cancelled && sa.State != (int)EnumSalesArrangementStates.Cancelled)
+            {
+                await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, (int)EnumSalesArrangementStates.Cancelled, cancellationToken);
+                _logger.LogWarning("SalesArrangementState was updated. Synchronization with StarBuild did not occur before GetRefinaningParameters");
             }
         }
     }
