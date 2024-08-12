@@ -37,6 +37,7 @@ internal sealed class UpdateCaseDataHandler(
         // pokud se zmenil IsEmployeeBonusRequested, zavolat EAS
         if (bonusChanged)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 await _mediator.Send(new NotifyStarbuildRequest
@@ -49,6 +50,7 @@ internal sealed class UpdateCaseDataHandler(
                 // pouze logujeme!
                 _logger.CaseStateChangedFailed(request.CaseId, ex);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();

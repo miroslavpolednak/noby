@@ -13,6 +13,10 @@ public enum WorkflowTaskTypes : byte
     [Display(Name = "Konzultace")]
     Consultation = 3,
 
+    TaskType4 = 4,
+
+    TaskType5 = 5,
+
     [Display(Name = "Podepisování")]
     Signing = 6,
 

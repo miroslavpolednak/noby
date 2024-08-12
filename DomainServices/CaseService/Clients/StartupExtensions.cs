@@ -24,7 +24,9 @@ public static class StartupExtensions
         return services;
     }
 
+#pragma warning disable CA1054 // URI-like parameters should not be strings
     public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
+#pragma warning restore CA1054 // URI-like parameters should not be strings
     {
         services.TryAddScoped<CaseService.Clients.v1.ICaseServiceClient, CaseService.Clients.v1.CaseServiceClient>();
         services.TryAddScoped<CaseService.Clients.IMaintananceClient, CaseService.Clients.Services.MaintananceClient>();

@@ -48,6 +48,7 @@ internal sealed class CreateCaseHandler(
         }
 
         // notify SB about state changed, nezajima nas, kdyz to nedopadne
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             await _mediator.Send(new NotifyStarbuildRequest
@@ -57,6 +58,7 @@ internal sealed class CreateCaseHandler(
             }, cancellation);
         }
         catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
         return new CreateCaseResponse()
         {

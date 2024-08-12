@@ -17,7 +17,9 @@ public sealed class MortgageRefinancingWorkflowService(
     public Task<WorkflowTaskByTaskId.WorkflowProcessByProcessIdResult> GetProcessInfoByProcessId(long caseId, long processId, CancellationToken cancellationToken) => 
         _caseService.GetProcessByProcessId(caseId, processId, cancellationToken);
 
+#pragma warning disable CA1822 // Mark members as static
     public void ValidateIndividualPriceExceptionComment(string? individualPriceExceptionComment, decimal? interestRateDiscount, decimal? feeAmountDiscount)
+#pragma warning restore CA1822 // Mark members as static
     {
         if (interestRateDiscount is null or 0 && feeAmountDiscount is null or 0)
             return;

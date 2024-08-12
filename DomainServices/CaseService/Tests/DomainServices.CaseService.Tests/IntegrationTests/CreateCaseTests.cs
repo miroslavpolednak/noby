@@ -56,7 +56,7 @@ public class CreateCaseTests
         caseInstance.OwnerUserId.Should().Be(request.CaseOwnerUserId);
     }
 
-    private Contracts.CreateCaseRequest createFullRequest()
+    private static Contracts.CreateCaseRequest createFullRequest()
         => new Contracts.CreateCaseRequest
         {
             Customer = new()

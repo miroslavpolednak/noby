@@ -10,7 +10,7 @@
   </PropertyGroup>
 
 	<PropertyGroup>
-		<AnalysisMode>Recommended</AnalysisMode>
+		<AnalysisMode>All</AnalysisMode>
 		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 

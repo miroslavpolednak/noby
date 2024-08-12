@@ -3,7 +3,7 @@ using DomainServices.CodebookService.Contracts.v1;
 
 namespace DomainServices.CaseService.Api.Services;
 
-public static class ActiveTaskExtensions
+internal static class ActiveTaskExtensions
 {
     private static bool FlagIsActive(this WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem workflowTaskStatesItem) =>
         workflowTaskStatesItem.Flag == WorkflowTaskStatesResponse.Types.WorkflowTaskStatesItem.Types.EWorkflowTaskStateFlag.None;

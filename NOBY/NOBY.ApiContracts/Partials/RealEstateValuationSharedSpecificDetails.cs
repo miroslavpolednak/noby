@@ -2,7 +2,7 @@
 
 public partial class RealEstateValuationSharedSpecificDetailsOneOf
 {
-    public static RealEstateValuationSharedSpecificDetailsOneOf? Create(RealEstateValuationSharedSpecificDetailsHouseAndFlat? model)
+    public static RealEstateValuationSharedSpecificDetailsOneOf? Create(RealEstateValuationSharedSpecificDetailsHouseAndFlat model)
     {
         return new()
         {
@@ -11,7 +11,7 @@ public partial class RealEstateValuationSharedSpecificDetailsOneOf
         };
     }
 
-    public static RealEstateValuationSharedSpecificDetailsOneOf? Create(RealEstateValuationSharedSpecificDetailsParcel? model)
+    public static RealEstateValuationSharedSpecificDetailsOneOf? Create(RealEstateValuationSharedSpecificDetailsParcel model)
     {
         return new()
         {
