@@ -39,6 +39,8 @@ internal sealed class GetRefinancingParametersHandler(
         // kontroly 12674
         await fixSalesArrangementState(refinancingProcessList, saList, cancellationToken);
 
+        await fixSalesArrangementState(refinancingProcessList, saList, cancellationToken);
+
         var mergeOfSaAndProcess = await refinancingProcessList.SelectAsync(async pr => new
         {
             Process = pr,
