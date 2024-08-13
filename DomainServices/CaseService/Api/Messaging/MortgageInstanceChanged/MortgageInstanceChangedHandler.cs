@@ -13,14 +13,15 @@ internal class MortgageInstanceChangedHandler(
         
         if (long.TryParse(message.New?.Starbuild?.id, out var caseId))
         {
-            var instance = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == caseId);
-            if (instance is not null)
+            var d = (decimal)message.New.loanAmount.limit;
+            int updatedRows = await _dbContext
+                .Cases
+                .Where(t => t.CaseId == caseId)
+                .ExecuteUpdateAsync(s => s.SetProperty(x => x.TargetAmount, d));
+
+            if (updatedRows > 0)
             {
-                instance.TargetAmount = (decimal)message.New.loanAmount.limit;
-
-                await _dbContext.SaveChangesAsync();
-
-                _logger.KafkaMortgageChangedFinished(nameof(MortgageInstanceChangedHandler), caseId, instance.TargetAmount);
+                _logger.KafkaMortgageChangedFinished(nameof(MortgageInstanceChangedHandler), caseId, d);
             }
             else
             {
