@@ -1,6 +1,7 @@
 ﻿using CIS.Infrastructure.Caching;
 using cz.mpss.api.starbuild.mortgageworkflow.mortgageinputprocessingevents.v1;
 using DomainServices.CaseService.Api.Database;
+using DomainServices.CaseService.Contracts;
 using KafkaFlow;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -21,27 +22,27 @@ internal class CaseStateChangedProcessingCompletedHandler(
             return;
         }
 
-        var entity = await _dbContext.Cases.FirstOrDefaultAsync(t => t.CaseId == cache.CaseId);
-
-        if (entity is null)
-        {
-            _logger.KafkaCaseIdNotFound(nameof(CaseStateChangedProcessingCompletedHandler), cache.CaseId);
-            return;
-        }
-
+        UpdatedInStarbuildStates state;
         if (message.workflowInputProcessingContext.requestProcessingResult == RequestProcessingResultEnum.OK)
         {
-            entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Ok;
-
+            state = UpdatedInStarbuildStates.Ok;
             _logger.StarbuildStateUpdateSuccess(cache.CaseId, cache.RequestId);
         }
         else
         {
-            entity.StateUpdatedInStarbuild = (byte)Contracts.UpdatedInStarbuildStates.Error;
-
+            state = UpdatedInStarbuildStates.Error;
             _logger.StarbuildStateUpdateFailed(cache.CaseId, cache.RequestId);
         }
 
-        await _dbContext.SaveChangesAsync();
+        int updatedRows = await _dbContext
+            .Cases
+            .Where(t => t.CaseId == cache.CaseId)
+            .ExecuteUpdateAsync(s => s.SetProperty(x => x.StateUpdatedInStarbuild, (byte)state));
+
+        if (updatedRows == 0)
+        {
+            _logger.KafkaCaseIdNotFound(nameof(CaseStateChangedProcessingCompletedHandler), cache.CaseId);
+            return;
+        }
     }
 }
