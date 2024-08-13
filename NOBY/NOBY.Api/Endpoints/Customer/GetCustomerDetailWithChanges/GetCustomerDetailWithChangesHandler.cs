@@ -16,7 +16,11 @@ internal sealed class GetCustomerDetailWithChangesHandler : IRequestHandler<GetC
 
         await checkProductTypeMandant(salesArrangement.CaseId, cancellationToken);
 
-        return CustomerMapper.MapCustomerToResponseDto<CustomerGetCustomerDetailWithChangesResponse>(customerInfo.CustomerWithChangedData, customerInfo.CustomerOnSA);
+        var customerResponse = CustomerMapper.MapCustomerToResponseDto<CustomerGetCustomerDetailWithChangesResponse>(customerInfo.CustomerWithChangedData, customerInfo.CustomerOnSA);
+
+        customerResponse.Addresses?.RemoveAll(address => address.AddressTypeId == (int)AddressTypes.Other);
+
+        return customerResponse;
     }
 
     private async Task checkProductTypeMandant(long caseId, CancellationToken cancellationToken)
