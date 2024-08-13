@@ -31,11 +31,13 @@ internal sealed class OrderStandardValuationHandler(
             LocalSurveyEmail = request.LocalSurveyDetails?.Email,
             LocalSurveyPhone = $"{request.LocalSurveyDetails?.PhoneIDC}{request.LocalSurveyDetails?.PhoneNumber}",
             LocalSurveyFunction = request.LocalSurveyDetails?.RealEstateValuationLocalSurveyFunctionCode,
-            LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
+            LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO(),
+            SpecialRequest = request.Comment
         };
         orderRequest.FillBaseOrderData(caseInstance, customer, currentUser, realEstateIds, attachments);
         orderRequest.FillBaseStandardOrderData(currentUser, entity, houseAndFlat, in productProps);
 
+        entity.Comment = request.Comment;
         entity.ValuationTypeId = (int)EnumRealEstateValuationTypes.Standard;
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 

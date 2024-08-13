@@ -35,6 +35,7 @@ internal sealed class UpdateRealEstateValuationDetailHandler(
         }
 
         // general detail
+        realEstate.Comment = request.Comment;
         realEstate.Address = request.Address;
         realEstate.IsLoanRealEstate = request.IsLoanRealEstate;
         realEstate.RealEstateStateId = request.RealEstateStateId;

@@ -12,8 +12,8 @@ internal static class OrderRequestExtensions
         CaseService.Contracts.Case caseInstance,
         CustomerDetailResponse customer,
         UserService.Contracts.User currentUser,
-        long[]? realEstateIds,
-        long[]? attachments
+        in long[]? realEstateIds,
+        in long[]? attachments
         )
     {
         model.DealNumber = caseInstance.Data.ContractNumber;

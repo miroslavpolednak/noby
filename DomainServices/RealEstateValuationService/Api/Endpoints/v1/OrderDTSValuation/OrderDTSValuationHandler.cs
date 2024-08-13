@@ -35,6 +35,7 @@ internal sealed class OrderDTSValuationHandler(
         };
 
         // ulozeni vysledku
+        entity.Comment = request.Comment;
         entity.ValuationTypeId = 2;
         await _aggregate.SaveResultsAndUpdateEntity(entity, orderId, RealEstateValuationStates.Probiha, cancellationToken);
 
@@ -44,6 +45,7 @@ internal sealed class OrderDTSValuationHandler(
         {
             var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsFlatRequest
             {
+                SpecialRequest = request.Comment,
                 LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
             };
 
@@ -57,6 +59,7 @@ internal sealed class OrderDTSValuationHandler(
         {
             var orderRequest = new ExternalServices.PreorderService.V1.Contracts.DtsHouseRequest
             {
+                SpecialRequest = request.Comment,
                 LocalSurveyAttachments = new ExternalServices.PreorderService.V1.Contracts.LocalSurveyAttachmentsDTO()
             };
 

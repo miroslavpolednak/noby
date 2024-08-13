@@ -37,7 +37,8 @@ internal sealed class GetRealEstateValuationDetailHandler(
             IsOnlineDisqualified = realEstate.IsOnlineDisqualified,
             RealEstateSubtypeId = realEstate.RealEstateSubtypeId,
             ACVRealEstateTypeId = realEstate.ACVRealEstateTypeId,
-            BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId
+            BagmanRealEstateTypeId = realEstate.BagmanRealEstateTypeId,
+            Comment = realEstate.Comment
         };
 
         if (realEstate.Prices is not null)

@@ -3,9 +3,12 @@ package DomainServices.RealEstateValuationService;
 option csharp_namespace = "DomainServices.RealEstateValuationService.Contracts";
 
 import "Messages/Types.proto";
+import "google/protobuf/wrappers.proto";
 
 message OrderStandardValuationRequest {
     int32 RealEstateValuationId = 1;
     
-    LocalSurveyData LocalSurveyDetails = 2;
+    google.protobuf.StringValue Comment = 2;
+
+    LocalSurveyData LocalSurveyDetails = 3;
 }

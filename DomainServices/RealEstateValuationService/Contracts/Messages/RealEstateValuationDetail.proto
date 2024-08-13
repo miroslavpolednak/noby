@@ -33,6 +33,7 @@ message RealEstateValuationDetail {
     repeated int32 PossibleValuationTypeId = 24;
     OnlinePreorderData OnlinePreorderDetails = 25;
     LocalSurveyData LocalSurveyDetails = 26;
+    google.protobuf.StringValue Comment = 27;
     
     oneof SpecificDetail {
         SpecificDetailHouseAndFlatObject HouseAndFlatDetails = 50;
