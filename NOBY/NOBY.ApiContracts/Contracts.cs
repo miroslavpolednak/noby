@@ -7929,7 +7929,7 @@ namespace NOBY.ApiContracts
         /// <summary>
         /// Úroveň závažnosti upozornění
         /// <br/>
-        /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;1 - Info&lt;/li&gt;&lt;li&gt;2 - Warning&lt;/li&gt;&lt;li&gt;3 - Error&lt;/li&gt;&lt;/ul&gt;
+        /// <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;1 - Error&lt;/li&gt;&lt;li&gt;2 - Warning&lt;/li&gt;&lt;li&gt;3 - Info&lt;/li&gt;&lt;/ul&gt;
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("severity")]
@@ -10908,11 +10908,11 @@ namespace NOBY.ApiContracts
     public enum UsersGetCurrentBannerItemSeverity
     {
 
-        Info = 1,
+        Error = 1,
 
         Warning = 2,
 
-        Error = 3,
+        Info = 3,
 
     }
 
