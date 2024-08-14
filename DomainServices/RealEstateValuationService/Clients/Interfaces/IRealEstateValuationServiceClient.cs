@@ -39,7 +39,7 @@ public interface IRealEstateValuationServiceClient
 
     Task OrderStandardValuation(OrderStandardValuationRequest request, CancellationToken cancellationToken = default);
 
-    Task OrderDTSValuation(int realEstateValuationId, CancellationToken cancellationToken = default);
+    Task OrderDTSValuation(OrderDTSValuationRequest request, CancellationToken cancellationToken = default);
 
     // DeedOfOwnershipDocument
     Task UpdateDeedOfOwnershipDocument(int deedOfOwnershipDocumentId, List<long>? realEstateIds, CancellationToken cancellationToken = default);

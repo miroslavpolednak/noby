@@ -46,6 +46,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
             },
             LocalSurveyDetails = valuationDetail.LocalSurveyDetails is null ? null : new RealEstateValuationSharedLocalSurveyData
             {
+                Comment = valuationDetail.Comment,
                 FirstName = valuationDetail.LocalSurveyDetails?.FirstName ?? "",
                 LastName = valuationDetail.LocalSurveyDetails?.LastName ?? "",
                 FunctionCode  = valuationDetail.LocalSurveyDetails?.RealEstateValuationLocalSurveyFunctionCode ?? "",

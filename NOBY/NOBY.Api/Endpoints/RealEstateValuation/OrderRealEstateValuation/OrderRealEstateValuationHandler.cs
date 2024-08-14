@@ -56,6 +56,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
+                    Comment = request.LocalSurveyPerson?.Comment ?? "",
                     LocalSurveyDetails = createData(request),
                 }, cancellationToken);
                 break;
@@ -72,7 +73,11 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                     throw new NobyValidationException(90064);
                 }
 
-                await _realEstateValuationService.OrderDTSValuation(request.RealEstateValuationId, cancellationToken);
+                await _realEstateValuationService.OrderDTSValuation(new DomainServices.RealEstateValuationService.Contracts.OrderDTSValuationRequest
+                {
+                    RealEstateValuationId = request.RealEstateValuationId,
+                    Comment = request.LocalSurveyPerson?.Comment ?? ""
+                }, cancellationToken);
                 break;
         }
     }

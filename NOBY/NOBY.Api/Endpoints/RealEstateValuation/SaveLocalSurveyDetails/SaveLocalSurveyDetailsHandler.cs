@@ -35,6 +35,7 @@ internal sealed class SaveLocalSurveyDetailsHandler(IRealEstateValuationServiceC
             LoanPurposeDetails = revDetail.LoanPurposeDetails,
             ParcelDetails = revDetail.ParcelDetails,
             OnlinePreorderDetails = revDetail.OnlinePreorderDetails,
+            Comment = request.Comment ?? "",
             LocalSurveyDetails = new DomainServices.RealEstateValuationService.Contracts.LocalSurveyData
             {
                 RealEstateValuationLocalSurveyFunctionCode = request.FunctionCode ?? "",
