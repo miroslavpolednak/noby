@@ -15,7 +15,7 @@ internal sealed class GetLoggedInUserHandler(
     {
         var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
-        return new UsersGetLoggedInUserResponse
+        var response = new UsersGetLoggedInUserResponse
         {
             UserId = userInstance.UserId,
             UserInfo = new()
@@ -33,7 +33,30 @@ internal sealed class GetLoggedInUserHandler(
             UserIdentifiers = userInstance.UserIdentifiers.Select(t => (SharedTypesUserIdentity)t!).ToList(),
             UserPermissions = getPermissions(userInstance.UserPermissions)
         };
+
+        if (userInstance.UserInfo?.IsInternal ?? false)
+        {
+			await fillMortgageSpecialist(userInstance.UserId, response, cancellationToken);
+		}
+
+        return response;
     }
+
+    private async Task fillMortgageSpecialist(int userId, UsersGetLoggedInUserResponse response, CancellationToken cancellationToken)
+    {
+		var specialist = await _userService.GetUserMortgageSpecialist(userId, cancellationToken);
+
+		if (specialist is not null)
+		{
+			response.MortgageSpecialist = new UsersGetLoggedInUserResponseMortgageSpecialist
+			{
+				FirstName = specialist.Firstname,
+				LastName = specialist.Lastname,
+				PhoneNumber = specialist.Phone,
+				EmailAddress = specialist.Email
+			};
+		}
+	}
 
     private List<int>? getPermissions(RepeatedField<int> permissions)
     {
