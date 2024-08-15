@@ -2,15 +2,13 @@
 using DomainServices.SalesArrangementService.Clients;
 using CIS.Core;
 using DomainServices.CodebookService.Clients;
-using CIS.Core.Security;
 using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetSalesArrangements;
 
 internal sealed class GetSalesArrangementsHandler(
     ISalesArrangementServiceClient _salesArrangementService,
-    ICodebookServiceClient _codebookService,
-    ICurrentUserAccessor _currentUserAccessor)
+    ICodebookServiceClient _codebookService)
         : IRequestHandler<GetSalesArrangementsRequest, List<SalesArrangementGetSalesArrangementsItem>>
 {
     public async Task<List<SalesArrangementGetSalesArrangementsItem>> Handle(GetSalesArrangementsRequest request, CancellationToken cancellationToken)
@@ -21,19 +19,8 @@ internal sealed class GetSalesArrangementsHandler(
         var saTypeList = await _codebookService.SalesArrangementTypes(cancellationToken);
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
 
-        var query = result.SalesArrangements.Where(t => t.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement);
-        // refinancing
-        if (!_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess))
-        {
-            query = query.Where(t => !ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId));
-        }
-        // ostatni sa
-        if (!_currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access))
-        {
-            query = query.Where(t => ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId));
-        }
-
-        var model = query
+        var model = result.SalesArrangements
+            .Where(t => t.State != (int)EnumSalesArrangementStates.NewArrangement && !ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId))
             .Select(t => new SalesArrangementGetSalesArrangementsItem
             {
                 SalesArrangementId = t.SalesArrangementId,
