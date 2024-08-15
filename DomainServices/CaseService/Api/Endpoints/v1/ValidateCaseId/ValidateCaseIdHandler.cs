@@ -17,7 +17,6 @@ internal sealed class ValidateCaseIdHandler(CaseServiceDbContext _dbContext)
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
-        Helpers.ThrowIfCaseIsCancelled(instance?.State);
 
         return new ValidateCaseIdResponse
         {
