@@ -44,18 +44,23 @@ internal sealed class GetLoggedInUserHandler(
 
     private async Task fillMortgageSpecialist(int userId, UsersGetLoggedInUserResponse response, CancellationToken cancellationToken)
     {
-		var specialist = await _userService.GetUserMortgageSpecialist(userId, cancellationToken);
+        // specialista nemusi existovat
+        try
+        {
+            var specialist = await _userService.GetUserMortgageSpecialist(userId, cancellationToken);
 
-		if (specialist is not null)
-		{
-			response.MortgageSpecialist = new UsersGetLoggedInUserResponseMortgageSpecialist
+			if (specialist is not null)
 			{
-				FirstName = specialist.Firstname,
-				LastName = specialist.Lastname,
-				PhoneNumber = specialist.Phone,
-				EmailAddress = specialist.Email
-			};
+				response.MortgageSpecialist = new UsersGetLoggedInUserResponseMortgageSpecialist
+				{
+					FirstName = specialist.Firstname,
+					LastName = specialist.Lastname,
+					PhoneNumber = specialist.Phone,
+					EmailAddress = specialist.Email
+				};
+			}
 		}
+        catch { }
 	}
 
     private List<int>? getPermissions(RepeatedField<int> permissions)
