@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 
-namespace DomainServices.UserService.Api.Endpoints.GetUserBasicInfo;
+namespace DomainServices.UserService.Api.Endpoints.v1.GetUserBasicInfo;
 
 internal sealed class GetUserBasicInfoHandler(
     IConnectionProvider _db,
@@ -16,16 +16,16 @@ internal sealed class GetUserBasicInfoHandler(
         {
             return Contracts.GetUserBasicInfoResponse.Parser.ParseFrom(cachedBytes);
         }
-    
+
         // vytahnout info o uzivateli z DB
-        var userInfo = (await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
-            "[dbo].[getUserDisplayName]", 
-            new { v33id = request.UserId }, 
-            cancellationToken));
+        var userInfo = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
+            "[dbo].[getUserDisplayName]",
+            new { v33id = request.UserId },
+            cancellationToken);
 
         if (string.IsNullOrEmpty(userInfo?.DisplayName))
         {
-            throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
+            throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.UserId}");
         }
 
         // vytvorit finalni model

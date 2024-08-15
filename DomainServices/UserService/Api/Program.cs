@@ -1,5 +1,6 @@
 using CIS.Core;
 using CIS.Infrastructure.StartupExtensions;
+using DomainServices.UserService.Api.Endpoints.v1;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
@@ -23,7 +24,7 @@ SharedComponents.GrpcServiceBuilder
     })
     .MapGrpcServices(app =>
     {
-        app.MapGrpcService<DomainServices.UserService.Api.Endpoints.UserService>();
+        app.MapGrpcService<UserService>();
     })
     .Run();
 

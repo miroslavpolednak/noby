@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+package DomainServices.UserService;
+option csharp_namespace = "DomainServices.UserService.Contracts";
+
+import "google/protobuf/wrappers.proto";
+
+message GetUserMortgageSpecialistRequest {
+	int32 UserId = 1;
+}
+
+message GetUserMortgageSpecialistResponse {
+	google.protobuf.StringValue Firstname = 1;
+	google.protobuf.StringValue Lastname = 2;
+	google.protobuf.StringValue Email = 3;
+	google.protobuf.StringValue Phone = 4;
+	google.protobuf.StringValue MortgageCenterId = 5;
+	google.protobuf.StringValue MortgageCenterAdditionalId = 6;
+}

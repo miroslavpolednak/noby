@@ -10,6 +10,7 @@ grpcurl -insecure -d "{\"Identity\":\"990614w\",\"IdentityScheme\":\"MPAD\"}" -H
 grpcurl -insecure -d "{\"UserId\":267}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" 127.0.0.1:30010 DomainServices.UserService.v1.UserService/GetUserBasicInfo
 grpcurl -insecure -d "{\"UserId\":69466}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" 127.0.0.1:30010 DomainServices.UserService.v1.UserService/GetUserPermissions
 grpcurl -insecure -d "{\"IdentityScheme\":\"KbUid\",\"Identity\":\"A02DGZ\"}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" 127.0.0.1:30010 DomainServices.UserService.v1.UserService/GetUserRIPAttributes
+grpcurl -insecure -d "{\"UserId\":75248}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" 127.0.0.1:30010 DomainServices.UserService.v1.UserService/GetUserMortgageSpecialist
 
 grpcurl -insecure -d "{\"Identity\":{\"identityScheme\":\"V33Id\",\"identity\":\"44361\"}}" -H "Authorization: Basic YTph" -H "noby-user-id: 267" 127.0.0.1:30010 DomainServices.UserService.v1.UserService/GetUser
 

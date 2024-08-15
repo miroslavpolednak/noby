@@ -17,4 +17,6 @@ public interface IUserServiceClient
     Task<int[]> GetCurrentUserPermissions(CancellationToken cancellationToken = default);
 
     Task<Contracts.UserRIPAttributes> GetUserRIPAttributes(string identity, string identityScheme, CancellationToken cancellationToken = default);
+
+	Task<Contracts.GetUserMortgageSpecialistResponse> GetUserMortgageSpecialist(int userId, CancellationToken cancellationToken = default);
 }

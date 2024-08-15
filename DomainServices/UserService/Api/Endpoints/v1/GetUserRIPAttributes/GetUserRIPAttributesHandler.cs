@@ -1,20 +1,20 @@
 ﻿using DomainServices.UserService.Contracts;
 
-namespace DomainServices.UserService.Api.Endpoints.GetUserRIPAttributes;
+namespace DomainServices.UserService.Api.Endpoints.v1.GetUserRIPAttributes;
 
 internal sealed class GetUserRIPAttributesHandler(IConnectionProvider _db)
-    : IRequestHandler<Contracts.GetUserRIPAttributesRequest, Contracts.UserRIPAttributes>
+    : IRequestHandler<GetUserRIPAttributesRequest, UserRIPAttributes>
 {
     public async Task<UserRIPAttributes> Handle(GetUserRIPAttributesRequest request, CancellationToken cancellationToken)
     {
         try
         {
             // vytahnout info o uzivateli z DB
-            var dbIdentity = (await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
+            var dbIdentity = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
                 "[dbo].[p_GetPersonHF_RIP]",
                 new { identity = request.Identity, identityScheme = request.IdentityScheme },
-                cancellationToken))
-                ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.IdentityScheme}={request.Identity}");
+                cancellationToken)
+                ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.IdentityScheme}={request.Identity}");
 
             return new UserRIPAttributes()
             {
@@ -30,7 +30,7 @@ internal sealed class GetUserRIPAttributesHandler(IConnectionProvider _db)
         }
         catch (Microsoft.Data.SqlClient.SqlException ex) when (ex.Number == 50000)
         {
-            throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.IdentitySchemeNotExist, request.IdentityScheme);
+            throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.IdentitySchemeNotExist, request.IdentityScheme);
         }
     }
 }

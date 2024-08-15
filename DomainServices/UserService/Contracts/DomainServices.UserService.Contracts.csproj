@@ -11,7 +11,7 @@
   </PropertyGroup>
 
 	<PropertyGroup>
-		<AnalysisMode>Recommended</AnalysisMode>
+		<AnalysisMode>All</AnalysisMode>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>DomainServices.UserService.Contracts.xml</DocumentationFile>
 	</PropertyGroup>
@@ -38,11 +38,6 @@
 		<Protobuf Include="Messages/GetUser.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/User.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 		<Protobuf Include="Messages/GetUserRIPAttributes.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="DomainServices.UserService.Contracts.xml">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<Protobuf Include="Messages/GetUserMortgageSpecialist.proto" GrpcServices="None" ProtoRoot="./" AdditionalImportDirs="../../../Shared/SharedTypes/GrpcTypes/Protos" />
 	</ItemGroup>
 </Project>
