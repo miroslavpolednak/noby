@@ -8,6 +8,7 @@ import "Messages/GetUser.proto";
 import "Messages/User.proto";
 import "Messages/GetUserRIPAttributes.proto";
 import "Messages/GetUserBasicInfo.proto";
+import "Messages/GetUserMortgageSpecialist.proto";
 
 service UserService {
    rpc GetUser(GetUserRequest) returns (User) {
@@ -31,6 +32,12 @@ service UserService {
    rpc GetUserRIPAttributes(GetUserRIPAttributesRequest) returns (UserRIPAttributes) {
 	   option (google.api.http) = {
 			get: "/v1/user-rip-attributes"
+		};
+   }
+
+   rpc GetUserMortgageSpecialist(GetUserMortgageSpecialistRequest) returns (GetUserMortgageSpecialistResponse) {
+	   option (google.api.http) = {
+			get: "/v1/user-mortgage-secialist"
 		};
    }
 }

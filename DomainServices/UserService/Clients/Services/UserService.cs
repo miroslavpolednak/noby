@@ -9,7 +9,12 @@ internal class UserService(
 	ICurrentUserAccessor _currentUser)
     : IUserServiceClient
 {
-    public async Task<Contracts.User> GetCurrentUser(CancellationToken cancellationToken = default)
+	public async Task<GetUserMortgageSpecialistResponse> GetUserMortgageSpecialist(int userId, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetUserMortgageSpecialistAsync(new GetUserMortgageSpecialistRequest { UserId = userId }, cancellationToken: cancellationToken);
+	}
+
+	public async Task<Contracts.User> GetCurrentUser(CancellationToken cancellationToken = default)
     {
         return await GetUser(_currentUser.User!.Id, cancellationToken);
     }

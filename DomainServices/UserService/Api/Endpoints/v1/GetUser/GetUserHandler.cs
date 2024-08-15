@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 
-namespace DomainServices.UserService.Api.Endpoints.GetUser;
+namespace DomainServices.UserService.Api.Endpoints.v1.GetUser;
 
 internal sealed class GetUserHandler(
     IConnectionProvider _db,
@@ -21,21 +21,21 @@ internal sealed class GetUserHandler(
         }
 
         // vytahnout info o uzivateli z DB
-        var dbIdentities = (await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<Dto.DbUserIdentity>(
+        var dbIdentities = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<Dto.DbUserIdentity>(
             "[dbo].[getUserIdentities]",
             new { identitySchema = request.Identity.IdentityScheme.ToString(), identityValue = request.Identity.Identity },
-            cancellationToken))
-            ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.Identity.IdentityScheme}={request.Identity.Identity}");
+            cancellationToken)
+            ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.Identity.IdentityScheme}={request.Identity.Identity}");
 
         // dotahnout atributy
         var dbAttributes = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
             "[dbo].[getUserAttributes]",
-            new { v33id = dbIdentities.v33id },
+            new { dbIdentities.v33id },
             cancellationToken);
 
         var dbPermissions = await _db.ExecuteDapperStoredProcedureSqlToListAsync<dynamic>(
             "[dbo].[getPermissions]",
-            new { ApplicationCode = "NOBY", v33id = dbIdentities.v33id },
+            new { ApplicationCode = "NOBY", dbIdentities.v33id },
             cancellationToken);
 
         // vytvorit finalni model

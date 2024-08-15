@@ -1,4 +1,4 @@
-﻿namespace DomainServices.UserService.Api.Endpoints.GetUser.Dto;
+﻿namespace DomainServices.UserService.Api.Endpoints.v1.GetUser.Dto;
 
 internal sealed class DbUserIdentity
 {

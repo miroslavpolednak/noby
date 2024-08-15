@@ -2,7 +2,7 @@
 using Grpc.Core;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DomainServices.UserService.Api.Endpoints;
+namespace DomainServices.UserService.Api.Endpoints.v1;
 
 [Authorize]
 internal sealed class UserService(IMediator _mediator)
@@ -19,4 +19,7 @@ internal sealed class UserService(IMediator _mediator)
 
     public override async Task<UserRIPAttributes> GetUserRIPAttributes(GetUserRIPAttributesRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
+
+	public override async Task<GetUserMortgageSpecialistResponse> GetUserMortgageSpecialist(GetUserMortgageSpecialistRequest request, ServerCallContext context)
+		=> await _mediator.Send(request, context.CancellationToken);
 }

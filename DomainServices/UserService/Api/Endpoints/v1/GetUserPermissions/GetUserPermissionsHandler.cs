@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf;
 
-namespace DomainServices.UserService.Api.Endpoints.GetUserPermissions;
+namespace DomainServices.UserService.Api.Endpoints.v1.GetUserPermissions;
 
 internal sealed class GetUserPermissionsHandler(
     IConnectionProvider _db,

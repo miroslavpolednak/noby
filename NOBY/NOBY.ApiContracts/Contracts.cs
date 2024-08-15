@@ -7961,6 +7961,13 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("userInfo")]
         public UsersGetLoggedInUserResponseUserInfo UserInfo { get; set; } = default!;
 
+        /// <summary>
+        /// Obchodní specialista pro třetí strany
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("mortgageSpecialist")]
+        public UsersGetLoggedInUserResponseMortgageSpecialist MortgageSpecialist { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("userPermissions")]
         public List<int>? UserPermissions { get; set; } = default!;
 
@@ -8031,6 +8038,39 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("isInternal")]
         public bool IsInternal { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class UsersGetLoggedInUserResponseMortgageSpecialist
+    {
+        /// <summary>
+        /// Jméno obchodního specialisty
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        public string? FirstName { get; set; } = default!;
+
+        /// <summary>
+        /// Přijmení obchodního specialisty
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        public string? LastName { get; set; } = default!;
+
+        /// <summary>
+        /// Telefon obchodního specialisty
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("phoneNumber")]
+        public string? PhoneNumber { get; set; } = default!;
+
+        /// <summary>
+        /// Emailová adresa obchodního specialisty
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("emailAddress")]
+        public string? EmailAddress { get; set; } = default!;
 
     }
 

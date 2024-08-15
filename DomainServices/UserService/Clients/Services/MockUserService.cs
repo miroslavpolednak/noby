@@ -88,5 +88,10 @@ public class MockUserService
         return GetUserPermissions(1, cancellationToken);
     }
 
-    public const int DefaultUserId = 3048;
+	public Task<GetUserMortgageSpecialistResponse> GetUserMortgageSpecialist(int userId, CancellationToken cancellationToken = default)
+	{
+		throw new NotImplementedException();
+	}
+
+	public const int DefaultUserId = 3048;
 }
