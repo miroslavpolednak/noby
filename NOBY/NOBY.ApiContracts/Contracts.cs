@@ -5571,13 +5571,6 @@ namespace NOBY.ApiContracts
         [System.ComponentModel.DataAnnotations.Required]
         public SharedTypesPhone MobilePhone { get; set; } = new SharedTypesPhone();
 
-        /// <summary>
-        /// Komentář pro odhadce
-        /// </summary>
-
-        [System.Text.Json.Serialization.JsonPropertyName("comment")]
-        public string? Comment { get; set; } = default!;
-
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -5658,6 +5651,13 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("localSurveyDetails")]
         public RealEstateValuationSharedLocalSurveyData? LocalSurveyDetails { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář pro odhadce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("comment")]
+        public string? Comment { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("onlinePreorderDetails")]
         public RealEstateValuationSharedOnlinePreorderData? OnlinePreorderDetails { get; set; } = default!;
@@ -5763,6 +5763,13 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("localSurveyPerson")]
         public RealEstateValuationSharedLocalSurveyData? LocalSurveyPerson { get; set; } = default!;
+
+        /// <summary>
+        /// Komentář pro odhadce
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("comment")]
+        public string? Comment { get; set; } = default!;
 
     }
 

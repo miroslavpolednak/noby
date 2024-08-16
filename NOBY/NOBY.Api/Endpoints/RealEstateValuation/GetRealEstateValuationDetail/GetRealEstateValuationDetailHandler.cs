@@ -32,7 +32,8 @@ internal sealed class GetRealEstateValuationDetailHandler(
 
         return new RealEstateValuationGetRealEstateValuationDetailResponse
         {
-            RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
+            Comment = valuationDetail.Comment,
+			RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
             RealEstateValuationDetail = new()
             {
                 CaseInProgress = caseInstance.State == (int)EnumCaseStates.InProgress,
@@ -42,11 +43,10 @@ internal sealed class GetRealEstateValuationDetailHandler(
                 { 
                     LoanPurposes = [.. valuationDetail.LoanPurposeDetails.LoanPurposes] 
                 },
-                SpecificDetails = getSpecificDetailsObject(valuationDetail)
+                SpecificDetails = getSpecificDetailsObject(valuationDetail),
             },
             LocalSurveyDetails = valuationDetail.LocalSurveyDetails is null ? null : new RealEstateValuationSharedLocalSurveyData
             {
-                Comment = valuationDetail.Comment,
                 FirstName = valuationDetail.LocalSurveyDetails?.FirstName ?? "",
                 LastName = valuationDetail.LocalSurveyDetails?.LastName ?? "",
                 FunctionCode  = valuationDetail.LocalSurveyDetails?.RealEstateValuationLocalSurveyFunctionCode ?? "",
