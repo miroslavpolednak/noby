@@ -32,12 +32,9 @@ internal sealed class CustomerService(IMediator _mediator)
     public override async Task<ValidateContactResponse> ValidateContact(ValidateContactRequest request, ServerCallContext context)
         => await _mediator.Send(request, context.CancellationToken);
 
-    public override Task<FormatAddressResponse> FormatAddress(FormatAddressRequest request, ServerCallContext context) =>
-        _mediator.Send(request, context.CancellationToken);
-
-    public override async Task<Empty> UpdateContacts(UpdateContactsRequest request, ServerCallContext context)
-    {
+    public override async Task<FormatAddressResponse> FormatAddress(FormatAddressRequest request, ServerCallContext context) =>
         await _mediator.Send(request, context.CancellationToken);
-        return new();
-    }
+
+    public override async Task<Empty> UpdateContacts(UpdateContactsRequest request, ServerCallContext context) => 
+        await _mediator.Send(request, context.CancellationToken);
 }
