@@ -58,37 +58,43 @@ internal sealed class ActiveTasksService
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-    public async Task UpdateActiveTaskByTaskIdSb(long caseId, int taskIdSb, CancellationToken cancellationToken)
+	public async Task UpdateActiveTaskByTaskIdSb(long caseId, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
     {
-        _logger.UpdateActiveTaskStart(caseId, taskIdSb);
+		_logger.UpdateActiveTaskStart(caseId, taskDetail.TaskObject.TaskIdSb);
+
+		var taskTypeId = taskDetail.TaskObject.TaskTypeId;
+
+		var taskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
+		var isActive = taskDetail.TaskObject.IsActive(taskStates);
+
+		var entity = await _dbContext.ActiveTasks
+			.FirstOrDefaultAsync(t => t.TaskId == taskDetail.TaskObject.TaskId, cancellationToken);
+
+		_logger.BeforeUpdateActiveTasks(isActive, entity is not null);
+		if (isActive && entity is null)
+		{
+			_dbContext.ActiveTasks.Add(new Database.Entities.ActiveTask
+			{
+				TaskIdSb = taskDetail.TaskObject.TaskIdSb,
+				CaseId = caseId,
+				TaskId = taskDetail.TaskObject.TaskId,
+				TaskTypeId = taskTypeId
+			});
+		}
+
+		if (!isActive && entity is not null)
+		{
+			_dbContext.ActiveTasks.Remove(entity);
+		}
+
+		await _dbContext.SaveChangesAsync(cancellationToken);
+	}
+
+	public async Task UpdateActiveTaskByTaskIdSb(long caseId, int taskIdSb, CancellationToken cancellationToken)
+    {
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = taskIdSb }, cancellationToken);
-        var taskTypeId = taskDetail.TaskObject.TaskTypeId;
-
-        var taskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
-        var isActive = taskDetail.TaskObject.IsActive(taskStates);
-        
-        var entity = await _dbContext.ActiveTasks
-            .FirstOrDefaultAsync(t => t.TaskId == taskDetail.TaskObject.TaskId, cancellationToken);
-
-        _logger.BeforeUpdateActiveTasks(isActive, entity is not null);
-        if (isActive && entity is null)
-        {
-            _dbContext.ActiveTasks.Add(new Database.Entities.ActiveTask
-            {
-                TaskIdSb = taskIdSb,
-                CaseId = caseId,
-                TaskId = taskDetail.TaskObject.TaskId,
-                TaskTypeId = taskTypeId
-            });
-        }
-        
-        if (!isActive && entity is not null)
-        {
-            _dbContext.ActiveTasks.Remove(entity);
-        }
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-    }
+        await UpdateActiveTaskByTaskIdSb(caseId, taskDetail, cancellationToken);
+	}
 
     private readonly IMediator _mediator;
     private readonly CaseServiceDbContext _dbContext;

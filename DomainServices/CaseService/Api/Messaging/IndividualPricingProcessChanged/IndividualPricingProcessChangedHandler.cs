@@ -56,7 +56,7 @@ internal class IndividualPricingProcessChangedHandler(
         }
         else
         {
-            await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, taskIdSB, CancellationToken.None);
+            await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, taskDetail, CancellationToken.None);
 
             // nastaveni flow switches
             var flowSwitches = (message.state switch
