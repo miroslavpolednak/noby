@@ -1,6 +1,8 @@
 ﻿using CIS.Core.Security;
+using Duende.AccessTokenManagement.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security;
@@ -16,8 +18,7 @@ public sealed class NobyCurrentUserAccessor(IHttpContextAccessor _httpContext)
     {
         get
         {
-            if (_user is null)
-                _user = _httpContext.HttpContext?.User as ICurrentUser;
+            _user ??= _httpContext.HttpContext?.User as ICurrentUser;
             return _user;
         }
     }
@@ -60,4 +61,24 @@ public sealed class NobyCurrentUserAccessor(IHttpContextAccessor _httpContext)
         await EnsureDetails(cancellationToken);
         return (TDetails)_userDetails!;
     }
+
+    public async Task<(bool TokenFound, DateTime? SessionExpirationTime)> GetOAuth2TokenInfo()
+    {
+        var configuration = _httpContext.HttpContext!.RequestServices.GetRequiredService<Configuration.AppConfiguration>();
+
+        if (configuration.Security!.AuthenticationScheme == AuthenticationConstants.CaasAuthScheme)
+        {
+			var tokenService = _httpContext.HttpContext!.RequestServices.GetRequiredService<IUserTokenManagementService>();
+			var tokenData = await tokenService.GetAccessTokenAsync(_httpContext.HttpContext!.User);
+
+			var handler = new JwtSecurityTokenHandler();
+			var token = handler.ReadJwtToken(tokenData.RefreshToken);
+
+			return (true, token.ValidTo);
+		}
+		else
+        {
+            return (false, default);
+        }
+	}
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using NOBY.Infrastructure.Configuration;
 using System.Security.Claims;
 
 namespace NOBY.Infrastructure.Security.Middleware;
@@ -30,7 +32,20 @@ public sealed class NobySecurityMiddleware(RequestDelegate _next)
 
             // vlozit FOMS uzivatele do contextu
             context.User = new NobyUser(context.User.Identity, userId);
-        }
+
+            // vratit sliding expiration session uzivatele
+			context.Response.OnStarting(() =>
+			{
+                var timeout = context.RequestServices.GetRequiredService<AppConfiguration>().Security?.SessionInactivityTimeout;
+
+				if (timeout.HasValue)
+				{
+					context.Response.Headers.Append("inactivity-timeout", DateTime.Now.AddMinutes(timeout.Value).ToString("s", CultureInfo.InvariantCulture));
+				}
+
+				return Task.CompletedTask;
+			});
+		}
 
         await _next.Invoke(context);
 

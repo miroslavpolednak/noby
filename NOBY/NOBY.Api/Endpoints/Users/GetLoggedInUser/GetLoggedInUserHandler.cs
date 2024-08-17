@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace NOBY.Api.Endpoints.Users.GetLoggedInUser;
 
 internal sealed class GetLoggedInUserHandler(
-    Database.FeApiDbContext _dbContext,
+	Database.FeApiDbContext _dbContext,
     IAppCache _cache,
     CIS.Core.Security.ICurrentUserAccessor _userAccessor,
     DomainServices.UserService.Clients.IUserServiceClient _userService)
@@ -13,7 +13,10 @@ internal sealed class GetLoggedInUserHandler(
 {
     public async Task<UsersGetLoggedInUserResponse> Handle(GetLoggedInUserRequest request, CancellationToken cancellationToken)
     {
-        var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
+		var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
+
+        // token info
+        var (tokenFound, sessionExpirationTime) = await ((NobyCurrentUserAccessor)_userAccessor).GetOAuth2TokenInfo();
 
         var response = new UsersGetLoggedInUserResponse
         {

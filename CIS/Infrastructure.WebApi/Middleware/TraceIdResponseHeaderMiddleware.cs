@@ -3,23 +3,11 @@ using System.Reflection;
 
 namespace CIS.Infrastructure.WebApi.Middleware;
 
-public class TraceIdResponseHeaderMiddleware
+public class TraceIdResponseHeaderMiddleware(RequestDelegate _next)
 {
-    static string _appVersion = "";
+    private static readonly string _appVersion = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
 
-    static TraceIdResponseHeaderMiddleware()
-    {
-        _appVersion = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-    }
-
-    private readonly RequestDelegate _next;
-
-    public TraceIdResponseHeaderMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
-    public async Task InvokeAsync(HttpContext context)
+	public async Task InvokeAsync(HttpContext context)
     {
         context.Response.OnStarting(() =>
         {

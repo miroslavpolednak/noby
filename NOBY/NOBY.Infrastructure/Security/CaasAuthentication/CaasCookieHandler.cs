@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Security.Claims;
 using Microsoft.Net.Http.Headers;
-using Microsoft.AspNetCore.Authentication;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
 
@@ -59,9 +58,9 @@ internal sealed class CaasCookieHandler
                 var currentLogin = context.Principal!.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value;
 
                 var userServiceClient = context.HttpContext.RequestServices.GetRequiredService<IUserServiceClient>();
-
-                // zavolat user service a zjistit, jestli muze uzivatel do aplikace
-                DomainServices.UserService.Contracts.User? userInstance = null;
+                
+				// zavolat user service a zjistit, jestli muze uzivatel do aplikace
+				DomainServices.UserService.Contracts.User? userInstance = null;
 
                 try
                 {
@@ -85,12 +84,14 @@ internal sealed class CaasCookieHandler
                     throw new CisAuthorizationException("Cookie handler: user does not have APPLICATION_BasicAccess");
                 }
 
-                // vytvorit claimy
-                var claims = new List<Claim>();
-                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin));
-                claims.Add(new Claim(CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(CultureInfo.InvariantCulture)));
-                // doplnit prava uzivatele do claims
-                claims.AddRange(permissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}")));
+				// vytvorit claimy
+				List<Claim> claims =
+				[
+					new (CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin),
+					new (CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(CultureInfo.InvariantCulture)),
+					// doplnit prava uzivatele do claims
+					.. permissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}"))
+				];
 
                 var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, CIS.Core.Security.SecurityConstants.ClaimTypeId, "role");
                 var principal = new ClaimsPrincipal(identity);
