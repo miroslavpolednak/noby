@@ -7978,6 +7978,13 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("userPermissions")]
         public List<int>? UserPermissions { get; set; } = default!;
 
+        /// <summary>
+        /// Čas platnosti oAuth2 session
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("sessionValidTo")]
+        public System.DateTime? SessionValidTo { get; set; } = default!;
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]

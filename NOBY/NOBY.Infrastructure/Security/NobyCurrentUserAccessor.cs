@@ -62,7 +62,7 @@ public sealed class NobyCurrentUserAccessor(IHttpContextAccessor _httpContext)
         return (TDetails)_userDetails!;
     }
 
-    public async Task<(bool TokenFound, DateTime? SessionExpirationTime)> GetOAuth2TokenInfo()
+    public async Task<(bool TokenFound, DateTime? SessionValidTo)> GetOAuth2TokenInfo()
     {
         var configuration = _httpContext.HttpContext!.RequestServices.GetRequiredService<Configuration.AppConfiguration>();
 

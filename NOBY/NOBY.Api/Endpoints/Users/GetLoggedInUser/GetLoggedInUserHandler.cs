@@ -16,7 +16,7 @@ internal sealed class GetLoggedInUserHandler(
 		var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
         // token info
-        var (tokenFound, sessionExpirationTime) = await ((NobyCurrentUserAccessor)_userAccessor).GetOAuth2TokenInfo();
+        var (tokenFound, sessionValidTo) = await ((NobyCurrentUserAccessor)_userAccessor).GetOAuth2TokenInfo();
 
         var response = new UsersGetLoggedInUserResponse
         {
@@ -34,8 +34,9 @@ internal sealed class GetLoggedInUserHandler(
                 IsInternal = userInstance.UserInfo?.IsInternal ?? false
             },
             UserIdentifiers = userInstance.UserIdentifiers.Select(t => (SharedTypesUserIdentity)t!).ToList(),
-            UserPermissions = getPermissions(userInstance.UserPermissions)
-        };
+            UserPermissions = getPermissions(userInstance.UserPermissions),
+            SessionValidTo = sessionValidTo
+		};
 
         if (userInstance.UserInfo?.IsInternal ?? false)
         {
