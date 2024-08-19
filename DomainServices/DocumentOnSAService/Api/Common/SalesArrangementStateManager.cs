@@ -55,15 +55,15 @@ public class SalesArrangementStateManager : ISalesArrangementStateManager
         )
           )
         {
-            await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, EnumSalesArrangementStates.ToSend.ToByte(), cancellationToken); // 8
+            await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, EnumSalesArrangementStates.ToSend, cancellationToken); // 8
         }
         else if (documentsToSign.DocumentsOnSAToSign.All(d => d.DocumentOnSAId is null))
         {
-            await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, EnumSalesArrangementStates.InProgress.ToByte(), cancellationToken); // 1
+            await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, EnumSalesArrangementStates.InProgress, cancellationToken); // 1
         }
         else
         {
-            await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, EnumSalesArrangementStates.InSigning.ToByte(), cancellationToken); // 7
+            await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangementId, EnumSalesArrangementStates.InSigning, cancellationToken); // 7
         }
     }
 

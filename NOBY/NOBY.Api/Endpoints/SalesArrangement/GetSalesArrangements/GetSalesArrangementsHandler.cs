@@ -20,7 +20,7 @@ internal sealed class GetSalesArrangementsHandler(
         var productTypes = await _codebookService.ProductTypes(cancellationToken);
 
         var model = result.SalesArrangements
-            .Where(t => t.State != (int)EnumSalesArrangementStates.NewArrangement && !ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId))
+			.Where(t => t.IsInState(SalesArrangementHelpers.AllExceptNewSalesArrangementStates) && !ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(t.SalesArrangementTypeId))
             .Select(t => new SalesArrangementGetSalesArrangementsItem
             {
                 SalesArrangementId = t.SalesArrangementId,

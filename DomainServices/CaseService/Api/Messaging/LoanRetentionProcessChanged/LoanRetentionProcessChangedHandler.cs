@@ -46,7 +46,7 @@ internal sealed class LoanRetentionProcessChangedHandler(
 
         if (sa is not null)
         {
-            var newState = message.state == cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED ? (int)EnumSalesArrangementStates.Finished : (int)EnumSalesArrangementStates.Cancelled;
+            var newState = message.state == cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED ? EnumSalesArrangementStates.Finished : EnumSalesArrangementStates.Cancelled;
             await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, newState);
         }
         else

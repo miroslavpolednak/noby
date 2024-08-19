@@ -17,46 +17,22 @@ using DomainServices.DocumentOnSAService.Api.Common;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
-public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSigningResponse>
+public class StartSigningHandler(
+	DocumentOnSAServiceDbContext _dbContext,
+	IMediator _mediator,
+	IHouseholdServiceClient _householdClient,
+	ISalesArrangementServiceClient _salesArrangementServiceClient,
+	IDataAggregatorServiceClient _dataAggregatorServiceClient,
+	StartSigningMapper _startSigningMapper,
+	ICurrentUserAccessor _currentUser,
+	ICaseServiceClient _caseServiceClient,
+	IESignaturesClient _eSignaturesClient,
+	ICommonSigningMethods _commonSigning) 
+    : IRequestHandler<StartSigningRequest, StartSigningResponse>
 {
     private const int _crsDocumentType = 13;
 
-    private readonly DocumentOnSAServiceDbContext _dbContext;
-    private readonly IMediator _mediator;
-    private readonly IHouseholdServiceClient _householdClient;
-    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
-    private readonly IDataAggregatorServiceClient _dataAggregatorServiceClient;
-    private readonly StartSigningMapper _startSigningMapper;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly ICaseServiceClient _caseServiceClient;
-    private readonly IESignaturesClient _eSignaturesClient;
-    private readonly ICommonSigningMethods _commonSigning;
-
-    public StartSigningHandler(
-        DocumentOnSAServiceDbContext dbContext,
-        IMediator mediator,
-        IHouseholdServiceClient householdClient,
-        ISalesArrangementServiceClient salesArrangementServiceClient,
-        IDataAggregatorServiceClient dataAggregatorServiceClient,
-        StartSigningMapper startSigningMapper,
-        ICurrentUserAccessor currentUser,
-        ICaseServiceClient caseServiceClient,
-        IESignaturesClient eSignaturesClient,
-        ICommonSigningMethods commonSigning)
-    {
-        _dbContext = dbContext;
-        _mediator = mediator;
-        _householdClient = householdClient;
-        _salesArrangementServiceClient = salesArrangementServiceClient;
-        _dataAggregatorServiceClient = dataAggregatorServiceClient;
-        _startSigningMapper = startSigningMapper;
-        _currentUser = currentUser;
-        _caseServiceClient = caseServiceClient;
-        _eSignaturesClient = eSignaturesClient;
-        _commonSigning = commonSigning;
-    }
-
-    public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
+	public async Task<StartSigningResponse> Handle(StartSigningRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(nameof(request));
 
@@ -168,16 +144,18 @@ public class StartSigningHandler : IRequestHandler<StartSigningRequest, StartSig
 
     private async Task UpdateSalesArrangementStateIfNeeded(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
-        switch (salesArrangement.State)
+        if (salesArrangement.IsInState([EnumSalesArrangementStates.InSigning]))
         {
-            case (int)EnumSalesArrangementStates.InSigning://(7 Podepisování)
-                break; // Skip state change
-            case (int)EnumSalesArrangementStates.InProgress://(1 Rozpracováno)
-                await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)EnumSalesArrangementStates.InSigning, cancellationToken);
-                break;
-            default:
-                throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
-        }
+			// Skip state change
+		}
+        else if (salesArrangement.IsInState([EnumSalesArrangementStates.InProgress]))
+        {
+			await _salesArrangementServiceClient.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, EnumSalesArrangementStates.InSigning, cancellationToken);
+		}
+        else
+        {
+			throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
+		}
     }
 
     private async Task ProductRequestInvalidateExistingSigningProcessesIfExist(StartSigningRequest request, __Household.Household houseHold, CancellationToken cancellationToken)

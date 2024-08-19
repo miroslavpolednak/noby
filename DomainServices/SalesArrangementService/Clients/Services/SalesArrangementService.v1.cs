@@ -101,13 +101,13 @@ internal sealed class SalesArrangementService(Contracts.v1.SalesArrangementServi
         await _service.UpdateSalesArrangementAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default)
+    public async Task UpdateSalesArrangementState(int salesArrangementId, EnumSalesArrangementStates state, CancellationToken cancellationToken = default)
     {
         await _service.UpdateSalesArrangementStateAsync(
            new()
            {
                SalesArrangementId = salesArrangementId,
-               State = state
+               State = (int)state
            }, cancellationToken: cancellationToken);
     }
 

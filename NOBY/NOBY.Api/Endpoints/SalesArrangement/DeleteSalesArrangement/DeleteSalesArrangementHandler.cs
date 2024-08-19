@@ -22,8 +22,8 @@ internal sealed class DeleteSalesArrangementHandler(
         }
 
         // validace na stav SA
-        if (!_allowedSAStates.Contains(saInstance.State)
-        // validace na typ SA
+        if (!saInstance.IsInState(_allowedSAStates)
+            // validace na typ SA
             || ISalesArrangementAuthorizationService.RefinancingSATypes.Contains(saInstance.SalesArrangementTypeId))
         {
             throw new NobyValidationException(90032);
@@ -43,12 +43,12 @@ internal sealed class DeleteSalesArrangementHandler(
         await _salesArrangementService.DeleteSalesArrangement(request.SalesArrangementId, cancellationToken: cancellationToken);
     }
 
-    private static readonly int[] _allowedSAStates =
+    private static readonly EnumSalesArrangementStates[] _allowedSAStates =
     [
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.ToSend
+        EnumSalesArrangementStates.InProgress,
+        EnumSalesArrangementStates.NewArrangement,
+        EnumSalesArrangementStates.InSigning,
+        EnumSalesArrangementStates.ToSend
     ];
 
     private static readonly int[] _householdDeleteSATypes =

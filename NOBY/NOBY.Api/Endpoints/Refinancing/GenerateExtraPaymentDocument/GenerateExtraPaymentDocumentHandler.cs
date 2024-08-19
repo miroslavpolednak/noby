@@ -43,7 +43,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler(
 
         await GenerateCalculationDocuments(request, salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, EnumSalesArrangementStates.Finished, cancellationToken);
     }
 
     private async Task ValidateHandoverTypeDetail(RefinancingGenerateExtraPaymentDocumentRequest request, CancellationToken cancellationToken)
