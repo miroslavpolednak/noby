@@ -133,6 +133,10 @@ internal sealed class CaasOpendIdHandler
                 {
                     return $"https://{request.Host}{redirectUri}";
                 }
+                else if (_configuration.AllowAnyUrlInSigninRedirect) // pouze pro testovani
+                {
+                    return safeUri.ToString();
+                }
                 else if (safeUri.Authority == request.Host.Value && safeUri.Scheme == "https")
                 {
                     return safeUri.ToString();

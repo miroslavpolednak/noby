@@ -47,4 +47,9 @@ public sealed class AppConfigurationSecurity
     /// URL na ktere bude presmerovan uzivatel v pripade, ze se neco nepovedlo pri autentizaci
     /// </summary>
     public string FailedSignInRedirectPath { get; set; } = "/#/";
+
+    /// <summary>
+    /// Pokud je nastaveno na true, nekontrolujeme zda redirect query param pri prihlasovani obsahuje stejnou domenu, na jake bezi aktualni instance aplikace.
+    /// </summary>
+    public bool AllowAnyUrlInSigninRedirect { get; set; }
 }

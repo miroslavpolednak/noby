@@ -17,7 +17,7 @@ public static class MapAuthenticationEndpoints
         return appBuilder.UseEndpoints(t =>
         {
             // sign in
-            t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, () =>
+            t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromQuery] string? redirect) =>
             {
             })
                 .RequireAuthorization()
