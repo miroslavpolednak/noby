@@ -13,5 +13,6 @@ public enum WorkflowTaskStates
     Dozadani = 9,
     DoplneniDokumentu = 10,
     Schvaleno = 11,
-    Zametnuto = 12
+    Zamitnuto = 12,
+    KontrolaUdaju = 13
 }

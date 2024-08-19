@@ -221,7 +221,7 @@ internal sealed class LinkModelationToSalesArrangementHandler(
     private async Task deleteBoundedRealEstateValuations(long caseId, CancellationToken cancellationToken)
     {
         var realEstatesToDelete = (await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken))
-                .Where(t => t.ValuationStateId is (int)RealEstateValuationStates.Neoceneno or (int)RealEstateValuationStates.Rozpracovano);
+                .Where(t => t.ValuationStateId is (int)WorkflowTaskStates.Neoceneno or (int)WorkflowTaskStates.Rozpracovano);
         foreach (var realEstateValuation in realEstatesToDelete)
         {
             try

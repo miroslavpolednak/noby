@@ -23,7 +23,7 @@ internal sealed class GetRealEstateValuationTypesHandler(
         if (detail.CaseId != request.CaseId)
             throw new NobyValidationException(90032, "RealEstateValuationDetail is for different case");
 
-        if (detail.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
+        if (detail.ValuationStateId != (int)WorkflowTaskStates.Rozpracovano)
             throw new NobyValidationException(90032, "RealEstateValuation is not in progress state (7)");
 
         if (detail.PossibleValuationTypeId.Any())

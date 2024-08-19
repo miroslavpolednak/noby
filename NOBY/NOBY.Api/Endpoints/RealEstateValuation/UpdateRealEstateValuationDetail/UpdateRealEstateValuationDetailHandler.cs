@@ -18,7 +18,7 @@ internal sealed class UpdateRealEstateValuationDetailHandler(
 
         if (valuationDetail.ValuationStateId is not 7)
         {
-            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, RealEstateValuationStates.Rozpracovano, cancellationToken);
+            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, WorkflowTaskStates.Rozpracovano, cancellationToken);
         }
 
         var dsRequest = new __Contracts.UpdateRealEstateValuationDetailRequest

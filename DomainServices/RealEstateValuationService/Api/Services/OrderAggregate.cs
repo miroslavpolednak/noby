@@ -1,7 +1,6 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts.V1;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
@@ -143,7 +142,7 @@ internal sealed class OrderAggregate(
     public async Task SaveResultsAndUpdateEntity(
         Database.Entities.RealEstateValuation entity, 
         long orderId,
-        RealEstateValuationStates newValuationState,
+        WorkflowTaskStates newValuationState,
         CancellationToken cancellationToken)
     {
         // ulozeni vysledku

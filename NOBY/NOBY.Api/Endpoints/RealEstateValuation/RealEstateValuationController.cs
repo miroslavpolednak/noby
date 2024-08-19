@@ -64,7 +64,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// </remarks>
     [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/valuation-type-id")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano, RealEstateValuationStates.DoplneniDokumentu)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano, WorkflowTaskStates.DoplneniDokumentu)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -111,7 +111,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -215,7 +215,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// Smazání/odpojení již připojeného dokumentu listu vlastnictví (LV) od existujícího Ocenění nemovitosti.
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano)]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -241,7 +241,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// <response code="200">Kolekce ID uploadovaných souborů vs. nových ID příloh</response>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano, RealEstateValuationStates.DoplneniDokumentu)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano, WorkflowTaskStates.DoplneniDokumentu)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(typeof(List<RealEstateValuationSaveRealEstateValuationAttachmentsResponseItem>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -266,7 +266,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// </remarks>
     [HttpDelete("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/attachments/{realEstateValuationAttachmentId:int}")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano, RealEstateValuationStates.DoplneniDokumentu)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano, WorkflowTaskStates.DoplneniDokumentu)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -290,7 +290,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// <response code="200">DeedOfOwnershipDocumentId: Noby ID daného záznamu. Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.</response>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Neoceneno, RealEstateValuationStates.Rozpracovano)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Neoceneno, WorkflowTaskStates.Rozpracovano)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -310,7 +310,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/valuation-types")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -329,7 +329,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// </remarks>
     [HttpPut("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/deed-of-ownership-documents/{deedOfOwnershipDocumentId:int}")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -353,7 +353,7 @@ public sealed class RealEstateValuationController(IMediator _mediator)
     /// </remarks>
     [HttpPost("{caseId:long}/real-estate-valuations/{realEstateValuationId:int}/preorder-online")]
     [NobyAuthorize(UserPermissions.REALESTATE_VALUATION_Manage)]
-    [RealEstateValuationStateValidation(RealEstateValuationStates.Rozpracovano)]
+    [RealEstateValuationStateValidation(WorkflowTaskStates.Rozpracovano)]
     [SwaggerOperation(Tags = ["Real Estate Valuation"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

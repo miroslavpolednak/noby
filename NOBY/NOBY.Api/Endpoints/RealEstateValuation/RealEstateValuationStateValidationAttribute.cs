@@ -13,7 +13,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
     public RealEstateValuationStateValidationAttribute()
         : base(typeof(RealEstateValuationStateValidationFilter))
     {
-        ValuationStateId = Array.Empty<int>();
+        ValuationStateId = [];
         Arguments = new object[] { ValuationStateId };
     }
 
@@ -24,7 +24,7 @@ internal sealed class RealEstateValuationStateValidationAttribute
         Arguments = new object[] { ValuationStateId };
     }
 
-    public RealEstateValuationStateValidationAttribute(params RealEstateValuationStates[] valuationStateId)
+    public RealEstateValuationStateValidationAttribute(params WorkflowTaskStates[] valuationStateId)
         : base(typeof(RealEstateValuationStateValidationFilter))
     {
         ValuationStateId = valuationStateId.Select(t => (int)t).ToArray();

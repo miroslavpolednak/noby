@@ -14,7 +14,7 @@ internal sealed class SaveOnlinePreorderDetailsHandler(IRealEstateValuationServi
             throw new NobyValidationException(90032, "ValuationTypeId is not Online");
         }
 
-        if (revDetail.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
+        if (revDetail.ValuationStateId != (int)WorkflowTaskStates.Rozpracovano)
         {
             throw new NobyValidationException(90032, "Online is not in state 7");
         }

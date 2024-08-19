@@ -105,7 +105,7 @@ internal sealed class PreorderOnlineValuationHandler(
         bool revaluationRequired,
         CancellationToken cancellationToken)
     {
-        entity.ValuationStateId = (int)RealEstateValuationStates.DoplneniDokumentu;
+        entity.ValuationStateId = (int)WorkflowTaskStates.DoplneniDokumentu;
         entity.ValuationTypeId = (int)EnumRealEstateValuationTypes.Online;
         entity.PreorderId = kbmodelReponse.ValuationId;
         entity.IsRevaluationRequired = revaluationRequired;
