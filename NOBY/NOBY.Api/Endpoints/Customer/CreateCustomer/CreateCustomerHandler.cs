@@ -51,7 +51,9 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCust
             resultCode = CustomerCreateCustomerResponseResultCode.Identified;
 
             if (customerOnSaList.Any(c => c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb && i.IdentityId == kbId)))
+            {
                 throw new NobyValidationException(90001, $"Customer with Kb ID {kbId} already exists on SA");
+            }
         }
         // Více klientů
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
@@ -59,21 +61,10 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCust
             _logger.LogInformation(ex, "CreateCustomer: more clients found");
             throw new NobyValidationException(90006, 409);
         }
-        // Registry nefungují
-        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
-        {
-            _logger.LogInformation(ex, "CreateCustomer: registry failed");
-            throw new NobyValidationException(90007);
-        }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
             _logger.LogInformation(ex, "CreateCustomer: registry failed");
             throw new NobyValidationException(90008, 500);
-        }
-        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11035")
-        {
-            _logger.LogInformation(ex, "CreateCustomer: Special handling of identification document type and issuing country combination");
-            throw new NobyValidationException(90044);
         }
         catch
         {
