@@ -457,13 +457,6 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
         && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId && d.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()).AllAsync(r => !r.IsSigned, cancellationToken))
         {
-            var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, signatureDate, cancellationToken);
-
-            if (result is not null && result.CommonValue != 0)
-            {
-                throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
-            }
-
             //SalesArrangement FirstSignatureDate
             await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
 
