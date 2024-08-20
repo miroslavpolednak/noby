@@ -34,7 +34,7 @@ internal sealed class OrderOnlineValuationHandler(
         var orderResponse = await _preorderService.CreateOrder(orderRequest, cancellationToken);
 
         // ulozeni vysledku
-        await _aggregate.SaveResultsAndUpdateEntity(entity, orderResponse.OrderId, RealEstateValuationStates.Dokonceno, cancellationToken);
+        await _aggregate.SaveResultsAndUpdateEntity(entity, orderResponse.OrderId, WorkflowTaskStates.KontrolaUdaju, cancellationToken);
 
         // ulozeni detailu objednavky
         await _aggregate.UpdateLocalSurveyDetailsOnly(request.RealEstateValuationId, entity.IsRevaluationRequired ? request.LocalSurveyDetails : null, revDetailData, cancellationToken);

@@ -109,7 +109,7 @@ internal sealed class RealEstateValuationServiceClient(Contracts.v1.RealEstateVa
         await _service.OrderStandardValuationAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, RealEstateValuationStates valuationStateId, CancellationToken cancellationToken = default)
+    public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, WorkflowTaskStates valuationStateId, CancellationToken cancellationToken = default)
     {
         await _service.UpdateStateByRealEstateValuationAsync(new()
         {

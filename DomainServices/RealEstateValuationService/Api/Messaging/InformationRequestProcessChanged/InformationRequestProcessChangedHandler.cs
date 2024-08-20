@@ -36,7 +36,7 @@ internal sealed class InformationRequestProcessChangedHandler(
         var realEstateValuation = await _dbContext.RealEstateValuations
                                                   .FirstOrDefaultAsync(r => r.CaseId == caseId && r.OrderId == orderId);
 
-        if (realEstateValuation == null || realEstateValuation.ValuationStateId == 5)
+        if (realEstateValuation == null || realEstateValuation.ValuationStateId == (int)WorkflowTaskStates.Cancelled)
         {
             return;
         }
@@ -56,9 +56,9 @@ internal sealed class InformationRequestProcessChangedHandler(
 
     private static void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
     {
-        if (realEstateValuationListItem is { ValuationStateId: 4, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: 8 })
+        if (realEstateValuationListItem is { ValuationStateId: (int)WorkflowTaskStates.Completed, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: (int)WorkflowTaskStates.ProbihaOceneni })
         {
-            realEstateValuationListItem.ValuationStateId = 9;
+            realEstateValuationListItem.ValuationStateId = (int)WorkflowTaskStates.Dozadani;
         }
     }
 
@@ -66,9 +66,9 @@ internal sealed class InformationRequestProcessChangedHandler(
     {
         realEstateValuationListItem.ValuationStateId = realEstateValuationListItem.ValuationTypeId switch
         {
-            (int)ValuationTypes.Online => 4,
+            (int)ValuationTypes.Online => (int)WorkflowTaskStates.Completed,
             (int)ValuationTypes.Dts or (int)ValuationTypes.Standard
-                when realEstateValuationListItem.ValuationStateId != 4 => 8,
+                when realEstateValuationListItem.ValuationStateId != (int)WorkflowTaskStates.Completed => (int)WorkflowTaskStates.ProbihaOceneni,
             _ => realEstateValuationListItem.ValuationStateId
         };
     } 

@@ -37,7 +37,7 @@ internal sealed class OrderDTSValuationHandler(
         // ulozeni vysledku
         entity.Comment = request.Comment;
         entity.ValuationTypeId = 2;
-        await _aggregate.SaveResultsAndUpdateEntity(entity, orderId, RealEstateValuationStates.Probiha, cancellationToken);
+        await _aggregate.SaveResultsAndUpdateEntity(entity, orderId, WorkflowTaskStates.ProbihaOceneni, cancellationToken);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
 

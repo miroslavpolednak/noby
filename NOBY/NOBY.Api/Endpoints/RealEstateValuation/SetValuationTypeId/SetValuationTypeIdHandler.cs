@@ -14,7 +14,7 @@ internal sealed class SetValuationTypeIdHandler(IRealEstateValuationServiceClien
             throw new NobyValidationException(90032, "ValuationStateId check failed");
         }
 
-        if (instance.ValuationStateId == (int)RealEstateValuationStates.DoplneniDokumentu && request.ValuationTypeId != EnumRealEstateValuationTypes.Standard)
+        if (instance.ValuationStateId == (int)WorkflowTaskStates.DoplneniDokumentu && request.ValuationTypeId != EnumRealEstateValuationTypes.Standard)
         {
             throw new NobyValidationException(90032, "ValuationTypeId for ValuationStateId=10 check failed");
         }
@@ -39,14 +39,14 @@ internal sealed class SetValuationTypeIdHandler(IRealEstateValuationServiceClien
             throw new NobyValidationException(90032, "PossibleValuationTypeId for DTS check failed");
         }
 
-        if (instance.ValuationStateId == (int)RealEstateValuationStates.DoplneniDokumentu)
+        if (instance.ValuationStateId == (int)WorkflowTaskStates.DoplneniDokumentu)
         {
-            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, RealEstateValuationStates.Rozpracovano, cancellationToken);
+            await _realEstateValuationService.UpdateStateByRealEstateValuation(request.RealEstateValuationId, WorkflowTaskStates.Rozpracovano, cancellationToken);
         }
 
         await _realEstateValuationService.UpdateValuationTypeByRealEstateValuation(request.RealEstateValuationId, (int)request.ValuationTypeId, cancellationToken);
     }
 
     private static readonly int[] _possibleValuationTypeId = [(int)SharedTypes.Enums.EnumRealEstateValuationTypes.Unknown, (int)SharedTypes.Enums.EnumRealEstateValuationTypes.Online];
-    private static readonly int[] _possibleValuationStateId = [(int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano];
+    private static readonly int[] _possibleValuationStateId = [(int)WorkflowTaskStates.DoplneniDokumentu, (int)WorkflowTaskStates.Rozpracovano];
 }

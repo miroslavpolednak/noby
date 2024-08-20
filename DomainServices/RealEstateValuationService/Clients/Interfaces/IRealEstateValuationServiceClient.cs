@@ -21,7 +21,7 @@ public interface IRealEstateValuationServiceClient
 
     Task SetForeignRealEstateTypesByRealEstateValuation(int realEstateValuationId, string ACVRealEstateTypeId, string bagmanRealEstateTypeId, CancellationToken cancellationToken = default);
 
-    Task UpdateStateByRealEstateValuation(int realEstateValuationId, RealEstateValuationStates valuationStateId, CancellationToken cancellationToken = default);
+    Task UpdateStateByRealEstateValuation(int realEstateValuationId, WorkflowTaskStates valuationStateId, CancellationToken cancellationToken = default);
 
     Task UpdateValuationTypeByRealEstateValuation(int realEstateValuationId, int valuationTypeId, CancellationToken cancellationToken = default);
 

@@ -58,7 +58,7 @@ internal sealed class CollateralValuationProcessChangedHandler(
 
     private static void HandleTerminated(RealEstateValuation realEstateValuation)
     {
-        realEstateValuation.ValuationStateId = 5;
+        realEstateValuation.ValuationStateId = (int)WorkflowTaskStates.Cancelled;
     }
 
     private async Task HandleCompleted(RealEstateValuation realEstateValuation, TaskDetailItem taskDetail)
@@ -88,6 +88,6 @@ internal sealed class CollateralValuationProcessChangedHandler(
             await _documentDataStorage.UpdateByEntityId(realEstateValuation.RealEstateValuationId, loadedDetail.Data);
         }
 
-        realEstateValuation.ValuationStateId = 4;
+        realEstateValuation.ValuationStateId = (int)WorkflowTaskStates.KontrolaUdaju;
     }
 }
