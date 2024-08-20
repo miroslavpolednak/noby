@@ -17,9 +17,9 @@ public static class DistributedCachingStartupExtensions
     {
         // pridat configuration
         Configuration = builder.Configuration
-            .GetSection(JsonCacheConfigurationKey)
+            .GetSection(CisDistributedCacheConfigurationKey)
             .Get<CisDistributedCacheConfiguration>()
-            ?? throw new Core.Exceptions.CisConfigurationNotFound(JsonCacheConfigurationKey);
+            ?? throw new Core.Exceptions.CisConfigurationNotFound(CisDistributedCacheConfigurationKey);
 
         builder.Services.AddSingleton(Configuration);
 
@@ -98,7 +98,7 @@ public static class DistributedCachingStartupExtensions
     /// <summary>
     /// Nazev sekce v appsettings.json kde je konfigurace kese
     /// </summary>
-    private const string JsonCacheConfigurationKey = "CisDistributedCache";
+    private const string CisDistributedCacheConfigurationKey = "CisDistributedCache";
 
     /// <summary>
     /// Nazev connection stringu v appsettings.json kde je CS na redis nebo mssql

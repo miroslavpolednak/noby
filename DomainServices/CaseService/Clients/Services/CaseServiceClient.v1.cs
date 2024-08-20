@@ -2,24 +2,22 @@
 using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
 using SharedTypes.GrpcTypes;
+using CIS.Infrastructure.Caching.Grpc;
 
 namespace DomainServices.CaseService.Clients.v1;
 
-internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClient _service)
+internal sealed class CaseServiceClient(
+    Contracts.v1.CaseService.CaseServiceClient _service,
+    IGrpcClientResponseCache<CaseServiceClient> _cache)
     : ICaseServiceClient
 {
     public async Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
     {
-        if (_cacheValidateCaseIdResponse is null || _cacheValidateCaseIdResponseId != caseId)
+        return await _cache.GetResponse(caseId, async () => await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
         {
-            _cacheValidateCaseIdResponse = await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
-            {
-                CaseId = caseId,
-                ThrowExceptionIfNotFound = throwExceptionIfNotFound
-            }, cancellationToken: cancellationToken);
-            _cacheValidateCaseIdResponseId = caseId;
-        }
-        return _cacheValidateCaseIdResponse;
+            CaseId = caseId,
+            ThrowExceptionIfNotFound = throwExceptionIfNotFound
+        }, cancellationToken: cancellationToken), cancellationToken);
     }
 
     public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default)
