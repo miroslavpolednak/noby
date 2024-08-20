@@ -8,26 +8,13 @@ using NOBY.Infrastructure.ErrorHandling;
 namespace NOBY.Services.MortgageRefinancing;
 
 [ScopedService, SelfService]
-public class MortgageRefinancingDocumentService
+public class MortgageRefinancingDocumentService(
+	ISalesArrangementServiceClient _salesArrangementService,
+	IUserServiceClient _userService,
+	ICurrentUserAccessor _currentUserAccessor,
+	MortgageRefinancingWorkflowService _refinancingWorkflowService)
 {
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IUserServiceClient _userService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly MortgageRefinancingWorkflowService _refinancingWorkflowService;
-
-    public MortgageRefinancingDocumentService(
-        ISalesArrangementServiceClient salesArrangementService,
-        IUserServiceClient userService,
-        ICurrentUserAccessor currentUserAccessor,
-        MortgageRefinancingWorkflowService refinancingWorkflowService)
-    {
-        _salesArrangementService = salesArrangementService;
-        _userService = userService;
-        _currentUserAccessor = currentUserAccessor;
-        _refinancingWorkflowService = refinancingWorkflowService;
-    }
-
-    public async Task<SalesArrangement> LoadAndValidateSA(int salesArrangementId, SalesArrangementTypes expectedType, CancellationToken cancellationToken)
+	public async Task<SalesArrangement> LoadAndValidateSA(int salesArrangementId, SalesArrangementTypes expectedType, CancellationToken cancellationToken)
     {
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellationToken);
 
@@ -37,8 +24,10 @@ public class MortgageRefinancingDocumentService
         if (GetManagedByRC2(salesArrangement) == true)
             throw new NobyValidationException(90032, "ManagedByRC2 is true or SA is not retention SA");
 
-        if (salesArrangement.State is not ((int)EnumSalesArrangementStates.InProgress or (int)EnumSalesArrangementStates.NewArrangement))
+        if (!salesArrangement.IsInState([EnumSalesArrangementStates.InProgress, EnumSalesArrangementStates.NewArrangement]))
+        {
             throw new NobyValidationException(90032, "SA has to be in state InProgress(1) or NewArrangement(5)");
+        }
 
         return salesArrangement;
     }

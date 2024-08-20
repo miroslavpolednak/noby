@@ -50,7 +50,7 @@ internal sealed class GenerateRefixationDocumentHandler(
         else
             await GenerateInterestRateNotificationDocument(salesArrangement, offer, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
     private async Task ValidateSignatureTypeDetailId(RefinancingGenerateRefixationDocumentRequest request, GetMortgageResponse product, CancellationToken cancellationToken)

@@ -53,8 +53,8 @@ internal class WithdrawalProcessChangedHandler(
             var salesArrangementId = salesArrangement.SalesArrangementId;
             var state = code switch
             {
-                1 => 6,
-                3 => 3,
+                1 => EnumSalesArrangementStates.Disbursed,
+                3 => EnumSalesArrangementStates.Cancelled,
                 _ => throw new ArgumentException(nameof(code))
             };
             

@@ -33,7 +33,7 @@ public class GenerateRetentionDocumentHandler(
 
         await GenerateRetentionDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
     private async Task ValidateSignatureTypeDetailId(RefinancingGenerateRetentionDocumentRequest request, CancellationToken cancellationToken)

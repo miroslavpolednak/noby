@@ -125,16 +125,16 @@ internal sealed class GetRefinancingParametersHandler(
         {
             var sa = saList.FirstOrDefault(x => x.ProcessId == process.ProcessId);
 
-            if (sa is not null && process.StateIdSB == 30 && !process.Cancelled && sa.State != (int)EnumSalesArrangementStates.Finished)
+            if (sa is not null && process.StateIdSB == 30 && !process.Cancelled && sa.IsInState([EnumSalesArrangementStates.Cancelled, ..SalesArrangementHelpers.ActiveSalesArrangementStates]))
             {
-                await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, (int)EnumSalesArrangementStates.Finished, cancellationToken);
+                await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, EnumSalesArrangementStates.Finished, cancellationToken);
                 // nastavit state do nacteneho SA
                 sa.State = (int)EnumSalesArrangementStates.Finished;
                 _logger.LogWarning("SalesArrangementState was updated. Synchronization with StarBuild did not occur before GetRefinaningParameters");
             }
-            else if (sa is not null && process.StateIdSB == 30 && process.Cancelled && sa.State != (int)EnumSalesArrangementStates.Cancelled)
+            else if (sa is not null && process.StateIdSB == 30 && process.Cancelled && sa.IsInState([EnumSalesArrangementStates.Finished, ..SalesArrangementHelpers.ActiveSalesArrangementStates]))
             {
-                await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, (int)EnumSalesArrangementStates.Cancelled, cancellationToken);
+                await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, EnumSalesArrangementStates.Cancelled, cancellationToken);
                 // nastavit state do nacteneho SA
                 sa.State = (int)EnumSalesArrangementStates.Cancelled;
                 _logger.LogWarning("SalesArrangementState was updated. Synchronization with StarBuild did not occur before GetRefinaningParameters");

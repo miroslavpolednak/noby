@@ -1,4 +1,5 @@
 ﻿using DomainServices.HouseholdService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.CreateHousehold;
 
@@ -54,11 +55,10 @@ internal sealed class CreateHouseholdHandler(
             }, cancellationToken);
         }
 
-        if (saInstance.State == (int)EnumSalesArrangementStates.ToSend) // 8
-        {
-            await _salesArrangementService.UpdateSalesArrangementState(saInstance.SalesArrangementId, (int)EnumSalesArrangementStates.InSigning, cancellationToken); // 7
+		if (saInstance.IsInState([EnumSalesArrangementStates.ToSend]))
+		{
+            await _salesArrangementService.UpdateSalesArrangementState(saInstance.SalesArrangementId, EnumSalesArrangementStates.InSigning, cancellationToken); // 7
         }
-
 
         return new CreateHouseholdResponse()
         {

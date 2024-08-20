@@ -12,42 +12,34 @@ using DomainServices.DocumentOnSAService.Api.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StopSigning;
 
-public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Empty>
+public sealed class StopSigningHandler(
+	DocumentOnSAServiceDbContext _dbContext,
+	IESignaturesClient _eSignaturesClient,
+	ISalesArrangementStateManager _salesArrangementStateManager,
+	ISalesArrangementServiceClient _salesArrangementServiceClient,
+	IAuditLogger _auditLogger,
+	ILogger<StopSigningHandler> _logger) 
+    : IRequestHandler<StopSigningRequest, Empty>
 {
-    private readonly DocumentOnSAServiceDbContext _dbContext;
-    private readonly IESignaturesClient _eSignaturesClient;
-    private readonly IAuditLogger _auditLogger;
-    private readonly ILogger<StopSigningHandler> _logger;
-    private readonly ISalesArrangementStateManager _salesArrangementStateManager;
-    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
+    private readonly static EnumSalesArrangementStates[] _enumSalesArrangementStates =
+    [
+        EnumSalesArrangementStates.InProgress,
+		EnumSalesArrangementStates.InApproval,
+		EnumSalesArrangementStates.Cancelled,
+		EnumSalesArrangementStates.NewArrangement,
+		EnumSalesArrangementStates.Disbursed,
+		EnumSalesArrangementStates.Finished,
+		EnumSalesArrangementStates.RC2
+	];
 
-    public StopSigningHandler(
-        DocumentOnSAServiceDbContext dbContext,
-        IESignaturesClient eSignaturesClient,
-        ISalesArrangementStateManager salesArrangementStateManager,
-        ISalesArrangementServiceClient salesArrangementServiceClient,
-        IAuditLogger auditLogger,
-        ILogger<StopSigningHandler> logger)
-
-    {
-        _dbContext = dbContext;
-        _eSignaturesClient = eSignaturesClient;
-        _auditLogger = auditLogger;
-        _logger = logger;
-        _salesArrangementStateManager = salesArrangementStateManager;
-        _salesArrangementServiceClient = salesArrangementServiceClient;
-    }
-
-    public async Task<Empty> Handle(StopSigningRequest request, CancellationToken cancellationToken)
+	public async Task<Empty> Handle(StopSigningRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FindAsync([request.DocumentOnSAId, cancellationToken], cancellationToken: cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId);
 
         var salesArrangement = await _salesArrangementServiceClient.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
-        if (salesArrangement.State != (int)EnumSalesArrangementStates.InSigning // 7
-            && salesArrangement.State != (int)EnumSalesArrangementStates.ToSend // 8
-            && !request.SkipValidations)
+        if (!request.SkipValidations && salesArrangement.IsInState(_enumSalesArrangementStates))
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
         }
@@ -71,20 +63,20 @@ public sealed class StopSigningHandler : IRequestHandler<StopSigningRequest, Emp
         _auditLogger.Log(
                     AuditEventTypes.Noby008,
                     "Podepsaný dokument byl stornován",
-                    products: new List<AuditLoggerHeaderItem>
-                    {
-                new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
-                new(AuditConstants.ProductNamesSalesArrangement, documentOnSa.SalesArrangementId),
-                new(AuditConstants.ProductNamesForm, documentOnSa.FormId),
-                    }
+                    products:
+					[
+				        new(AuditConstants.ProductNamesCase, salesArrangement.CaseId),
+                        new(AuditConstants.ProductNamesSalesArrangement, documentOnSa.SalesArrangementId),
+                        new(AuditConstants.ProductNamesForm, documentOnSa.FormId),
+                    ]
                 );
 
-        if (documentOnSa.Source == Source.Workflow)
-            return new Empty();
-
-        // SA state
-        await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
-
+        if (documentOnSa.Source != Source.Workflow)
+		{
+            // SA state
+			await _salesArrangementStateManager.SetSalesArrangementStateAccordingDocumentsOnSa(salesArrangement.SalesArrangementId, cancellationToken);
+		}
+        
         return new Empty();
     }
 }

@@ -20,7 +20,7 @@ internal sealed class UpdateParametersHandler(
         var saInstance = await _salesArrangementService.GetSalesArrangement(request.SalesArrangementId, cancellationToken);
 
         // validace stavu
-        if (_disallowedStates.Contains(saInstance.State))
+        if (saInstance.IsInState(_disallowedStates))
         {
             throw new NobyValidationException(90028);
         }
@@ -103,9 +103,9 @@ internal sealed class UpdateParametersHandler(
                 }
             }
 
-            if (saInstance.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress)
+            if (saInstance.IsInState(_saStatesForUpdate))
             {
-                await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress, cancellationToken);
+                await _salesArrangementService.UpdateSalesArrangementState(request.SalesArrangementId, EnumSalesArrangementStates.InProgress, cancellationToken);
             }
         }
         else
@@ -123,10 +123,22 @@ internal sealed class UpdateParametersHandler(
         await _salesArrangementService.SetFlowSwitch(saInstance.SalesArrangementId, FlowSwitches.ParametersSavedAtLeastOnce, true, cancellationToken);
     }
 
-    private static readonly int[] _disallowedStates =
+	public static readonly EnumSalesArrangementStates[] _saStatesForUpdate =
+	[
+		EnumSalesArrangementStates.NewArrangement,
+		EnumSalesArrangementStates.InApproval,
+		EnumSalesArrangementStates.Disbursed,
+		EnumSalesArrangementStates.InSigning,
+		EnumSalesArrangementStates.ToSend,
+		EnumSalesArrangementStates.Finished,
+		EnumSalesArrangementStates.Cancelled,
+		EnumSalesArrangementStates.RC2
+	];
+
+	private static readonly EnumSalesArrangementStates[] _disallowedStates =
     [
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.Disbursed,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.InApproval
+        EnumSalesArrangementStates.Cancelled,
+        EnumSalesArrangementStates.Disbursed,
+        EnumSalesArrangementStates.InApproval
     ];
 }
