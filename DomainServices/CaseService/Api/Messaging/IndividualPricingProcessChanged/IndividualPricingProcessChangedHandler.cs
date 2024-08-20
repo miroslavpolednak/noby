@@ -17,6 +17,8 @@ internal class IndividualPricingProcessChangedHandler(
 {
     public async Task Handle(IMessageContext context, IndividualPricingProcessChanged message)
     {
+        _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.individualPricingProcessData?.processPhase?.code);
+
         var (taskIdSB, taskId, caseId, isValid) = initialValidations(message);
         if (!isValid)
         {

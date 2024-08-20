@@ -9,8 +9,8 @@ internal class MortgageInstanceChangedHandler(
 {
 	public async Task Handle(IMessageContext context, cz.kb.api.mortgageservicingevents.v3.MortgageInstanceChanged message)
     {
-        _logger.KafkaConsumerStarted(nameof(MortgageInstanceChangedHandler));
-        
+        _logger.TempMessageHeaderLog(context, message.eventId);
+
         if (long.TryParse(message.New?.Starbuild?.id, out var caseId))
         {
             var d = (decimal)message.New.loanAmount.limit;

@@ -9,7 +9,7 @@ internal class MortgageApplicationChangedHandler(
 {
 	public async Task Handle(IMessageContext context, cz.kb.api.mortgageservicingevents.v3.MortgageApplicationChanged message)
     {
-        _logger.KafkaConsumerStarted(nameof(MortgageApplicationChangedHandler));
+        _logger.TempMessageHeaderLog(context, message.eventId);
 
         if (long.TryParse(message.New.MortgageInstanceRequested.Starbuild?.id, out long caseId))
         {

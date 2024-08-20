@@ -15,6 +15,8 @@ internal class CaseStateChangedProcessingCompletedHandler(
 {
 	public async Task Handle(IMessageContext context, CaseStateChanged_ProcessingCompleted message)
     {
+        _logger.TempMessageHeaderLog(context, message.eventId);
+
         var cache = await _distributedCache.GetObjectAsync<SharedDto.CaseStateChangeRequestId>($"CaseStateChanged_{message.workflowInputProcessingContext.requestId}");
         if (cache is null)
         {

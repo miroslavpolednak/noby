@@ -11,6 +11,8 @@ internal sealed class LoanExtraPaymentProcessChangedHandler(
 {
     public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanExtraPaymentProcessChanged message)
     {
+        _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.loanExtraPaymentProcessData?.processPhase?.code);
+
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(LoanExtraPaymentProcessChangedHandler), message.@case.caseId.id);
