@@ -69,15 +69,16 @@ internal sealed class MpHomeUpdateMapper(ICodebookServiceClient _codebookService
     private static List<AddressData>? mapAddresses(IList<SharedTypes.GrpcTypes.GrpcAddress>? addresses)
     {
         return addresses?.Select(address => new AddressData
-            {
-                Type = (AddressType)(address.AddressTypeId ?? (int)AddressType.Permanent),
-                Street = address.Street,
-                BuildingIdentificationNumber = address.StreetNumber,
-                LandRegistryNumber = string.IsNullOrWhiteSpace(address.EvidenceNumber) ? address.HouseNumber : address.EvidenceNumber,
-                PostCode = address.Postcode,
-                City = address.City,
-                CountryId = address.CountryId
-            })
-            .ToList();
+                        {
+                            Type = (AddressType)(address.AddressTypeId ?? (int)AddressType.Permanent),
+                            Street = address.Street,
+                            BuildingIdentificationNumber = address.StreetNumber,
+                            LandRegistryNumber = string.IsNullOrWhiteSpace(address.EvidenceNumber) ? address.HouseNumber : address.EvidenceNumber,
+                            PostCode = address.Postcode,
+                            City = address.City,
+                            CountryId = address.CountryId
+                        })
+                        .Where(address => !string.IsNullOrWhiteSpace(address.LandRegistryNumber) && !string.IsNullOrWhiteSpace(address.PostCode))
+                        .ToList();
     }
 }

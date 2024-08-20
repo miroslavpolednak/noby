@@ -41,7 +41,12 @@ internal sealed class MpHomeDetailMapper(
         {
             foreach (var address in partner.Addresses)
             {
-                customer.Addresses.Add(await mapAddress(address, cancellationToken));
+                var parsedAddress = await mapAddress(address, cancellationToken);
+
+                if (parsedAddress is null)
+                    continue;
+                    
+                customer.Addresses.Add(parsedAddress);
             }
         }
 
@@ -82,7 +87,7 @@ internal sealed class MpHomeDetailMapper(
 
     private async Task<SharedTypes.GrpcTypes.GrpcAddress?> mapAddress(AddressData? address, CancellationToken cancellationToken)
     {
-        if (address is null)
+        if (address is null || string.IsNullOrWhiteSpace(address.LandRegistryNumber) || string.IsNullOrWhiteSpace(address.PostCode))
         {
             return null;
         }
