@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 
 namespace CIS.Infrastructure.Caching.Grpc;
 
@@ -14,7 +15,9 @@ public static class GrpcClientResponseCachingStartupExtensions
         services.TryAddScoped<IGrpcClientResponseCache<TClient>>(provider =>
         {
             var cache = provider.GetService<IDistributedCache>();
-            return new GrpcClientResponseCache<TClient>(name, cache);
+            var logger = provider.GetRequiredService<ILogger<GrpcClientResponseCache<TClient>>>();
+
+            return new GrpcClientResponseCache<TClient>(name, cache, logger);
         });
     }
 }

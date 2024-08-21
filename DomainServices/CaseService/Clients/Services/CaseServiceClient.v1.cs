@@ -13,11 +13,23 @@ internal sealed class CaseServiceClient(
 {
     public async Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
     {
-        return await _cache.GetResponse(caseId, async () => await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
+        return await _cache.GetLocalOrDistributed(
+            caseId, 
+            async (c) => await ValidateCaseIdWithoutCache(caseId, throwExceptionIfNotFound, c), 
+            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(30)
+            },
+            cancellationToken);
+    }
+
+    public async Task<ValidateCaseIdResponse> ValidateCaseIdWithoutCache(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
+    {
+        return await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
         {
             CaseId = caseId,
             ThrowExceptionIfNotFound = throwExceptionIfNotFound
-        }, cancellationToken: cancellationToken), cancellationToken);
+        }, cancellationToken: cancellationToken);
     }
 
     public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default)
@@ -49,15 +61,23 @@ internal sealed class CaseServiceClient(
 
     public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default)
     {
-        if (_cacheGetCaseDetail is null || _cacheGetCaseDetail.CaseId != caseId)
-        {
-            _cacheGetCaseDetail = await _service.GetCaseDetailAsync(
+        return await _cache.GetLocalOrDistributed(
+            caseId, 
+            async (c) => await GetCaseDetailWithoutCache(caseId, c),
+            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(30)
+            },
+            cancellationToken);
+    }
+
+    public async Task<Case> GetCaseDetailWithoutCache(long caseId, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetCaseDetailAsync(
             new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
-        }
-        return _cacheGetCaseDetail;
     }
 
     public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default)
@@ -201,7 +221,5 @@ internal sealed class CaseServiceClient(
     }
 
     // kesovani vysledku validateCase
-    private long? _cacheValidateCaseIdResponseId;
-    private ValidateCaseIdResponse? _cacheValidateCaseIdResponse;
     private Case? _cacheGetCaseDetail;
 }

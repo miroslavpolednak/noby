@@ -41,6 +41,11 @@ public interface ICaseServiceClient
     Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// Stejna metoda jako GetCaseDetail, jeno bez pouziti cache. Napr. pro pouziti v Kafka handlerech nebo bg jobech.
+    /// </summary>
+    Task<Case> GetCaseDetailWithoutCache(long caseId, CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// Seznam Case pro uzivatele
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
@@ -135,6 +140,11 @@ public interface ICaseServiceClient
     Task<CreateTaskResponse> CreateTask(CreateTaskRequest request, CancellationToken cancellationToken = default);
 
     Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Stejna metoda jako ValidateCaseId, ale bez pouziti cache. Napr. pro pouziti v Kafka handlerech nebo bg jobech.
+    /// </summary>
+    Task<ValidateCaseIdResponse> ValidateCaseIdWithoutCache(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 
     Task<EnumCaseStates> CancelCase(long caseId, bool isUserInvoked = false, CancellationToken cancellationToken = default);
 

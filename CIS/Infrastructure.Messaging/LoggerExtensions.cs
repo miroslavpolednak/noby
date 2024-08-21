@@ -26,12 +26,12 @@ internal static class LoggerExtensions
         );
 
     // public accessor
-    public static void ConsumingMessageFailed(this ILogger logger, string messageId, string topic, Exception ex) => 
+    public static void ConsumingMessageFailed(this ILogger logger, in string messageId, in string topic, Exception ex) => 
         _consumingMessageFailed(logger, messageId, topic, ex);
 
     public static void SchemaRegistryError(this ILogger logger, Exception ex) =>
         _schemaRegistryError(logger, ex);
 
-    public static void ConsumingKnownMessage(this ILogger logger, string messageType, string messageId, string topic) =>
+    public static void ConsumingKnownMessage(this ILogger logger, in string messageType, in string messageId, in string topic) =>
         _consumingKnownMessage(logger, messageType, messageId, topic, null!);
 }
