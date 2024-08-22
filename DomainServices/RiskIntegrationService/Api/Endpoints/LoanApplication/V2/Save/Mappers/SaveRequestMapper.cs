@@ -113,14 +113,14 @@ internal sealed class SaveRequestMapper
     private readonly IServiceUserAccessor _serviceUserAccessor;
     private readonly AppConfiguration _configuration;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
-    private readonly UserService.Clients.IUserServiceClient _userService;
+    private readonly UserService.Clients.v1.IUserServiceClient _userService;
 
     public SaveRequestMapper(
         AppConfiguration configuration,
         IServiceUserAccessor serviceUserAccessor,
         CodebookService.Clients.ICodebookServiceClient codebookService,
         ICisEnvironmentConfiguration cisEnvironment,
-        UserService.Clients.IUserServiceClient userService)
+        UserService.Clients.v1.IUserServiceClient userService)
     {
         _configuration = configuration;
         _serviceUserAccessor = serviceUserAccessor;

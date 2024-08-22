@@ -1,10 +1,12 @@
-﻿using DomainServices.CaseService.Api.Database;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.UpdateCaseState;
 
 internal sealed class UpdateCaseStateHandler(
     IMediator _mediator,
+    IGrpcServerResponseCache _responseCache,
     CodebookService.Clients.ICodebookServiceClient _codebookService,
     CaseServiceDbContext _dbContext,
     TimeProvider _timeProvider)
@@ -46,6 +48,9 @@ internal sealed class UpdateCaseStateHandler(
         entity.StateUpdateTime = _timeProvider.GetLocalNow().DateTime;
 
         await _dbContext.SaveChangesAsync(cancellation);
+
+        await _responseCache.InvalidateEntry(nameof(ValidateCaseId), request.CaseId);
+        await _responseCache.InvalidateEntry(nameof(GetCaseDetail), request.CaseId);
 
         // fire notification
         if (shouldNotifySbAboutStateChange)

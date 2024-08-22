@@ -17,7 +17,7 @@ internal class CaseStateChangedProcessingCompletedHandler(
     {
         _logger.TempMessageHeaderLog(context, message.eventId);
 
-        var cache = await _distributedCache.GetObjectAsync<SharedDto.CaseStateChangeRequestId>($"CaseStateChanged_{message.workflowInputProcessingContext.requestId}");
+        var cache = await _distributedCache.GetObjectAsync<SharedDto.CaseStateChangeRequestId>($"CaseService:CaseStateChanged_{message.workflowInputProcessingContext.requestId}", CIS.Core.Configuration.ICisDistributedCacheConfiguration.SerializationTypes.Protobuf);
         if (cache is null)
         {
             _logger.RequestNotFoundInCache(message.workflowInputProcessingContext.requestId);

@@ -8,13 +8,13 @@ namespace CIS.Infrastructure.Caching;
 
 public static class DistributedCacheExtensions
 {
-    public static async Task<TModel?> GetObjectAsync<TModel>(this IDistributedCache cache, string key, CancellationToken cancellationToken = default(CancellationToken))
+    public static async Task<TModel?> GetObjectAsync<TModel>(this IDistributedCache cache, string key, CancellationToken cancellationToken = default)
         => await cache.GetObjectAsync<TModel?>(key, DistributedCachingStartupExtensions.Configuration.SerializationType, cancellationToken);
 
-    public static async Task SetObjectAsync<TModel>(this IDistributedCache cache, string key, TModel value, DistributedCacheEntryOptions options, CancellationToken cancellationToken = default(CancellationToken))
+    public static async Task SetObjectAsync<TModel>(this IDistributedCache cache, string key, TModel value, DistributedCacheEntryOptions options, CancellationToken cancellationToken = default)
         => await cache.SetObjectAsync<TModel>(key, value, options, DistributedCachingStartupExtensions.Configuration.SerializationType, cancellationToken);
 
-    public static async Task<TModel?> GetObjectAsync<TModel>(this IDistributedCache cache, string key, ICisDistributedCacheConfiguration.SerializationTypes serializationType, CancellationToken cancellationToken = default(CancellationToken))
+    public static async Task<TModel?> GetObjectAsync<TModel>(this IDistributedCache cache, string key, ICisDistributedCacheConfiguration.SerializationTypes serializationType, CancellationToken cancellationToken = default)
     {
         var data = await cache.GetAsync(key, cancellationToken);
         if (data is null) return default(TModel);
@@ -33,7 +33,7 @@ public static class DistributedCacheExtensions
         }
     }
 
-    public static async Task SetObjectAsync<TModel>(this IDistributedCache cache, string key, TModel value, DistributedCacheEntryOptions options, ICisDistributedCacheConfiguration.SerializationTypes serializationType, CancellationToken cancellationToken = default(CancellationToken))
+    public static async Task SetObjectAsync<TModel>(this IDistributedCache cache, string key, TModel value, DistributedCacheEntryOptions options, ICisDistributedCacheConfiguration.SerializationTypes serializationType, CancellationToken cancellationToken = default)
     {
         switch (serializationType)
         {
@@ -75,7 +75,7 @@ public static class DistributedCacheExtensions
         }
 
         var newItem = await onGet(cancellationToken);
-        await cache.SetObjectAsync(key, newItem, options, cancellationToken);
+        await cache.SetObjectAsync(key, newItem, options, serializationType, cancellationToken);
 
         return newItem;
     }

@@ -9,7 +9,7 @@ internal sealed class NotifyStarbuildHandler(
     IDistributedCache _distributedCache,
     Database.CaseServiceDbContext _dbContext,
     CodebookService.Clients.ICodebookServiceClient _codebookService,
-    UserService.Clients.IUserServiceClient _userService,
+    UserService.Clients.v1.IUserServiceClient _userService,
     ExternalServices.SbWebApi.V1.ISbWebApiClient _sbWebApiClient,
     SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
         : IRequestHandler<NotifyStarbuildRequest, Google.Protobuf.WellKnownTypes.Empty>
@@ -58,7 +58,7 @@ internal sealed class NotifyStarbuildHandler(
         // ulozit request id
         if (result.RequestId.HasValue)
         {
-            await _distributedCache.SetObjectAsync($"CaseStateChanged_{result.RequestId.Value}", new CaseStateChangeRequestId
+            await _distributedCache.SetObjectAsync($"CaseService:CaseStateChanged_{result.RequestId.Value}", new CaseStateChangeRequestId
             {
                 RequestId = result.RequestId.Value,
                 CaseId = caseInstance.CaseId,
@@ -66,7 +66,9 @@ internal sealed class NotifyStarbuildHandler(
             }, new DistributedCacheEntryOptions
             {
                 AbsoluteExpiration = DateTime.Now.AddHours(1),
-            }, cancellationToken);
+            }, 
+            CIS.Core.Configuration.ICisDistributedCacheConfiguration.SerializationTypes.Protobuf,
+            cancellationToken);
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();

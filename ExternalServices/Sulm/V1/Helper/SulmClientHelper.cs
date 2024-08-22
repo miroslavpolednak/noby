@@ -2,8 +2,11 @@
 
 namespace ExternalServices.Sulm.V1;
 
-internal sealed class SulmClientHelper
-    : ISulmClientHelper
+internal sealed class SulmClientHelper(
+    DomainServices.UserService.Clients.v1.IUserServiceClient _userService,
+    ICurrentUserAccessor _userAccessor,
+    ISulmClient _sulmClient)
+        : ISulmClientHelper
 {
     public async Task StartUse(long kbCustomerId, string purposeCode, CancellationToken cancellationToken = default)
     {
@@ -30,19 +33,5 @@ internal sealed class SulmClientHelper
         return userInstance.UserIdentifiers
             .Select(t => (SharedTypes.Types.UserIdentity)t!)
             .ToList();
-    }
-
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-    private readonly ICurrentUserAccessor _userAccessor;
-    private readonly ISulmClient _sulmClient;
-
-    public SulmClientHelper(
-        DomainServices.UserService.Clients.IUserServiceClient userService,
-        ICurrentUserAccessor userAccessor, 
-        ISulmClient sulmClient)
-    {
-        _userService = userService;
-        _userAccessor = userAccessor;
-        _sulmClient = sulmClient;
     }
 }

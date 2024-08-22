@@ -1,7 +1,7 @@
 ﻿using DomainServices.RealEstateValuationService.Api.Extensions;
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.v1.OrderStandardValuation;
 

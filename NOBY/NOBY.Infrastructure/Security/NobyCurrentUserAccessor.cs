@@ -45,7 +45,7 @@ public sealed class NobyCurrentUserAccessor(IHttpContextAccessor _httpContext)
 
         _userDetailsFetched = true;
 
-        var userService = _httpContext.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Clients.IUserServiceClient>();
+        var userService = _httpContext.HttpContext!.RequestServices.GetRequiredService<DomainServices.UserService.Clients.v1.IUserServiceClient>();
         var userInstance = await userService.GetUser(_user!.Id, cancellationToken);
         _userDetails = new CisUserDetails
         {

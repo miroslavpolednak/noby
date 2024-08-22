@@ -131,12 +131,12 @@ internal sealed class SimpleCalculateRequestMapper
 
     private readonly AppConfiguration _configuration;
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
-    private readonly UserService.Clients.IUserServiceClient _userService;
+    private readonly UserService.Clients.v1.IUserServiceClient _userService;
 
     public SimpleCalculateRequestMapper(
         AppConfiguration configuration,
         CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        UserService.Clients.IUserServiceClient userService)
+        UserService.Clients.v1.IUserServiceClient userService)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;

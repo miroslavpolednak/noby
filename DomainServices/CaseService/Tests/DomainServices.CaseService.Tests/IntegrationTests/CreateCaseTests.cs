@@ -71,7 +71,7 @@ public class CreateCaseTests
                 ProductTypeId = 1,
                 TargetAmount = 100000
             },
-            CaseOwnerUserId = UserService.Clients.Services.MockUserService.DefaultUserId
+            CaseOwnerUserId = UserService.Clients.v1.MockUserServiceClient.DefaultUserId
         };
 
     public CreateCaseTests(WebApplicationFactoryFixture<Program> fixture)

@@ -6,6 +6,6 @@ internal static class GrpcClientResponseCacheHelpers
 
     public static string CreateCacheKey(in string serviceName, in string methodName, in object key)
     {
-        return $"GDCC:{serviceName}-{methodName}-{key}";
+        return $"GDCC:{serviceName}:{methodName}-{key}";
     }
 }

@@ -4,6 +4,7 @@ using SharedComponents.DocumentDataStorage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
     .AddErrorCodeMapper(DomainServices.HouseholdService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {

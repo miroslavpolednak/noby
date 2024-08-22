@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Security;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.UserService.Contracts;
 using NOBY.Infrastructure.ErrorHandling;
 

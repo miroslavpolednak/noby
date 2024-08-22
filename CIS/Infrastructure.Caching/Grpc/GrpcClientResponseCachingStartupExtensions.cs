@@ -7,6 +7,11 @@ namespace CIS.Infrastructure.Caching.Grpc;
 
 public static class GrpcClientResponseCachingStartupExtensions
 {
+    public static void AddGrpcServerResponseCaching(this IServiceCollection services)
+    {
+        services.TryAddScoped<IGrpcServerResponseCache, GrpcServerResponseCache>();
+    }
+
     public static void AddGrpcClientResponseCaching<TClient>(this IServiceCollection services, in string serviceName)
         where TClient : class
     {

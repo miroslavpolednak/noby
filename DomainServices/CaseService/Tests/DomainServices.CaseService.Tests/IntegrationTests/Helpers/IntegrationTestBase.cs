@@ -47,7 +47,7 @@ public abstract class IntegrationTestBase
         Fixture
             .ConfigureServices(services =>
             {
-                services.Replace(ServiceDescriptor.Transient<UserService.Clients.IUserServiceClient, UserService.Clients.Services.MockUserService>());
+                services.Replace(ServiceDescriptor.Transient<UserService.Clients.v1.IUserServiceClient, UserService.Clients.v1.MockUserServiceClient>());
                 services.Replace(ServiceDescriptor.Transient<CodebookService.Clients.ICodebookServiceClient, CodebookService.Clients.Services.CodebookServiceMock>());
 
                 var sa = new Mock<SalesArrangementService.Clients.ISalesArrangementServiceClient>();

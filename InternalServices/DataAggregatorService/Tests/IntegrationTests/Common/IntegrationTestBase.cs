@@ -8,8 +8,7 @@ using DomainServices.HouseholdService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients.Services;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using static CIS.InternalServices.DataAggregatorService.Contracts.V1.DataAggregatorService;
@@ -45,7 +44,7 @@ public class IntegrationTestBase
                .ConfigureServices(services =>
                {
                    // This mock is necessary for mock of service discovery
-                   services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserService>();
+                   services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserServiceClient>();
 
                    services.RemoveAll<ICodebookServiceClient>().AddSingleton<ICodebookServiceClient, CodebookServiceMock>();
 

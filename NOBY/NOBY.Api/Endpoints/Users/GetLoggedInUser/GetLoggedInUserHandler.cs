@@ -8,7 +8,7 @@ internal sealed class GetLoggedInUserHandler(
 	Database.FeApiDbContext _dbContext,
     IAppCache _cache,
     CIS.Core.Security.ICurrentUserAccessor _userAccessor,
-    DomainServices.UserService.Clients.IUserServiceClient _userService)
+    DomainServices.UserService.Clients.v1.IUserServiceClient _userService)
         : IRequestHandler<GetLoggedInUserRequest, UsersGetLoggedInUserResponse>
 {
     public async Task<UsersGetLoggedInUserResponse> Handle(GetLoggedInUserRequest request, CancellationToken cancellationToken)

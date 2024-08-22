@@ -8,7 +8,7 @@ internal sealed class GetCreditWorthinessHandler(
     CreditWorthinessHouseholdService _creditWorthinessHouseholdService,
     DomainServices.RiskIntegrationService.Clients.CreditWorthiness.V2.ICreditWorthinessServiceClient _creditWorthinessService,
     CIS.Core.Security.ICurrentUserAccessor _userAccessor,
-    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    DomainServices.UserService.Clients.v1.IUserServiceClient _userService,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
     DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService,
     DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)

@@ -1,22 +1,10 @@
-﻿using Google.Protobuf;
+﻿namespace DomainServices.UserService.Api.Endpoints.v1.GetUserBasicInfo;
 
-namespace DomainServices.UserService.Api.Endpoints.v1.GetUserBasicInfo;
-
-internal sealed class GetUserBasicInfoHandler(
-    IConnectionProvider _db,
-    IDistributedCache _distributedCache)
+internal sealed class GetUserBasicInfoHandler(IConnectionProvider _db)
         : IRequestHandler<Contracts.GetUserBasicInfoRequest, Contracts.GetUserBasicInfoResponse>
 {
     public async Task<Contracts.GetUserBasicInfoResponse> Handle(Contracts.GetUserBasicInfoRequest request, CancellationToken cancellationToken)
     {
-        // zkusit cache
-        string cacheKey = Helpers.CreateUserBasicCacheKey(request.UserId);
-        var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellationToken);
-        if (cachedBytes != null)
-        {
-            return Contracts.GetUserBasicInfoResponse.Parser.ParseFrom(cachedBytes);
-        }
-
         // vytahnout info o uzivateli z DB
         var userInfo = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
             "[dbo].[getUserDisplayName]",
@@ -34,14 +22,6 @@ internal sealed class GetUserBasicInfoHandler(
             DisplayName = userInfo!.DisplayName
         };
 
-        await _distributedCache.SetAsync(Helpers.CreateUserBasicCacheKey(request.UserId), model.ToByteArray(), new DistributedCacheEntryOptions
-        {
-            AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(_minutesInCache),
-        },
-        cancellationToken);
-
         return model;
     }
-
-    private const int _minutesInCache = 30;
 }

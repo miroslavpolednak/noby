@@ -1,10 +1,12 @@
-﻿using DomainServices.CaseService.Api.Database;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.UpdateCaseData;
 
 internal sealed class UpdateCaseDataHandler(
     ILogger<UpdateCaseDataHandler> _logger,
+    IGrpcServerResponseCache _responseCache,
     IMediator _mediator,
     CodebookService.Clients.ICodebookServiceClient _codebookService,
     CaseServiceDbContext _dbContext)
@@ -33,6 +35,8 @@ internal sealed class UpdateCaseDataHandler(
         entity.ProductTypeId = request.Data.ProductTypeId;
 
         await _dbContext.SaveChangesAsync(cancellation);
+
+        await _responseCache.InvalidateEntry(nameof(GetCaseDetail), request.CaseId);
 
         // pokud se zmenil IsEmployeeBonusRequested, zavolat EAS
         if (bonusChanged)

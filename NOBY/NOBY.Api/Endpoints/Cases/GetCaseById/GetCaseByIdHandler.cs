@@ -3,7 +3,7 @@
 internal sealed class GetCaseByIdHandler(
     Services.CreateCaseFromExternalSources.CreateCaseFromExternalSourcesService _createCaseFromExternalSources,
     CasesModelConverter _converter,
-    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    DomainServices.UserService.Clients.v1.IUserServiceClient _userService,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService)
         : IRequestHandler<GetCaseByIdRequest, CasesSharedCaseModel>
 {
