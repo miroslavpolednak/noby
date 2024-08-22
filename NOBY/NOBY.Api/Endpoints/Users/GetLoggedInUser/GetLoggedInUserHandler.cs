@@ -67,7 +67,7 @@ internal sealed class GetLoggedInUserHandler(
         catch { }
 	}
 
-    private List<int>? getPermissions(RepeatedField<int> permissions)
+    private List<int>? getPermissions(List<int> permissions)
     {
         var allowedPermissions = _cache.GetOrAdd(nameof(GetLoggedInUserHandler), () =>
         {

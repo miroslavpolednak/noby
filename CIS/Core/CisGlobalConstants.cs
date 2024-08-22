@@ -26,11 +26,6 @@ public static class CisGlobalConstants
     public const string ExternalServicesServiceDiscoveryKeyPrefix = "ES:";
 
     /// <summary>
-    /// Name of section in appsettings.json which holds configuration settings for domain services.
-    /// </summary>
-    public const string DomainServicesClientsConfigurationSectionName = "DomainServicesClients";
-
-    /// <summary>
     /// Name of section in appsettings.json which holds CIS environment configuration
     /// </summary>
     public const string EnvironmentConfigurationSectionName = "CisEnvironmentConfiguration";

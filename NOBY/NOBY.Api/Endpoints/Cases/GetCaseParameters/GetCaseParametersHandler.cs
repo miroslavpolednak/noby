@@ -164,7 +164,7 @@ internal sealed class GetCaseParametersHandler(
         return response;
     }
 
-    private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(long? userId, CancellationToken cancellationToken)
+    private async Task<DomainServices.UserService.Clients.Dto.UserDto?> getUserInstance(long? userId, CancellationToken cancellationToken)
     {
         if (!userId.HasValue)
             return null;

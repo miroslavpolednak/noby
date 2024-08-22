@@ -60,7 +60,7 @@ internal sealed class CaasCookieHandler
                 var userServiceClient = context.HttpContext.RequestServices.GetRequiredService<IUserServiceClient>();
                 
 				// zavolat user service a zjistit, jestli muze uzivatel do aplikace
-				DomainServices.UserService.Contracts.User? userInstance = null;
+				DomainServices.UserService.Clients.Dto.UserDto? userInstance = null;
 
                 try
                 {

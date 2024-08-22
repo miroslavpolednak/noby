@@ -451,7 +451,7 @@ public sealed class SignDocumentHandler(
         documentOnSa.SignatureConfirmedBy = _currentUser.User?.Id;
     }
 
-    private string GetAuthorUserLoginForDocumentUpload(User user)
+    private string GetAuthorUserLoginForDocumentUpload(DomainServices.UserService.Clients.Dto.UserDto user)
     {
         if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
             return user.UserInfo.Icp;

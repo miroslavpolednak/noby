@@ -97,7 +97,7 @@ internal sealed class FormsDocumentService
         await _documentArchiveRepository.SaveDataSentenseWithForm(formsToSave.ToArray(), cancellationToken);
     }
 
-    private async Task<DocumentInterface> PrepareEntity(Form form, SalesArrangement salesArrangement, int documentOnSaId, string contractNumber, User user, CancellationToken cancellationToken)
+    private async Task<DocumentInterface> PrepareEntity(Form form, SalesArrangement salesArrangement, int documentOnSaId, string contractNumber, UserService.Clients.Dto.UserDto user, CancellationToken cancellationToken)
     {
         var generatedDocument = await GenerateDocument(salesArrangement, documentOnSaId, form.DynamicFormValues, cancellationToken);
 
@@ -135,7 +135,7 @@ internal sealed class FormsDocumentService
         return entity;
     }
 
-    private static string GetAuthorUserLogin(User user)
+    private static string GetAuthorUserLogin(UserService.Clients.Dto.UserDto user)
     {
         if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
             return user.UserInfo.Icp;

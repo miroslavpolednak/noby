@@ -11,7 +11,7 @@ internal static class OrderRequestExtensions
         this ExternalServices.PreorderService.Dto.IOrderBaseData model,
         CaseService.Contracts.Case caseInstance,
         CustomerDetailResponse customer,
-        UserService.Contracts.User currentUser,
+        UserService.Clients.Dto.UserDto currentUser,
         in long[]? realEstateIds,
         in long[]? attachments
         )
@@ -36,7 +36,7 @@ internal static class OrderRequestExtensions
 
     public static void FillBaseStandardOrderData(
         this ExternalServices.PreorderService.Dto.IOrderStandardBaseData model,
-        UserService.Contracts.User currentUser,
+        UserService.Clients.Dto.UserDto currentUser,
         Database.Entities.RealEstateValuation entity,
         SpecificDetailHouseAndFlatObject? houseAndFlat,
         in Dto.GetProductPropertiesResult productProps)

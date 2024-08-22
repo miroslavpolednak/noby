@@ -5,6 +5,7 @@ using DomainServices.UserService.Contracts;
 using CIS.Core.Security;
 using NOBY.Infrastructure.ErrorHandling;
 using NOBY.ApiContracts;
+using DomainServices.UserService.Contracts.v1;
 
 namespace NOBY.Services.DocumentHelper;
 
@@ -20,7 +21,7 @@ public interface IDocumentHelperServiceOld
 
     Task<List<SharedTypesDocumentsCategoryEaCodeMain>> CalculateCategoryEaCodeMain(List<SharedTypesDocumentsMetadata> documentsMetadata, CancellationToken cancellationToken);
 
-    string GetAuthorUserLoginForDocumentUpload(User user);
+    string GetAuthorUserLoginForDocumentUpload(DomainServices.UserService.Clients.Dto.UserDto user);
 }
 
 [ScopedService, AsImplementedInterfacesService]
@@ -121,7 +122,7 @@ internal sealed class DocumentHelperServiceOld
         return categoryEaCodeMains;
     }
 
-    public string GetAuthorUserLoginForDocumentUpload(User user)
+    public string GetAuthorUserLoginForDocumentUpload(DomainServices.UserService.Clients.Dto.UserDto user)
     {
         if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
             return user.UserInfo.Icp;

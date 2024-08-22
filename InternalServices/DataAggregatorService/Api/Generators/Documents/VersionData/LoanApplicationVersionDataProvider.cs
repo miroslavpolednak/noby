@@ -56,7 +56,7 @@ internal sealed class LoanApplicationVersionDataProvider : DocumentVersionDataPr
         var saValidationResult = await _salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken);
         var caseValidationResult = await _caseService.ValidateCaseId(saValidationResult.CaseId!.Value, true, cancellationToken); 
 
-        User? user = null;
+        DomainServices.UserService.Clients.Dto.UserDto? user = null;
 
         if (caseValidationResult.OwnerUserId.HasValue)
             user = await _userService.GetUser(caseValidationResult.OwnerUserId.Value, cancellationToken);

@@ -1,4 +1,5 @@
-﻿using DomainServices.UserService.Contracts;
+﻿using DomainServices.UserService.Clients.Dto;
+using DomainServices.UserService.Contracts;
 using _CIS = SharedTypes.GrpcTypes;
 
 namespace DomainServices.UserService.Clients.v1;
@@ -6,17 +7,17 @@ namespace DomainServices.UserService.Clients.v1;
 public class MockUserServiceClient
     : IUserServiceClient
 {
-    public Task<User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken))
+    public Task<UserDto> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken))
     {
         return Task.FromResult(CreateUser());
     }
 
-    public Task<User> GetUser(int userId, CancellationToken cancellationToken = default)
+    public Task<UserDto> GetUser(int userId, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(CreateUser());
     }
 
-    public Task<User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
+    public Task<UserDto> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
     {
         return Task.FromResult(CreateUser());
     }
@@ -26,17 +27,17 @@ public class MockUserServiceClient
         return Task.FromResult(Array.Empty<int>());
     }
 
-    private static User CreateUser(
+    private static UserDto CreateUser(
         int id = DefaultUserId,
         string czechIdentificationNumber = "12345678",
         string fullName = "Filip Tůma",
         string cpm = "99614w",
         string icp = "",
         string identity = """{ "identity": "990614w", "identityScheme": "Mpad" }""",
-        _CIS.UserIdentity.Types.UserIdentitySchemes dentityScheme = _CIS.UserIdentity.Types.UserIdentitySchemes.Mpad
+        _CIS.UserIdentity.Types.UserIdentitySchemes identityScheme = _CIS.UserIdentity.Types.UserIdentitySchemes.Mpad
         )
     {
-        var user = new User
+        var user = new UserDto
         {
             UserId = id,
             UserInfo = new UserInfoObject
@@ -52,10 +53,10 @@ public class MockUserServiceClient
             }
         };
 
-        user.UserIdentifiers.Add(new _CIS.UserIdentity
+        user.UserIdentifiers.Add(new()
         {
             Identity = identity,
-            IdentityScheme = dentityScheme
+            IdentityScheme = identityScheme
 
         });
 
@@ -71,7 +72,7 @@ public class MockUserServiceClient
         });
     }
 
-    public async Task<User> GetCurrentUser(CancellationToken cancellationToken = default)
+    public async Task<UserDto> GetCurrentUser(CancellationToken cancellationToken = default)
         => await GetUser(1, cancellationToken);
 
     public Task<GetUserBasicInfoResponse> GetUserBasicInfo(int userId, CancellationToken cancellationToken = default)
@@ -88,27 +89,17 @@ public class MockUserServiceClient
         return GetUserPermissions(1, cancellationToken);
     }
 
-	public Task<GetUserMortgageSpecialistResponse> GetUserMortgageSpecialist(int userId, CancellationToken cancellationToken = default)
-	{
-		throw new NotImplementedException();
-	}
-
-    public Task<User> GetUserBasicInfoWithoutCache(int userId, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<int[]> GetCurrentUserPermissionsWithoutCache(CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
-
-    Task<GetUserBasicInfoResponse> IUserServiceClient.GetUserBasicInfoWithoutCache(int userId, CancellationToken cancellationToken)
+    public Task<GetUserBasicInfoResponse> GetUserBasicInfoWithoutCache(int userId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }
 
     public Task<int[]> GetUserPermissionsWithoutCache(int userId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<GetUserMortgageSpecialistResponse> GetUserMortgageSpecialist(int userId, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Security;
 using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.UserService.Clients.Dto;
 using DomainServices.UserService.Contracts;
 
 namespace DomainServices.UserService.Clients.v1;
@@ -15,7 +16,7 @@ internal class UserServiceClient(
         return await _service.GetUserMortgageSpecialistAsync(new GetUserMortgageSpecialistRequest { UserId = userId }, cancellationToken: cancellationToken);
 	}
 
-	public async Task<User> GetCurrentUser(CancellationToken cancellationToken = default)
+	public async Task<UserDto> GetCurrentUser(CancellationToken cancellationToken = default)
     {
         return await GetUser(_currentUser.User!.Id, cancellationToken);
     }
@@ -41,7 +42,7 @@ internal class UserServiceClient(
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<User> GetUser(int userId, CancellationToken cancellationToken = default)
+    public async Task<UserDto> GetUser(int userId, CancellationToken cancellationToken = default)
     {
         return await _cache.GetLocalOrDistributed(
             userId,
@@ -57,7 +58,7 @@ internal class UserServiceClient(
             cancellationToken);
     }
 
-    public async Task<User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default)
+    public async Task<UserDto> GetUser(string loginWithScheme, CancellationToken cancellationToken = default)
     {
         var arr = loginWithScheme.Split('=');
         if (arr.Length != 2)
@@ -73,13 +74,14 @@ internal class UserServiceClient(
         return await GetUser(new SharedTypes.Types.UserIdentity(arr[1], scheme), cancellationToken);
     }
 
-    public async Task<User> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
+    public async Task<UserDto> GetUser(SharedTypes.Types.UserIdentity identity, CancellationToken cancellationToken = default)
     {
-        return await _service.GetUserAsync(
+        return (await _service.GetUserAsync(
             new GetUserRequest
             {
                 Identity = identity,
-            }, cancellationToken: cancellationToken);
+            }, cancellationToken: cancellationToken))
+            .MapToDto();
     }
 
     public async Task<int[]> GetUserPermissions(int userId, CancellationToken cancellationToken = default)

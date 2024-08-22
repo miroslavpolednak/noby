@@ -31,7 +31,17 @@ internal sealed class GrpcClientResponseCache<TClient>
         object key,
         Func<CancellationToken, Task<TResponse>> getObject,
         DistributedCacheEntryOptions distributedCacheOptions,
-        CancellationToken cancellationToken,
+        CancellationToken cancellationToken = default,
+        [CallerMemberName] string memberName = "")
+        where TResponse : class
+        => await GetLocalOrDistributed(key, getObject, distributedCacheOptions, GrpcClientResponseCacheHelpers.DistributedCacheSerializationType, cancellationToken, memberName);
+
+    public async Task<TResponse> GetLocalOrDistributed<TResponse>(
+        object key,
+        Func<CancellationToken, Task<TResponse>> getObject,
+        DistributedCacheEntryOptions distributedCacheOptions,
+        Core.Configuration.ICisDistributedCacheConfiguration.SerializationTypes serializationType,
+        CancellationToken cancellationToken = default,
         [CallerMemberName] string memberName = "")
         where TResponse : class
     {
@@ -46,7 +56,7 @@ internal sealed class GrpcClientResponseCache<TClient>
                 GrpcClientResponseCacheHelpers.CreateCacheKey(_serviceName, memberName, key),
                 getObject,
                 distributedCacheOptions,
-                GrpcClientResponseCacheHelpers.DistributedCacheSerializationType,
+                serializationType,
                 cancellationToken);
 
             if (distCachedValue is not null)
@@ -66,7 +76,17 @@ internal sealed class GrpcClientResponseCache<TClient>
         object key,
         Func<CancellationToken, Task<TResponse>> getObject,
         DistributedCacheEntryOptions distributedCacheOptions,
-        CancellationToken cancellationToken,
+        CancellationToken cancellationToken = default,
+        [CallerMemberName] string memberName = "")
+        where TResponse : class
+        => await GetDistributedOnly(key, getObject, distributedCacheOptions, GrpcClientResponseCacheHelpers.DistributedCacheSerializationType, cancellationToken, memberName);
+
+    public async Task<TResponse> GetDistributedOnly<TResponse>(
+        object key,
+        Func<CancellationToken, Task<TResponse>> getObject,
+        DistributedCacheEntryOptions distributedCacheOptions,
+        Core.Configuration.ICisDistributedCacheConfiguration.SerializationTypes serializationType,
+        CancellationToken cancellationToken = default,
         [CallerMemberName] string memberName = "")
         where TResponse : class
     {
@@ -76,7 +96,7 @@ internal sealed class GrpcClientResponseCache<TClient>
                 GrpcClientResponseCacheHelpers.CreateCacheKey(_serviceName, memberName, key),
                 getObject,
                 distributedCacheOptions,
-                GrpcClientResponseCacheHelpers.DistributedCacheSerializationType,
+                serializationType,
                 cancellationToken);
 
             if (distCachedValue is not null)

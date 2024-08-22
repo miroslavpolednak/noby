@@ -64,8 +64,8 @@ internal sealed class GetCaseParametersMapper(DomainServices.CodebookService.Cli
     }
 
     public CasesGetCaseParametersCaseOwnerUser? GetCaseOwnerOrigUser(
-        DomainServices.UserService.Contracts.User? caseOwnerOrig,
-        DomainServices.UserService.Contracts.User? caseOwnerCurrent)
+        DomainServices.UserService.Clients.Dto.UserDto? caseOwnerOrig,
+        DomainServices.UserService.Clients.Dto.UserDto? caseOwnerCurrent)
     {
         var user = caseOwnerOrig ?? caseOwnerCurrent;
 
