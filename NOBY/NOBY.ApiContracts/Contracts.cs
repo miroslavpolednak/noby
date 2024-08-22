@@ -2970,6 +2970,13 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("stateText")]
         public string? StateText { get; set; } = default!;
 
+        /// <summary>
+        /// Indikátor barvy stavu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("stateIndicator")]
+        public EnumStateIndicators StateIndicator { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
         public System.DateTime CreatedTime { get; set; } = default!;
 

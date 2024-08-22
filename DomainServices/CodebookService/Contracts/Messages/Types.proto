@@ -707,7 +707,8 @@ message SalesArrangementStatesResponse {
 	   int32 Id = 1;
 	   string Name = 2;
 	   google.protobuf.Int32Value StarbuildId = 3;
-	   bool IsDefault = 4;
+	   int32 Indicator = 4;
+	   bool IsDefault = 5;
 	}
 }
 

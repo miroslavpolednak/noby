@@ -4,6 +4,7 @@ using DomainServices.CodebookService.Contracts.v1;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.FeatureManagement;
 using SharedTypes;
+using SharedTypes.Enums;
 
 namespace DomainServices.CodebookService.Api.Endpoints.v1;
 
@@ -616,6 +617,15 @@ internal partial class CodebookService
                     Id = (int)t,
                     Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                     StarbuildId = t.GetAttribute<CIS.Core.Attributes.CisStarbuildIdAttribute>()?.StarbuildId,
+                    Indicator = t switch
+                    {
+                        EnumSalesArrangementStates.InProgress or EnumSalesArrangementStates.NewArrangement or EnumSalesArrangementStates.InSigning => 1,
+                        EnumSalesArrangementStates.Cancelled => 2,
+                        EnumSalesArrangementStates.Disbursed or EnumSalesArrangementStates.Finished => 3,
+                        EnumSalesArrangementStates.InApproval or EnumSalesArrangementStates.RC2 => 4,
+                        EnumSalesArrangementStates.ToSend or EnumSalesArrangementStates.RC2 => 5,
+                        _ => 0
+                    },
                     IsDefault = t.HasAttribute<CIS.Core.Attributes.CisDefaultValueAttribute>()
                 })
             )
