@@ -1,9 +1,9 @@
 ﻿using DomainServices.UserService.Contracts;
 using _CIS = SharedTypes.GrpcTypes;
 
-namespace DomainServices.UserService.Clients.Services;
+namespace DomainServices.UserService.Clients.v1;
 
-public class MockUserService 
+public class MockUserServiceClient
     : IUserServiceClient
 {
     public Task<User> GetUser(string loginWithScheme, CancellationToken cancellationToken = default(CancellationToken))
@@ -93,5 +93,25 @@ public class MockUserService
 		throw new NotImplementedException();
 	}
 
-	public const int DefaultUserId = 3048;
+    public Task<User> GetUserBasicInfoWithoutCache(int userId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int[]> GetCurrentUserPermissionsWithoutCache(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<GetUserBasicInfoResponse> IUserServiceClient.GetUserBasicInfoWithoutCache(int userId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<int[]> GetUserPermissionsWithoutCache(int userId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public const int DefaultUserId = 3048;
 }

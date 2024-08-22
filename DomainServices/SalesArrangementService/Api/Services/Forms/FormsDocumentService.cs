@@ -12,7 +12,7 @@ using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService;
 using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.Entities;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.UserService.Contracts;
 using Newtonsoft.Json;
 

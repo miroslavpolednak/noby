@@ -1,25 +1,10 @@
-﻿using Google.Protobuf;
+﻿namespace DomainServices.UserService.Api.Endpoints.v1.GetUser;
 
-namespace DomainServices.UserService.Api.Endpoints.v1.GetUser;
-
-internal sealed class GetUserHandler(
-    IConnectionProvider _db,
-    IDistributedCache _distributedCache)
+internal sealed class GetUserHandler(IConnectionProvider _db)
         : IRequestHandler<Contracts.GetUserRequest, Contracts.User>
 {
     public async Task<Contracts.User> Handle(Contracts.GetUserRequest request, CancellationToken cancellationToken)
     {
-        if (request.Identity.IdentityScheme == SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.V33Id)
-        {
-            // zkusit cache
-            string cacheKey = Helpers.CreateUserCacheKey(request.Identity.Identity);
-            var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellationToken);
-            if (cachedBytes != null)
-            {
-                return Contracts.User.Parser.ParseFrom(cachedBytes);
-            }
-        }
-
         // vytahnout info o uzivateli z DB
         var dbIdentities = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<Dto.DbUserIdentity>(
             "[dbo].[getUserIdentities]",
@@ -73,12 +58,6 @@ internal sealed class GetUserHandler(
                 model.UserPermissions.Add(p);
             }
         });
-
-        await _distributedCache.SetAsync(Helpers.CreateUserCacheKey(model.UserId), model.ToByteArray(), new DistributedCacheEntryOptions
-        {
-            AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(_minutesInCache),
-        },
-        cancellationToken);
 
         return model;
     }
@@ -145,6 +124,4 @@ internal sealed class GetUserHandler(
                 IdentityScheme = SharedTypes.GrpcTypes.UserIdentity.Types.UserIdentitySchemes.Kbad
             });
     }
-
-    private const int _minutesInCache = 30;
 }

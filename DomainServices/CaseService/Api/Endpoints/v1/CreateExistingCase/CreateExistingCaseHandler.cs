@@ -5,7 +5,7 @@ using DomainServices.CaseService.Contracts;
 namespace DomainServices.CaseService.Api.Endpoints.v1.CreateExistingCase;
 
 internal sealed class CreateExistingCaseHandler(
-    UserService.Clients.IUserServiceClient _userService,
+    UserService.Clients.v1.IUserServiceClient _userService,
     CaseServiceDbContext _dbContext,
     ILogger<CreateCaseHandler> _logger,
     TimeProvider _timeProvider)

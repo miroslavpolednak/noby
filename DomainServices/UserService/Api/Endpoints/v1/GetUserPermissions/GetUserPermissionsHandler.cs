@@ -1,22 +1,10 @@
-﻿using Google.Protobuf;
+﻿namespace DomainServices.UserService.Api.Endpoints.v1.GetUserPermissions;
 
-namespace DomainServices.UserService.Api.Endpoints.v1.GetUserPermissions;
-
-internal sealed class GetUserPermissionsHandler(
-    IConnectionProvider _db,
-    IDistributedCache _distributedCache)
+internal sealed class GetUserPermissionsHandler(IConnectionProvider _db)
         : IRequestHandler<Contracts.GetUserPermissionsRequest, Contracts.GetUserPermissionsResponse>
 {
     public async Task<Contracts.GetUserPermissionsResponse> Handle(Contracts.GetUserPermissionsRequest request, CancellationToken cancellationToken)
     {
-        // zkusit cache
-        string cacheKey = Helpers.CreateUserPermissionsCacheKey(request.UserId);
-        var cachedBytes = await _distributedCache.GetAsync(cacheKey, cancellationToken);
-        if (cachedBytes != null)
-        {
-            return Contracts.GetUserPermissionsResponse.Parser.ParseFrom(cachedBytes);
-        }
-
         var dbPermissions = await _db.ExecuteDapperStoredProcedureSqlToListAsync<dynamic>(
             "[dbo].[getPermissions]",
             new { ApplicationCode = "NOBY", v33id = request.UserId },
@@ -32,14 +20,6 @@ internal sealed class GetUserPermissionsHandler(
             }
         });
 
-        await _distributedCache.SetAsync(Helpers.CreateUserPermissionsCacheKey(request.UserId), model.ToByteArray(), new DistributedCacheEntryOptions
-        {
-            AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(_minutesInCache),
-        },
-        cancellationToken);
-
         return model;
     }
-
-    private const int _minutesInCache = 30;
 }

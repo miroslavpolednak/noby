@@ -3,7 +3,7 @@ using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateLoanAssessmentParameters;

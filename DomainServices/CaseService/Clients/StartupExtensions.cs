@@ -3,6 +3,7 @@ using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
 using __Contracts = DomainServices.CaseService.Contracts;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using CIS.Infrastructure.Caching.Grpc;
 
 namespace DomainServices;
 
@@ -16,6 +17,8 @@ public static class StartupExtensions
     public static IServiceCollection AddCaseService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
+
+        services.AddGrpcClientResponseCaching<CaseService.Clients.v1.CaseServiceClient>(ServiceName);
         services.TryAddScoped<CaseService.Clients.v1.ICaseServiceClient, CaseService.Clients.v1.CaseServiceClient>();
         services.TryAddScoped<CaseService.Clients.IMaintananceClient, CaseService.Clients.Services.MaintananceClient>();
 
@@ -28,6 +31,7 @@ public static class StartupExtensions
     public static IServiceCollection AddCaseService(this IServiceCollection services, string serviceUrl)
 #pragma warning restore CA1054 // URI-like parameters should not be strings
     {
+        services.AddGrpcClientResponseCaching<CaseService.Clients.v1.CaseServiceClient>(ServiceName);
         services.TryAddScoped<CaseService.Clients.v1.ICaseServiceClient, CaseService.Clients.v1.CaseServiceClient>();
         services.TryAddScoped<CaseService.Clients.IMaintananceClient, CaseService.Clients.Services.MaintananceClient>();
 

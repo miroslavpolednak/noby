@@ -4,16 +4,14 @@ using System.Collections.Concurrent;
 
 namespace CIS.Infrastructure.Security.ContextUser;
 
-internal sealed class CisCurrentUserAccessorCache
+internal sealed class CisCurrentUserAccessorCache(DomainServices.UserService.Clients.v1.IUserServiceClient _userService)
 {
-    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
-    private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
+    private static readonly MemoryCache _cache = new(new MemoryCacheOptions());
+    private static readonly ConcurrentDictionary<object, SemaphoreSlim> _locks = new();
 
     public async Task<CisUserDetails> GetUser(int userId, CancellationToken cancellationToken)
     {
-        CisUserDetails? cacheEntry;
-
-        if (!_cache.TryGetValue(userId, out cacheEntry))
+        if (!_cache.TryGetValue(userId, out CisUserDetails? cacheEntry))
         {
             SemaphoreSlim mylock = _locks.GetOrAdd(userId, k => new SemaphoreSlim(1, 1));
 
@@ -44,12 +42,5 @@ internal sealed class CisCurrentUserAccessorCache
         }
 
         return cacheEntry!;
-    }
-
-    private readonly DomainServices.UserService.Clients.IUserServiceClient _userService;
-
-    public CisCurrentUserAccessorCache(DomainServices.UserService.Clients.IUserServiceClient userService)
-    {
-        _userService = userService;
     }
 }

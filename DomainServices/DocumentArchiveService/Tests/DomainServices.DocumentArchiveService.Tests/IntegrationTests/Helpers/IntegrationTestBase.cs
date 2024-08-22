@@ -11,7 +11,7 @@ using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1.Repositories
 using DomainServices.DocumentArchiveService.ExternalServices.Tcp.V1;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using CIS.Testing;
-using DomainServices.UserService.Clients.Services;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.DocumentArchiveService.Api.Database;
 using CIS.Testing.Database;
 
@@ -60,7 +60,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
        .ConfigureServices(services =>
        {
            // This mock is necessary for mock of service discovery
-           services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserService>();
+           services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserServiceClient>();
 
            // Use exist mock of sdf 
            services.RemoveAll<ISdfClient>().AddSingleton<ISdfClient, MockSdfClient>();

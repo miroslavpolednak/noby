@@ -4,6 +4,7 @@ using CIS.InternalServices.DataAggregatorService.Api.Configuration;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
     .AddApplicationConfiguration<AppConfiguration>()
     .AddRequiredServices(services =>
     {

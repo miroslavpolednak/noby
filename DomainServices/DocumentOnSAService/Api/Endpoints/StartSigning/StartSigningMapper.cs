@@ -13,7 +13,7 @@ using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Clients;
 using ExternalServices.ESignatures.Dto;
 using CIS.Core.Security;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using System.Globalization;
 using DomainServices.CaseService.Clients.v1;

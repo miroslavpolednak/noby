@@ -2,7 +2,7 @@
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using Google.Protobuf;
 using NOBY.Services.DocumentHelper;
 

@@ -1,12 +1,9 @@
 ﻿using CIS.Infrastructure.gRPC;
 using Microsoft.Extensions.DependencyInjection;
-using DomainServices.UserService.Clients;
-using __Services = DomainServices.UserService.Clients.Services;
 using __Contracts = DomainServices.UserService.Contracts;
 using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Configuration;
+using CIS.Infrastructure.Caching.Grpc;
 
 namespace DomainServices;
 
@@ -20,43 +17,19 @@ public static class StartupExtensions
     public static IServiceCollection AddUserService(this IServiceCollection services)
     {
         services.AddCisServiceDiscovery();
-        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.UserService.UserServiceClient>(ServiceName);
-        services.TryAddTransient<IUserServiceClient, __Services.UserService>();
-        tryAddDistributedCacheProvider(services);
 
+        services.AddGrpcClientResponseCaching<UserService.Clients.v1.UserServiceClient>(ServiceName);
+        services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.UserService.UserServiceClient>(ServiceName);
+        services.TryAddTransient<UserService.Clients.v1.IUserServiceClient, UserService.Clients.v1.UserServiceClient>();
+        
         return services;
     }
 
     public static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
     {
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.UserService.UserServiceClient>(serviceUrl);
-        services.TryAddTransient<IUserServiceClient, __Services.UserService>();
-        tryAddDistributedCacheProvider(services);
+        services.TryAddTransient<UserService.Clients.v1.IUserServiceClient, UserService.Clients.v1.UserServiceClient>();
 
         return services;
-    }
-
-    private static void tryAddDistributedCacheProvider(IServiceCollection services)
-    {
-        services.AddSingleton(provider =>
-        {
-            var cacheInstance = provider.GetService<IDistributedCache>();
-
-            if (cacheInstance is not null)
-            {
-                var configuration = provider.GetRequiredService<IConfiguration>();
-                var doNotUseCache = configuration.GetValue<bool?>($"{CIS.Core.CisGlobalConstants.DomainServicesClientsConfigurationSectionName}:UserService:DisableDistributedCache") ?? false;
-                if (!doNotUseCache)
-                {
-                    return new UserServiceClientCacheProvider
-                    {
-                        DistributedCacheInstance = cacheInstance,
-                        UseDistributedCache = true,
-                    };
-                }
-            }
-
-            return new UserServiceClientCacheProvider();
-        });
     }
 }

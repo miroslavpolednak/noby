@@ -8,7 +8,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.HouseholdService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using FastEnumUtility;
 using Google.Protobuf;
 using NOBY.Api.Endpoints.Document.GeneralDocument;

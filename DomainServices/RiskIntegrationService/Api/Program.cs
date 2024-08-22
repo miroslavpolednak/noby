@@ -39,7 +39,8 @@ try
     builder
         .AddCisLogging()
         .AddCisLoggingPayloadBehavior()
-        .AddCisTracing();
+        .AddCisTracing()
+        .AddCisDistributedCache();
 
     // health checks
     builder.Services.AddAttributedServices(typeof(Program));

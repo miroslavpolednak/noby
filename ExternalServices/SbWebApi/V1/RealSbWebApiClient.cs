@@ -3,15 +3,18 @@ using System.Text.Json;
 using ExternalServices.SbWebApi.Dto.CompleteTask;
 using ExternalServices.SbWebApi.Dto.UpdateTask;
 using ExternalServices.SbWebApi.V1.Contracts;
-using DomainServices.UserService.Clients;
 using System.Globalization;
 using System.Text.Json.Serialization;
 using ExternalServices.SbWebApi.Dto.Refinancing;
+using DomainServices.UserService.Clients.v1;
 
 namespace ExternalServices.SbWebApi.V1;
 
-internal sealed class RealSbWebApiClient
-    : ISbWebApiClient
+internal sealed class RealSbWebApiClient(
+    HttpClient _httpClient, 
+    IUserServiceClient _userService, 
+    CIS.Core.Security.ICurrentUserAccessor _userAccessor)
+        : ISbWebApiClient
 {
     public async Task<(decimal InterestRate, int? NewFixationTime)> GetRefixationInterestRate(long caseId, DateTime interestRateValidTo, int? fixedRatePeriod, CancellationToken cancellationToken)
     {
@@ -334,20 +337,9 @@ internal sealed class RealSbWebApiClient
         var responseObject = await RequestHelper.ProcessResponse<CalculationDocuments_response>(httpResponse, x => x.Result, cancellationToken: cancellationToken);
     }
 
-    private readonly HttpClient _httpClient;
-    private readonly IUserServiceClient _userService;
-    private readonly CIS.Core.Security.ICurrentUserAccessor _userAccessor;
-
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
     };
-
-    public RealSbWebApiClient(HttpClient httpClient, IUserServiceClient userService, CIS.Core.Security.ICurrentUserAccessor userAccessor)
-    {
-        _userAccessor = userAccessor;
-        _userService = userService;
-        _httpClient = httpClient;
-    }
 }

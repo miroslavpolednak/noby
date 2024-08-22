@@ -8,7 +8,7 @@ namespace DomainServices.CaseService.Api.Endpoints.v1.CreateCase;
 internal sealed class CreateCaseHandler(
     IRollbackBag _bag,
     IMediator _mediator,
-    UserService.Clients.IUserServiceClient _userService,
+    UserService.Clients.v1.IUserServiceClient _userService,
     CodebookService.Clients.ICodebookServiceClient _codebookService,
     IEasClient _easClient,
     CaseServiceDbContext _dbContext,

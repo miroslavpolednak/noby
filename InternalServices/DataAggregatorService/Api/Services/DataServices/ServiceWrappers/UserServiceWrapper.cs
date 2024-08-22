@@ -1,4 +1,4 @@
-﻿using DomainServices.UserService.Clients;
+﻿using DomainServices.UserService.Clients.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;
 

@@ -17,7 +17,7 @@ using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.UserService.Contracts;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
