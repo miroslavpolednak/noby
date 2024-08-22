@@ -19,7 +19,7 @@ internal sealed class CompleteTaskHandler(
                 { "ukol_mandant", "2" },
                 { "ukol_uver_id", request.CaseId.ToString(CultureInfo.InvariantCulture) },
                 { "wfl_refobj_dokumenty", string.Join(",", request.TaskDocumentIds) },
-                { getTaskUserResponseDef(request.TaskTypeId), request.TaskUserResponse ?? "" }
+                { getTaskUserResponseDef(request.TaskTypeId), request.TaskUserResponse?.ReplacePipesToSb() ?? "" }
             }
         };
 
