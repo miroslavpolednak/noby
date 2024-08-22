@@ -64,9 +64,10 @@ internal sealed class CustomerManagementErrorMap
                  "CM_IDDOC_DOC_NUMBER_FORMAT",
                  "CM_IDDOC_ISSUED_ON_EMPTY",
                  "CM_IDDOC_VALID_TO_EMPTY",
-                 "CM_IDDOC_LOST_DOCUMENT",
                  "CM_IDDOC_ISSUED_ON_FUTURE",
                  "CM_IDDOC_ISSUED_ON_OLD");
+
+        AddError(11036, "KB CM: Used identification document is marked as lost", "CM_IDDOC_LOST_DOCUMENT");
 
         AddError(11020, "KB CM: Unable to create customer - Incorrect set of addresses", "CM_SUBJECT_CONTACT_ADDRESS_ONLY", "CM_SUBJECT_TEMPORARY_STAY_INVALID");
 
