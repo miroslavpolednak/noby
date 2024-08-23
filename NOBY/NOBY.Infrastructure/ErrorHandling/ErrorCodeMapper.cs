@@ -79,8 +79,9 @@ public sealed class ErrorCodeMapper
             { 90068, new("Nelze vygenerovat dodatek, protože hlavní dlužník či spoludlužníci nemají vyplněn jeden nebo více kontaktů. Doplňte klientům email resp. telefon (hlavní telefon) přes aplikaci CURE, počkejte na synchronizaci kontaktů do systému Starbuild a generování dodatku opakujte.") },
             { 90069, new("--DS error--") },
             { 90070, new("Stav rozpracované žádosti se změnil na pozadí, vraťte se detail obchodního případu a pokračujte standardním průchodem přes aplikaci.") },
+            { 90071, new("Neplatný doklad", "Zadaný identifikační doklad byl nalezen v rejstříku neplatných nebo ztracených dokladů. Subjekt nelze založit.") },
             { 90073, new ("Hodnota musí být celé číslo") }
-        };
+		};
 
         Messages = messages.AsReadOnly();
 
@@ -96,7 +97,10 @@ public sealed class ErrorCodeMapper
             { 18087, new ErrorCodeDsToApiItem(90039, false) },
             { 19043, new ErrorCodeDsToApiItem(90021, false) },
             { 16082, new ErrorCodeDsToApiItem(90069, true) },
-        };
+			{ 11036, new ErrorCodeDsToApiItem(90071, false) },
+			{ 11025, new ErrorCodeDsToApiItem(90007, false) },
+			{ 11035, new ErrorCodeDsToApiItem(90044, false) }
+		};
 
         DsToApiCodeMapper = mapper.AsReadOnly();
     }
