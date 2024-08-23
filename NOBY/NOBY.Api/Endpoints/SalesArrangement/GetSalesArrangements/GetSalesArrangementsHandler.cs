@@ -29,7 +29,7 @@ internal sealed class GetSalesArrangementsHandler(
                     SalesArrangementId = t.SalesArrangementId,
                     SalesArrangementTypeId = t.SalesArrangementTypeId,
                     State = (EnumSalesArrangementStates)t.State,
-                    StateText = state.Name,
+                    StateName = state.Name,
                     StateIndicator = (EnumStateIndicators)state.Indicator,
                     OfferId = t.OfferId,
                     CreatedBy = t.Created.UserName,

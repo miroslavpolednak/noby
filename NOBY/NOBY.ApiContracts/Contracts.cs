@@ -2967,8 +2967,8 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("state")]
         public EnumSalesArrangementStates State { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("stateText")]
-        public string? StateText { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        public string? StateName { get; set; } = default!;
 
         /// <summary>
         /// Indikátor barvy stavu
