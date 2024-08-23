@@ -20,6 +20,8 @@
 
 [Nastavení a použití Distributed cache](./topics/distributed-cache.md)
 
+[Kešování response gRPC služeb v Client projektech](./topics/grpc-reponse-caching.md)
+
 [Ukládání datových struktur v JSON formátu (ala dokumentová databáze)](./topics/document-data-storage.md)
 
 ### Soubory, IO operace
