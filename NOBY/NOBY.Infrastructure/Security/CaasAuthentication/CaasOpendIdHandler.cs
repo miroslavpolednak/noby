@@ -53,7 +53,7 @@ internal sealed class CaasOpendIdHandler
                     var logger = context.HttpContext.RequestServices.GetRequiredService<IAuditLogger>();
                     logger.Log(AuditEventTypes.Noby001, "Pokus o přihlášení uživatele");
 
-                    context.ProtocolMessage.State = getRedirectUri(context.HttpContext.Request);
+                    context.ProtocolMessage.State = SecurityHelpers.GetSafeRedirectUri(context.HttpContext.Request, _configuration);
                     return Task.CompletedTask;
                 }
                 else // vsechny standardni requesty
@@ -115,40 +115,6 @@ internal sealed class CaasOpendIdHandler
         return context.RequestServices.GetRequiredService<ILogger<CaasOpendIdHandler>>();
     }
 
-    /// <summary>
-    /// Ziskej redirectUri z query stringu nebo vrat default.
-    /// </summary>
-    /// <returns>
-    /// Kontroluje, zda uri v query stringu je validni a z teto domeny.
-    /// </returns>
-    private string getRedirectUri(HttpRequest request)
-    {
-        var redirectUri = request.Query[AuthenticationConstants.RedirectUriQueryParameter];
-        if (!string.IsNullOrEmpty(redirectUri))
-        {
-            try
-            {
-                var safeUri = new Uri(redirectUri!);
-                if (string.IsNullOrEmpty(safeUri.Host))
-                {
-                    return $"https://{request.Host}{redirectUri}";
-                }
-                else if (_configuration.AllowAnyUrlInSigninRedirect) // pouze pro testovani
-                {
-                    return safeUri.ToString();
-                }
-                else if (safeUri.Authority == request.Host.Value && safeUri.Scheme == "https")
-                {
-                    return safeUri.ToString();
-                }
-            }
-            catch
-            {
-                // spatne zadane URI v query stringu. Zalogovat?
-            }
-        }
-        return $"https://{request.Host}{_configuration.DefaultRedirectPathAfterSignIn}";
-    }
     private readonly Configuration.AppConfigurationSecurity _configuration;
 
     public CaasOpendIdHandler(Configuration.AppConfiguration configuration)

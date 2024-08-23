@@ -36,10 +36,9 @@ public static class MapAuthenticationEndpoints
             t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
                 ([FromServices] IHttpContextAccessor context,
                 [FromServices] AppConfiguration configuration,
-                [FromServices] IAuditLogger logger,
-                [FromQuery] string? redirect) =>
+                [FromServices] IAuditLogger logger) =>
                 {
-                    string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
+                    string redirectUrl = SecurityHelpers.GetSafeRedirectUri(context.HttpContext!.Request, configuration.Security!);
                     string userLogin = context.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ClaimTypeIdent).Value;
 
                     context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

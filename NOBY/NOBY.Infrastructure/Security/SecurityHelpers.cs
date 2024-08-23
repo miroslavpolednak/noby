@@ -31,4 +31,39 @@ public static class SecurityHelpers
             throw new CisAuthorizationException($"CaseOwnerValidation: is product SA and CaseState > 1");
         }
     }
+
+    /// <summary>
+    /// Ziskej redirectUri z query stringu nebo vrat default.
+    /// </summary>
+    /// <returns>
+    /// Kontroluje, zda uri v query stringu je validni a z teto domeny.
+    /// </returns>
+    public static string GetSafeRedirectUri(Microsoft.AspNetCore.Http.HttpRequest request, Configuration.AppConfigurationSecurity configuration)
+    {
+        var redirectUri = request.Query[AuthenticationConstants.RedirectUriQueryParameter];
+        if (!string.IsNullOrEmpty(redirectUri))
+        {
+            try
+            {
+                var safeUri = new Uri(redirectUri!);
+                if (string.IsNullOrEmpty(safeUri.Host))
+                {
+                    return $"https://{request.Host}{redirectUri}";
+                }
+                else if (configuration.AllowAnyUrlInSigninRedirect) // pouze pro testovani
+                {
+                    return safeUri.ToString();
+                }
+                else if (safeUri.Authority == request.Host.Value && safeUri.Scheme == "https")
+                {
+                    return safeUri.ToString();
+                }
+            }
+            catch
+            {
+                // spatne zadane URI v query stringu. Zalogovat?
+            }
+        }
+        return $"https://{request.Host}{configuration.DefaultRedirectPathAfterSignIn}";
+    }
 }
