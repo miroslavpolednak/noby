@@ -36,7 +36,8 @@ public static class MapAuthenticationEndpoints
             t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignOutEndpoint,
                 ([FromServices] IHttpContextAccessor context,
                 [FromServices] AppConfiguration configuration,
-                [FromServices] IAuditLogger logger) =>
+                [FromServices] IAuditLogger logger,
+                [FromQuery] string? redirect) =>
                 {
                     string redirectUrl = SecurityHelpers.GetSafeRedirectUri(context.HttpContext!.Request, configuration.Security!);
                     string userLogin = context.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ClaimTypeIdent).Value;
