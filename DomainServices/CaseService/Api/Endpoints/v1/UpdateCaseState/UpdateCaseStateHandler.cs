@@ -64,6 +64,6 @@ internal sealed class UpdateCaseStateHandler(
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
 
-    private static int[] _starbuildStateUpdateStates = [1, 2, 7, 9];
+    private static readonly int[] _starbuildStateUpdateStates = [1, 2, 7, 9];
 }
 

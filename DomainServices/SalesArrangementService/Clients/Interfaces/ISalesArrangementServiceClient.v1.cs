@@ -106,6 +106,8 @@ public interface ISalesArrangementServiceClient
 
     Task<SetContractNumberResponse> SetContractNumber(int salesArrangementId, int customerOnSaId, CancellationToken cancellationToken = default);
 
+    Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementIdWithoutCache(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default);
+
     Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default);
 
     void ClearSalesArrangementCache();

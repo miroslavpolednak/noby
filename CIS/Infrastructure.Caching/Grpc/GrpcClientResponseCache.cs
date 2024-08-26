@@ -129,6 +129,11 @@ internal sealed class GrpcClientResponseCache<TClient>
         }
     }
 
+    public void InvalidateLocalCache()
+    {
+        _localCacheValues.Clear();
+    }
+
     /// <summary>
     /// Lokalni scoped uloziste pro nakesovane responses
     /// </summary>

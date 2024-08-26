@@ -1,9 +1,12 @@
-﻿using DomainServices.SalesArrangementService.Contracts;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.SalesArrangementService.Contracts;
 using SharedTypes.Enums;
 
 namespace DomainServices.SalesArrangementService.Clients.v1;
 
-internal sealed class SalesArrangementService(Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service)
+internal sealed class SalesArrangementServiceClient(
+    Contracts.v1.SalesArrangementService.SalesArrangementServiceClient _service,
+    IGrpcClientResponseCache<SalesArrangementServiceClient> _cache)
     : ISalesArrangementServiceClient
 {
     public async Task<List<GetProductSalesArrangementsResponse.Types.SalesArrangement>> GetProductSalesArrangements(long caseId, CancellationToken cancellationToken = default)
@@ -47,15 +50,13 @@ internal sealed class SalesArrangementService(Contracts.v1.SalesArrangementServi
 
     public async Task<SalesArrangement> GetSalesArrangement(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        if (_cacheGetSalesArrangement is null || _cacheGetSalesArrangement.SalesArrangementId != salesArrangementId)
-        {
-            _cacheGetSalesArrangement = await _service.GetSalesArrangementAsync(
+        return await _cache.GetLocalOnly(
+            salesArrangementId,
+            async (c) => await _service.GetSalesArrangementAsync(
                 new()
                 {
                     SalesArrangementId = salesArrangementId
-                }, cancellationToken: cancellationToken);
-        }
-        return _cacheGetSalesArrangement;
+                }, cancellationToken: cancellationToken));
     }
 
     public async Task<SalesArrangement?> GetSalesArrangementByOfferId(int offerId, CancellationToken cancellationToken = default)
@@ -142,16 +143,13 @@ internal sealed class SalesArrangementService(Contracts.v1.SalesArrangementServi
 
     public async Task<List<FlowSwitch>> GetFlowSwitches(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        if (_cacheGetFlowSwitches is null || _cacheGetFlowSwitchesId != salesArrangementId)
-        {
-            _cacheGetFlowSwitches = (await _service.GetFlowSwitchesAsync(
+        return await _cache.GetLocalOnly(
+            salesArrangementId,
+            async (c) => (await _service.GetFlowSwitchesAsync(
                 new()
                 {
                     SalesArrangementId = salesArrangementId
-                }, cancellationToken: cancellationToken)).FlowSwitches.ToList();
-            _cacheGetFlowSwitchesId = salesArrangementId;
-        }
-        return _cacheGetFlowSwitches;
+                }, cancellationToken: cancellationToken)).FlowSwitches.ToList());
     }
 
     public async Task SetFlowSwitches(int salesArrangementId, List<EditableFlowSwitch> flowSwitches, CancellationToken cancellationToken = default)
@@ -193,26 +191,27 @@ internal sealed class SalesArrangementService(Contracts.v1.SalesArrangementServi
 
     public async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default)
     {
-        if (_cacheValidateSalesArrangementId is null || _cacheValidateSalesArrangementIdId != salesArrangementId)
-        {
-            _cacheValidateSalesArrangementId = await _service.ValidateSalesArrangementIdAsync(new ValidateSalesArrangementIdRequest
+        return await _cache.GetLocalOrDistributed(
+            salesArrangementId,
+            async (c) => await ValidateSalesArrangementIdWithoutCache(salesArrangementId, throwExceptionIfNotFound, c),
+            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
             {
-                SalesArrangementId = salesArrangementId,
-                ThrowExceptionIfNotFound = throwExceptionIfNotFound,
-            }, cancellationToken: cancellationToken);
-            _cacheValidateSalesArrangementIdId = salesArrangementId;
-        }
-        return _cacheValidateSalesArrangementId;
+                SlidingExpiration = TimeSpan.FromMinutes(30)
+            },
+            cancellationToken);
+    }
+
+    public async Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementIdWithoutCache(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default)
+    {
+        return await _service.ValidateSalesArrangementIdAsync(new ValidateSalesArrangementIdRequest
+        {
+            SalesArrangementId = salesArrangementId,
+            ThrowExceptionIfNotFound = throwExceptionIfNotFound,
+        }, cancellationToken: cancellationToken);
     }
 
     public void ClearSalesArrangementCache()
     {
-        _cacheGetSalesArrangement = null;
+        _cache.InvalidateLocalCache();
     }
-
-    private List<FlowSwitch>? _cacheGetFlowSwitches;
-    private int? _cacheGetFlowSwitchesId;
-    private SalesArrangement? _cacheGetSalesArrangement;
-    private ValidateSalesArrangementIdResponse? _cacheValidateSalesArrangementId;
-    private int? _cacheValidateSalesArrangementIdId;
 }

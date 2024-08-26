@@ -46,4 +46,6 @@ public interface IGrpcClientResponseCache<TClient>
         CancellationToken cancellationToken = default,
         [CallerMemberName] string memberName = "")
         where TResponse : class;
+
+    void InvalidateLocalCache();
 }

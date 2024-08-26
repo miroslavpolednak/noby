@@ -2,6 +2,7 @@
 U často volaných endpointů doménových služeb u kterých se příliš nemění response je možné zvážit jejich kešování.
 Kešování response z gRPC služeb je vždy součástí implementace jejich **Client** projektu, nikdy není přímo v kódu konzumenta (např. v FE API).
 
+## Kešování response gRPC služeb v Client projektu
 Kešování je implementováno pomocí `IGrpcClientResponseCache` z projektu `CIS.Infrastructure.Caching`.
 Kešování objektů je ve dvou úrovních:
 1) in memory cache - jedná se o scoped keš, která funguje v rámci jednoho requestu
@@ -44,6 +45,13 @@ public async Task<ValidateCaseIdResponse> ValidateCaseIdWithoutCache(long caseId
             CaseId = caseId
         }, cancellationToken: cancellationToken);
     }
+```
+
+### Registrace response cachingu v Client projektu
+Registrace podpory kešování je součástí extension metody registrace klienta doménové služby, tj. `AddXXXXService()`.
+
+```csharp
+services.AddGrpcClientResponseCaching<CaseService.Clients.v1.CaseServiceClient>(ServiceName);
 ```
 
 ## Invalidace keše v API / ve chvíli změny podkladových dat

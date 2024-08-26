@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Security;
+using CIS.Infrastructure.Caching.Grpc;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.SalesArrangementService.Api.Database;
@@ -9,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateLoanAssessmentParameters;
 
 internal sealed class UpdateLoanAssessmentParametersHandler(
+    IGrpcServerResponseCache _responseCache,
     SalesArrangementServiceDbContext _dbContext, 
     ICaseServiceClient _caseService, 
     ICurrentUserAccessor _userAccessor, 
@@ -22,7 +24,9 @@ internal sealed class UpdateLoanAssessmentParametersHandler(
             .SalesArrangements
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
-        
+
+        bool stateUpdated = false;
+
         // puvodni rbcid
         string? rbcid = entity.RiskBusinessCaseId;
 
@@ -61,10 +65,16 @@ internal sealed class UpdateLoanAssessmentParametersHandler(
         if (entity.State == (int)EnumSalesArrangementStates.NewArrangement)
         {
             entity.State = (int)EnumSalesArrangementStates.InProgress;
+            stateUpdated = true;
         }
 
         // ulozeni zmen
         await _dbContext.SaveChangesAsync(cancellation);
+
+        if (stateUpdated)
+        {
+            await _responseCache.InvalidateEntry(nameof(ValidateSalesArrangementId), request.SalesArrangementId);
+        }
 
         // meni se rbcid, notifikovat SB
         if (!string.IsNullOrEmpty(request.RiskBusinessCaseId) && !request.RiskBusinessCaseId.Equals(rbcid, StringComparison.OrdinalIgnoreCase))

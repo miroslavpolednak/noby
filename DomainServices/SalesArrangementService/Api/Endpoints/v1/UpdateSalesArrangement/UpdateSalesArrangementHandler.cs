@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangement;
 
-internal sealed class UpdateSalesArrangementHandler(Database.SalesArrangementServiceDbContext _dbContext)
+internal sealed class UpdateSalesArrangementHandler(
+    IGrpcServerResponseCache _responseCache,
+    Database.SalesArrangementServiceDbContext _dbContext)
     : IRequestHandler<Contracts.UpdateSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
     public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.UpdateSalesArrangementRequest request, CancellationToken cancellation)
@@ -11,11 +14,14 @@ internal sealed class UpdateSalesArrangementHandler(Database.SalesArrangementSer
             .SalesArrangements
             .FirstOrDefaultAsync(t => t.SalesArrangementId == request.SalesArrangementId, cancellation)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.SalesArrangementNotFound, request.SalesArrangementId);
+        
+        bool stateUpdated = false;
 
         // pokud je zadost NEW, zmenit na InProgress
         if (entity.State == (int)EnumSalesArrangementStates.NewArrangement)
         {
             entity.State = (int)EnumSalesArrangementStates.InProgress;
+            stateUpdated = true;
         }
 
         // kontrola na stav
@@ -40,6 +46,11 @@ internal sealed class UpdateSalesArrangementHandler(Database.SalesArrangementSer
         }
         
         await _dbContext.SaveChangesAsync(cancellation);
+
+        if (stateUpdated)
+        {
+            await _responseCache.InvalidateEntry(nameof(ValidateSalesArrangementId), request.SalesArrangementId);
+        }
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }
