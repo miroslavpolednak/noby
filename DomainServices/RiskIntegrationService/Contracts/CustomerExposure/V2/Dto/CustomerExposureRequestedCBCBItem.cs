@@ -29,4 +29,7 @@ public class CustomerExposureRequestedCBCBItem
     
     [ProtoMember(9)]
     public int? CustomerRoleId { get; set; }
+
+    [ProtoMember(10)]
+    public DateTime? RequestDate { get; set; }
 }

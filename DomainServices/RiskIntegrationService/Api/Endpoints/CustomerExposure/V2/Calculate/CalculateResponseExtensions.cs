@@ -113,7 +113,7 @@ internal static class CalculateResponseExtensions
             ExposureAmount = item.ExposureAmount?.Value,
             ContractDate = item.ContractDate?.DateTime,
             CbcbDataLastUpdate = item.CbcbDataLastUpdate?.DateTime,
-            KbGroupInstanceCode = item.KbGroupInstanceCode,
+            KbGroupInstanceCode = item.KbGroupInstanceCode
         };
 
     public static _V2.CustomerExposureRequestedCBCBItem ToServiceResponse(this _C4M.RequestedCBCBExposureItem item, List<CustomerRolesResponse.Types.CustomerRoleItem> customerRoles, List<ObligationLaExposuresResponse.Types.ObligationLaExposureItem> obligationLaExposures)
@@ -127,7 +127,8 @@ internal static class CalculateResponseExtensions
             LoanAmount = item.LoanAmount?.Value,
             InstallmentAmount = item.InstallmentAmount?.Value,
             KbGroupInstanceCode = item.KbGroupInstanceCode,
-            CbcbDataLastUpdate = item.CbcbDataLastUpdate?.DateTime
+            CbcbDataLastUpdate = item.CbcbDataLastUpdate?.DateTime,
+            RequestDate = item.RequestDate?.DateTime
         };
 
     private static BankAccountDetail? getBankAccountFromIdentifier(string? identifier)
