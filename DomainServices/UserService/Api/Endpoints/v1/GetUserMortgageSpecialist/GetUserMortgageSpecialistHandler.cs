@@ -18,7 +18,7 @@ internal sealed class GetUserMortgageSpecialistHandler(IConnectionProvider _db)
 		return new Contracts.GetUserMortgageSpecialistResponse
 		{
 			Firstname = userInfo!.firstname,
-			Lastname = userInfo.lastname,
+			Lastname = userInfo.surname,
 			Email = userInfo.email,
 			Phone = userInfo.phone,
 			MortgageCenterAdditionalId = userInfo.mortgageCenterAdditionalId,
