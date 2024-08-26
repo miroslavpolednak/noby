@@ -38,7 +38,7 @@ internal sealed class GetLoggedInUserHandler(
             SessionValidTo = sessionValidTo
 		};
 
-        if (userInstance.UserInfo?.IsInternal ?? false)
+        if ((userInstance.UserInfo?.IsInternal ?? true) == false)
         {
 			await fillMortgageSpecialist(userInstance.UserId, response, cancellationToken);
 		}
