@@ -23,6 +23,9 @@ public static class SimpleLoginAuthenticationExtensions
                 config.Cookie.Path = "/";
                 config.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 config.Cookie.SameSite = SameSiteMode.None;
+
+                config.LogoutPath = new PathString("/auth/signout");
+                config.ReturnUrlParameter = "redirect";
             });
     }
 }
