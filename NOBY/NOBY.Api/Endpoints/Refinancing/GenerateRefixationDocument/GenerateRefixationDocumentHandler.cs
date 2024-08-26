@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients.v1;
+﻿using CIS.Core.Exceptions.ExternalServices;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
@@ -147,7 +148,14 @@ internal sealed class GenerateRefixationDocumentHandler(
             MaturityDate = simulationResults.MaturityDate
         };
 
-        await _sbWebApi.GenerateHedgeAppendixDocument(request, cancellationToken);
+        try
+        {
+            await _sbWebApi.GenerateHedgeAppendixDocument(request, cancellationToken);
+        }
+        catch (CisExternalServiceValidationException ex) when (ex.FirstExceptionCode == "90068")
+        {
+            throw new NobyValidationException(90068);
+        }
     }
 
     private async Task GenerateInterestRateNotificationDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, CancellationToken cancellationToken)

@@ -23,7 +23,7 @@ public sealed class MortgageRefinancingDataService(
         var response = new RefinancingSharedDocument
         {
             DocumentId = documentId,
-            IsContinueEnabled = refinancingType == EnumRefinancingTypes.MortgageRetention || (refinancingType == EnumRefinancingTypes.MortgageRefixation && eaCode is (605353 or 604587)),
+            IsContinueEnabled = refinancingType == EnumRefinancingTypes.MortgageRetention || (refinancingType == EnumRefinancingTypes.MortgageRefixation && activeSigningTask is not null),
             DocumentName = await getSigningDocumentName(refinancingType, eaCode),
             SignatureTypeDetailId = result.SalesArrangement?.Retention?.SignatureTypeDetailId ?? result.SalesArrangement?.Refixation?.SignatureTypeDetailId,
             IsGenerateDocumentEnabled = (refinancingType == EnumRefinancingTypes.MortgageRefixation || result.SalesArrangement?.OfferId is not null)

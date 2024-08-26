@@ -9,7 +9,7 @@ internal static class LoggerExtensions
         LoggerMessage.Define<string, string, string, string?, int?>(
             LogLevel.Information,
             new EventId(1, nameof(TempMessageHeaderLog)),
-            "Consuming message type {MessageType} with ID '{MessageId}'; EventId: {EventId}; State: {State}; processPhaseCode: {ProcessPhaseCode}");
+            "Consuming message type {MessageType} with ID '{MessageId}'; EventId: {SbEventId}; State: {State}; processPhaseCode: {ProcessPhaseCode}");
 
     private static readonly Action<ILogger, long, Exception> _newCaseIdCreated = 
         LoggerMessage.Define<long>(
@@ -174,6 +174,6 @@ internal static class LoggerExtensions
     public static void KafkaHandlerSkippedDueToState(this ILogger logger, in string consumerTypeName, in long caseId, in long taskId, in string state)
         => _kafkaHandlerSkippedDueToState(logger, consumerTypeName, caseId, taskId, state, null!);
 
-    public static void TempMessageHeaderLog(this ILogger logger, IMessageContext context, in string eventId, string? state = null, int? processPhaseCode = null)
-        => _tempMessageHeaderLog(logger, context.Message.Value.GetType().FullName!, context.Headers.GetString("messaging.id", Encoding.UTF8), eventId, state, processPhaseCode, null!);
+    public static void TempMessageHeaderLog(this ILogger logger, IMessageContext context, in string sbEventId, string? state = null, int? processPhaseCode = null)
+        => _tempMessageHeaderLog(logger, context.Message.Value.GetType().FullName!, context.Headers.GetString("messaging.id", Encoding.UTF8), sbEventId, state, processPhaseCode, null!);
 }
