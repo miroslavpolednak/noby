@@ -10,15 +10,22 @@ public sealed class UserDto
     public int UserId {  get; set; }
 
     [ProtoMember(2)]
+#pragma warning disable CA2227 // Collection properties should be read only
     public List<SharedTypes.GrpcTypes.UserIdentity> UserIdentifiers { get; set; } = null!;
+#pragma warning restore CA2227 // Collection properties should be read only
 
     [ProtoMember(3)]
     public UserInfoObject UserInfo { get; set; } = null!;
 
     [ProtoMember(4)]
+#pragma warning disable CA2227 // Collection properties should be read only
     public List<int> UserPermissions { get; set; } = [];
+#pragma warning restore CA2227 // Collection properties should be read only
 
+    [ProtoContract]
+#pragma warning disable CA1034 // Nested types should not be visible
     public sealed class UserInfoObjectDto
+#pragma warning restore CA1034 // Nested types should not be visible
     {
         [ProtoMember(20)]
         public string FirstName { get; set; } = string.Empty;

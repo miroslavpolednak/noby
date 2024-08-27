@@ -7,7 +7,7 @@ using CIS.Infrastructure.Caching.Grpc;
 
 namespace DomainServices;
 
-public static class StartupExtensions
+public static class CaseServiceClientsStartupExtensions
 {
     /// <summary>
     /// Service SD key

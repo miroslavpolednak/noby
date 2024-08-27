@@ -219,7 +219,4 @@ internal sealed class CaseServiceClient(
 
         return response.Cases;
     }
-
-    // kesovani vysledku validateCase
-    private Case? _cacheGetCaseDetail;
 }

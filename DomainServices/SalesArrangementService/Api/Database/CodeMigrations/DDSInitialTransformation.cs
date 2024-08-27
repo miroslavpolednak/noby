@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -16,7 +17,7 @@ public sealed class DDSInitialTransformation : IScript
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
 
-    public string ProvideScript(Func<IDbCommand> dbCommandFactory)
+    public string ProvideScript([NotNull] Func<IDbCommand> dbCommandFactory)
     {
         const int BatchSize = 300;
 
@@ -101,7 +102,9 @@ public sealed class DDSInitialTransformation : IScript
         };
     }
 
-    public class SalesArrangementParameters
+#pragma warning disable CA1034 // Nested types should not be visible
+    public sealed class SalesArrangementParameters
+#pragma warning restore CA1034 // Nested types should not be visible
     {
         public int SalesArrangementId { get; set; }
 

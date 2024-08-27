@@ -7,7 +7,7 @@ using CIS.Infrastructure.Caching.Grpc;
 
 namespace DomainServices;
 
-public static class StartupExtensions
+public static class UserServiceClientsStartupExtensions
 {
     /// <summary>
     /// Service SD key
@@ -25,7 +25,9 @@ public static class StartupExtensions
         return services;
     }
 
+#pragma warning disable CA1054 // URI-like parameters should not be strings
     public static IServiceCollection AddUserService(this IServiceCollection services, string serviceUrl)
+#pragma warning restore CA1054 // URI-like parameters should not be strings
     {
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.UserService.UserServiceClient>(serviceUrl);
         services.TryAddTransient<UserService.Clients.v1.IUserServiceClient, UserService.Clients.v1.UserServiceClient>();

@@ -2,10 +2,11 @@
 using CIS.Infrastructure.Caching.Grpc;
 using DomainServices.UserService.Clients.Dto;
 using DomainServices.UserService.Contracts;
+using System.Globalization;
 
 namespace DomainServices.UserService.Clients.v1;
 
-internal class UserServiceClient(
+internal sealed class UserServiceClient(
 	Contracts.v1.UserService.UserServiceClient _service,
     IGrpcClientResponseCache<UserServiceClient> _cache,
 	ICurrentUserAccessor _currentUser)
@@ -49,7 +50,7 @@ internal class UserServiceClient(
             async (c) => await GetUser(new SharedTypes.Types.UserIdentity()
             {
                 Scheme = SharedTypes.Enums.UserIdentitySchemes.V33Id,
-                Identity = userId.ToString(),
+                Identity = userId.ToString(CultureInfo.InvariantCulture),
             }, c),
             new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
             {

@@ -78,7 +78,9 @@ internal sealed class UpdateParametersValidator(
         return parameters;
     }
 
+#pragma warning disable CA1822 // Mark members as static
     public Task<SalesArrangementUpdateParametersCustomerChange3602?> Validate(SalesArrangementUpdateParametersCustomerChange3602? parameters, __SA.SalesArrangement salesArrangement)
+#pragma warning restore CA1822 // Mark members as static
     {
         return Task.FromResult(parameters);
     }

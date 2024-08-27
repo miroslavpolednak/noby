@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.OfferService.Api.Endpoints.v1;
 
 [Authorize]
-public class OfferService
+public sealed class OfferService(IMediator _mediator)
     : Contracts.v1.OfferService.OfferServiceBase
 {
     public override async Task<ValidateOfferIdResponse> ValidateOfferId(ValidateOfferIdRequest request, ServerCallContext context)
@@ -60,8 +60,4 @@ public class OfferService
 
         return new Empty();
     }
-
-    private readonly IMediator _mediator;
-    public OfferService(IMediator mediator)
-        => _mediator = mediator;
 }

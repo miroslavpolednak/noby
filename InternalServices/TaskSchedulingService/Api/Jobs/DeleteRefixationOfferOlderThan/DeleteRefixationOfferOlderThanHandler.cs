@@ -3,10 +3,10 @@ using DomainServices.OfferService.Clients.Interfaces;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.DeleteRefixationOfferOlderThan;
 
-public class DeleteRefixationOfferOlderThanHandler(IMaintananceService maintanance)
+public class DeleteRefixationOfferOlderThanHandler(IMaintananceServiceClient maintanance)
     : IJob
 {
-    private readonly IMaintananceService _maintanance = maintanance;
+    private readonly IMaintananceServiceClient _maintanance = maintanance;
 
     public async Task Execute(string? jobData, CancellationToken cancellationToken)
     {

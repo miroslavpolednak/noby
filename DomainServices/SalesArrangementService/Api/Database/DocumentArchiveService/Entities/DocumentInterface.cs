@@ -4,7 +4,9 @@ public class DocumentInterface
 {
     public string DocumentId { get; set; } = null!;
 
+#pragma warning disable CA1819 // Properties should not return arrays
     public byte[] DocumentData { get; set; } = null!;
+#pragma warning restore CA1819 // Properties should not return arrays
 
     public string FileName { get; set; } = null!;
 

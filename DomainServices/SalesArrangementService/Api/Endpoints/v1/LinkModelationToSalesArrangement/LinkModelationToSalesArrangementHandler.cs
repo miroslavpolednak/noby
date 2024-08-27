@@ -224,11 +224,13 @@ internal sealed class LinkModelationToSalesArrangementHandler(
                 .Where(t => t.ValuationStateId is (int)WorkflowTaskStates.Neoceneno or (int)WorkflowTaskStates.Rozpracovano);
         foreach (var realEstateValuation in realEstatesToDelete)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 await _realEstateValuationService.DeleteRealEstateValuation(caseId, realEstateValuation.RealEstateValuationId, cancellationToken);
             }
             catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
     }
 

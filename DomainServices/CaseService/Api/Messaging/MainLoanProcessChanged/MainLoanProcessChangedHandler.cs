@@ -18,7 +18,7 @@ internal class MainLoanProcessChangedHandler(
             return;
         }
 
-        var caseState = message.processData.@private.mainLoanProcessData.processPhase.code;
+        var caseState = message.processData!.@private.mainLoanProcessData.processPhase.code ;
         _logger.UpdateCaseStateStart(caseId, caseState);
 
         try

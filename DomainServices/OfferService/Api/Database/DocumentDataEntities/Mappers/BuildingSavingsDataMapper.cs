@@ -2,6 +2,8 @@
 using DomainServices.OfferService.Contracts;
 using static DomainServices.OfferService.Api.Database.DocumentDataEntities.BuildingSavingsData;
 
+#pragma warning disable CA1822 // Mark members as static
+
 namespace DomainServices.OfferService.Api.Database.DocumentDataEntities.Mappers;
 
 [TransientService, SelfService]

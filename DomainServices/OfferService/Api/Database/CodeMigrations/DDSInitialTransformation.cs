@@ -1,6 +1,7 @@
 ﻿using DbUp.Engine;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 
@@ -10,14 +11,14 @@ namespace DomainServices.OfferService.Api.Database.CodeMigrations;
 public sealed class DDSInitialTransformation
     : IScript
 {
-    public string ProvideScript(Func<IDbCommand> dbCommandFactory)
+    public string ProvideScript([NotNull] Func<IDbCommand> dbCommandFactory)
     {
         var worthinessMapper = new Database.DocumentDataEntities.Mappers.MortgageCreditWorthinessSimpleDataMapper();
         
         var cmd = dbCommandFactory();
         int rows = 0;
 
-        using (SqlConnection connection = new SqlConnection(DatabaseMigrationsSupport.Settings.Options.ConnectionString))
+        using (SqlConnection connection = new(DatabaseMigrationsSupport.Settings.Options.ConnectionString))
         {
             connection.Open();
             
@@ -169,17 +170,18 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
 
     private static void insertDDS(SqlConnection connection, in string tableName, in int offerId, in int createdUserId, in DateTime createdTime, in object data)
     {
-        using (SqlCommand command = new SqlCommand($"INSERT INTO [DDS].{tableName} ([DocumentDataEntityId],[DocumentDataVersion],[Data],[CreatedUserId],[CreatedTime]) VALUES (@id, 1, @data, @userId, @time)", connection))
-        {
-            command.CommandTimeout = 5;
-            
-            command.Parameters.AddWithValue("@id", offerId);
-            command.Parameters.AddWithValue("@data", JsonSerializer.Serialize(data, _jsonSerializerOptions));
-            command.Parameters.AddWithValue("@userId", createdUserId);
-            command.Parameters.AddWithValue("@time", createdTime);
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+        using SqlCommand command = new($"INSERT INTO [DDS].{tableName} ([DocumentDataEntityId],[DocumentDataVersion],[Data],[CreatedUserId],[CreatedTime]) VALUES (@id, 1, @data, @userId, @time)", connection);
 
-            command.ExecuteNonQuery();
-        }
+        command.CommandTimeout = 5;
+
+        command.Parameters.AddWithValue("@id", offerId);
+        command.Parameters.AddWithValue("@data", JsonSerializer.Serialize(data, _jsonSerializerOptions));
+        command.Parameters.AddWithValue("@userId", createdUserId);
+        command.Parameters.AddWithValue("@time", createdTime);
+
+        command.ExecuteNonQuery();
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
     }
 
     private static byte[]? getBinary(IDataReader reader, in string field)
@@ -194,7 +196,7 @@ WHERE CreatedUserId IS NOT NULL AND OfferId NOT IN (SELECT DocumentDataEntityId 
         return buffer;
     }
 
-    private static JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         IgnoreReadOnlyProperties = true

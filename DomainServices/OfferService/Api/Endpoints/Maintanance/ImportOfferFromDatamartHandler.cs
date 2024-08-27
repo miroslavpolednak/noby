@@ -4,10 +4,14 @@ using Dapper;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using DomainServices.OfferService.Api.Extensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DomainServices.OfferService.Api.Endpoints.Maintanance;
 
-public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<ImportOfferFromDatamartHandler> logger) : IRequestHandler<ImportOfferFromDatamartRequest, Empty>
+public class ImportOfferFromDatamartHandler(
+    IConfiguration config, 
+    ILogger<ImportOfferFromDatamartHandler> logger) 
+    : IRequestHandler<ImportOfferFromDatamartRequest, Empty>
 {
     private const int _numberOfBatchsInHistory = 31;
     private const int _technicalTimeout = 3600; // [s]
@@ -21,7 +25,7 @@ public class ImportOfferFromDatamartHandler(IConfiguration config, ILogger<Impor
     private readonly ILogger<ImportOfferFromDatamartHandler> _logger = logger;
 
     public async Task<Empty> Handle(
-        ImportOfferFromDatamartRequest request,
+        [NotNull] ImportOfferFromDatamartRequest request,
         CancellationToken cancellationToken)
     {
         var connectionStr = _config.GetConnectionString("default") ?? throw new NotSupportedException("defaut connection string required");

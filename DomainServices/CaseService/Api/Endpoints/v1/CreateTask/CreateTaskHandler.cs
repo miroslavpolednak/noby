@@ -27,7 +27,7 @@ internal sealed class CreateTaskHandler(
         // taskRequest pouze pokud je vyplneny
         if (!string.IsNullOrEmpty(request.TaskRequest))
         {
-            metadata.Add(getTaskTypeKey(), request.TaskRequest.ReplacePipesToSb());
+            metadata.Add(getTaskTypeKey(), request.TaskRequest.ReplacePipesToSb() ?? "");
         }
 
         MapPriceException(metadata, request.PriceException);

@@ -1,4 +1,5 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
@@ -56,7 +57,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
-                    Comment = request?.Comment ?? "",
+                    Comment = request.Comment ?? "",
                     LocalSurveyDetails = createData(request),
                 }, cancellationToken);
                 break;

@@ -2,7 +2,7 @@
 using DomainServices.OfferService.Contracts;
 
 namespace DomainServices.OfferService.Clients.Services;
-public class MaintananceService(Contracts.MaintananceService.MaintananceServiceClient service) : IMaintananceService
+public class MaintananceServiceClient(Contracts.MaintananceService.MaintananceServiceClient service) : IMaintananceServiceClient
 {
     private readonly Contracts.MaintananceService.MaintananceServiceClient _service = service;
 

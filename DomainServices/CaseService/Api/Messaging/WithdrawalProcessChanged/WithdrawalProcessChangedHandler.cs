@@ -17,7 +17,7 @@ internal class WithdrawalProcessChangedHandler(
     {
         _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.withdrawalProcessData?.processPhase?.code);
 
-        var code = message.processData.@private.withdrawalProcessData.processPhase.code;
+        var code = message.processData!.@private.withdrawalProcessData.processPhase.code;
         if (code != 1 && code != 3)
         {
             return;

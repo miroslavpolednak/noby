@@ -1,7 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
 
 namespace DomainServices.OfferService.Clients.Interfaces;
-public interface IMaintananceService
+public interface IMaintananceServiceClient
 {
     Task ImportOfferFromDatamart(ImportOfferFromDatamartRequest request, CancellationToken cancellationToken = default);
 

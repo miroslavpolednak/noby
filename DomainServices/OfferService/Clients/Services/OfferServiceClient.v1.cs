@@ -2,7 +2,7 @@
 
 namespace DomainServices.OfferService.Clients.v1;
 
-internal sealed class OfferService 
+internal sealed class OfferServiceClient 
     : IOfferServiceClient
 {
     public async Task<decimal> GetInterestRate(long caseId, DateOnly futureInterestRateValidTo, int? fixedRatePeriod = default, CancellationToken cancellationToken = default)
@@ -98,6 +98,6 @@ internal sealed class OfferService
 
     private readonly Contracts.v1.OfferService.OfferServiceClient _service;
 
-    public OfferService(Contracts.v1.OfferService.OfferServiceClient service)
+    public OfferServiceClient(Contracts.v1.OfferService.OfferServiceClient service)
         => _service = service;
 }

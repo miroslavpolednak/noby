@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Asp.Versioning;
-using DomainServices.CaseService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Test;
 
@@ -8,9 +7,10 @@ namespace NOBY.Api.Endpoints.Test;
 [Route("api/v{v:apiVersion}/test")]
 [AllowAnonymous]
 [ApiVersion(1)]
-public class TestController : ControllerBase
+public class TestController(IMediator _mediator, IHttpContextAccessor _context) 
+    : ControllerBase
 {
-    [HttpGet("test2")]
+    /*[HttpGet("test2")]
     public async Task<IActionResult> T2()
     {
         var service = _context.HttpContext.RequestServices.GetRequiredService<ICaseServiceClient>();
@@ -21,14 +21,5 @@ public class TestController : ControllerBase
         await service.LinkOwnerToCase(3092450, 5248);
 
         return Content(System.Text.Json.JsonSerializer.Serialize(i1));
-    }
-
-    private readonly IHttpContextAccessor _context;
-    private readonly IMediator _mediator;
-
-    public TestController(IMediator mediator, IHttpContextAccessor context)
-    {
-        _context = context;
-        _mediator = mediator;
-    }
+    }*/
 }

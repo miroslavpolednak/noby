@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DomainServices;
 
-public static class StartupExtensions
+public static class OfferServiceClientsStartupExtensions
 {
     /// <summary>
     /// Service SD key
@@ -17,18 +17,20 @@ public static class StartupExtensions
     {
         services.AddCisServiceDiscovery();
 
-        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferService>();
-        services.TryAddTransient<OfferService.Clients.Interfaces.IMaintananceService, OfferService.Clients.Services.MaintananceService>();
+        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferServiceClient>();
+        services.TryAddTransient<OfferService.Clients.Interfaces.IMaintananceServiceClient, OfferService.Clients.Services.MaintananceServiceClient>();
 
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.OfferService.OfferServiceClient>(ServiceName);
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.OfferService.OfferServiceClient>(ServiceName, customServiceKey: "OFMaintananceServiceClient");
         return services;
     }
 
+#pragma warning disable CA1054 // URI-like parameters should not be strings
     public static IServiceCollection AddOfferService(this IServiceCollection services, string serviceUrl)
+#pragma warning restore CA1054 // URI-like parameters should not be strings
     {
-        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferService>();
-        services.TryAddTransient<OfferService.Clients.Interfaces.IMaintananceService, OfferService.Clients.Services.MaintananceService>();
+        services.TryAddTransient<OfferService.Clients.v1.IOfferServiceClient, OfferService.Clients.v1.OfferServiceClient>();
+        services.TryAddTransient<OfferService.Clients.Interfaces.IMaintananceServiceClient, OfferService.Clients.Services.MaintananceServiceClient>();
 
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.OfferService.OfferServiceClient>(serviceUrl);
         services.TryAddCisGrpcClientUsingUrl<__Contracts.MaintananceService.MaintananceServiceClient, __Contracts.v1.OfferService.OfferServiceClient>(ServiceName, customServiceKey: "OFMaintananceServiceClient");
