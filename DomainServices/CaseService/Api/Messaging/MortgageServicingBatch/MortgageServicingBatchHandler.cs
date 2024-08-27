@@ -35,6 +35,8 @@ internal sealed class MortgageServicingBatchHandler(Database.CaseServiceDbContex
             var caseEntry = dbContext.Cases.Attach(new() { CaseId = caseId });
 
             caseEntry.Entity.TargetAmount = targetAmount;
+
+            logger.KafkaMortgageChangedFinished(nameof(MortgageServicingBatchHandler), caseId, targetAmount);
         }
 
         await dbContext.SaveChangesAsync();
