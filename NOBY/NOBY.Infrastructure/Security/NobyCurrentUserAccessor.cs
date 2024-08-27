@@ -71,6 +71,11 @@ public sealed class NobyCurrentUserAccessor(IHttpContextAccessor _httpContext)
 			var tokenService = _httpContext.HttpContext!.RequestServices.GetRequiredService<IUserTokenManagementService>();
 			var tokenData = await tokenService.GetAccessTokenAsync(_httpContext.HttpContext!.User);
 
+            if (string.IsNullOrEmpty(tokenData.RefreshToken)) // token muze byt null, kdyz neprosel korektne pres CAAS
+            {
+                return (false, default);
+            }
+
 			var handler = new JwtSecurityTokenHandler();
 			var token = handler.ReadJwtToken(tokenData.RefreshToken);
 
