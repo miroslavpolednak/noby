@@ -50,15 +50,18 @@ public class MockUserServiceClient
                 PhoneNumber = "999999999",
                 DisplayName = fullName,
                 Cin = czechIdentificationNumber
-            }
+            },
+            UserIdentifiers =
+            [
+                new()
+                {
+                    Identity = identity,
+                    IdentityScheme = identityScheme
+
+                }
+
+            ]
         };
-
-        user.UserIdentifiers.Add(new()
-        {
-            Identity = identity,
-            IdentityScheme = identityScheme
-
-        });
 
         return user;
     }
