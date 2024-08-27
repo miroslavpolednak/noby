@@ -50,6 +50,30 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
         return this;
     }
 
+    public IKafkaFlowMessagingConfigurator AddBatchConsumerAvro<TBatchHandler>(string topic) where TBatchHandler : class, IMessageMiddleware
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(topic, nameof(topic));
+
+        _clusterBuilder += kafka => kafka.AddConsumer(consumer =>
+        {
+            consumer.Topic(topic).WithAutoOffsetReset(AutoOffsetReset.Earliest)
+                    .WithGroupId(_settings.GroupId).WithBufferSize(300).WithWorkersCount(1)
+                    .AddMiddlewares(middlewares =>
+                    {
+                        middlewares.AddSchemaRegistryAvroDeserializer();
+
+                        middlewares.AddBatching(100, TimeSpan.FromSeconds(30));
+
+                        middlewares.Add<ActivitySourceMiddleware>(MiddlewareLifetime.Message);
+                        middlewares.Add<ConsumerErrorHandlingMiddleware>(MiddlewareLifetime.Singleton);
+
+                        middlewares.Add<TBatchHandler>();
+                    });
+        });
+
+        return this;
+    }
+
     public IKafkaFlowMessagingConfigurator AddProducerAvro<TMessage>(string defaultTopic, SubjectNameStrategy subjectNameStrategy = SubjectNameStrategy.Record)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(defaultTopic, nameof(defaultTopic));
