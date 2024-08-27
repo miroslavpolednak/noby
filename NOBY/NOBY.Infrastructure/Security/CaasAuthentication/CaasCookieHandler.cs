@@ -25,7 +25,7 @@ internal sealed class CaasCookieHandler
         }
         options.Cookie.Path = "/";
         options.Cookie.IsEssential = true;
-        //options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
         options.Cookie.Name = AuthenticationConstants.CookieName;
@@ -56,6 +56,10 @@ internal sealed class CaasCookieHandler
             {
                 // login, ktery prisel z CAASu
                 var currentLogin = context.Principal!.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value;
+                if (context.Principal.Claims.Any(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeId))
+                {
+                    return;
+                }
 
                 var userServiceClient = context.HttpContext.RequestServices.GetRequiredService<IUserServiceClient>();
                 
