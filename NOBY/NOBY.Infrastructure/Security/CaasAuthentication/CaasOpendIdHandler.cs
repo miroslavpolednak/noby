@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.AspNetCore.Authentication;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace NOBY.Infrastructure.Security.CaasAuthentication;
 
@@ -93,6 +95,16 @@ internal sealed class CaasOpendIdHandler
             {
                 context.Properties!.RedirectUri = context.ProtocolMessage.State;
                 context.HttpContext.Items.Add("noby_redirect_uri", context.ProtocolMessage.State);
+                return Task.CompletedTask;
+            },
+            OnTicketReceived = context =>
+            {
+                // ziskat expiraci refresh tokenu pro ulozeni do claims
+                var refreshToken = context.Properties!.GetTokenValue("refresh_token");
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(refreshToken);
+                context.HttpContext.Items.Add("noby_refreshtoken_exp", token.ValidTo);
+
                 return Task.CompletedTask;
             }
         };

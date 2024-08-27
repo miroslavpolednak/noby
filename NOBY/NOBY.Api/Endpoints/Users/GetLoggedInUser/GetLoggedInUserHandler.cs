@@ -1,13 +1,14 @@
-﻿using Google.Protobuf.Collections;
+﻿using CIS.Core.Security;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace NOBY.Api.Endpoints.Users.GetLoggedInUser;
 
 internal sealed class GetLoggedInUserHandler(
 	Database.FeApiDbContext _dbContext,
     IAppCache _cache,
-    CIS.Core.Security.ICurrentUserAccessor _userAccessor,
+    ICurrentUserAccessor _userAccessor,
     DomainServices.UserService.Clients.v1.IUserServiceClient _userService)
         : IRequestHandler<GetLoggedInUserRequest, UsersGetLoggedInUserResponse>
 {
@@ -15,8 +16,8 @@ internal sealed class GetLoggedInUserHandler(
     {
 		var userInstance = await _userService.GetUser(_userAccessor.User!.Id, cancellationToken);
 
-        // token info
-        var (tokenFound, sessionValidTo) = await ((NobyCurrentUserAccessor)_userAccessor).GetOAuth2TokenInfo();
+        // session validTo
+        var tokenExpirationClaim = _userAccessor.Claims.FirstOrDefault(t => t.Type == SecurityConstants.ClaimTypeRefreshTokenExpiration);
 
         var response = new UsersGetLoggedInUserResponse
         {
@@ -35,7 +36,7 @@ internal sealed class GetLoggedInUserHandler(
             },
             UserIdentifiers = userInstance.UserIdentifiers.Select(t => (SharedTypesUserIdentity)t!).ToList(),
             UserPermissions = getPermissions(userInstance.UserPermissions),
-            SessionValidTo = sessionValidTo
+            SessionValidTo = string.IsNullOrEmpty(tokenExpirationClaim?.Value) ? null : new DateTime(Convert.ToInt64(tokenExpirationClaim.Value, CultureInfo.InvariantCulture))
 		};
 
         if ((userInstance.UserInfo?.IsInternal ?? true) == false)

@@ -25,7 +25,7 @@ internal sealed class CaasCookieHandler
         }
         options.Cookie.Path = "/";
         options.Cookie.IsEssential = true;
-        options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
+        //options.Cookie.SameSite = SameSiteMode.Strict;
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
         options.Cookie.Name = AuthenticationConstants.CookieName;
@@ -56,11 +56,7 @@ internal sealed class CaasCookieHandler
             {
                 // login, ktery prisel z CAASu
                 var currentLogin = context.Principal!.Claims.First(t => t.Type == ClaimTypes.NameIdentifier).Value;
-                if (context.Principal.Claims.Any(t => t.Type == CIS.Core.Security.SecurityConstants.ClaimTypeId))
-                {
-                    return;
-                }
-
+                
                 var userServiceClient = context.HttpContext.RequestServices.GetRequiredService<IUserServiceClient>();
                 
 				// zavolat user service a zjistit, jestli muze uzivatel do aplikace
@@ -87,15 +83,16 @@ internal sealed class CaasCookieHandler
                     createLogger(context.HttpContext).UserWithoutAccess(currentLogin);
                     throw new CisAuthorizationException("Cookie handler: user does not have APPLICATION_BasicAccess");
                 }
-
-				// vytvorit claimy
-				List<Claim> claims =
-				[
-					new (CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin),
-					new (CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(CultureInfo.InvariantCulture)),
+                
+                // vytvorit claimy
+                List<Claim> claims =
+                [
+                    new (CIS.Core.Security.SecurityConstants.ClaimTypeRefreshTokenExpiration, ((DateTime)context.HttpContext.Items["noby_refreshtoken_exp"]!).Ticks.ToString(CultureInfo.InvariantCulture)),
+                    new (CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin),
+                    new (CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(CultureInfo.InvariantCulture)),
 					// doplnit prava uzivatele do claims
 					.. permissions.Select(t => new Claim(AuthenticationConstants.NobyPermissionClaimType, $"{t}"))
-				];
+                ];
 
                 var identity = new ClaimsIdentity(claims, context.Principal.Identity!.AuthenticationType, CIS.Core.Security.SecurityConstants.ClaimTypeId, "role");
                 var principal = new ClaimsPrincipal(identity);

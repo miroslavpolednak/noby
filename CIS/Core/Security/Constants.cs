@@ -21,4 +21,6 @@ public sealed class SecurityConstants
     public const string ClaimTypeIdent = ContextUserHttpHeaderUserIdentKey;
 
     public const string ClaimTypeId = ContextUserHttpHeaderUserIdKey;
+
+    public const string ClaimTypeRefreshTokenExpiration = "noby-rtoken-exp";
 }
