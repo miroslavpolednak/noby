@@ -25,8 +25,13 @@ internal sealed class MortgageServicingBatchHandler(Database.CaseServiceDbContex
             parsedData[data.caseId] = data.targetAmount;
         }
 
+        var availableCaseIds = await dbContext.Cases.AsNoTracking().Where(c => parsedData.Keys.Contains(c.CaseId)).Select(c => c.CaseId).OrderBy(id => id).ToListAsync();
+
         foreach ((long caseId, decimal targetAmount) in parsedData)
         {
+            if (availableCaseIds.BinarySearch(caseId) < 0)
+                continue;
+
             var caseEntry = dbContext.Cases.Attach(new() { CaseId = caseId });
 
             caseEntry.Entity.TargetAmount = targetAmount;
