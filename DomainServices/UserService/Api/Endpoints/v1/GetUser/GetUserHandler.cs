@@ -1,4 +1,6 @@
-﻿namespace DomainServices.UserService.Api.Endpoints.v1.GetUser;
+﻿using DomainServices.UserService.Api.Dto;
+
+namespace DomainServices.UserService.Api.Endpoints.v1.GetUser;
 
 internal sealed class GetUserHandler(IConnectionProvider _db)
         : IRequestHandler<Contracts.GetUserRequest, Contracts.User>
@@ -13,12 +15,12 @@ internal sealed class GetUserHandler(IConnectionProvider _db)
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.UserNotFound, $"{request.Identity.IdentityScheme}={request.Identity.Identity}");
 
         // dotahnout atributy
-        var dbAttributes = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
+        var dbAttributes = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<GetUserAttributesDto>(
             "[dbo].[getUserAttributes]",
             new { dbIdentities.v33id },
             cancellationToken);
 
-        var dbPermissions = await _db.ExecuteDapperStoredProcedureSqlToListAsync<dynamic>(
+        var dbPermissions = await _db.ExecuteDapperStoredProcedureSqlToListAsync<GetPermissionsDto>(
             "[dbo].[getPermissions]",
             new { ApplicationCode = "NOBY", dbIdentities.v33id },
             cancellationToken);

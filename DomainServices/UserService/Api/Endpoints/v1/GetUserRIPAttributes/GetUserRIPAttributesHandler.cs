@@ -1,4 +1,5 @@
-﻿using DomainServices.UserService.Contracts;
+﻿using DomainServices.UserService.Api.Dto;
+using DomainServices.UserService.Contracts;
 
 namespace DomainServices.UserService.Api.Endpoints.v1.GetUserRIPAttributes;
 
@@ -10,7 +11,7 @@ internal sealed class GetUserRIPAttributesHandler(IConnectionProvider _db)
         try
         {
             // vytahnout info o uzivateli z DB
-            var dbIdentity = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<dynamic>(
+            var dbIdentity = await _db.ExecuteDapperStoredProcedureFirstOrDefaultAsync<GetPersonHFRIPDto>(
                 "[dbo].[p_GetPersonHF_RIP]",
                 new { identity = request.Identity, identityScheme = request.IdentityScheme },
                 cancellationToken)
