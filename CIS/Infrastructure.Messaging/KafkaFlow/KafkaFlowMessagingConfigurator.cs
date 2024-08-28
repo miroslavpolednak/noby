@@ -1,4 +1,5 @@
 ﻿using CIS.Infrastructure.Messaging.KafkaFlow.Configuration;
+using CIS.Infrastructure.Messaging.KafkaFlow.Configuration.WorkersCountStrategy;
 using CIS.Infrastructure.Messaging.KafkaFlow.JsonSchema;
 using CIS.Infrastructure.Messaging.KafkaFlow.Middlewares;
 using Confluent.SchemaRegistry;
@@ -36,7 +37,7 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(topic, nameof(topic));
 
-        _clusterBuilder += kafka => kafka.AddConsumer(consumer => SetupConsumer(consumer.Topic(topic), m => m.AddSchemaRegistryAvroDeserializer(), handlers));
+        _clusterBuilder += kafka => kafka.AddConsumer(consumer => SetupConsumer(consumer, topic, m => m.AddSchemaRegistryAvroDeserializer(), handlers));
 
         return this;
     }
@@ -45,7 +46,7 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(topic, nameof(topic));
 
-        _clusterBuilder += kafka => kafka.AddConsumer(consumer => SetupConsumer(consumer.Topic(topic), m => m.AddSchemaRegistryJsonDeserializer(), handlers));
+        _clusterBuilder += kafka => kafka.AddConsumer(consumer => SetupConsumer(consumer, topic, m => m.AddSchemaRegistryJsonDeserializer(), handlers));
 
         return this;
     }
@@ -98,11 +99,22 @@ internal sealed class KafkaFlowMessagingConfigurator : IKafkaFlowMessagingConfig
         return this;
     }
 
-    private void SetupConsumer(IConsumerConfigurationBuilder consumer, Action<IConsumerMiddlewareConfigurationBuilder> deserializerConfig, Action<TypedHandlerConfigurationBuilder> handlers)
+    private void SetupConsumer(IConsumerConfigurationBuilder consumer, string topic, Action<IConsumerMiddlewareConfigurationBuilder> deserializerConfig, Action<TypedHandlerConfigurationBuilder> handlers)
     {
+        consumer.Topic(topic);
+
+        if (_settings.Configuration.WorkersCountStrategy.TryGetValue(topic, out WorkersCountStrategyConfiguration? workersCountConfig) && workersCountConfig.WorkersCountStrategy != WorkersCountStrategy.Default)
+        {
+            consumer.WithWorkersCount(WorkersCountStrategyFactory.CreateCalculator(workersCountConfig), TimeSpan.FromSeconds(workersCountConfig.EvaluationIntervalSecond));
+        }
+        else
+        {
+            consumer.WithWorkersCount(_settings.Configuration.WorkersCount);
+        }
+
         consumer.WithAutoOffsetReset(AutoOffsetReset.Earliest)
                 .WithGroupId(_settings.GroupId).WithManualMessageCompletion()
-                .WithBufferSize(_settings.Configuration.BufferSize).WithWorkersCount(_settings.Configuration.WorkersCount)
+                .WithBufferSize(_settings.Configuration.BufferSize)
                 .AddMiddlewares(m =>
                 {
                     m.AddAtBeginning<ActivitySourceMiddleware>(MiddlewareLifetime.Message);
