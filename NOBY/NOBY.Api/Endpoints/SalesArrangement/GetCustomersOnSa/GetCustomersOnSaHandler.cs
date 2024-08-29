@@ -4,7 +4,7 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetCustomersOnSa;
 
 internal sealed class GetCustomersOnSaHandler(
     ICustomerServiceClient _customerService,
-    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService)
+    DomainServices.HouseholdService.Clients.v1.ICustomerOnSAServiceClient _customerOnSaService)
         : IRequestHandler<GetCustomersOnSaRequest, List<SalesArrangementGetCustomersOnSaItem>>
 {
     //TODO tohle se bude nejspis cele predelavat, nema smysl to moc resit

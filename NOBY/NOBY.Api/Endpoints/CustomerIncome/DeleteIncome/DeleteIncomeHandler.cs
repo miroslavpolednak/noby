@@ -1,4 +1,4 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 using NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.DeleteIncome;

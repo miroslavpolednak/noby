@@ -1,6 +1,5 @@
-﻿using SharedTypes.GrpcTypes;
-using DomainServices.CaseService.Clients.v1;
-using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Api.Database;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;

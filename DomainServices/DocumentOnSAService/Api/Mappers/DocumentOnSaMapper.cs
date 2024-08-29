@@ -1,11 +1,10 @@
 ﻿using CIS.Core.Attributes;
 using SharedTypes.Enums;
-using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Api.Extensions;
 using DomainServices.DocumentOnSAService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;
@@ -29,23 +28,13 @@ public interface IDocumentOnSaMapper
 }
 
 [ScopedService, AsImplementedInterfacesService]
-public class DocumentOnSaMapper : IDocumentOnSaMapper
+public class DocumentOnSaMapper(
+    ICustomerOnSAServiceClient _customerOnSAService,
+    ICustomerServiceClient _customerService,
+    HouseholdService.Clients.ICustomerChangeDataMerger _customerChangeDataMerger
+        ) 
+    : IDocumentOnSaMapper
 {
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
-
-    public DocumentOnSaMapper(
-        ICustomerOnSAServiceClient customerOnSAService,
-        ICustomerServiceClient customerService,
-        ICustomerChangeDataMerger customerChangeDataMerger
-        )
-    {
-        _customerOnSAService = customerOnSAService;
-        _customerService = customerService;
-        _customerChangeDataMerger = customerChangeDataMerger;
-    }
-
     public IEnumerable<DocumentOnSAToSign> MapDocumentOnSaToSign(IEnumerable<DocumentOnSa> documentOnSas)
     {
         foreach (var documentOnSa in documentOnSas)

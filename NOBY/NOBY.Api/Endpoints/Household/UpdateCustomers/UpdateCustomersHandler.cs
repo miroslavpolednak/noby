@@ -1,16 +1,25 @@
 ﻿using DomainServices.DocumentOnSAService.Clients;
-using DomainServices.HouseholdService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using __HO = DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
 using NOBY.Services.SigningHelper;
+using DomainServices.HouseholdService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Household.UpdateCustomers;
 
-internal sealed class UpdateCustomersHandler
-    : IRequestHandler<HouseholdUpdateCustomersRequest, HouseholdUpdateCustomersResponse>
+internal sealed class UpdateCustomersHandler(
+    FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService,
+    ILogger<UpdateCustomersHandler> _logger,
+    IFlowSwitchManager _flowSwitchManager,
+    IHouseholdServiceClient _householdService,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    IProductServiceClient _productService,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ISigningHelperService _signingHelperService)
+        : IRequestHandler<HouseholdUpdateCustomersRequest, HouseholdUpdateCustomersResponse>
 {
     public async Task<HouseholdUpdateCustomersResponse> Handle(HouseholdUpdateCustomersRequest request, CancellationToken cancellationToken)
     {
@@ -215,37 +224,5 @@ internal sealed class UpdateCustomersHandler
         {
             _logger.LogInformation(ex, "Can not delete relationship for #{PartnerId} in Case {CaseId}: {Message}", partnerId, caseId, ex.Message);
         }
-    }
-
-    private readonly FlowSwitchAtLeastOneIncomeMainHouseholdService _flowSwitchMainHouseholdService;
-    private readonly IFlowSwitchManager _flowSwitchManager;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ISigningHelperService _signingHelperService;
-    private readonly IProductServiceClient _productService;
-    private readonly ILogger<UpdateCustomersHandler> _logger;
-
-    public UpdateCustomersHandler(
-        FlowSwitchAtLeastOneIncomeMainHouseholdService flowSwitchMainHouseholdService,
-        ILogger<UpdateCustomersHandler> logger,
-        IFlowSwitchManager flowSwitchManager,
-        IHouseholdServiceClient householdService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IProductServiceClient productService,
-        IDocumentOnSAServiceClient documentOnSAService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ISigningHelperService signingHelperService)
-    {
-        _flowSwitchMainHouseholdService = flowSwitchMainHouseholdService;
-        _logger = logger;
-        _flowSwitchManager = flowSwitchManager;
-        _productService = productService;
-        _customerOnSAService = customerOnSAService;
-        _householdService = householdService;
-        _documentOnSAService = documentOnSAService;
-        _salesArrangementService = salesArrangementService;
-        _signingHelperService = signingHelperService;
     }
 }

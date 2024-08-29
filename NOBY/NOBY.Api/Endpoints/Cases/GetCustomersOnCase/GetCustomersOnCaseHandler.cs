@@ -10,7 +10,7 @@ namespace NOBY.Api.Endpoints.Cases.GetCustomersOnCase;
 internal sealed class GetCustomersOnCaseHandler(
     DomainServices.ProductService.Clients.IProductServiceClient _productService,
     DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
-    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    DomainServices.HouseholdService.Clients.v1.ICustomerOnSAServiceClient _customerOnSAService,
     DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
     DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)

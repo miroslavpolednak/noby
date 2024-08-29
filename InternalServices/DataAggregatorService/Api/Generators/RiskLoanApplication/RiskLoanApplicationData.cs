@@ -1,6 +1,6 @@
 ﻿using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanApplication;

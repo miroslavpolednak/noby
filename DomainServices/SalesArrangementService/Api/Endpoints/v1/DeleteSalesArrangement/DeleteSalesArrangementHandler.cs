@@ -5,7 +5,7 @@ using SharedComponents.DocumentDataStorage;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.DeleteSalesArrangement;
 
 internal sealed class DeleteSalesArrangementHandler(
-	HouseholdService.Clients.IHouseholdServiceClient _householdService,
+	HouseholdService.Clients.v1.IHouseholdServiceClient _householdService,
 	Database.SalesArrangementServiceDbContext _dbContext,
 	IDocumentDataStorage _documentDataStorage)
 		: IRequestHandler<DeleteSalesArrangementRequest, Google.Protobuf.WellKnownTypes.Empty>

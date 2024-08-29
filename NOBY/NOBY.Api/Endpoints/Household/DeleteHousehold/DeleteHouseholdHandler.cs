@@ -1,11 +1,15 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Api.Endpoints.Household.DeleteHousehold;
 
-internal sealed class DeleteHouseholdHandler
-    : IRequestHandler<DeleteHouseholdRequest, int>
+internal sealed class DeleteHouseholdHandler(
+    IFlowSwitchManager _flowSwitchManager,
+    IProductServiceClient _productService,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    IHouseholdServiceClient _householdService)
+        : IRequestHandler<DeleteHouseholdRequest, int>
 {
     public async Task<int> Handle(DeleteHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -43,22 +47,5 @@ internal sealed class DeleteHouseholdHandler
             _productService.DeleteContractRelationship(Convert.ToInt32(partnerId.Value), caseId, cancellationToken);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
-    }
-
-    private readonly IFlowSwitchManager _flowSwitchManager;
-    private readonly IProductServiceClient _productService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    
-    public DeleteHouseholdHandler(
-        IFlowSwitchManager flowSwitchManager,
-        IProductServiceClient productService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IHouseholdServiceClient householdService)
-    {
-        _flowSwitchManager = flowSwitchManager;
-        _productService = productService;
-        _customerOnSAService = customerOnSAService;
-        _householdService = householdService;
     }
 }

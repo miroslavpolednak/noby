@@ -1,9 +1,10 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.UpdateHousehold;
 
-internal sealed class UpdateHouseholdHandler : IRequestHandler<HouseholdUpdateHouseholdRequest>
+internal sealed class UpdateHouseholdHandler(IHouseholdServiceClient _householdService) 
+    : IRequestHandler<HouseholdUpdateHouseholdRequest>
 {
     public async Task Handle(HouseholdUpdateHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -20,12 +21,5 @@ internal sealed class UpdateHouseholdHandler : IRequestHandler<HouseholdUpdateHo
         };
 
         await _householdService.UpdateHousehold(householdRequest, cancellationToken);
-    }
-
-    private readonly IHouseholdServiceClient _householdService;
-
-    public UpdateHouseholdHandler(IHouseholdServiceClient householdService)
-    {
-        _householdService = householdService;
     }
 }

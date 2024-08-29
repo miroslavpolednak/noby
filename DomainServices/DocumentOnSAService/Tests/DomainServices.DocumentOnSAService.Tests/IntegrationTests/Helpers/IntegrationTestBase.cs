@@ -11,7 +11,7 @@ using CIS.InternalServices.DataAggregatorService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NSubstitute;
 using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.Eas.V1;

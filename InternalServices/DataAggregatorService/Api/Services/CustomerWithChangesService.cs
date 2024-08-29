@@ -1,24 +1,16 @@
 ﻿using DomainServices.CustomerService.Clients;
 using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services;
 
 [TransientService, SelfService]
-public class CustomerWithChangesService
+public class CustomerWithChangesService(
+    ICustomerServiceClient _customerService, 
+    ICustomerOnSAServiceClient _customerOnSAService, 
+    DomainServices.HouseholdService.Clients.ICustomerChangeDataMerger _customerChangeDataMerger)
 {
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
-
-    public CustomerWithChangesService(ICustomerServiceClient customerService, ICustomerOnSAServiceClient customerOnSAService, ICustomerChangeDataMerger customerChangeDataMerger)
-    {
-        _customerService = customerService;
-        _customerOnSAService = customerOnSAService;
-        _customerChangeDataMerger = customerChangeDataMerger;
-    }
-
     public async Task<(CustomerDetailResponse customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
     {
         var customer = await _customerService.GetCustomerDetail(identity, forceKbCustomerLoad: true, cancellationToken);

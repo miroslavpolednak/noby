@@ -60,7 +60,7 @@ public partial class UpdateCustomerRequest
     : MediatR.IRequest<UpdateCustomerResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class UpdateIncomeRequest
+public partial class Income
     : MediatR.IRequest<Google.Protobuf.WellKnownTypes.Empty>, CIS.Core.Validation.IValidatableRequest, IIncome
 { }
 

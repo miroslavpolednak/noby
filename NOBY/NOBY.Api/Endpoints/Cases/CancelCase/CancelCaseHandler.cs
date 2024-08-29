@@ -6,7 +6,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.v1;
 using FastEnumUtility;

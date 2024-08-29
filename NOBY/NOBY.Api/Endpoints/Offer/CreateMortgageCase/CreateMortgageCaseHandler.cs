@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.CaseService.Clients.v1;

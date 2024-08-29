@@ -4,30 +4,18 @@ using CIS.InternalServices.DataAggregatorService.Clients;
 using CIS.InternalServices.DataAggregatorService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace DomainServices.SalesArrangementService.Api.Services.Forms;
 
 [ScopedService, SelfService]
-internal sealed class FormsService
+internal sealed class FormsService(
+    IMediator _mediator,
+    IDataAggregatorServiceClient _dataAggregatorService,
+    IHouseholdServiceClient _householdService,
+    ICodebookServiceClient _codebookService)
 {
-    private readonly IMediator _mediator;
-    private readonly IDataAggregatorServiceClient _dataAggregatorService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public FormsService(IMediator mediator,
-                        IDataAggregatorServiceClient dataAggregatorService,
-                        IHouseholdServiceClient householdService,
-                        ICodebookServiceClient codebookService)
-    {
-        _mediator = mediator;
-        _dataAggregatorService = dataAggregatorService;
-        _householdService = householdService;
-        _codebookService = codebookService;
-    }
-
     public Task<SalesArrangement> LoadSalesArrangement(int salesArrangementId, CancellationToken cancellationToken)
     {
         return _mediator.Send(new GetSalesArrangementRequest { SalesArrangementId = salesArrangementId }, cancellationToken);

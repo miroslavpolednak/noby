@@ -1,0 +1,23 @@
+﻿using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.HouseholdService.Api.Database.DocumentDataEntities.Mappers;
+using SharedComponents.DocumentDataStorage;
+
+namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.v1.UpdateObligation;
+
+internal sealed class UpdateObligationHandler(
+    IGrpcServerResponseCache _responseCache,
+    IDocumentDataStorage _documentDataStorage,
+    ObligationMapper _mapper)
+        : IRequestHandler<Contracts.Obligation, Google.Protobuf.WellKnownTypes.Empty>
+{
+    public async Task<Google.Protobuf.WellKnownTypes.Empty> Handle(Contracts.Obligation request, CancellationToken cancellationToken)
+    {
+        var documentEntity = _mapper.MapToData(request);
+
+        await _documentDataStorage.Update(request.ObligationId, documentEntity);
+
+        await _responseCache.InvalidateEntry(nameof(GetCustomer), request.CustomerOnSAId);
+
+        return new Google.Protobuf.WellKnownTypes.Empty();
+    }
+}

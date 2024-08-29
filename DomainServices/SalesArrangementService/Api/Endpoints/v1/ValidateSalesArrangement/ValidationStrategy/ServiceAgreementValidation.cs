@@ -1,20 +1,14 @@
 ﻿using CIS.Core.Attributes;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Contracts;
 using SharedTypes.Extensions;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
 [ScopedService, SelfService]
-internal sealed class ServiceAgreementValidation : ISalesArrangementValidationStrategy
+internal sealed class ServiceAgreementValidation(ICustomerOnSAServiceClient _customerOnSAService) 
+    : ISalesArrangementValidationStrategy
 {
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-
-    public ServiceAgreementValidation(ICustomerOnSAServiceClient customerOnSAService)
-    {
-        _customerOnSAService = customerOnSAService;
-    }
-
     public async Task<ValidateSalesArrangementResponse> Validate(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var customers = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);

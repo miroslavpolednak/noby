@@ -1,4 +1,4 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.CustomerObligation.DeleteObligation;
 
