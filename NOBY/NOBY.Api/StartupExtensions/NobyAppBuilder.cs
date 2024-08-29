@@ -15,10 +15,10 @@ internal static class NobyAppBuilder
         => app.MapWhen(_isSpaCall, appBuilder =>
         {
             appBuilder.UseSpaStaticFiles();
-            appBuilder.UseStaticFiles("/docs");
-
-            app.UseStaticFiles(new StaticFileOptions
+            
+            appBuilder.UseStaticFiles(new StaticFileOptions
             {
+                RequestPath = "/docs",
                 ContentTypeProvider = new FileExtensionContentTypeProvider
                 {
                     Mappings =
@@ -32,6 +32,17 @@ internal static class NobyAppBuilder
             appBuilder.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";
+            });
+
+            appBuilder.Use(async (context, next) =>
+            {
+                if (context.Request.Path.Value?.EndsWith("index.html", StringComparison.OrdinalIgnoreCase) ?? false)
+                {
+                    context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+                    context.Response.Headers["Pragma"] = "no-cache";
+                    context.Response.Headers["Expires"] = "-1";
+                }
+                await next();
             });
         });
 
