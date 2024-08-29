@@ -32,17 +32,24 @@ internal static class NobyAppBuilder
             appBuilder.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";
-            });
-
-            appBuilder.Use(async (context, next) =>
-            {
-                if (context.Request.Path.Value?.EndsWith("index.html", StringComparison.OrdinalIgnoreCase) ?? false)
+                spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
                 {
-                    context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-                    context.Response.Headers["Pragma"] = "no-cache";
-                    context.Response.Headers["Expires"] = "-1";
-                }
-                await next();
+                    OnPrepareResponse = ctx =>
+                    {
+                        if (ctx.File.Name == "index.html")
+                        {
+                            var headers = ctx.Context.Response.GetTypedHeaders();
+                            headers.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
+                            {
+                                NoCache = true,
+                                NoStore = true,
+                                MustRevalidate = true,
+                                MaxAge = TimeSpan.Zero
+                            };
+                        }
+                            
+                    }
+                };
             });
         });
 
