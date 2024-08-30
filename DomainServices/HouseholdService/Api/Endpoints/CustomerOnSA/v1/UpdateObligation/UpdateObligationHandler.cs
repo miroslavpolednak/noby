@@ -5,7 +5,6 @@ using SharedComponents.DocumentDataStorage;
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.v1.UpdateObligation;
 
 internal sealed class UpdateObligationHandler(
-    IGrpcServerResponseCache _responseCache,
     IDocumentDataStorage _documentDataStorage,
     ObligationMapper _mapper)
         : IRequestHandler<Contracts.Obligation, Google.Protobuf.WellKnownTypes.Empty>
@@ -15,8 +14,6 @@ internal sealed class UpdateObligationHandler(
         var documentEntity = _mapper.MapToData(request);
 
         await _documentDataStorage.Update(request.ObligationId, documentEntity);
-
-        await _responseCache.InvalidateEntry(nameof(GetCustomer), request.CustomerOnSAId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

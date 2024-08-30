@@ -6,7 +6,6 @@ using SharedComponents.DocumentDataStorage;
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.v1.CreateObligation;
 
 internal sealed class CreateObligationHandler(
-    IGrpcServerResponseCache _responseCache,
     IDocumentDataStorage _documentDataStorage,
     ObligationMapper _mapper,
     ILogger<CreateObligationHandler> _logger)
@@ -19,8 +18,6 @@ internal sealed class CreateObligationHandler(
         var id = await _documentDataStorage.Add(request.CustomerOnSAId, documentEntity, cancellationToken);
 
         _logger.EntityCreated(nameof(Database.DocumentDataEntities.Obligation), id);
-
-        await _responseCache.InvalidateEntry(nameof(GetCustomer), request.CustomerOnSAId);
 
         return new()
         {

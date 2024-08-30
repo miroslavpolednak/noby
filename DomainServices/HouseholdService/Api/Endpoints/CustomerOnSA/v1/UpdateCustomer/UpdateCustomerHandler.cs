@@ -108,7 +108,6 @@ internal sealed class UpdateCustomerHandler(
         }
 
         await _responseCache.InvalidateEntry(nameof(GetCustomerList), entity.SalesArrangementId);
-        await _responseCache.InvalidateEntry(nameof(GetCustomer), request.CustomerOnSAId);
 
         return model;
     }

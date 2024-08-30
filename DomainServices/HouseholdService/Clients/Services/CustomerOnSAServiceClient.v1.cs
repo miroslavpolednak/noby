@@ -34,18 +34,6 @@ internal sealed class CustomerOnSAServiceClient(
 
     public async Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default)
     {
-        return await _cache.GetLocalOrDistributed(
-            customerOnSAId,
-            async (c) => await GetCustomerWithoutCache(customerOnSAId, c),
-            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(30)
-            },
-            cancellationToken);
-    }
-
-    public async Task<CustomerOnSA> GetCustomerWithoutCache(int customerOnSAId, CancellationToken cancellationToken = default)
-    {
         return await _service.GetCustomerAsync(
                 new()
                 {

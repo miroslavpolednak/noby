@@ -6,7 +6,6 @@ using SharedComponents.DocumentDataStorage;
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.v1.CreateIncome;
 
 internal sealed class CreateIncomeHandler(
-    IGrpcServerResponseCache _responseCache,
     IDocumentDataStorage _documentDataStorage,
     IncomeMapper _incomeMapper,
     ILogger<CreateIncomeHandler> _logger)
@@ -19,8 +18,6 @@ internal sealed class CreateIncomeHandler(
         var id = await _documentDataStorage.Add(request.CustomerOnSAId, documentEntity, cancellationToken);
 
         _logger.EntityCreated(nameof(Database.DocumentDataEntities.Income), id);
-
-        await _responseCache.InvalidateEntry(nameof(GetCustomer), request.CustomerOnSAId);
 
         return new()
         {

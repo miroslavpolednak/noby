@@ -6,7 +6,6 @@ using SharedComponents.DocumentDataStorage;
 namespace DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.v1.UpdateIncome;
 
 internal sealed class UpdateIncomeHandler(
-    IGrpcServerResponseCache _responseCache,
     IncomeMapper _incomeMapper,
     IDocumentDataStorage _documentDataStorage)
         : IRequestHandler<Income, Google.Protobuf.WellKnownTypes.Empty>
@@ -16,8 +15,6 @@ internal sealed class UpdateIncomeHandler(
         var documentEntity = await _incomeMapper.MapToData(request.IncomeTypeId, request.BaseData, request.Employement, request.Entrepreneur, request.Other, cancellationToken);
 
         await _documentDataStorage.Update(request.IncomeId, documentEntity);
-
-        await _responseCache.InvalidateEntry(nameof(GetCustomer), request.CustomerOnSAId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

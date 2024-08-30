@@ -31,7 +31,6 @@ internal sealed class UpdateCustomerDetailHandler(
         await _documentDataStorage.UpdateByEntityId(request.CustomerOnSAId, documentEntity);
 
         await _responseCache.InvalidateEntry(nameof(GetCustomerList), entity.SalesArrangementId);
-        await _responseCache.InvalidateEntry(nameof(GetCustomer), request.CustomerOnSAId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

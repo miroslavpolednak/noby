@@ -31,7 +31,6 @@ public interface ICustomerOnSAServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16020; CustomerOnSA ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<CustomerOnSA> GetCustomer(int customerOnSAId, CancellationToken cancellationToken = default);
-    Task<CustomerOnSA> GetCustomerWithoutCache(int customerOnSAId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci seznam instanci klientu dle Identity
