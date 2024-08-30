@@ -1,5 +1,6 @@
 ﻿namespace DomainServices.UserService.Api.Dto;
 
-internal sealed record GetUserDisplayNameDto(string? DisplayName)
+internal sealed class GetUserDisplayNameDto
 {
+    public string? DisplayName { get; set; }
 }
