@@ -26,7 +26,8 @@ internal sealed class GetUserRIPAttributesHandler(IConnectionProvider _db)
                 PersonOrgUnitName = dbIdentity.PersonOrgUnitName ?? "",
                 PersonSurname = dbIdentity.PersonSurname ?? "",
                 Company = dbIdentity.Company ?? "",
-                BrokerId = dbIdentity.BrokerId
+                BrokerId = dbIdentity.BrokerId,
+                BrokerIdVZ = dbIdentity.BrokerIdVZ
             };
         }
         catch (Microsoft.Data.SqlClient.SqlException ex) when (ex.Number == 50000)
