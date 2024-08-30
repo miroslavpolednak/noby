@@ -21,7 +21,6 @@ internal sealed class StartSigningHandler : IRequestHandler<DocumentOnSAStartSig
 
     private readonly IDocumentOnSAServiceClient _client;
     private readonly ICodebookServiceClient _codebookServiceClient;
-    private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
     private readonly CustomerWithChangedDataService _changedDataService;
     private readonly IMediator _mediator;
     private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
@@ -30,7 +29,6 @@ internal sealed class StartSigningHandler : IRequestHandler<DocumentOnSAStartSig
     public StartSigningHandler(
         IDocumentOnSAServiceClient client,
         ICodebookServiceClient codebookServiceClient,
-        ICustomerOnSAServiceClient customerOnSAServiceClient,
         CustomerWithChangedDataService changedDataService,
         IMediator mediator,
         ISalesArrangementServiceClient salesArrangementServiceClient,
@@ -38,7 +36,6 @@ internal sealed class StartSigningHandler : IRequestHandler<DocumentOnSAStartSig
     {
         _client = client;
         _codebookServiceClient = codebookServiceClient;
-        _customerOnSAServiceClient = customerOnSAServiceClient;
         _changedDataService = changedDataService;
         _mediator = mediator;
         _salesArrangementServiceClient = salesArrangementServiceClient;
@@ -150,13 +147,12 @@ internal sealed class StartSigningHandler : IRequestHandler<DocumentOnSAStartSig
 
     private async Task<_DocOnSA.SigningIdentity> MapCustomerOnSAIdentity(int customerOnSAId, string signatureAnchor, CancellationToken cancellationToken)
     {
-        var customerOnSa = await _customerOnSAServiceClient.GetCustomer(customerOnSAId, cancellationToken);
         var customerInfo = await _changedDataService.GetCustomerWithChangedData(customerOnSAId, cancellationToken);
 
         var signingIdentity = new _DocOnSA.SigningIdentity();
 
         // Product, CRS and Service with household mapping
-        signingIdentity.CustomerIdentifiers.AddRange(customerOnSa.CustomerIdentifiers.Select(s => new SharedTypes.GrpcTypes.Identity
+        signingIdentity.CustomerIdentifiers.AddRange(customerInfo.CustomerOnSA.CustomerIdentifiers.Select(s => new SharedTypes.GrpcTypes.Identity
         {
             IdentityId = s.IdentityId,
             IdentityScheme = s.IdentityScheme
