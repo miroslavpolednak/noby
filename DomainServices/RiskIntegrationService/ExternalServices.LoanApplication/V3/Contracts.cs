@@ -1109,6 +1109,10 @@ namespace DomainServices.RiskIntegrationService.ExternalServices.LoanApplication
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.RegularExpression(@"^urn:ri:(\w+)\.(\w+)\.(\w+)\.([\w+-.]*)(~(\w+))?")]
         public string Id { get; set; }
+		
+		[System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.ComponentModel.DataAnnotations.RegularExpression(@"^urn:ri:([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9-_.]+)(~([a-zA-Z0-9_]+))?")]
+        public string TiedAgentId { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

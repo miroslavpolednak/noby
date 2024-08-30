@@ -8,6 +8,7 @@ internal sealed record GetPersonHFRIPDto(
     string? PersonJobPostId,
     string? Company,
     long? BrokerId,
-    int? DealerCompanyId)
+    int? DealerCompanyId,
+    long? BrokerIdVZ)
 {
 }

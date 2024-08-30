@@ -26,4 +26,6 @@ message UserRIPAttributes {
 	google.protobuf.Int32Value DealerCompanyId = 7;
 
 	google.protobuf.Int64Value BrokerId = 8;
+
+	google.protobuf.Int64Value BrokerIdVZ = 9;
 }
