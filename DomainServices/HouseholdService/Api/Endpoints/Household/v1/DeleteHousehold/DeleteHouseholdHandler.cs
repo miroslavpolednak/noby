@@ -84,7 +84,6 @@ internal sealed class DeleteHouseholdHandler(
         }
 
         await _responseCache.InvalidateEntry(nameof(GetHouseholdList), household.SalesArrangementId);
-        await _responseCache.InvalidateEntry(nameof(GetHousehold), request.HouseholdId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

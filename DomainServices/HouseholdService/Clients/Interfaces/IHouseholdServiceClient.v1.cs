@@ -27,7 +27,6 @@ public interface IHouseholdServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisNotFoundException">Code: 16022; Household ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<Household> GetHousehold(int householdId, CancellationToken cancellationToken = default);
-    Task<Household> GetHouseholdWithoutCache(int householdId, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci vsechny domacnosti pro dany Sales Arrangement

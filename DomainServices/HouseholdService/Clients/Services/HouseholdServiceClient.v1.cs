@@ -26,18 +26,6 @@ internal sealed class HouseholdServiceClient(
 
     public async Task<Household> GetHousehold(int householdId, CancellationToken cancellationToken = default)
     {
-        return await _cache.GetLocalOrDistributed(
-            householdId,
-            async (c) => await GetHouseholdWithoutCache(householdId, c),
-            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(30)
-            },
-            cancellationToken);
-    }
-
-    public async Task<Household> GetHouseholdWithoutCache(int householdId, CancellationToken cancellationToken = default)
-    {
         return await _service.GetHouseholdAsync(
             new()
             {
