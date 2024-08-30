@@ -1,6 +1,6 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
 using DomainServices.HouseholdService.Clients.v1;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using _HO = DomainServices.HouseholdService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;

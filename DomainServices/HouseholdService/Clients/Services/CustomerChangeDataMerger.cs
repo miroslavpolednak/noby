@@ -10,7 +10,7 @@ namespace DomainServices.HouseholdService.Clients.Services;
 
 public class CustomerChangeDataMerger : ICustomerChangeDataMerger
 {
-    public void MergeAll(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
+    public void MergeAll(Customer customer, CustomerOnSA customerOnSA)
     {
         var customerChangeData = customerOnSA.GetCustomerChangeDataObject();
 
@@ -24,7 +24,7 @@ public class CustomerChangeDataMerger : ICustomerChangeDataMerger
         customer.CustomerIdentification = MapDeltaToCustomerIdentification(customerChangeData.CustomerIdentification) ?? customer.CustomerIdentification;
     }
 
-    public void MergeClientData(CustomerDetailResponse customer, CustomerOnSA customerOnSA)
+    public void MergeClientData(Customer customer, CustomerOnSA customerOnSA)
     {
         var customerChangeData = customerOnSA.GetCustomerChangeDataObject();
 

@@ -2,7 +2,7 @@
 using DomainServices.RealEstateValuationService.Contracts;
 using DomainServices.RealEstateValuationService.ExternalServices.PreorderService.V1;
 using DomainServices.UserService.Clients.v1;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 
 namespace DomainServices.RealEstateValuationService.Api.Endpoints.v1.OrderDTSValuation;
 

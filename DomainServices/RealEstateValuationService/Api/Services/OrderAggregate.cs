@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Api.Database;
@@ -25,7 +25,7 @@ internal sealed class OrderAggregate(
     ICaseServiceClient _caseService,
     TimeProvider _timeProvider)
 {
-    public async Task<CustomerService.Contracts.CustomerDetailResponse> GetCustomer(SharedTypes.GrpcTypes.Identity identity, CancellationToken cancellationToken)
+    public async Task<CustomerService.Contracts.Customer> GetCustomer(SharedTypes.GrpcTypes.Identity identity, CancellationToken cancellationToken)
     {
         SharedTypes.GrpcTypes.Identity finalIdentity = identity;
         if (identity.IdentityScheme == SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Mp)

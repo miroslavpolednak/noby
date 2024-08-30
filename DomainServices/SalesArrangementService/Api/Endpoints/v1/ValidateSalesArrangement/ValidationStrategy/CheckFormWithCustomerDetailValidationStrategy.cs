@@ -1,7 +1,7 @@
 ﻿using CIS.Core.Attributes;
 using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
@@ -61,7 +61,7 @@ internal sealed class CheckFormWithCustomerDetailValidationStrategy(
         bool EducationLevelsValidation() => educationLevels.Any(m => m.Id != 0 && m.Id == naturalPerson.EducationLevelId);
     }
 
-    private static void ValidateAddresses(CustomerDetailResponse customer)
+    private static void ValidateAddresses(Customer customer)
     {
         if (customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Mailing))
             return;

@@ -85,7 +85,7 @@ internal static class CreateCustomerExtensions
         };
     }
     
-    public static _HO.UpdateCustomerRequest ToUpdateRequest(this _HO.CustomerOnSA customerOnSA, _Cust.CustomerDetailResponse customerKb)
+    public static _HO.UpdateCustomerRequest ToUpdateRequest(this _HO.CustomerOnSA customerOnSA, _Cust.Customer customerKb)
     {
         var model = new _HO.UpdateCustomerRequest
         {
@@ -106,7 +106,7 @@ internal static class CreateCustomerExtensions
         return model;
     }
 
-    public static CustomerCreateCustomerResponse ToResponseDto(this _Cust.CustomerDetailResponse customer, bool isVerified, CustomerCreateCustomerResponseResultCode resultCode)
+    public static CustomerCreateCustomerResponse ToResponseDto(this _Cust.Customer customer, bool isVerified, CustomerCreateCustomerResponseResultCode resultCode)
     {
         CustomerNaturalPersonModel person = new();
         customer.NaturalPerson?.FillResponseDto(person);

@@ -1,8 +1,6 @@
-﻿using DomainServices.CustomerService.Contracts;
-
-namespace NOBY.Services.Customer;
+﻿namespace NOBY.Services.Customer;
 
 public record CustomerInfoWithChangedData : CustomerInfo
 {
-    public required CustomerDetailResponse CustomerWithChangedData { get; init; }
+    public required DomainServices.CustomerService.Contracts.Customer CustomerWithChangedData { get; init; }
 }

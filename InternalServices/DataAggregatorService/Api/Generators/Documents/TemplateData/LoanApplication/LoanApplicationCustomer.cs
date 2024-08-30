@@ -6,14 +6,14 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.Te
 
 internal class LoanApplicationCustomer
 {
-    private readonly CustomerDetailResponse _customer;
+    private readonly DomainServices.CustomerService.Contracts.Customer _customer;
 
     private readonly List<GenericCodebookResponse.Types.GenericCodebookItem> _degreesBefore;
     private readonly List<CountriesResponse.Types.CountryItem> _countries;
     private readonly List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _identificationDocumentTypes;
     private readonly List<EducationLevelsResponse.Types.EducationLevelItem> _educationLevels;
 
-    public LoanApplicationCustomer(CustomerDetailResponse customer,
+    public LoanApplicationCustomer(DomainServices.CustomerService.Contracts.Customer customer,
                                    List<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore,
                                    List<CountriesResponse.Types.CountryItem> countries,
                                    List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> identificationDocumentTypes,

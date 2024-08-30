@@ -1,4 +1,4 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients.v1;
 using DomainServices.HouseholdService.Clients.v1;
 
 namespace NOBY.Services.Customer;

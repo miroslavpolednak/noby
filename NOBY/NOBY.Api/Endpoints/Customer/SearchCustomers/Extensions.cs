@@ -59,12 +59,12 @@ internal static class Extensions
         return model;
     }
     
-    public static List<CustomerInList> ToApiResponse(this RepeatedField<CustomerDetailResponse> request)
+    public static List<CustomerInList> ToApiResponse(this RepeatedField<DomainServices.CustomerService.Contracts.Customer> request)
     {
         return request.Select(t => (new CustomerInList()).FillBaseData(t)).ToList();
     }
 
-    public static CustomerInList FillBaseData(this CustomerInList customer, CustomerDetailResponse t)
+    public static CustomerInList FillBaseData(this CustomerInList customer, DomainServices.CustomerService.Contracts.Customer t)
     {
         var address = t.Addresses.FirstOrDefault();
 

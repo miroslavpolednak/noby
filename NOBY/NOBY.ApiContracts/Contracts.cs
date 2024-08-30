@@ -8954,7 +8954,7 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CustomerGetCustomerDetailResponse
+    public partial class CustomerGetCustomer
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("identities")]

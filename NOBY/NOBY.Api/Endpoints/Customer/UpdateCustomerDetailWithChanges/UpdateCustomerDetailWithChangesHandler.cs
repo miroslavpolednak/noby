@@ -4,7 +4,7 @@ using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.v1;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Model;

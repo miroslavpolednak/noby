@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.OfferService.Contracts;
 using DomainServices.ProductService.Clients;
@@ -88,7 +87,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler(
         return offer;
     }
 
-    private async Task<CustomerDetailResponse> LoadAndValidateClient(long caseId, long clientKbId, CancellationToken cancellationToken)
+    private async Task<DomainServices.CustomerService.Contracts.Customer> LoadAndValidateClient(long caseId, long clientKbId, CancellationToken cancellationToken)
     {
         var customersOnProduct = await _productService.GetCustomersOnProduct(caseId, cancellationToken);
 
@@ -98,7 +97,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler(
         return await _customerService.GetCustomerDetail(new Identity(clientKbId, IdentitySchemes.Kb), cancellationToken);
     }
 
-    private async Task UpdateSaParams(RefinancingGenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, CustomerDetailResponse customerDetail, CancellationToken cancellationToken)
+    private async Task UpdateSaParams(RefinancingGenerateExtraPaymentDocumentRequest request, _contract.SalesArrangement salesArrangement, DomainServices.CustomerService.Contracts.Customer customerDetail, CancellationToken cancellationToken)
     {
         salesArrangement.ExtraPayment.HandoverTypeDetailId = request.HandoverTypeDetailId;
         salesArrangement.ExtraPayment.Client = new SalesArrangementParametersExtraPayment.Types.SalesArrangementParametersExtraPaymentClient

@@ -7,11 +7,11 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.For
 
 internal class Customer
 {
-    private readonly CustomerDetailResponse _customerDetail;
+    private readonly DomainServices.CustomerService.Contracts.Customer _customerDetail;
 
     private readonly ILookup<EnumIncomeTypes, IncomeInList> _customerIncomes;
 
-    public Customer(CustomerOnSA customerOnSa, CustomerDetailResponse customerDetail)
+    public Customer(CustomerOnSA customerOnSa, DomainServices.CustomerService.Contracts.Customer customerDetail)
     {
         CustomerOnSA = customerOnSa;
         _customerDetail = customerDetail;

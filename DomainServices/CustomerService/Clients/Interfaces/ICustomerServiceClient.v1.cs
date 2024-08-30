@@ -2,7 +2,7 @@
 using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Clients;
+namespace DomainServices.CustomerService.Clients.v1;
 
 public interface ICustomerServiceClient
 {
@@ -40,12 +40,12 @@ public interface ICustomerServiceClient
     /// <exception cref="CisNotFoundException">Requested customer was not found.</exception>
     /// <exception cref="Grpc.Core.RpcException">CustomerManagement call ended in an internal error (500).</exception>
     /// <exception cref="CisServiceUnavailableException">CustomerService or some of underlying services are not available or failed to call.</exception>
-    Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default);
+    Task<Customer> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// <inheritdoc cref="GetCustomerDetail(Identity, CancellationToken)"/>
     /// </summary>
-    Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, bool forceKbCustomerLoad, CancellationToken cancellationToken = default);
+    Task<Customer> GetCustomerDetail(Identity identity, bool forceKbCustomerLoad, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vyhledaní customeru podle identities

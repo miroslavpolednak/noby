@@ -8,12 +8,12 @@ internal sealed class MpHomeDetailMapper(
     IMediator _mediator,
     ICodebookServiceClient _codebookService)
 {
-    public async Task<CustomerDetailResponse> MapDetailResponse(PartnerResponse partner, CancellationToken cancellationToken)
+    public async Task<Customer> MapDetailResponse(PartnerResponse partner, CancellationToken cancellationToken)
     {
         var titles1 = await _codebookService.AcademicDegreesBefore(cancellationToken);
         var titles2 = await _codebookService.AcademicDegreesAfter(cancellationToken);
 
-        CustomerDetailResponse customer = new()
+        Customer customer = new()
         {
             Identities = { getIdentities(partner.Id, partner.KbId) },
             NaturalPerson = new()

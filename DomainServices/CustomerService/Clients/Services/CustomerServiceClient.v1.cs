@@ -1,17 +1,11 @@
 ﻿using SharedTypes.GrpcTypes;
 using DomainServices.CustomerService.Contracts;
 
-namespace DomainServices.CustomerService.Clients.Services;
+namespace DomainServices.CustomerService.Clients.v1;
 
-internal sealed class CustomerService : ICustomerServiceClient
+internal sealed class CustomerServiceClient(Contracts.v1.CustomerService.CustomerServiceClient _service) 
+    : ICustomerServiceClient
 {
-    private readonly Contracts.V1.CustomerService.CustomerServiceClient _service;
-
-    public CustomerService(Contracts.V1.CustomerService.CustomerServiceClient service)
-    {
-        _service = service;
-    }
-
     public Task<ProfileCheckResponse> ProfileCheck(ProfileCheckRequest request, CancellationToken cancellationToken = default)
     {
         return _service.ProfileCheckAsync(request, cancellationToken: cancellationToken).ResponseAsync;
@@ -32,14 +26,14 @@ internal sealed class CustomerService : ICustomerServiceClient
         return _service.UpdateCustomerIdentifiersAsync(request, cancellationToken: cancellationToken).ResponseAsync;
     }
 
-    public Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
+    public Task<Customer> GetCustomerDetail(Identity identity, CancellationToken cancellationToken = default)
     {
         return GetCustomerDetail(identity, forceKbCustomerLoad: false, cancellationToken: cancellationToken);
     }
 
-    public Task<CustomerDetailResponse> GetCustomerDetail(Identity identity, bool forceKbCustomerLoad, CancellationToken cancellationToken = default)
+    public Task<Customer> GetCustomerDetail(Identity identity, bool forceKbCustomerLoad, CancellationToken cancellationToken = default)
     {
-        return _service.GetCustomerDetailAsync(new CustomerDetailRequest { Identity = identity, ForceKbCustomerLoad = forceKbCustomerLoad }, cancellationToken: cancellationToken).ResponseAsync;
+        return _service.GetCustomerDetailAsync(new GetCustomerDetailRequest { Identity = identity, ForceKbCustomerLoad = forceKbCustomerLoad }, cancellationToken: cancellationToken).ResponseAsync;
     }
 
     public Task<CustomerListResponse> GetCustomerList(IEnumerable<Identity> identities, CancellationToken cancellationToken = default)

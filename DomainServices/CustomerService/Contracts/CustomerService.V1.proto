@@ -1,13 +1,14 @@
 syntax = "proto3";
 
-package DomainServices.CustomerService.V1;
-option csharp_namespace = "DomainServices.CustomerService.Contracts.V1";
+package DomainServices.CustomerService.v1;
+option csharp_namespace = "DomainServices.CustomerService.Contracts.v1";
 
 import "Messages/ProfileCheck.proto";
 import "Messages/CreateCustomer.proto";
 import "Messages/UpdateCustomer.proto";
 import "Messages/UpdateCustomerIdentifiers.proto";
-import "Messages/CustomerDetail.proto";
+import "Messages/GetCustomerDetail.proto";
+import "Messages/Customer.proto";
 import "Messages/CustomerList.proto";
 import "Messages/SearchCustomers.proto";
 import "Messages/ValidateContact.proto";
@@ -20,7 +21,7 @@ service CustomerService {
    rpc CreateCustomer(CreateCustomerRequest) returns (CreateCustomerResponse);
    rpc UpdateCustomer(UpdateCustomerRequest) returns (UpdateCustomerResponse);
    rpc UpdateCustomerIdentifiers(UpdateCustomerIdentifiersRequest) returns (google.protobuf.Empty);
-   rpc GetCustomerDetail(CustomerDetailRequest) returns (CustomerDetailResponse);
+   rpc GetCustomerDetail(GetCustomerDetailRequest) returns (Customer);
    rpc GetCustomerList(CustomerListRequest) returns (CustomerListResponse);
    rpc SearchCustomers(SearchCustomersRequest) returns (SearchCustomersResponse);
    rpc ValidateContact(ValidateContactRequest) returns (ValidateContactResponse);

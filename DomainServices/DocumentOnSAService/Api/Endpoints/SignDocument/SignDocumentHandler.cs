@@ -4,7 +4,7 @@ using SharedAudit;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
@@ -347,7 +347,7 @@ public sealed class SignDocumentHandler(
         return updateRequest;
     }
 
-    private static _CustomerService.UpdateCustomerRequest MapUpdateCustomerRequest(int mandantId, CustomerDetailResponse customerDetail)
+    private static _CustomerService.UpdateCustomerRequest MapUpdateCustomerRequest(int mandantId, Customer customerDetail)
     {
         return new _CustomerService.UpdateCustomerRequest
         {

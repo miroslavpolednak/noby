@@ -3,7 +3,7 @@ using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ExtendedObjects;
 
-internal class CustomerDetailExtended : ExtendedObject<CustomerDetailResponse>
+internal class CustomerDetailExtended : ExtendedObject<DomainServices.CustomerService.Contracts.Customer>
 {
     public NaturalPerson NaturalPerson => Source.NaturalPerson;
 

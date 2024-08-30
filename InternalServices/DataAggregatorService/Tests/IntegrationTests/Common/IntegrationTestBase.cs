@@ -2,7 +2,7 @@
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Clients.Services;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.OfferService.Clients.v1;

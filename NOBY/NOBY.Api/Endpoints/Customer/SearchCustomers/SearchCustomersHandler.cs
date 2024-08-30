@@ -1,11 +1,11 @@
 ﻿using CIS.Core.Types;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using __Customer = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.SearchCustomers;
 
-internal sealed class SearchCustomersHandler
-    : IRequestHandler<CustomerSearchCustomersRequest, CustomerSearchCustomersResponse?>
+internal sealed class SearchCustomersHandler(ICustomerServiceClient _customerService)
+        : IRequestHandler<CustomerSearchCustomersRequest, CustomerSearchCustomersResponse?>
 {
     public async Task<CustomerSearchCustomersResponse?> Handle(CustomerSearchCustomersRequest request, CancellationToken cancellationToken)
     {
@@ -36,11 +36,4 @@ internal sealed class SearchCustomersHandler
     {
         new ("lastName", "LastName")
     };
-
-    private readonly ICustomerServiceClient _customerService;
-
-    public SearchCustomersHandler(ICustomerServiceClient customerService)
-    {
-        _customerService = customerService;
-    }
 }

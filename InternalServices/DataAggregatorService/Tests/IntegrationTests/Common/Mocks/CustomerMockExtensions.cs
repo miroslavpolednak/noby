@@ -1,8 +1,7 @@
 ﻿using SharedTypes.Enums;
 using SharedTypes.GrpcTypes;
 using CIS.Testing.Common;
-using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
+using DomainServices.CustomerService.Clients.v1;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common.Mocks;
 
@@ -16,14 +15,14 @@ public static class CustomerMockExtensions
         {
             var customers = args.Arg<IEnumerable<Identity>>().Select(identity =>
             {
-                var customer = fixture.Create<CustomerDetailResponse>();
+                var customer = fixture.Create<DomainServices.CustomerService.Contracts.Customer>();
                 
                 customer.Identities.Add(new Identity(identity.IdentityId, IdentitySchemes.Kb));
 
                 return customer;
             });
 
-            return new CustomerListResponse { Customers = { customers } };
+            return new DomainServices.CustomerService.Contracts.CustomerListResponse { Customers = { customers } };
         });
     }
 }

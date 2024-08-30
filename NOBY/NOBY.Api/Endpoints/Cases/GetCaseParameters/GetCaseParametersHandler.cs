@@ -12,7 +12,7 @@ internal sealed class GetCaseParametersHandler(
     DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService,
     ISalesArrangementServiceClient _salesArrangementService,
     DomainServices.UserService.Clients.v1.IUserServiceClient _userService,
-    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
+    DomainServices.CustomerService.Clients.v1.ICustomerServiceClient _customerService,
     ICurrentUserAccessor _currentUserAccessor) 
     : IRequestHandler<GetCaseParametersRequest, CasesGetCaseParametersResponse>
 {

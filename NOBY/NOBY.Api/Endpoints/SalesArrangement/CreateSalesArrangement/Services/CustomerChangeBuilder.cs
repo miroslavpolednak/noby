@@ -11,7 +11,7 @@ internal sealed class CustomerChangeBuilder
     {
         // Dotažení dat z KonsDB ohledně účtu pro splácení přes getMortgage
         var productService = GetRequiredService<DomainServices.ProductService.Clients.IProductServiceClient>();
-        var customerService = GetRequiredService<DomainServices.CustomerService.Clients.ICustomerServiceClient>();
+        var customerService = GetRequiredService<DomainServices.CustomerService.Clients.v1.ICustomerServiceClient>();
 
         Request.CustomerChange = new();
 
@@ -34,7 +34,7 @@ internal sealed class CustomerChangeBuilder
             // applicants
             var customers = (await productService.GetCustomersOnProduct(Request.CaseId, cancellationToken)).Customers;
             var applicants = customers.Where(t => _allowedCustomerRoles.Contains(t.RelationshipCustomerProductTypeId));
-            var loadedCustomers = new List<DomainServices.CustomerService.Contracts.CustomerDetailResponse>();
+            var loadedCustomers = new List<DomainServices.CustomerService.Contracts.Customer>();
 
             foreach (var customer in applicants)
             {

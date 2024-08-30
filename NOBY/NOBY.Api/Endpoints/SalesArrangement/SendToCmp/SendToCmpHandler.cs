@@ -1,6 +1,6 @@
 ﻿using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Clients.v1;
