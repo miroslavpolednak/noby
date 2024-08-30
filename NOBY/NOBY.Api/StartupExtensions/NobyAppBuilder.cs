@@ -36,7 +36,7 @@ internal static class NobyAppBuilder
                 {
                     OnPrepareResponse = ctx =>
                     {
-                        if (ctx.File.Name == "index.html")
+                        if (ctx.File.Name == "index.html" || ctx.File.Name == "simple-login.html")
                         {
                             var headers = ctx.Context.Response.GetTypedHeaders();
                             headers.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
