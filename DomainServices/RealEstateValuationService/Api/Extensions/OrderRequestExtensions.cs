@@ -10,7 +10,7 @@ internal static class OrderRequestExtensions
     public static void FillBaseOrderData(
         this ExternalServices.PreorderService.Dto.IOrderBaseData model,
         CaseService.Contracts.Case caseInstance,
-        CustomerDetailResponse customer,
+        Customer customer,
         UserService.Clients.Dto.UserDto currentUser,
         in long[]? realEstateIds,
         in long[]? attachments

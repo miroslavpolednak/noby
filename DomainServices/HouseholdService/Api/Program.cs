@@ -31,8 +31,8 @@ SharedComponents.GrpcServiceBuilder
     })
     .MapGrpcServices(app =>
     {
-        app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.HouseholdService>();
-        app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.CustomerOnSAService>();
+        app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.Household.v1.HouseholdService>();
+        app.MapGrpcService<DomainServices.HouseholdService.Api.Endpoints.CustomerOnSA.v1.CustomerOnSAService>();
     })
     .Run();
 

@@ -1,10 +1,10 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients.v1;
 using Contracts = DomainServices.CustomerService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.ProfileCheck;
 
-internal sealed class ProfileCheckHandler
-    : IRequestHandler<ProfileCheckRequest, CustomerProfileCheckResponse>
+internal sealed class ProfileCheckHandler(ICustomerServiceClient _customerService)
+        : IRequestHandler<ProfileCheckRequest, CustomerProfileCheckResponse>
 {
     private const string ProfileCode = "IDENTIFIED_SUBJECT";
 
@@ -22,12 +22,5 @@ internal sealed class ProfileCheckHandler
         {
             IsCompliant = result.IsCompliant
         };
-    }
-
-    private readonly ICustomerServiceClient _customerService;
-
-    public ProfileCheckHandler(ICustomerServiceClient customerService)
-    {
-        _customerService = customerService;
     }
 }

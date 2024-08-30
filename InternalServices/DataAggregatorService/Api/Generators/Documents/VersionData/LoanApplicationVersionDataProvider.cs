@@ -1,10 +1,9 @@
 ﻿using CIS.Core.Exceptions;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients.v1;
-using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.VersionData;
 

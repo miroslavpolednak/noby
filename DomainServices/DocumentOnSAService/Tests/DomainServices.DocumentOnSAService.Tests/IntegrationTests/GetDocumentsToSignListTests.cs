@@ -59,7 +59,7 @@ public class GetDocumentsToSignListTestsPart1 : IntegrationTestBase
             CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
         });
 
-        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new Customer
         {
             NaturalPerson = new NaturalPerson { FirstName = "Test", LastName ="Test" }
         });
@@ -110,7 +110,7 @@ public class GetDocumentsToSignListTestsPart2 : IntegrationTestBase
             CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
         });
 
-        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new Customer
         {
             NaturalPerson = new NaturalPerson { FirstName = "Test", LastName = "Test" }
         });
@@ -182,7 +182,7 @@ public class GetDocumentsToSignListTestsPart3 : IntegrationTestBase
             CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
         });
 
-        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new Customer
         {
             NaturalPerson = new NaturalPerson { FirstName = "Test", LastName = "Test" }
         });
@@ -239,7 +239,7 @@ public class GetDocumentsToSignListTestsPart4 : IntegrationTestBase
             CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 2, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } },
         });
 
-        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerDetailResponse
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new Customer
         {
             NaturalPerson = new NaturalPerson { FirstName = "Test", LastName = "Test" }
         });

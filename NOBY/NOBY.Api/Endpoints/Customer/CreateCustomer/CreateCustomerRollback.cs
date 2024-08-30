@@ -1,11 +1,14 @@
 ﻿using CIS.Infrastructure.CisMediatR.Rollback;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
-internal sealed class CreateCustomerRollback
-    : IRollbackAction<CustomerCreateCustomerRequest>
+internal sealed class CreateCustomerRollback(
+    IRollbackBag _bag,
+    ILogger<CreateCustomerRollback> _logger,
+    ICustomerOnSAServiceClient _customerOnSAService)
+        : IRollbackAction<CustomerCreateCustomerRequest>
 {
     public async Task ExecuteRollback(Exception exception, CustomerCreateCustomerRequest request, CancellationToken cancellationToken = default)
     {
@@ -25,18 +28,4 @@ internal sealed class CreateCustomerRollback
     public bool OverrideThrownException { get => false; }
 
     public const string BagKeyCustomerOnSA = "BagKeyCustomerOnSA";
-
-    private readonly IRollbackBag _bag;
-    private readonly ILogger<CreateCustomerRollback> _logger;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-
-    public CreateCustomerRollback(
-        IRollbackBag bag,
-        ILogger<CreateCustomerRollback> logger,
-        ICustomerOnSAServiceClient customerOnSAService)
-    {
-        _logger = logger;
-        _bag = bag;
-        _customerOnSAService = customerOnSAService;
-    }
 }

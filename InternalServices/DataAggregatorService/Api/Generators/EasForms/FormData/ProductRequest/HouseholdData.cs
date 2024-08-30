@@ -1,20 +1,18 @@
 ﻿using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.CustomerService.Clients.v1;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.FormData.ProductRequest;
 
 [TransientService, SelfService]
-internal class HouseholdData
+internal sealed class HouseholdData(
+    ICustomerOnSAServiceClient _customerOnSaService, 
+    IHouseholdServiceClient _householdService, 
+    ICustomerServiceClient _customerService, 
+    DomainServices.HouseholdService.Clients.ICustomerChangeDataMerger _customerChangeDataMerger)
 {
-    private readonly ICustomerOnSAServiceClient _customerOnSaService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
-
-    private Dictionary<long, CustomerDetailResponse> _customers = null!;
+    private Dictionary<long, DomainServices.CustomerService.Contracts.Customer> _customers = null!;
     private Dictionary<int, string> _academicDegreesBefore = null!;
     private Dictionary<int, string> _genders = null!;
     private ILookup<string, int> _obligationTypes = null!;
@@ -22,14 +20,6 @@ internal class HouseholdData
     private List<BankCodesResponse.Types.BankCodeItem> _bankCodes = null!;
 
     private int _firstEmploymentTypeId;
-
-    public HouseholdData(ICustomerOnSAServiceClient customerOnSaService, IHouseholdServiceClient householdService, ICustomerServiceClient customerService, ICustomerChangeDataMerger customerChangeDataMerger)
-    {
-        _customerOnSaService = customerOnSaService;
-        _householdService = householdService;
-        _customerService = customerService;
-        _customerChangeDataMerger = customerChangeDataMerger;
-    }
 
     public HouseholdDto HouseholdDto { get; private set; } = null!;
 
@@ -107,7 +97,7 @@ internal class HouseholdData
         return customersWithDetail;
     }
 
-    private async Task<Dictionary<long, CustomerDetailResponse>> LoadCustomers(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
+    private async Task<Dictionary<long, DomainServices.CustomerService.Contracts.Customer>> LoadCustomers(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
     {
         var customerIds = customersOnSa.SelectMany(c => c.CustomerIdentifiers)
                                        .Where(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb)

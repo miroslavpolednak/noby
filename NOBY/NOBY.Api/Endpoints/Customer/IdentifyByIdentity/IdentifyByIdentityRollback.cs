@@ -1,5 +1,5 @@
 ﻿using CIS.Infrastructure.CisMediatR.Rollback;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Customer.IdentifyByIdentity;

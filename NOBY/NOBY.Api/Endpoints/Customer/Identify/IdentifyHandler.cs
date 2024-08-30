@@ -1,11 +1,13 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients.v1;
 using DomainServices.CustomerService.Contracts;
 using NOBY.Api.Endpoints.Customer.SearchCustomers;
 
 namespace NOBY.Api.Endpoints.Customer.Identify;
 
-internal sealed class IdentifyHandler
-    : IRequestHandler<CustomerIdentifyRequest, CustomerInList?>
+internal sealed class IdentifyHandler(
+    ICustomerServiceClient _customerService, 
+    ILogger<IdentifyHandler> _logger)
+        : IRequestHandler<CustomerIdentifyRequest, CustomerInList?>
 {
     public async Task<CustomerInList?> Handle(CustomerIdentifyRequest request, CancellationToken cancellationToken)
     {
@@ -48,14 +50,5 @@ internal sealed class IdentifyHandler
 
         _logger.LogInformation("More than 1 client found");
         throw new NobyValidationException($"More than 1 client found: {string.Join(", ", searchResult.Customers.Select(t => t.Identities?.FirstOrDefault()?.IdentityId.ToString(System.Globalization.CultureInfo.InvariantCulture)))}", 409);
-    }
-
-    private readonly ILogger<IdentifyHandler> _logger;
-    private readonly ICustomerServiceClient _customerService;
-
-    public IdentifyHandler(ICustomerServiceClient customerService, ILogger<IdentifyHandler> logger)
-    {
-        _customerService = customerService;
-        _logger = logger;
     }
 }

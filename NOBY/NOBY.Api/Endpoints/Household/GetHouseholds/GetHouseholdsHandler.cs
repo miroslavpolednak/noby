@@ -1,10 +1,12 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Household.GetHouseholds;
 
-internal sealed class GetHouseholdsHandler
-    : IRequestHandler<GetHouseholdsRequest, List<HouseholdInList>>
+internal sealed class GetHouseholdsHandler(
+    IHouseholdServiceClient _householdService,
+    ICodebookServiceClient _codebookService)
+        : IRequestHandler<GetHouseholdsRequest, List<HouseholdInList>>
 {
     public async Task<List<HouseholdInList>> Handle(GetHouseholdsRequest request, CancellationToken cancellationToken)
     {
@@ -22,16 +24,5 @@ internal sealed class GetHouseholdsHandler
             })
             .OrderBy(t => t.HouseholdTypeId)
             .ToList();
-    }
-
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IHouseholdServiceClient _householdService;
-    
-    public GetHouseholdsHandler(
-        IHouseholdServiceClient householdService,
-        ICodebookServiceClient codebookService)
-    {
-        _codebookService = codebookService;
-        _householdService = householdService;
     }
 }

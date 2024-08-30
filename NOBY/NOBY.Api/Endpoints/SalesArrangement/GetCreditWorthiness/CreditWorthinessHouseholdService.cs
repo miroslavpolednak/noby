@@ -8,8 +8,8 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetCreditWorthiness;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
 internal sealed class CreditWorthinessHouseholdService(
-    DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService,
-    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSaService)
+    DomainServices.HouseholdService.Clients.v1.IHouseholdServiceClient _householdService,
+    DomainServices.HouseholdService.Clients.v1.ICustomerOnSAServiceClient _customerOnSaService)
 {
     public async Task<List<_Rip.CreditWorthinessHousehold>> CreateHouseholds(int salesArrangementId, CancellationToken cancellationToken)
     {

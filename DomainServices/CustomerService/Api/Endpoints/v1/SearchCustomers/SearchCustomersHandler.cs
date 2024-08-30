@@ -25,7 +25,7 @@ internal sealed class SearchCustomersHandler(
         return response;
     }
 
-    private async Task<List<CustomerDetailResponse>> searchMpHome(SearchCustomersRequest request, CancellationToken cancellationToken)
+    private async Task<List<Customer>> searchMpHome(SearchCustomersRequest request, CancellationToken cancellationToken)
     {
         var searchRequest = new global::ExternalServices.MpHome.V1.Contracts.PartnerSearchRequest
         {
@@ -46,7 +46,7 @@ internal sealed class SearchCustomersHandler(
 
         var response = await _mpHome.SearchPartners(searchRequest, cancellationToken);
 
-        List<CustomerDetailResponse> result = [];
+        List<Customer> result = [];
         foreach (var partner in response!)
         {
             result.Add(await _mpHomeDetailMapper.MapDetailResponse(partner, cancellationToken));

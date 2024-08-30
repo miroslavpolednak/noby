@@ -3,7 +3,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Mappers;
 using DomainServices.DocumentOnSAService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -12,34 +12,16 @@ using DomainServices.DocumentOnSAService.Api.Common;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.GetDocumentsToSignList;
 
-public class GetDocumentsToSignListHandler : IRequestHandler<GetDocumentsToSignListRequest, GetDocumentsToSignListResponse>
+public class GetDocumentsToSignListHandler(
+       DocumentOnSAServiceDbContext _dbContext,
+       ISalesArrangementServiceClient _arrangementServiceClient,
+       ICodebookServiceClient _codebookServiceClients,
+       IDocumentOnSaMapper _documentOnSaMapper,
+       IHouseholdServiceClient _householdClient,
+       ICustomerOnSAServiceClient _customerOnSAServiceClient,
+       ICommonSigningMethods _commonSigningMethods) 
+    : IRequestHandler<GetDocumentsToSignListRequest, GetDocumentsToSignListResponse>
 {
-    private readonly DocumentOnSAServiceDbContext _dbContext;
-    private readonly ISalesArrangementServiceClient _arrangementServiceClient;
-    private readonly ICodebookServiceClient _codebookServiceClients;
-    private readonly IDocumentOnSaMapper _documentOnSaMapper;
-    private readonly IHouseholdServiceClient _householdClient;
-    private readonly ICustomerOnSAServiceClient _customerOnSAServiceClient;
-    private readonly ICommonSigningMethods _commonSigningMethods;
-
-    public GetDocumentsToSignListHandler(
-           DocumentOnSAServiceDbContext dbContext,
-           ISalesArrangementServiceClient arrangementServiceClient,
-           ICodebookServiceClient codebookServiceClients,
-           IDocumentOnSaMapper documentOnSaMapper,
-           IHouseholdServiceClient householdClient,
-           ICustomerOnSAServiceClient customerOnSAServiceClient,
-           ICommonSigningMethods commonSigningMethods)
-    {
-        _dbContext = dbContext;
-        _arrangementServiceClient = arrangementServiceClient;
-        _codebookServiceClients = codebookServiceClients;
-        _documentOnSaMapper = documentOnSaMapper;
-        _householdClient = householdClient;
-        _customerOnSAServiceClient = customerOnSAServiceClient;
-        _commonSigningMethods = commonSigningMethods;
-    }
-
     public async Task<GetDocumentsToSignListResponse> Handle(GetDocumentsToSignListRequest request, CancellationToken cancellationToken)
     {
         var salesArrangement = await _arrangementServiceClient.GetSalesArrangement(request.SalesArrangementId, cancellationToken);

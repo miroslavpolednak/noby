@@ -5,9 +5,9 @@ namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.Te
 
 public static class CustomerHelper
 {
-    public static string FullName(CustomerDetailResponse customerDetail) => $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}";
+    public static string FullName(DomainServices.CustomerService.Contracts.Customer customerDetail) => $"{customerDetail.NaturalPerson.FirstName} {customerDetail.NaturalPerson.LastName}";
 
-    public static string FullName(CustomerDetailResponse customerDetail, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
+    public static string FullName(DomainServices.CustomerService.Contracts.Customer customerDetail, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
     {
         if (!customerDetail.NaturalPerson.DegreeBeforeId.HasValue)
             return FullName(customerDetail);
@@ -22,7 +22,7 @@ public static class CustomerHelper
         return $"{fullName}, datum narození: {dateOfBirth.ToString("d", CultureProvider.GetProvider())}";
     }
 
-    public static string FullAddress(CustomerDetailResponse customerDetail, AddressTypes addressType)
+    public static string FullAddress(DomainServices.CustomerService.Contracts.Customer customerDetail, AddressTypes addressType)
     {
         var address = customerDetail.Addresses.FirstOrDefault(a => a.AddressTypeId == (int)addressType);
 

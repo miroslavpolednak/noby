@@ -1,4 +1,4 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 using NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
 using _HO = DomainServices.HouseholdService.Contracts;
 

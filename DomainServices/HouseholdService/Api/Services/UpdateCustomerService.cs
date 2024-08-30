@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using ExternalServices.Eas.V1;
 
 namespace DomainServices.HouseholdService.Api.Services;

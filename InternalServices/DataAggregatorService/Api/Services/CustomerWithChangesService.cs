@@ -1,25 +1,16 @@
-﻿using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.CustomerService.Clients.v1;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services;
 
 [TransientService, SelfService]
-public class CustomerWithChangesService
+public class CustomerWithChangesService(
+    ICustomerServiceClient _customerService, 
+    ICustomerOnSAServiceClient _customerOnSAService, 
+    DomainServices.HouseholdService.Clients.ICustomerChangeDataMerger _customerChangeDataMerger)
 {
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
-
-    public CustomerWithChangesService(ICustomerServiceClient customerService, ICustomerOnSAServiceClient customerOnSAService, ICustomerChangeDataMerger customerChangeDataMerger)
-    {
-        _customerService = customerService;
-        _customerOnSAService = customerOnSAService;
-        _customerChangeDataMerger = customerChangeDataMerger;
-    }
-
-    public async Task<(CustomerDetailResponse customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<(DomainServices.CustomerService.Contracts.Customer customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(Identity identity, int salesArrangementId, CancellationToken cancellationToken)
     {
         var customer = await _customerService.GetCustomerDetail(identity, forceKbCustomerLoad: true, cancellationToken);
         var customerOnSaList = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
@@ -36,7 +27,7 @@ public class CustomerWithChangesService
         return (customer, customerOnSa);
     }
 
-    public async Task<(CustomerDetailResponse customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(int customerOnSaId, CancellationToken cancellationToken)
+    public async Task<(DomainServices.CustomerService.Contracts.Customer customer, CustomerOnSA? customerOnSA)> GetCustomerDetail(int customerOnSaId, CancellationToken cancellationToken)
     {
         await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);
 
@@ -52,7 +43,7 @@ public class CustomerWithChangesService
         return (customer, customerOnSa);
     }
 
-    public async Task<IList<CustomerDetailResponse>> GetCustomerList(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
+    public async Task<IList<DomainServices.CustomerService.Contracts.Customer>> GetCustomerList(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
     {
         var customersOnSaWithKbIdentity = GetCustomersOnSaWithIdentity(customersOnSa);
 
@@ -74,7 +65,7 @@ public class CustomerWithChangesService
         return response.Customers;
     }
 
-    public async Task<IList<CustomerDetailResponse>> GetCustomerList(IEnumerable<Identity> identities, int salesArrangementId, CancellationToken cancellationToken)
+    public async Task<IList<DomainServices.CustomerService.Contracts.Customer>> GetCustomerList(IEnumerable<Identity> identities, int salesArrangementId, CancellationToken cancellationToken)
     {
         var customers = (await _customerService.GetCustomerList(identities, cancellationToken)).Customers;
         var customersOnSa = await _customerOnSAService.GetCustomerList(salesArrangementId, cancellationToken);
@@ -106,7 +97,7 @@ public class CustomerWithChangesService
                      .Where(c => c.KbIdentity is not null)
                      .ToDictionary(k => k.KbIdentity!, v => v.CustomerOnSa);
 
-    private static CustomerOnSA? GetCustomerOnSA(CustomerDetailResponse customerDetail, IReadOnlyDictionary<Identity, CustomerOnSA> customersOnSaWithKbIdentity)
+    private static CustomerOnSA? GetCustomerOnSA(DomainServices.CustomerService.Contracts.Customer customerDetail, IReadOnlyDictionary<Identity, CustomerOnSA> customersOnSaWithKbIdentity)
     {
         var kbIdentity = customerDetail.Identities.GetKbIdentityOrDefault();
 

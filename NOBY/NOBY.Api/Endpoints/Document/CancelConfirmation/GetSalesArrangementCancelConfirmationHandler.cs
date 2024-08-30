@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using NOBY.Api.Endpoints.Document.SharedDto;
 

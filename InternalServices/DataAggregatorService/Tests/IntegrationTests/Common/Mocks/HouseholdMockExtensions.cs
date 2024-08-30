@@ -1,7 +1,7 @@
 ﻿using SharedTypes.Enums;
 using SharedTypes.GrpcTypes;
 using CIS.Testing.Common;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregator.Tests.IntegrationTests.Common.Mocks;

@@ -1,11 +1,14 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Services.FlowSwitchAtLeastOneIncomeMainHousehold;
 
 [ScopedService, SelfService]
-public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService
+public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService(
+    ISalesArrangementServiceClient _salesArrangementService,
+    IHouseholdServiceClient _householdService,
+    ICustomerOnSAServiceClient _customerOnSAService)
 {
     public async Task SetFlowSwitchByCustomerOnSAId(int customerOnSAId, IFlowSwitchManager? flowSwitchManager = null, CancellationToken cancellationToken = default)
     {
@@ -15,7 +18,7 @@ public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService
 
     public async Task SetFlowSwitchByHouseholdId(int householdId, IFlowSwitchManager? flowSwitchManager = null, CancellationToken cancellationToken = default)
     {
-        List<IncomeInList> incomes = new();
+        List<IncomeInList> incomes = [];
 
         var household = await _householdService.GetHousehold(householdId, cancellationToken);
         
@@ -48,19 +51,5 @@ public sealed class FlowSwitchAtLeastOneIncomeMainHouseholdService
         {
             await _salesArrangementService.SetFlowSwitch(salesArrangementId, SharedTypes.Enums.FlowSwitches.AtLeast1IncomeMainHousehold, flowSwitchValue, cancellationToken);
         }
-    }
-
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-
-    public FlowSwitchAtLeastOneIncomeMainHouseholdService(
-        ISalesArrangementServiceClient service,
-        IHouseholdServiceClient householdService,
-        ICustomerOnSAServiceClient customerOnSAService)
-    {
-        _salesArrangementService = service;
-        _householdService = householdService;
-        _customerOnSAService = customerOnSAService;
     }
 }

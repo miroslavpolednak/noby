@@ -1,6 +1,6 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using FastEnumUtility;
 using System.Text.Encodings.Web;
@@ -14,33 +14,17 @@ using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.DocumentOnSA.StartSigning;
 
-internal sealed class StartSigningHandler : IRequestHandler<DocumentOnSAStartSigningRequest, DocumentOnSaStartSigningResponse>
+internal sealed class StartSigningHandler(
+    IDocumentOnSAServiceClient _client,
+    ICodebookServiceClient _codebookServiceClient,
+    CustomerWithChangedDataService _changedDataService,
+    IMediator _mediator,
+    ISalesArrangementServiceClient _salesArrangementServiceClient,
+    IHouseholdServiceClient _householdClient)
+    : IRequestHandler<DocumentOnSAStartSigningRequest, DocumentOnSaStartSigningResponse>
 {
     private const string _signatureAnchorOne = "X_SIG_1";
     private const string _signatureAnchorTwo = "X_SIG_2";
-
-    private readonly IDocumentOnSAServiceClient _client;
-    private readonly ICodebookServiceClient _codebookServiceClient;
-    private readonly CustomerWithChangedDataService _changedDataService;
-    private readonly IMediator _mediator;
-    private readonly ISalesArrangementServiceClient _salesArrangementServiceClient;
-    private readonly IHouseholdServiceClient _householdClient;
-
-    public StartSigningHandler(
-        IDocumentOnSAServiceClient client,
-        ICodebookServiceClient codebookServiceClient,
-        CustomerWithChangedDataService changedDataService,
-        IMediator mediator,
-        ISalesArrangementServiceClient salesArrangementServiceClient,
-        IHouseholdServiceClient householdClient)
-    {
-        _client = client;
-        _codebookServiceClient = codebookServiceClient;
-        _changedDataService = changedDataService;
-        _mediator = mediator;
-        _salesArrangementServiceClient = salesArrangementServiceClient;
-        _householdClient = householdClient;
-    }
 
     public async Task<DocumentOnSaStartSigningResponse> Handle(DocumentOnSAStartSigningRequest request, CancellationToken cancellationToken)
     {

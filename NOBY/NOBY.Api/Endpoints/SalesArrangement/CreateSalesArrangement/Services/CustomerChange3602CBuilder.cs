@@ -10,8 +10,8 @@ internal sealed class CustomerChange3602CBuilder
     public override async Task PostCreateProcessing(int salesArrangementId, CancellationToken cancellationToken = default)
     {
         var salesArrangementService = GetRequiredService<DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient>();
-        var customerOnSAService = GetRequiredService<DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient>();
-        var householdService = GetRequiredService<DomainServices.HouseholdService.Clients.IHouseholdServiceClient>();
+        var customerOnSAService = GetRequiredService<DomainServices.HouseholdService.Clients.v1.ICustomerOnSAServiceClient>();
+        var householdService = GetRequiredService<DomainServices.HouseholdService.Clients.v1.IHouseholdServiceClient>();
 
         // vytvorit domacnost
         var requestModel = new CreateHouseholdRequest
@@ -25,7 +25,7 @@ internal sealed class CustomerChange3602CBuilder
         // vytvorit klienta
         var createCustomerResult = await customerOnSAService.CreateCustomer(new CreateCustomerRequest
         {
-            CustomerRoleId = (int)SharedTypes.Enums.EnumCustomerRoles.Codebtor,
+            CustomerRoleId = (int)EnumCustomerRoles.Codebtor,
             SalesArrangementId = salesArrangementId
         }, cancellationToken);
 

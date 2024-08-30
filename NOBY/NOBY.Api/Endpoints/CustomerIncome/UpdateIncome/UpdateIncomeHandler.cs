@@ -1,15 +1,16 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.CustomerIncome.UpdateIncome;
 
 internal sealed class UpdateIncomeHandler(ICustomerOnSAServiceClient _customerService)
-        : IRequestHandler<CustomerIncomeUpdateIncomeRequest>
+    : IRequestHandler<CustomerIncomeUpdateIncomeRequest>
 {
     public async Task Handle(CustomerIncomeUpdateIncomeRequest request, CancellationToken cancellationToken)
     {
-        var model = new _HO.UpdateIncomeRequest
+        var model = new _HO.Income
         {
+            CustomerOnSAId = request.CustomerOnSAId,
             IncomeId = request.IncomeId,
             IncomeTypeId = (int)request.IncomeTypeId,
             BaseData = new _HO.IncomeBaseData
@@ -45,10 +46,4 @@ internal sealed class UpdateIncomeHandler(ICustomerOnSAServiceClient _customerSe
 
         await _customerService.UpdateIncome(model, cancellationToken);
     }
-
-    static System.Text.Json.JsonSerializerOptions _jsonSerializerOptions = new System.Text.Json.JsonSerializerOptions
-    {
-        NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString,
-        PropertyNameCaseInsensitive = true
-    };
 }

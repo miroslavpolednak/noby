@@ -6,7 +6,7 @@ namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrang
 
 internal sealed class UpdateSalesArrangementParametersHandler(
     IMediator _mediator,
-    HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    HouseholdService.Clients.v1.ICustomerOnSAServiceClient _customerOnSAService,
     Database.SalesArrangementServiceDbContext _dbContext,
     IDocumentDataStorage _documentDataStorage) 
     : IRequestHandler<Contracts.UpdateSalesArrangementParametersRequest, Google.Protobuf.WellKnownTypes.Empty>

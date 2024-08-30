@@ -76,7 +76,7 @@ public class StartSigningServiceRequestsTests : IntegrationTestBase
             }
         };
 
-        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerService.Contracts.CustomerDetailResponse
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerService.Contracts.Customer
         {
             NaturalPerson = new()
             {
@@ -206,7 +206,7 @@ public class StartSigningServiceRequestsTestsPart2 : IntegrationTestBase
             }
         };
 
-        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerService.Contracts.CustomerDetailResponse
+        CustomerServiceClient.GetCustomerDetail(Arg.Any<Identity>(), Arg.Any<CancellationToken>()).Returns(new CustomerService.Contracts.Customer
         {
             NaturalPerson = new()
             {

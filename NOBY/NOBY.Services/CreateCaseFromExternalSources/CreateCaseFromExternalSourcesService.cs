@@ -9,7 +9,7 @@ namespace NOBY.Services.CreateCaseFromExternalSources;
 [TransientService, SelfService]
 public sealed class CreateCaseFromExternalSourcesService(
     ICurrentUserAccessor _currentUser,
-    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
+    DomainServices.CustomerService.Clients.v1.ICustomerServiceClient _customerService,
     DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
     DomainServices.ProductService.Clients.IProductServiceClient _productService,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,

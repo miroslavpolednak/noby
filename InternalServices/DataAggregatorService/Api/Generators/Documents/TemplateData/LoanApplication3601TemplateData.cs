@@ -1,7 +1,7 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.LoanApplication;
 using CIS.InternalServices.DataAggregatorService.Api.Services;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData;
 

@@ -62,8 +62,8 @@ internal abstract class LoanApplicationBaseTemplateData : AggregatedData
             Customer2Obligation = new LoanApplicationObligation(CurrentHousehold.CustomerOnSa2!);
         }
 
-        LoanApplicationCustomer CreateCustomer(CustomerDetailResponse customer) => new(customer, _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes, _codebookManager.EducationLevels);
-        CustomerDetailResponse GetDetail(long id) => customers.First(c => c.Identities.Any(i => i.IdentityId == id && i.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
+        LoanApplicationCustomer CreateCustomer(DomainServices.CustomerService.Contracts.Customer customer) => new(customer, _codebookManager.DegreesBefore, _codebookManager.Countries, _codebookManager.IdentificationDocumentTypes, _codebookManager.EducationLevels);
+        DomainServices.CustomerService.Contracts.Customer GetDetail(long id) => customers.First(c => c.Identities.Any(i => i.IdentityId == id && i.IdentityScheme == Identity.Types.IdentitySchemes.Kb));
     }
 
     protected override void ConfigureCodebooks(ICodebookManagerConfigurator configurator)

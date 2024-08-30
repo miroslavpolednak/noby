@@ -1,12 +1,12 @@
-﻿using DomainServices.CustomerService.Clients;
+﻿using DomainServices.CustomerService.Clients.v1;
 using NOBY.Services.Customer;
 
 namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail;
 
-internal sealed class GetCustomerDetailHandler
-    : IRequestHandler<GetCustomerDetailRequest, CustomerGetCustomerDetailResponse>
+internal sealed class GetCustomerDetailHandler(ICustomerServiceClient _customerService)
+        : IRequestHandler<GetCustomerDetailRequest, CustomerGetCustomer>
 {
-    public async Task<CustomerGetCustomerDetailResponse> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerGetCustomer> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
     {
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
         var result = await _customerService.GetCustomerDetail(request.Identity, cancellationToken);
@@ -15,7 +15,7 @@ internal sealed class GetCustomerDetailHandler
         result.NaturalPerson?.FillResponseDto(person);
         person.IsBrSubscribed = result.NaturalPerson?.IsBrSubscribed;
     
-        return new CustomerGetCustomerDetailResponse
+        return new CustomerGetCustomer
         {
             NaturalPerson = person,
             JuridicalPerson = null,
@@ -29,12 +29,5 @@ internal sealed class GetCustomerDetailHandler
             Addresses = result.Addresses?.Where(t => t.AddressTypeId != (int)AddressTypes.Other)
                               .Select(t => (SharedTypesAddress)t!).ToList()
         };
-    }
-
-    private readonly ICustomerServiceClient _customerService;
-
-    public GetCustomerDetailHandler(ICustomerServiceClient customerService)
-    {
-        _customerService = customerService;
     }
 }

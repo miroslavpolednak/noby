@@ -38,7 +38,7 @@ internal sealed class CustomerManagementDetailProvider
         _formatAddressHandler = formatAddressHandler;
     }
 
-    public async Task<CustomerDetailResponse> GetDetail(long customerId, CancellationToken cancellationToken)
+    public async Task<Customer> GetDetail(long customerId, CancellationToken cancellationToken)
     {
         var customer = await _customerManagement.GetDetail(customerId, cancellationToken);
         var contacts = await _contactClient.LoadContacts(customerId, cancellationToken);
@@ -48,7 +48,7 @@ internal sealed class CustomerManagementDetailProvider
         return await CreateDetailResponse(customer, contacts, cancellationToken);
     }
 
-    public async IAsyncEnumerable<CustomerDetailResponse> GetList(IEnumerable<long> customerIds, [EnumeratorCancellation] CancellationToken cancellationToken)
+    public async IAsyncEnumerable<Customer> GetList(IEnumerable<long> customerIds, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
         var customers = await _customerManagement.GetList(customerIds, cancellationToken);
 
@@ -64,9 +64,9 @@ internal sealed class CustomerManagementDetailProvider
         }
     }
 
-    private async Task<CustomerDetailResponse> CreateDetailResponse(CM.Contracts.CustomerInfo customer, List<CMContacts.Contracts.Contact> contacts, CancellationToken cancellationToken)
+    private async Task<Customer> CreateDetailResponse(CM.Contracts.CustomerInfo customer, List<CMContacts.Contracts.Contact> contacts, CancellationToken cancellationToken)
     {
-        var response = new CustomerDetailResponse
+        var response = new Customer
         {
             Identities = { new SharedTypes.GrpcTypes.Identity(customer.CustomerId, IdentitySchemes.Kb) },
             NaturalPerson = CreateNaturalPerson(customer, customer.IsLegallyIncapable),

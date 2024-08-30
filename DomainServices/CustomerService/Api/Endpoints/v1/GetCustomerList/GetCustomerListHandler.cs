@@ -24,7 +24,7 @@ internal sealed class GetCustomerListHandler(
         };
     }
 
-    private async Task<IEnumerable<CustomerDetailResponse>> GetCMCustomers(IEnumerable<long> customerIds, CancellationToken cancellationToken)
+    private async Task<IEnumerable<Customer>> GetCMCustomers(IEnumerable<long> customerIds, CancellationToken cancellationToken)
     {
         if (!customerIds.Any())
         {
@@ -34,7 +34,7 @@ internal sealed class GetCustomerListHandler(
         return await _cmDetailProvider.GetList(customerIds, cancellationToken).ToListAsync(cancellationToken);
     }
 
-    private async Task<IEnumerable<CustomerDetailResponse>> GetKonsDbCustomers(IEnumerable<long> partnerIds, CancellationToken cancellationToken)
+    private async Task<IEnumerable<Customer>> GetKonsDbCustomers(IEnumerable<long> partnerIds, CancellationToken cancellationToken)
     {
         if (!partnerIds.Any())
         {
@@ -42,7 +42,7 @@ internal sealed class GetCustomerListHandler(
         }
 
         //!!! docasne nez MpHome udela search podle idcek
-        List<CustomerDetailResponse> list = new();
+        List<Customer> list = new();
         foreach (var customer in partnerIds)
         {
             var detail = await _mpHome.GetPartner(customer, cancellationToken)
@@ -53,7 +53,7 @@ internal sealed class GetCustomerListHandler(
         return list;
     }
 
-    private static void CheckMissingCustomers(IEnumerable<CustomerDetailResponse> customers, ICollection<SharedTypes.GrpcTypes.Identity> identities)
+    private static void CheckMissingCustomers(IEnumerable<Customer> customers, ICollection<SharedTypes.GrpcTypes.Identity> identities)
     {
         if (customers.Count() == identities.Count)
             return;
