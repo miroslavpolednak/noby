@@ -1,4 +1,5 @@
 ﻿using SharedTypes.Enums;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DomainServices.SalesArrangementService.Clients;
 
@@ -9,7 +10,7 @@ public static class SalesArrangementHelpers
 		return allowedStates.Contains(salesArrangementState);
 	}
 
-	public static bool IsInState(this Contracts.SalesArrangement salesArrangement, IEnumerable<EnumSalesArrangementStates> allowedStates)
+	public static bool IsInState([NotNull] this Contracts.SalesArrangement salesArrangement, IEnumerable<EnumSalesArrangementStates> allowedStates)
 		=> IsSalesArrangementInState(allowedStates, (EnumSalesArrangementStates)salesArrangement.State);
 
 	/// <summary>
