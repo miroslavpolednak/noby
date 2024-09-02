@@ -27,4 +27,8 @@
 		<ProjectReference Include="..\..\CustomerService\Contracts\DomainServices.CustomerService.Contracts.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.HouseholdService.Contracts.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Dto\" />
+	</ItemGroup>
 </Project>

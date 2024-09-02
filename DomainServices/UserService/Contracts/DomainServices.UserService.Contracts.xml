@@ -251,6 +251,9 @@
         <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.BrokerIdFieldNumber">
             <summary>Field number for the "BrokerId" field.</summary>
         </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.BrokerIdVZFieldNumber">
+            <summary>Field number for the "BrokerIdVZ" field.</summary>
+        </member>
         <member name="T:DomainServices.UserService.Contracts.GetUserMortgageSpecialistReflection">
             <summary>Holder for reflection information generated from Messages/GetUserMortgageSpecialist.proto</summary>
         </member>

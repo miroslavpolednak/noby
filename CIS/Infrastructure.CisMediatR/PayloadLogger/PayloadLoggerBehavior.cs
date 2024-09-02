@@ -5,20 +5,13 @@ using CIS.Infrastructure.CisMediatR.PayloadLogger;
 
 namespace CIS.Infrastructure.CisMediatR;
 
-public sealed class PayloadLoggerBehavior<TRequest, TResponse>
+public sealed class PayloadLoggerBehavior<TRequest, TResponse>(
+    ILogger<PayloadLoggerBehavior<TRequest, TResponse>> _logger, 
+    PayloadLoggerBehaviorConfiguration? _configuration)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {
-    private readonly ILogger<PayloadLoggerBehavior<TRequest, TResponse>> _logger;
-    private readonly PayloadLoggerBehaviorConfiguration? _configuration;
-
-    private static JsonConvertByteString _byteStringConverter = new JsonConvertByteString();
-
-    public PayloadLoggerBehavior(ILogger<PayloadLoggerBehavior<TRequest, TResponse>> logger, PayloadLoggerBehaviorConfiguration? configuration)
-    {
-        _configuration = configuration;
-        _logger = logger;
-    }
+    private static readonly JsonConvertByteString _byteStringConverter = new();
 
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {

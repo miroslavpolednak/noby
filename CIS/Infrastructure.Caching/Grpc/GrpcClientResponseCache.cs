@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Runtime.CompilerServices;
 
 namespace CIS.Infrastructure.Caching.Grpc;
@@ -47,7 +49,7 @@ internal sealed class GrpcClientResponseCache<TClient>
     {
         if (_localCacheValues.TryGetValue((memberName, key), out var cachedValue))
         {
-            _logger.UsingCacheInsteadOfRpc(LoggerExtensions.CacheTypes.Local, memberName, _serviceName);
+            logPayload(cachedValue, key, LoggerExtensions.CacheTypes.Local, memberName);
             return (TResponse)cachedValue;
         }
         else if (_distributedCache is not null) // mame zapnutou distr. cache, zkusime ziskat hodnotu z ni
@@ -61,7 +63,7 @@ internal sealed class GrpcClientResponseCache<TClient>
 
             if (distCachedValue is not null)
             {
-                _logger.UsingCacheInsteadOfRpc(LoggerExtensions.CacheTypes.Distributed, memberName, _serviceName);
+                logPayload(distCachedValue, key, LoggerExtensions.CacheTypes.Distributed, memberName);
                 _localCacheValues.Add((memberName, key), distCachedValue);
                 return distCachedValue;
             }
@@ -101,7 +103,7 @@ internal sealed class GrpcClientResponseCache<TClient>
 
             if (distCachedValue is not null)
             {
-                _logger.UsingCacheInsteadOfRpc(LoggerExtensions.CacheTypes.Distributed, memberName, _serviceName);
+                logPayload(distCachedValue, key, LoggerExtensions.CacheTypes.Distributed, memberName);
                 return distCachedValue;
             }
         }
@@ -118,7 +120,7 @@ internal sealed class GrpcClientResponseCache<TClient>
     {
         if (_localCacheValues.TryGetValue((memberName, key), out var cachedValue))
         {
-            _logger.UsingCacheInsteadOfRpc(LoggerExtensions.CacheTypes.Local, memberName, _serviceName);
+            logPayload(cachedValue, key, LoggerExtensions.CacheTypes.Local, memberName);
             return (TResponse)cachedValue;
         }
         else
@@ -132,6 +134,21 @@ internal sealed class GrpcClientResponseCache<TClient>
     public void InvalidateLocalCache()
     {
         _localCacheValues.Clear();
+    }
+
+    private void logPayload(in object cachedValue, [NotNull] in object key, LoggerExtensions.CacheTypes cacheType, in string memberName)
+    {
+        // it is pointless to serialize payload when log level prohibits logging of this event
+        if (_logger.IsEnabled(LogLevel.Debug))
+        {
+            using (_logger.BeginScope(new Dictionary<string, object>
+            {
+                { "Payload", System.Text.Json.JsonSerializer.Serialize(cachedValue) }
+            }))
+            {
+                _logger.UsingCacheInsteadOfRpc(cacheType, key.ToString()!, memberName, _serviceName);
+            }
+        }
     }
 
     /// <summary>

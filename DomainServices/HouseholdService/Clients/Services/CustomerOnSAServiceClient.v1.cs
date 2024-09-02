@@ -53,24 +53,14 @@ internal sealed class CustomerOnSAServiceClient(
 
     public async Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default)
     {
-        return await _cache.GetLocalOrDistributed(
+        return await _cache.GetLocalOnly(
             salesArrangementId,
-            async (c) => await GetCustomerListWithoutCache(salesArrangementId, c),
-            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
-            {
-                SlidingExpiration = TimeSpan.FromMinutes(30)
-            },
-            cancellationToken);
-    }
-
-    public async Task<List<CustomerOnSA>> GetCustomerListWithoutCache(int salesArrangementId, CancellationToken cancellationToken = default)
-    {
-        return (await _service.GetCustomerListAsync(
+            async (c) => (await _service.GetCustomerListAsync(
                 new()
                 {
                     SalesArrangementId = salesArrangementId
                 }, cancellationToken: cancellationToken)
-            ).Customers.ToList();
+            ).Customers.ToList());
     }
 
     public async Task<UpdateCustomerResponse> UpdateCustomer(UpdateCustomerRequest request, CancellationToken cancellationToken = default)

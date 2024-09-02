@@ -45,8 +45,7 @@ public interface ICustomerOnSAServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16000; Sales arrangement ID does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement service unavailable</exception>
     Task<List<CustomerOnSA>> GetCustomerList(int salesArrangementId, CancellationToken cancellationToken = default);
-    Task<List<CustomerOnSA>> GetCustomerListWithoutCache(int salesArrangementId, CancellationToken cancellationToken = default);
-
+    
     /// <summary>
     /// Update dat o customerovi
     /// </summary>
