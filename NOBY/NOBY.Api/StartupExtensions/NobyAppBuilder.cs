@@ -16,7 +16,7 @@ internal static class NobyAppBuilder
         {
             appBuilder.UseSpaStaticFiles();
 
-            appBuilder.UseStaticFiles("/docs");
+            app.UseStaticFiles("/docs");
 
             appBuilder.UseStaticFiles(new StaticFileOptions
             {
@@ -48,7 +48,6 @@ internal static class NobyAppBuilder
                                 MaxAge = TimeSpan.Zero
                             };
                         }
-                            
                     }
                 };
             });
