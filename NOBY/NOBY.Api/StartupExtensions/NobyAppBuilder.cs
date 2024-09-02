@@ -15,10 +15,11 @@ internal static class NobyAppBuilder
         => app.MapWhen(_isSpaCall, appBuilder =>
         {
             appBuilder.UseSpaStaticFiles();
-            
+
+            appBuilder.UseStaticFiles("/docs");
+
             appBuilder.UseStaticFiles(new StaticFileOptions
             {
-                RequestPath = "/docs",
                 ContentTypeProvider = new FileExtensionContentTypeProvider
                 {
                     Mappings =
