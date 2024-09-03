@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Security;
+using KafkaFlow;
 using LazyCache;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -19,6 +20,12 @@ internal sealed class GetLoggedInUserHandler(
         // session validTo
         var tokenExpirationClaim = _userAccessor.Claims.FirstOrDefault(t => t.Type == SecurityConstants.ClaimTypeRefreshTokenExpiration);
 
+        DateTime? sessionValidTo = null;
+        if (!string.IsNullOrEmpty(tokenExpirationClaim?.Value))
+        {
+            sessionValidTo = new DateTime(Convert.ToInt64(tokenExpirationClaim.Value, CultureInfo.InvariantCulture), DateTimeKind.Local);
+        }
+
         var response = new UsersGetLoggedInUserResponse
         {
             UserId = userInstance.UserId,
@@ -36,8 +43,8 @@ internal sealed class GetLoggedInUserHandler(
             },
             UserIdentifiers = userInstance.UserIdentifiers.Select(t => (SharedTypesUserIdentity)t!).ToList(),
             UserPermissions = getPermissions(userInstance.UserPermissions),
-            SessionValidTo = string.IsNullOrEmpty(tokenExpirationClaim?.Value) ? null : new DateTime(Convert.ToInt64(tokenExpirationClaim.Value, CultureInfo.InvariantCulture))
-		};
+            SessionValidTo = sessionValidTo
+        };
 
         if ((userInstance.UserInfo?.IsInternal ?? true) == false)
         {

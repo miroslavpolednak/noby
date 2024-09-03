@@ -15,6 +15,8 @@ namespace NOBY.Infrastructure.Security.CaasAuthentication;
 internal sealed class CaasCookieHandler
     : IConfigureNamedOptions<CookieAuthenticationOptions>
 {
+    private static readonly TimeZoneInfo _timezone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
     public void Configure(string? name, CookieAuthenticationOptions options)
     {
         var appVersion = Assembly.GetEntryAssembly()!.GetName().Version!.ToString();
@@ -83,11 +85,14 @@ internal sealed class CaasCookieHandler
                     createLogger(context.HttpContext).UserWithoutAccess(currentLogin);
                     throw new CisAuthorizationException("Cookie handler: user does not have APPLICATION_BasicAccess");
                 }
-                
+
+                // session valid to
+                var sessionValidTo = TimeZoneInfo.ConvertTimeFromUtc((DateTime)context.HttpContext.Items["noby_refreshtoken_exp"]!, _timezone);
+
                 // vytvorit claimy
                 List<Claim> claims =
                 [
-                    new (CIS.Core.Security.SecurityConstants.ClaimTypeRefreshTokenExpiration, ((DateTime)context.HttpContext.Items["noby_refreshtoken_exp"]!).Ticks.ToString(CultureInfo.InvariantCulture)),
+                    new (CIS.Core.Security.SecurityConstants.ClaimTypeRefreshTokenExpiration, sessionValidTo.Ticks.ToString(CultureInfo.InvariantCulture)),
                     new (CIS.Core.Security.SecurityConstants.ClaimTypeIdent, currentLogin),
                     new (CIS.Core.Security.SecurityConstants.ClaimTypeId, userInstance.UserId.ToString(CultureInfo.InvariantCulture)),
 					// doplnit prava uzivatele do claims
