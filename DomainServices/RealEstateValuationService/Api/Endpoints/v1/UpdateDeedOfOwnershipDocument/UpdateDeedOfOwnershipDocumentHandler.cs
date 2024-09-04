@@ -13,7 +13,7 @@ internal sealed class UpdateDeedOfOwnershipDocumentHandler(RealEstateValuationSe
             .FirstOrDefaultAsync(t => t.DeedOfOwnershipDocumentId == request.DeedOfOwnershipDocumentId, cancellationToken)
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.DeedOfOwnershipDocumentNotFound, request.DeedOfOwnershipDocumentId);
 
-        entity.RealEstateIds = request.RealEstateIds?.ToList();
+        entity.RealEstateIds = request.RealEstateIds?.Any() ?? false ? request.RealEstateIds.ToList() : null;
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
