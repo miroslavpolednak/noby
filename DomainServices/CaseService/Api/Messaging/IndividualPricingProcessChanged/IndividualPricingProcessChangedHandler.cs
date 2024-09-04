@@ -46,15 +46,12 @@ internal class IndividualPricingProcessChangedHandler(
                 await saveEntity(taskId, taskIdSB, caseId, null, message.occurredOn);
             }
         }
-        else
-        {
-            // ukonceni
-            return;
-        }
 
         if (taskDetail.TaskObject.ProcessTypeId != 1)
         {
+            // ukonceni
             _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+            return;
         }
         else
         {
