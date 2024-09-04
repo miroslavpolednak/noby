@@ -20,7 +20,7 @@ public static class SecurityHelpers
         // zakazane stavy Case
         if (caseState is (int)EnumCaseStates.Finished or (int)EnumCaseStates.Cancelled or (int)EnumCaseStates.ToBeCancelledConfirmed)
         {
-            throw new NobyValidationException(90032);
+            throw new NobyValidationException(90074);
         }
         else if (caseState is (int)EnumCaseStates.InAdministration && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
         {

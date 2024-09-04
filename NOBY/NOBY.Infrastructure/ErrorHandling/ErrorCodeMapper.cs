@@ -80,8 +80,9 @@ public sealed class ErrorCodeMapper
             { 90069, new("--DS error--") },
             { 90070, new("Stav rozpracované žádosti se změnil na pozadí, vraťte se detail obchodního případu a pokračujte standardním průchodem přes aplikaci.") },
             { 90071, new("Neplatný doklad", "Zadaný identifikační doklad byl nalezen v rejstříku neplatných nebo ztracených dokladů. Subjekt nelze založit.") },
-            { 90073, new ("Hodnota musí být celé číslo") }
-		};
+            { 90073, new ("Hodnota musí být celé číslo") },
+            { 90074, new ("Obchodní případ není možné zobrazit", "Aplikace NOBY neumožňuje zobrazení ukončených/zrušených obchodních případů.") }
+        };
 
         Messages = messages.AsReadOnly();
 
