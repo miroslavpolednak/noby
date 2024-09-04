@@ -9,13 +9,15 @@ using System.Diagnostics.CodeAnalysis;
 namespace DomainServices.OfferService.Api.Endpoints.Maintanance;
 
 public class ImportOfferFromDatamartHandler(
-    IConfiguration config, 
-    ILogger<ImportOfferFromDatamartHandler> logger) 
+    IConfiguration config,
+    ILogger<ImportOfferFromDatamartHandler> logger)
     : IRequestHandler<ImportOfferFromDatamartRequest, Empty>
 {
     private const int _numberOfBatchsInHistory = 31;
     private const int _technicalTimeout = 3600; // [s]
     private int _maxAllowedBatchPerJob = 10;
+    private int _maxAllowedTransaction = 250;
+
     private const string _existBatchForProcessingSql = """SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0""";
     private const string _oldestBatchIdForProcessing = """SELECT TOP (1) b.Batch_Id FROM bdp.D_CUST_RETENTION_BATCH b WHERE b.Load_Status='Complete' AND b.Was_Processed_By_Noby = 0 ORDER BY b.Batch_Id""";
     private const string _existDataForProcessingSql = """SELECT COUNT(*) FROM bdp.D_CUST_RETENTION_OFFER o WHERE o.Was_Processed_By_Noby = 0 AND o.Batch_Id = @BatchId""";
@@ -60,13 +62,15 @@ public class ImportOfferFromDatamartHandler(
                 );
 
             // Import Refixation offer from datalake
-            while (await connection.ExecuteScalarAsync<int>(_existDataForProcessingSql, new { BatchId = batchId }) > 0)
+            while (await connection.ExecuteScalarAsync<int>(_existDataForProcessingSql, new { BatchId = batchId }) > 0 && _maxAllowedTransaction > 0)
             {
                 await connection.QueryFirstOrDefaultAsync<int>(
                 "dbo.ImportDataFromDatamart",
                 new { BatchSize = request.BatchSize ?? 10000, BatchId = batchId },
                 commandType: CommandType.StoredProcedure,
                 commandTimeout: _technicalTimeout);
+
+                _maxAllowedTransaction--;
             }
 
             var processedBatches = (await connection.QueryAsync<long>(_getProcessedBatchs)).OrderBy(b => b).ToList();
@@ -82,7 +86,7 @@ public class ImportOfferFromDatamartHandler(
                         commandTimeout: _technicalTimeout
                         );
             }
-            
+
             _maxAllowedBatchPerJob--;
         }
         return new();
