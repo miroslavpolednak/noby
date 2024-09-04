@@ -8,6 +8,7 @@ using ExternalServices;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddApplicationConfiguration<CIS.InternalServices.TaskSchedulingService.Api.Configuration.AppConfiguration>()
     .AddErrorCodeMapper(CIS.InternalServices.TaskSchedulingService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {
@@ -29,7 +30,7 @@ SharedComponents.GrpcServiceBuilder
         options
             .AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.TaskSchedulingService.Contracts.xml");
     })
-    .Build(builder =>
+    .Build((builder, appConfiguration) =>
     {
         // pridat databazi
         builder.AddDapper();
@@ -48,7 +49,7 @@ SharedComponents.GrpcServiceBuilder
             .AsSelf()
             .WithScopedLifetime());
     })
-    .MapGrpcServices(app =>
+    .MapGrpcServices((app, _) =>
     {
         app.MapGrpcService<CIS.InternalServices.TaskSchedulingService.Api.Endpoints.TaskSchedulingService>();
     })

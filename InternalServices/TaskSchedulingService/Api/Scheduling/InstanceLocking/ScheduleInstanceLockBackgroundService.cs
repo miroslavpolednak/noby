@@ -1,17 +1,10 @@
 ﻿namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling.InstanceLocking;
 
-internal sealed class ScheduleInstanceLockBackgroundService
-    : BackgroundService
+internal sealed class ScheduleInstanceLockBackgroundService(
+    ScheduleInstanceLockStatusService _lockService, 
+    ILogger<ScheduleInstanceLockBackgroundService> _logger)
+        : BackgroundService
 {
-    private readonly ScheduleInstanceLockStatusService _lockService;
-    private readonly ILogger<ScheduleInstanceLockBackgroundService> _logger;
-
-    public ScheduleInstanceLockBackgroundService(ScheduleInstanceLockStatusService lockService, ILogger<ScheduleInstanceLockBackgroundService> logger)
-    {
-        _lockService = lockService;
-        _logger = logger;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)

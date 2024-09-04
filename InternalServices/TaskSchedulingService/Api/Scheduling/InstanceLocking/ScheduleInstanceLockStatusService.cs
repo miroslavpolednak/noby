@@ -3,28 +3,17 @@ using Medallion.Threading.SqlServer;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Scheduling.InstanceLocking;
 
-internal sealed class ScheduleInstanceLockStatusService
+internal sealed class ScheduleInstanceLockStatusService(
+    Core.Data.IConnectionProvider _connectionProvider,
+    TimeProvider _timeProvider,
+    ILogger<ScheduleInstanceLockStatusService> _logger)
 {
-    private readonly Core.Data.IConnectionProvider _connectionProvider;
-    private readonly string _instanceName;
-    private readonly TimeProvider _timeProvider;
-    private readonly ILogger<ScheduleInstanceLockStatusService> _logger;
+    private static readonly string _instanceName = Environment.MachineName;
 
     /// <summary>
     /// Status aktualni instance - zda ma aktivni lock nebo ne
     /// </summary>
     public CurrentStateInfo CurrentState { get; private set; } = new(false, null);
-
-    public ScheduleInstanceLockStatusService(
-        Core.Data.IConnectionProvider connectionProvider, 
-        TimeProvider timeProvider, 
-        ILogger<ScheduleInstanceLockStatusService> logger)
-    {
-        _connectionProvider = connectionProvider;
-        _instanceName = Environment.MachineName;
-        _timeProvider = timeProvider;
-        _logger = logger;
-    }
 
     public CurrentStateInfo TryAcquireLock()
     {
