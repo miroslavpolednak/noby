@@ -71,6 +71,9 @@ public class ImportOfferFromDatamartHandler(
                 commandTimeout: _technicalTimeout);
 
                 _maxAllowedTransaction--;
+
+                if (_maxAllowedTransaction <= 0)
+                    _logger.DatamartImportMaxAllowedTransactionExceeded(batchId);
             }
 
             var processedBatches = (await connection.QueryAsync<long>(_getProcessedBatchs)).OrderBy(b => b).ToList();
