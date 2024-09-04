@@ -12,5 +12,9 @@ internal sealed class CreateIncomeRequestValidator
 
         RuleFor(t => t.CustomerOnSAId)
             .GreaterThan(0);
+
+        RuleFor(t => t.Data.Employment.Job.JobDescription)
+            .MaximumLength(50)
+            .When(t => t.IncomeTypeId == EnumIncomeTypes.Employement && t.Data?.Employment?.Job is not null);
     }
 }
