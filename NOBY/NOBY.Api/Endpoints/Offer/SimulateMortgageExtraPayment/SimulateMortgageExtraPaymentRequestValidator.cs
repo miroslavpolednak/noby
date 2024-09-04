@@ -24,7 +24,7 @@ internal sealed class SimulateMortgageExtraPaymentRequestValidator
         .WithErrorCode(90058);
 
         //Check if integer
-        RuleFor(t => t.ExtraPaymentAmount).Must(epAmount => (epAmount % 1) == 0).WithErrorCode(90073);
-        RuleFor(t => t.FeeAmountDiscount).Must(feeAmount => (feeAmount % 1) == 0).WithErrorCode(90073);
+        RuleFor(t => t.ExtraPaymentAmount).Must(epAmount => epAmount is null || epAmount % 1 == 0).WithErrorCode(90073);
+        RuleFor(t => t.FeeAmountDiscount).Must(feeAmount => feeAmount is null || feeAmount % 1 == 0).WithErrorCode(90073);
     }
 }
