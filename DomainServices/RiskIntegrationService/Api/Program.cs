@@ -110,10 +110,14 @@ try
 
     // print gRPC PROTO file
     //var schemaGenerator = new ProtoBuf.Grpc.Reflection.SchemaGenerator();
-    //var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.ILoanApplicationService>();
     //var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2.ICreditWorthinessService>();
-    //var proto1 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService>();
-    //File.WriteAllText("d:\\proto1.proto", proto1);
+    //File.WriteAllText("d:\\Visual Studio Projects\\MPSS-FOMS\\ProtoExport\\RiskIntegrationService\\CreditWorthinessService.proto", proto1);
+    //var proto2 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2.ICustomerExposureService>();
+    //File.WriteAllText("d:\\Visual Studio Projects\\MPSS-FOMS\\ProtoExport\\RiskIntegrationService\\CustomerExposureService.proto", proto2);
+    //var proto3 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2.ILoanApplicationService>();
+    //File.WriteAllText("d:\\Visual Studio Projects\\MPSS-FOMS\\ProtoExport\\RiskIntegrationService\\LoanApplicationService.proto", proto3);
+    //var proto6 = schemaGenerator.GetSchema<DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2.IRiskBusinessCaseService>();
+    //File.WriteAllText("d:\\Visual Studio Projects\\MPSS-FOMS\\ProtoExport\\RiskIntegrationService\\RiskBusinessCaseService.proto", proto6);
 
     log.ApplicationRun();
     app.Run();
