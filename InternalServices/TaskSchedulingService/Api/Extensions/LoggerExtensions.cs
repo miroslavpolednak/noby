@@ -2,75 +2,68 @@
 
 internal static class LoggerExtensions
 {
-    private static readonly Action<ILogger, bool, string?, Exception> _tryToAcquireScheduleLock;
-    private static readonly Action<ILogger, Guid, Exception> _triggerIsDisabled;
-    private static readonly Action<ILogger, Guid, string, string, Exception> _invalidCronExpression;
-    private static readonly Action<ILogger, Guid, Exception> _jobNotFound;
-    private static readonly Action<ILogger, Guid, Guid?, Exception> _skippingTrigger;
-    private static readonly Action<ILogger, Guid, Guid?, Guid, Exception> _enqueingJob;
-    private static readonly Action<ILogger, Guid, Exception> _jobFinished;
-    private static readonly Action<ILogger, Guid, string, Exception> _jobFailed;
-    private static readonly Action<ILogger, Guid, Guid, Exception> _jobLocked;
-    private static readonly Action<ILogger, string, Exception> _instanceLockAcquireFailed;
-    private static readonly Action<ILogger, Exception> _instanceUnableToAcquireLock;
+    private static readonly Action<ILogger, bool, string?, Exception> _tryToAcquireScheduleLock = LoggerMessage.Define<bool, string?>(
+        LogLevel.Debug,
+        new EventId(LoggerEventIdCodes.TryToAcquireScheduleLock, nameof(TryToAcquireScheduleLock)),
+        "Acquiring instance lock with result: {IsLockAcquired}, Instance: {InstanceName}");
 
-    static LoggerExtensions()
-    {
-        _instanceLockAcquireFailed = LoggerMessage.Define<string>(
-            LogLevel.Warning,
-            new EventId(LoggerEventIdCodes.InstanceLockAcquireFailed, nameof(InstanceLockAcquireFailed)),
-            "Acquiring instance lock failed: {Message}");
+    private static readonly Action<ILogger, Guid, Exception> _triggerIsDisabled = LoggerMessage.Define<Guid>(
+        LogLevel.Debug,
+        new EventId(LoggerEventIdCodes.TriggerIsDisabled, nameof(TriggerIsDisabled)),
+        "Trigger {TriggerId} is disabled");
 
-        _instanceUnableToAcquireLock = LoggerMessage.Define(
-            LogLevel.Warning,
-            new EventId(LoggerEventIdCodes.InstanceUnableToAcquireLock, nameof(InstanceUnableToAcquireLock)),
-            "Acquiring instance lock failed: can't obtain lock");
+    private static readonly Action<ILogger, Guid, string, string, Exception> _invalidCronExpression = LoggerMessage.Define<Guid, string, string>(
+        LogLevel.Error,
+        new EventId(LoggerEventIdCodes.InvalidCronExpression, nameof(InvalidCronExpression)),
+        "Can not add trigger {TriggerId} to scheduler due to invalid Cron Expression '{Cron}': {Message}");
 
-        _tryToAcquireScheduleLock = LoggerMessage.Define<bool, string?>(
-            LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.TryToAcquireScheduleLock, nameof(TryToAcquireScheduleLock)),
-            "Acquiring instance lock with result: {IsLockAcquired}, Instance: {InstanceName}");
+    private static readonly Action<ILogger, Guid, Exception> _jobNotFound = LoggerMessage.Define<Guid>(
+        LogLevel.Error,
+        new EventId(LoggerEventIdCodes.JobNotFound, nameof(JobNotFound)),
+        "Job {JobId} not found or is disabled");
 
-        _triggerIsDisabled = LoggerMessage.Define<Guid>(
-            LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.TriggerIsDisabled, nameof(TriggerIsDisabled)),
-            "Trigger {TriggerId} is disabled");
+    private static readonly Action<ILogger, Guid, Guid?, Exception> _skippingTrigger = LoggerMessage.Define<Guid, Guid?>(
+        LogLevel.Debug,
+        new EventId(LoggerEventIdCodes.SkippingTrigger, nameof(SkippingTrigger)),
+        "Current instance does not hold lock. Skipping job {JobId} for trigger {TriggerId}.");
 
-        _invalidCronExpression = LoggerMessage.Define<Guid, string, string>(
-            LogLevel.Error,
-            new EventId(LoggerEventIdCodes.InvalidCronExpression, nameof(InvalidCronExpression)),
-            "Can not add trigger {TriggerId} to scheduler due to invalid Cron Expression '{Cron}': {Message}");
+    private static readonly Action<ILogger, Guid, Guid?, Guid, Exception> _enqueingJob = LoggerMessage.Define<Guid, Guid?, Guid>(
+        LogLevel.Debug,
+        new EventId(LoggerEventIdCodes.EnqueingJob, nameof(EnqueingJob)),
+        "Enqueing job {JobId} for trigger {TriggerId} with statusId {StatusId}");
 
-        _jobNotFound = LoggerMessage.Define<Guid>(
-            LogLevel.Error,
-            new EventId(LoggerEventIdCodes.JobNotFound, nameof(JobNotFound)),
-            "Job {JobId} not found or is disabled");
+    private static readonly Action<ILogger, Guid, Exception> _jobFinished = LoggerMessage.Define<Guid>(
+        LogLevel.Information,
+        new EventId(LoggerEventIdCodes.JobFinished, nameof(JobFinished)),
+        "Job {JobId} finished");
 
-        _skippingTrigger = LoggerMessage.Define<Guid, Guid?>(
-            LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.SkippingTrigger, nameof(SkippingTrigger)),
-            "Current instance does not hold lock. Skipping job {JobId} for trigger {TriggerId}.");
+    private static readonly Action<ILogger, Guid, string, Exception> _jobFailed = LoggerMessage.Define<Guid, string>(
+        LogLevel.Error,
+        new EventId(LoggerEventIdCodes.JobFailed, nameof(JobFailed)),
+        "Job {JobId} failed: {Message}");
 
-        _enqueingJob = LoggerMessage.Define<Guid, Guid?, Guid>(
-            LogLevel.Debug,
-            new EventId(LoggerEventIdCodes.EnqueingJob, nameof(EnqueingJob)),
-            "Enqueing job {JobId} for trigger {TriggerId} with statusId {StatusId}");
+    private static readonly Action<ILogger, Guid, Guid, Exception> _jobLocked = LoggerMessage.Define<Guid, Guid>(
+        LogLevel.Information,
+        new EventId(LoggerEventIdCodes.JobLocked, nameof(JobLocked)),
+        "Job {JobId} with state {StateId} has not been executed since distributed lock already exist");
 
-        _jobFinished = LoggerMessage.Define<Guid>(
-            LogLevel.Information,
-            new EventId(LoggerEventIdCodes.JobFinished, nameof(JobFinished)),
-            "Job {JobId} finished");
+    private static readonly Action<ILogger, string, Exception> _instanceLockAcquireFailed = LoggerMessage.Define<string>(
+        LogLevel.Warning,
+        new EventId(LoggerEventIdCodes.InstanceLockAcquireFailed, nameof(InstanceLockAcquireFailed)),
+        "Acquiring instance lock failed: {Message}");
 
-        _jobFailed = LoggerMessage.Define<Guid, string>(
-            LogLevel.Error,
-            new EventId(LoggerEventIdCodes.JobFailed, nameof(JobFailed)),
-            "Job {JobId} failed: {Message}");
+    private static readonly Action<ILogger, Exception> _instanceUnableToAcquireLock = LoggerMessage.Define(
+        LogLevel.Warning,
+        new EventId(LoggerEventIdCodes.InstanceUnableToAcquireLock, nameof(InstanceUnableToAcquireLock)),
+        "Acquiring instance lock failed: can't obtain lock");
 
-        _jobLocked = LoggerMessage.Define<Guid, Guid>(
-            LogLevel.Information,
-            new EventId(LoggerEventIdCodes.JobLocked, nameof(JobLocked)),
-            "Job {JobId} with state {StateId} has not been executed since distributed lock already exist");
-    }
+    private static readonly Action<ILogger, int, Guid, Exception> _jobTimeoutReached = LoggerMessage.Define<int, Guid>(
+        LogLevel.Warning,
+        new EventId(LoggerEventIdCodes.JobTimeoutReached, nameof(JobTimeoutReached)),
+        "Job timeout {Minutes} reached for trigger {TriggerId}");
+
+    public static void JobTimeoutReached(this ILogger logger, in Guid triggerId, in int timeout)
+        => _jobTimeoutReached(logger, timeout, triggerId, null!);
 
     public static void InstanceUnableToAcquireLock(this ILogger logger)
         => _instanceUnableToAcquireLock(logger, null!);

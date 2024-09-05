@@ -8,7 +8,11 @@ internal sealed class Job1Handler(ILogger<Job1Handler> _logger)
     public async Task Execute(string? jobData, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Job1Handler is running {D}", DateTime.Now);
-        await Task.Delay(1000 * 5, cancellationToken);
+        while (!cancellationToken.IsCancellationRequested) 
+        {
+            await Task.Delay(1000 * 1, cancellationToken);
+            _logger.LogInformation("Hit");
+        }
         _logger.LogInformation("Job1Handler finished {D}", DateTime.Now);
     }
 }
