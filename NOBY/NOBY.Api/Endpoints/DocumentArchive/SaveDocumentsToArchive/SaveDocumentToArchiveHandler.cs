@@ -135,7 +135,8 @@ public class SaveDocumentToArchiveHandler(
                .Where(f => documentTypesForEaCodeMain.Contains(f.DocumentTypeId!.Value)
                            && !string.IsNullOrWhiteSpace(f.FormId)
                            && !f.IsFinal
-                           && f.IsSigned);
+                           && f.IsSigned
+                           && f.SignatureTypeId == (int)SignatureTypes.Paper);
 
             var documentOnSa = documentsOnSaFiltered.FirstOrDefault(r => r.FormId == docInfo.FormId);
 
