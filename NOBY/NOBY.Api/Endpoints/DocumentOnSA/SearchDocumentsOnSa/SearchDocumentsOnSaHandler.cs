@@ -44,7 +44,8 @@ public class SearchDocumentsOnSaHandler : IRequestHandler<DocumentOnSaSearchDocu
                 .Where(f => documentTypesForEaCodeMain.Contains(f.DocumentTypeId!.Value)
                             && !string.IsNullOrWhiteSpace(f.FormId)
                             && !f.IsFinal
-                            && f.IsSigned);
+                            && f.IsSigned
+                            && f.SignatureTypeId == (int)SignatureTypes.Paper);
 
         return new DocumentOnSaSearchDocumentsOnSaResponse
         {

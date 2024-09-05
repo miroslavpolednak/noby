@@ -3,7 +3,8 @@ using CIS.Infrastructure.ExternalServicesHelpers;
 using FastEnumUtility;
 using System.Globalization;
 using System.Net.Http.Headers;
-using static DomainServices.CodebookService.Contracts.v1.FormTypesResponse.Types;
+using Microsoft.Extensions.Logging;
+using ExternalServices.ESignatures.Extensions;
 
 namespace ExternalServices.ESignatures.V1;
 
@@ -87,9 +88,14 @@ internal sealed class RealESignaturesClient
 
         var result = await response.EnsureSuccessStatusAndReadJson<Contracts.ProcessingResult>(StartupExtensions.ServiceName, cancellationToken);
 
-        if ((result.Code ?? 0) != 0)
+        if (result?.Code == 2)
         {
-            throw new CisExternalServiceValidationException((result.Code ?? 0), result.Message ?? "Unknown error");
+            _logger.SubmitDispatchFormIgnoreError(result.Code.Value);
+        }
+        
+        if ((result?.Code ?? 0) != 0 && result?.Code != 2)
+        {
+            throw new CisExternalServiceValidationException((result?.Code ?? 0), result?.Message ?? "Unknown error");
         }
     }
 
@@ -144,6 +150,7 @@ internal sealed class RealESignaturesClient
             DocumentData = new()
             {
                 AllowSendPreview = true,
+                AutoSendToCmp = true,
                 TypeCode = docType.ShortName,
                 TemplateVersion = docVersion.TemplateProcessingType,
                 Name = request.DocumentData.FileName,
@@ -238,12 +245,17 @@ internal sealed class RealESignaturesClient
     }
 
     private readonly DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService;
+    private readonly ILogger<RealESignaturesClient> _logger;
     private readonly HttpClient _httpClient;
     private const string _urlPrefix = "/REST/v2/DocumentService/";
 
-    public RealESignaturesClient(HttpClient httpClient, DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService)
+    public RealESignaturesClient(
+        HttpClient httpClient,
+        DomainServices.CodebookService.Clients.ICodebookServiceClient codebookService,
+        ILogger<RealESignaturesClient> logger)
     {
         _codebookService = codebookService;
+        _logger = logger;
         _httpClient = httpClient;
     }
 }
