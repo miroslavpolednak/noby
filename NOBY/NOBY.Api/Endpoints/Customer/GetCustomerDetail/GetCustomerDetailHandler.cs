@@ -4,9 +4,9 @@ using NOBY.Services.Customer;
 namespace NOBY.Api.Endpoints.Customer.GetCustomerDetail;
 
 internal sealed class GetCustomerDetailHandler(ICustomerServiceClient _customerService)
-        : IRequestHandler<GetCustomerDetailRequest, CustomerGetCustomer>
+        : IRequestHandler<GetCustomerDetailRequest, CustomerGetCustomerDetailResponse>
 {
-    public async Task<CustomerGetCustomer> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
+    public async Task<CustomerGetCustomerDetailResponse> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
     {
         // zavolat BE sluzbu - domluva je takova, ze strankovani BE sluzba zatim nebude podporovat
         var result = await _customerService.GetCustomerDetail(request.Identity, cancellationToken);
@@ -15,7 +15,7 @@ internal sealed class GetCustomerDetailHandler(ICustomerServiceClient _customerS
         result.NaturalPerson?.FillResponseDto(person);
         person.IsBrSubscribed = result.NaturalPerson?.IsBrSubscribed;
     
-        return new CustomerGetCustomer
+        return new()
         {
             NaturalPerson = person,
             JuridicalPerson = null,

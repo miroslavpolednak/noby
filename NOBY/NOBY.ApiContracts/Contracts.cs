@@ -54,13 +54,16 @@ namespace NOBY.ApiContracts
         public decimal? CustomerChurnRisk { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("refinancingParametersCurrent")]
-        public RefinancingGetRefinancingParametersCurrent RefinancingParametersCurrent { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RefinancingGetRefinancingParametersCurrent RefinancingParametersCurrent { get; set; } = new RefinancingGetRefinancingParametersCurrent();
 
         [System.Text.Json.Serialization.JsonPropertyName("refinancingParametersFuture")]
-        public RefinancingGetRefinancingParametersFuture RefinancingParametersFuture { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RefinancingGetRefinancingParametersFuture RefinancingParametersFuture { get; set; } = new RefinancingGetRefinancingParametersFuture();
 
         [System.Text.Json.Serialization.JsonPropertyName("refinancingProcesses")]
-        public List<RefinancingGetRefinancingParametersProcess> RefinancingProcesses { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<RefinancingGetRefinancingParametersProcess> RefinancingProcesses { get; set; } = new List<RefinancingGetRefinancingParametersProcess>();
 
     }
 
@@ -176,7 +179,8 @@ namespace NOBY.ApiContracts
         public int? SalesArrangementId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("processDetail")]
-        public RefinancingGetRefinancingParametersProcessDetail ProcessDetail { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RefinancingGetRefinancingParametersProcessDetail ProcessDetail { get; set; } = new RefinancingGetRefinancingParametersProcessDetail();
 
     }
 
@@ -208,6 +212,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public DateOnly CreatedOn { get; set; } = default!;
 
         /// <summary>
@@ -250,6 +255,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("refinancingStateName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string RefinancingStateName { get; set; } = default!;
 
         /// <summary>
@@ -306,6 +312,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedOn { get; set; } = default!;
 
         /// <summary>
@@ -334,6 +341,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("extraPaymentDate")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public DateOnly ExtraPaymentDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("refinancingStateId")]
@@ -432,6 +440,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRateValidFrom")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime InterestRateValidFrom { get; set; } = default!;
 
         /// <summary>
@@ -474,7 +483,8 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("document")]
-        public RefinancingSharedDocument Document { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RefinancingSharedDocument Document { get; set; } = new RefinancingSharedDocument();
 
     }
 
@@ -562,7 +572,8 @@ namespace NOBY.ApiContracts
         public DateOnly? LegalNoticeGeneratedDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("document")]
-        public RefinancingSharedDocument Document { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RefinancingSharedDocument Document { get; set; } = new RefinancingSharedDocument();
 
     }
 
@@ -689,6 +700,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedTime { get; set; } = default!;
 
         /// <summary>
@@ -696,6 +708,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdBy")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreatedBy { get; set; } = default!;
 
     }
@@ -750,7 +763,8 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("document")]
-        public RefinancingSharedDocument Document { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RefinancingSharedDocument Document { get; set; } = new RefinancingSharedDocument();
 
         /// <summary>
         /// Souhlasy
@@ -777,6 +791,7 @@ namespace NOBY.ApiContracts
         public decimal PrincipalAmount { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("extraPaymentDate")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public DateOnly ExtraPaymentDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("isExtraPaymentFullyRepaid")]
@@ -802,9 +817,11 @@ namespace NOBY.ApiContracts
         public int HandoverTypeDetailId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FirstName { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastName { get; set; } = default!;
 
     }
@@ -817,6 +834,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("documentId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DocumentId { get; set; } = default!;
 
         /// <summary>
@@ -846,6 +864,7 @@ namespace NOBY.ApiContracts
         public bool IsContinueEnabled { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("documentName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DocumentName { get; set; } = default!;
 
         /// <summary>
@@ -853,6 +872,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string StateName { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("stateFilter")]
@@ -897,6 +917,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRateValidFrom")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public DateOnly InterestRateValidFrom { get; set; } = default!;
 
         /// <summary>
@@ -1267,6 +1288,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedOn { get; set; } = default!;
 
         /// <summary>
@@ -1344,6 +1366,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("newMaturityDate")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime NewMaturityDate { get; set; } = default!;
 
         /// <summary>
@@ -1379,6 +1402,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("fixedRateSanctionFreePeriodFrom")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime FixedRateSanctionFreePeriodFrom { get; set; } = default!;
 
         /// <summary>
@@ -1386,6 +1410,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("fixedRateSanctionFreePeriodTo")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime FixedRateSanctionFreePeriodTo { get; set; } = default!;
 
         /// <summary>
@@ -1393,6 +1418,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("annualSanctionFreePeriodFrom")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime AnnualSanctionFreePeriodFrom { get; set; } = default!;
 
         /// <summary>
@@ -1400,6 +1426,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("annualSanctionFreePeriodTo")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime AnnualSanctionFreePeriodTo { get; set; } = default!;
 
         /// <summary>
@@ -1873,7 +1900,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("targetAmount")]
         [System.ComponentModel.DataAnnotations.Range(50000D, double.MaxValue)]
-        public decimal? TargetAmount { get; set; } = default!;
+        public decimal TargetAmount { get; set; } = default!;
 
         /// <summary>
         /// Minimální měsíční vklad (hodnota musí být alespoň 0,5 % z Cílové částky)
@@ -1919,7 +1946,8 @@ namespace NOBY.ApiContracts
         public bool AnnualStatementRequired { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("ExtraDeposits")]
-        public List<ExtraDeposits> ExtraDeposits { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<ExtraDeposits> ExtraDeposits { get; set; } = new List<ExtraDeposits>();
 
         /// <summary>
         /// True pokud je klientem SVJ (Společenství vlastníků jednotek)
@@ -1940,6 +1968,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("clientDateOfBirth")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public DateOnly ClientDateOfBirth { get; set; } = default!;
 
         /// <summary>
@@ -2094,6 +2123,7 @@ namespace NOBY.ApiContracts
         public DateOnly? ContractSignedDate { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("drawingDateTo")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public DateOnly DrawingDateTo { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("annuityPaymentsDateFrom")]
@@ -2212,15 +2242,19 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("paymentNumber")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string PaymentNumber { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("date")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Date { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Type { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Amount { get; set; } = default!;
 
     }
@@ -2230,6 +2264,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("code")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Code { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("requested")]
@@ -2245,6 +2280,7 @@ namespace NOBY.ApiContracts
         public decimal? Deviation { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; } = default!;
 
     }
@@ -2325,6 +2361,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("resourceProcessId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ResourceProcessId { get; set; } = default!;
 
         /// <summary>
@@ -2332,14 +2369,16 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("simulationInputs")]
-        public OfferMortgageInputsExtended SimulationInputs { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public OfferMortgageInputsExtended SimulationInputs { get; set; } = new OfferMortgageInputsExtended();
 
         /// <summary>
         /// Vysledky simulace.
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("simulationResults")]
-        public OfferSharedMortgageOutputs SimulationResults { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public OfferSharedMortgageOutputs SimulationResults { get; set; } = new OfferSharedMortgageOutputs();
 
         /// <summary>
         /// Datum, kdy končí garance pro danou simulaci
@@ -2766,6 +2805,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; } = default!;
 
         /// <summary>
@@ -2773,6 +2813,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("cin")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Cin { get; set; } = default!;
 
     }
@@ -2797,13 +2838,16 @@ namespace NOBY.ApiContracts
         public decimal Amount { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("creditorName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string CreditorName { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("paymentAccount")]
-        public SharedTypesBankAccount PaymentAccount { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesBankAccount PaymentAccount { get; set; } = new SharedTypesBankAccount();
 
         [System.Text.Json.Serialization.JsonPropertyName("paymentSymbols")]
-        public ProductGetProductObligationListPaymentSymbols PaymentSymbols { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public ProductGetProductObligationListPaymentSymbols PaymentSymbols { get; set; } = new ProductGetProductObligationListPaymentSymbols();
 
     }
 
@@ -2978,6 +3022,7 @@ namespace NOBY.ApiContracts
         public EnumStateIndicators StateIndicator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedTime { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("createdBy")]
@@ -3044,6 +3089,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
@@ -3378,7 +3424,8 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("households")]
-        public List<SalesArrangementGetLoanApplicationAssessmentHousehold> Households { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SalesArrangementGetLoanApplicationAssessmentHousehold> Households { get; set; } = new List<SalesArrangementGetLoanApplicationAssessmentHousehold>();
 
         [System.Text.Json.Serialization.JsonPropertyName("displayAssessmentResultInfoText")]
         public bool DisplayAssessmentResultInfoText { get; set; } = default!;
@@ -3433,6 +3480,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("firstName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FirstName { get; set; } = default!;
 
         /// <summary>
@@ -3440,6 +3488,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("lastName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LastName { get; set; } = default!;
 
         /// <summary>
@@ -3487,6 +3536,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("obligationTypeName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ObligationTypeName { get; set; } = default!;
 
         /// <summary>
@@ -3583,7 +3633,7 @@ namespace NOBY.ApiContracts
         public decimal? DrawingAmount { get; set; } = default!;
 
         /// <summary>
-        /// Číslo  úvěrového účtu
+        /// Číslo úvěrového účtu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("bankAccount")]
@@ -3893,6 +3943,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedTime { get; set; } = default!;
 
         /// <summary>
@@ -3944,25 +3995,32 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
-        public SalesArrangementSharedParametersMortgage Mortgage { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedParametersMortgage Mortgage { get; set; } = new SalesArrangementSharedParametersMortgage();
 
         [System.Text.Json.Serialization.JsonPropertyName("hubn")]
-        public SalesArrangementSharedParametersHubn Hubn { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedParametersHubn Hubn { get; set; } = new SalesArrangementSharedParametersHubn();
 
         [System.Text.Json.Serialization.JsonPropertyName("drawing")]
-        public SalesArrangementSharedParametersDrawing Drawing { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedParametersDrawing Drawing { get; set; } = new SalesArrangementSharedParametersDrawing();
 
         [System.Text.Json.Serialization.JsonPropertyName("generalChange")]
-        public SalesArrangementSharedParametersGeneralChange GeneralChange { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedParametersGeneralChange GeneralChange { get; set; } = new SalesArrangementSharedParametersGeneralChange();
 
         [System.Text.Json.Serialization.JsonPropertyName("customerChange")]
-        public SalesArrangementSharedParametersCustomerChange CustomerChange { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedParametersCustomerChange CustomerChange { get; set; } = new SalesArrangementSharedParametersCustomerChange();
 
         [System.Text.Json.Serialization.JsonPropertyName("customerChange3602")]
-        public SalesArrangementSharedParametersCustomerChange3602 CustomerChange3602 { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementSharedParametersCustomerChange3602 CustomerChange3602 { get; set; } = new SalesArrangementSharedParametersCustomerChange3602();
 
     }
 
@@ -4947,28 +5005,36 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("modelationSection")]
-        public SalesArrangementGetFlowSwitchesResponseItem ModelationSection { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItem ModelationSection { get; set; } = new SalesArrangementGetFlowSwitchesResponseItem();
 
         [System.Text.Json.Serialization.JsonPropertyName("householdSection")]
-        public SalesArrangementGetFlowSwitchesResponseItem HouseholdSection { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItem HouseholdSection { get; set; } = new SalesArrangementGetFlowSwitchesResponseItem();
 
         [System.Text.Json.Serialization.JsonPropertyName("parametersSection")]
-        public SalesArrangementGetFlowSwitchesResponseItem ParametersSection { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItem ParametersSection { get; set; } = new SalesArrangementGetFlowSwitchesResponseItem();
 
         [System.Text.Json.Serialization.JsonPropertyName("scoringSection")]
-        public SalesArrangementGetFlowSwitchesResponseItem ScoringSection { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItem ScoringSection { get; set; } = new SalesArrangementGetFlowSwitchesResponseItem();
 
         [System.Text.Json.Serialization.JsonPropertyName("signingSection")]
-        public SalesArrangementGetFlowSwitchesResponseItem SigningSection { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItem SigningSection { get; set; } = new SalesArrangementGetFlowSwitchesResponseItem();
 
         [System.Text.Json.Serialization.JsonPropertyName("evaluationSection")]
-        public SalesArrangementGetFlowSwitchesResponseItem EvaluationSection { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItem EvaluationSection { get; set; } = new SalesArrangementGetFlowSwitchesResponseItem();
 
         [System.Text.Json.Serialization.JsonPropertyName("sendButton")]
-        public SalesArrangementGetFlowSwitchesResponseItemButton SendButton { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItemButton SendButton { get; set; } = new SalesArrangementGetFlowSwitchesResponseItemButton();
 
         [System.Text.Json.Serialization.JsonPropertyName("individualPriceSection")]
-        public SalesArrangementGetFlowSwitchesResponseItem IndividualPriceSection { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SalesArrangementGetFlowSwitchesResponseItem IndividualPriceSection { get; set; } = new SalesArrangementGetFlowSwitchesResponseItem();
 
     }
 
@@ -4994,6 +5060,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string StateName { get; set; } = default!;
 
         /// <summary>
@@ -5074,7 +5141,8 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstateIds")]
-        public List<long> RealEstateIds { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<long> RealEstateIds { get; set; } = new List<long>();
 
     }
 
@@ -5098,6 +5166,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("tempFileId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.Guid TempFileId { get; set; } = default!;
 
         /// <summary>
@@ -5117,6 +5186,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("tempFileId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.Guid TempFileId { get; set; } = default!;
 
         /// <summary>
@@ -5124,6 +5194,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Title { get; set; } = default!;
 
         /// <summary>
@@ -5143,7 +5214,15 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipDocument")]
-        public RealEstateValuationSharedDeedOfOwnershipDocument DeedOfOwnershipDocument { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RealEstateValuationSharedDeedOfOwnershipDocument DeedOfOwnershipDocument { get; set; } = new RealEstateValuationSharedDeedOfOwnershipDocument();
+
+        /// <summary>
+        /// Indikátor úspěšného stažení dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipDocumentDownloaded")]
+        public bool DeedOfOwnershipDocumentDownloaded { get; set; } = default!;
 
     }
 
@@ -5200,8 +5279,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstateIds")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public List<long> RealEstateIds { get; set; } = new List<long>();
+        public List<long>? RealEstateIds { get; set; } = default!;
 
         /// <summary>
         /// ID adresního bodu z našeptávače adres
@@ -5394,6 +5472,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("priceTypeName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string PriceTypeName { get; set; } = default!;
 
     }
@@ -5422,13 +5501,16 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("houseAndFlat")]
-        public RealEstateValuationSharedSpecificDetailsHouseAndFlat HouseAndFlat { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RealEstateValuationSharedSpecificDetailsHouseAndFlat HouseAndFlat { get; set; } = new RealEstateValuationSharedSpecificDetailsHouseAndFlat();
 
         [System.Text.Json.Serialization.JsonPropertyName("parcel")]
-        public RealEstateValuationSharedSpecificDetailsParcel Parcel { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public RealEstateValuationSharedSpecificDetailsParcel Parcel { get; set; } = new RealEstateValuationSharedSpecificDetailsParcel();
 
     }
 
@@ -5707,9 +5789,11 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedOn { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("acvAttachmentCategoryName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string AcvAttachmentCategoryName { get; set; } = default!;
 
     }
@@ -5991,6 +6075,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Title { get; set; } = default!;
 
         /// <summary>
@@ -5998,6 +6083,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Id { get; set; } = default!;
 
     }
@@ -6149,6 +6235,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("katuzTitle")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string KatuzTitle { get; set; } = default!;
 
     }
@@ -6231,7 +6318,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("firstName")]
-        [System.ComponentModel.DataAnnotations.StringLength(int.MaxValue, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string FirstName { get; set; } = default!;
 
         /// <summary>
@@ -6239,7 +6326,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("lastName")]
-        [System.ComponentModel.DataAnnotations.StringLength(int.MaxValue, MinimumLength = 1)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string LastName { get; set; } = default!;
 
         /// <summary>
@@ -6254,6 +6341,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("documentId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DocumentId { get; set; } = default!;
 
     }
@@ -6311,63 +6399,72 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("documentsMenuItem")]
-        public CasesGetCaseMenuFlagsItem DocumentsMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem DocumentsMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Položka menu Podmínky ke splnění
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("covenantsMenuItem")]
-        public CasesGetCaseMenuFlagsItem CovenantsMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem CovenantsMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Položka menu Nemovitosti
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstatesMenuItem")]
-        public CasesGetCaseMenuFlagsItem RealEstatesMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem RealEstatesMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Položka menu Parametry
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("parametersMenuItem")]
-        public CasesGetCaseMenuFlagsItem ParametersMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem ParametersMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Položka menu Žadatelé
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("debtorsItem")]
-        public CasesGetCaseMenuFlagsItem DebtorsItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem DebtorsItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Položka menu Požadavky a změny
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("changeRequestsMenuItem")]
-        public CasesGetCaseMenuFlagsItem ChangeRequestsMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem ChangeRequestsMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Položka menu Úkoly
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("tasksMenuItem")]
-        public CasesGetCaseMenuFlagsItem TasksMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem TasksMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Změna úrokové sazby
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("refinancingMenuItem")]
-        public CasesGetCaseMenuFlagsItem RefinancingMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem RefinancingMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
         /// <summary>
         /// Mimořádná splátka
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("extraPaymentMenuItem")]
-        public CasesGetCaseMenuFlagsItem ExtraPaymentMenuItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseMenuFlagsItem ExtraPaymentMenuItem { get; set; } = new CasesGetCaseMenuFlagsItem();
 
     }
 
@@ -6451,6 +6548,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedTime { get; set; } = default!;
 
         /// <summary>
@@ -6465,6 +6563,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateUpdated")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime StateUpdated { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("offerContacts")]
@@ -6791,6 +6890,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
+        [System.ComponentModel.DataAnnotations.Required]
         [System.ComponentModel.DataAnnotations.StringLength(10, MinimumLength = 3)]
         public string Number { get; set; } = default!;
 
@@ -6883,6 +6983,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedOn { get; set; } = default!;
 
         /// <summary>
@@ -6890,10 +6991,12 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateUpdatedOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime StateUpdatedOn { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("customer")]
-        public CasesIdentifyCaseResponseItemCustomer Customer { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesIdentifyCaseResponseItemCustomer Customer { get; set; } = new CasesIdentifyCaseResponseItemCustomer();
 
         [System.Text.Json.Serialization.JsonPropertyName("activeTasks")]
         public List<CasesIdentifyCaseResponseItemTask>? ActiveTasks { get; set; } = default!;
@@ -6929,10 +7032,12 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("caseParameters")]
-        public List<CasesGetCaseParametersCaseParameters> CaseParameters { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<CasesGetCaseParametersCaseParameters> CaseParameters { get; set; } = new List<CasesGetCaseParametersCaseParameters>();
 
         [System.Text.Json.Serialization.JsonPropertyName("salesArrangementInProgress")]
-        public CasesGetCaseParametersSalesArrangementInProgress SalesArrangementInProgress { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public CasesGetCaseParametersSalesArrangementInProgress SalesArrangementInProgress { get; set; } = new CasesGetCaseParametersSalesArrangementInProgress();
 
     }
 
@@ -7150,6 +7255,7 @@ namespace NOBY.ApiContracts
         public int Id { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("isValid")]
@@ -7193,7 +7299,8 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("userIdentifiers")]
-        public List<SharedTypesUserIdentity> UserIdentifiers { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesUserIdentity> UserIdentifiers { get; set; } = new List<SharedTypesUserIdentity>();
 
         /// <summary>
         /// Flag, zda se jedná o interního uživatele, či externistu
@@ -7259,6 +7366,7 @@ namespace NOBY.ApiContracts
         public int SalesArrangementId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("productName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ProductName { get; set; } = default!;
 
     }
@@ -7268,10 +7376,12 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("code")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Code { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("codebook")]
-        public List<object> Codebook { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<object> Codebook { get; set; } = new List<object>();
 
     }
 
@@ -7280,9 +7390,11 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("type")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Type { get; set; } = default!;
 
     }
@@ -7463,6 +7575,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("employment")]
@@ -7796,6 +7909,20 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("cremDeedOfOwnershipDocumentId")]
         public long CremDeedOfOwnershipDocumentId { get; set; } = default!;
 
+        /// <summary>
+        /// Noby ID daného záznamu.Určuje jednoznačnou kombinaci cremDeedOfOwnershipDocumentId a RealEstateValuationId (Noby Ocenění) pro případy simulování více možností žádostí s jednou nemovitostí.
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipDocumentId")]
+        public int? DeedOfOwnershipDocumentId { get; set; } = default!;
+
+        /// <summary>
+        /// Indikátor úspěšného stažení dokumentu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("deedOfOwnershipDocumentDownloaded")]
+        public bool DeedOfOwnershipDocumentDownloaded { get; set; } = default!;
+
         [System.Text.Json.Serialization.JsonPropertyName("owners")]
         public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentOwners>? Owners { get; set; } = default!;
 
@@ -7818,6 +7945,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("legalRelationDescription")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string LegalRelationDescription { get; set; } = default!;
 
     }
@@ -7833,6 +7961,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("ownerDescription")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string OwnerDescription { get; set; } = default!;
 
         /// <summary>
@@ -7840,6 +7969,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("ownershipRatio")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string OwnershipRatio { get; set; } = default!;
 
     }
@@ -7859,6 +7989,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstateDescription")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string RealEstateDescription { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("isActive")]
@@ -7896,6 +8027,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("flatNumber")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FlatNumber { get; set; } = default!;
 
         /// <summary>
@@ -7910,6 +8042,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("mannerOfUseFlatShortName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string MannerOfUseFlatShortName { get; set; } = default!;
 
     }
@@ -7919,7 +8052,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("banners")]
-        public List<UsersGetCurrentBannerItem> Banners { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<UsersGetCurrentBannerItem> Banners { get; set; } = new List<UsersGetCurrentBannerItem>();
 
     }
 
@@ -7931,6 +8065,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Title { get; set; } = default!;
 
         /// <summary>
@@ -7938,6 +8073,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Description { get; set; } = default!;
 
         /// <summary>
@@ -7966,21 +8102,24 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("userIdentifiers")]
-        public List<SharedTypesUserIdentity> UserIdentifiers { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesUserIdentity> UserIdentifiers { get; set; } = new List<SharedTypesUserIdentity>();
 
         /// <summary>
         /// Základní informace o přihlášeném uživateli
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("userInfo")]
-        public UsersGetLoggedInUserResponseUserInfo UserInfo { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public UsersGetLoggedInUserResponseUserInfo UserInfo { get; set; } = new UsersGetLoggedInUserResponseUserInfo();
 
         /// <summary>
         /// Obchodní specialista pro třetí strany
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("mortgageSpecialist")]
-        public UsersGetLoggedInUserResponseMortgageSpecialist MortgageSpecialist { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public UsersGetLoggedInUserResponseMortgageSpecialist MortgageSpecialist { get; set; } = new UsersGetLoggedInUserResponseMortgageSpecialist();
 
         [System.Text.Json.Serialization.JsonPropertyName("userPermissions")]
         public List<int>? UserPermissions { get; set; } = default!;
@@ -8119,10 +8258,12 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("task")]
-        public SharedTypesWorkflowTask Task { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesWorkflowTask Task { get; set; } = new SharedTypesWorkflowTask();
 
         [System.Text.Json.Serialization.JsonPropertyName("taskDetail")]
-        public SharedTypesWorkflowTaskDetail TaskDetail { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesWorkflowTaskDetail TaskDetail { get; set; } = new SharedTypesWorkflowTaskDetail();
 
         [System.Text.Json.Serialization.JsonPropertyName("documents")]
         public List<SharedTypesDocumentsMetadata>? Documents { get; set; } = default!;
@@ -8187,10 +8328,12 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("tasks")]
-        public List<SharedTypesWorkflowTask> Tasks { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesWorkflowTask> Tasks { get; set; } = new List<SharedTypesWorkflowTask>();
 
         [System.Text.Json.Serialization.JsonPropertyName("processes")]
-        public List<SharedTypesWorkflowProcess> Processes { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesWorkflowProcess> Processes { get; set; } = new List<SharedTypesWorkflowProcess>();
 
     }
 
@@ -8209,6 +8352,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("taskSubtypeName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string TaskSubtypeName { get; set; } = default!;
 
     }
@@ -8282,10 +8426,12 @@ namespace NOBY.ApiContracts
         public int? SignatureTypeId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("signatureState")]
-        public SharedTypesSigningSignatureState SignatureState { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningSignatureState SignatureState { get; set; } = new SharedTypesSigningSignatureState();
 
         [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainItem")]
-        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = new SharedTypesSigningEACodeMainItem();
 
         [System.Text.Json.Serialization.JsonPropertyName("salesArrangementId")]
         public int? SalesArrangementId { get; set; } = default!;
@@ -8326,10 +8472,12 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("documentsMetadata")]
-        public List<SharedTypesDocumentsMetadata> DocumentsMetadata { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesDocumentsMetadata> DocumentsMetadata { get; set; } = new List<SharedTypesDocumentsMetadata>();
 
         [System.Text.Json.Serialization.JsonPropertyName("categoryEaCodeMain")]
-        public List<SharedTypesDocumentsCategoryEaCodeMain> CategoryEaCodeMain { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesDocumentsCategoryEaCodeMain> CategoryEaCodeMain { get; set; } = new List<SharedTypesDocumentsCategoryEaCodeMain>();
 
     }
 
@@ -8338,7 +8486,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("documentsInformation")]
-        public List<DocumentArchiveDocumentsInformation> DocumentsInformation { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<DocumentArchiveDocumentsInformation> DocumentsInformation { get; set; } = new List<DocumentArchiveDocumentsInformation>();
 
     }
 
@@ -8347,7 +8496,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("documentInformation")]
-        public SharedTypesDocumentInformation DocumentInformation { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesDocumentInformation DocumentInformation { get; set; } = new SharedTypesDocumentInformation();
 
         [System.Text.Json.Serialization.JsonPropertyName("formId")]
         public string? FormId { get; set; } = default!;
@@ -8392,7 +8542,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("data")]
-        public List<SharedTypesSigningDocumentData> Data { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesSigningDocumentData> Data { get; set; } = new List<SharedTypesSigningDocumentData>();
 
     }
 
@@ -8461,10 +8612,12 @@ namespace NOBY.ApiContracts
         public int? SignatureTypeId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("signatureState")]
-        public SharedTypesSigningSignatureState SignatureState { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningSignatureState SignatureState { get; set; } = new SharedTypesSigningSignatureState();
 
         [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainItem")]
-        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = new SharedTypesSigningEACodeMainItem();
 
     }
 
@@ -8473,7 +8626,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("data")]
-        public SharedTypesSigningDocumentData Data { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningDocumentData Data { get; set; } = new SharedTypesSigningDocumentData();
 
     }
 
@@ -8491,7 +8645,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("formIds")]
-        public List<SharedTypesSearchResponseItem> FormIds { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesSearchResponseItem> FormIds { get; set; } = new List<SharedTypesSearchResponseItem>();
 
     }
 
@@ -8509,7 +8664,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("formIds")]
-        public List<SharedTypesSearchResponseItem> FormIds { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<SharedTypesSearchResponseItem> FormIds { get; set; } = new List<SharedTypesSearchResponseItem>();
 
     }
 
@@ -8518,7 +8674,8 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("data")]
-        public SharedTypesSigningDocumentData Data { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningDocumentData Data { get; set; } = new SharedTypesSigningDocumentData();
 
     }
 
@@ -8530,7 +8687,8 @@ namespace NOBY.ApiContracts
         public int DocumentOnSAId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("signatureState")]
-        public SharedTypesSigningSignatureState SignatureState { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningSignatureState SignatureState { get; set; } = new SharedTypesSigningSignatureState();
 
     }
 
@@ -8954,7 +9112,7 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CustomerGetCustomer
+    public partial class CustomerGetCustomerDetailResponse
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("identities")]
@@ -9640,6 +9798,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("identity")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Identity { get; set; } = default!;
 
         /// <summary>
@@ -9787,6 +9946,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("emailAddress")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EmailAddress { get; set; } = default!;
 
     }
@@ -9799,6 +9959,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("phoneNumber")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string PhoneNumber { get; set; } = default!;
 
         /// <summary>
@@ -9806,6 +9967,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("phoneIDC")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string PhoneIDC { get; set; } = default!;
 
     }
@@ -9818,6 +9980,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("emailAddress")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string EmailAddress { get; set; } = default!;
 
         /// <summary>
@@ -9893,6 +10056,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("field")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Field { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("descending")]
@@ -9915,6 +10079,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
+        [System.ComponentModel.DataAnnotations.StringLength(int.MaxValue, MinimumLength = 1)]
         public string? Number { get; set; } = default!;
 
     }
@@ -9986,6 +10151,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("documentId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DocumentId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainId")]
@@ -9999,12 +10165,14 @@ namespace NOBY.ApiContracts
         public string? FormId { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("fileName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FileName { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
         public string? Description { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public DateOnly CreatedOn { get; set; } = default!;
 
         /// <summary>
@@ -10049,13 +10217,15 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("documentCountInCategory")]
         public int DocumentCountInCategory { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainIdList")]
-        public List<int> EaCodeMainIdList { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public List<int> EaCodeMainIdList { get; set; } = new List<int>();
 
     }
 
@@ -10114,6 +10284,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("taskTypeName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string TaskTypeName { get; set; } = default!;
 
         /// <summary>
@@ -10121,6 +10292,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("taskSubtypeName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string TaskSubtypeName { get; set; } = default!;
 
         /// <summary>
@@ -10135,6 +10307,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("processNameShort")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ProcessNameShort { get; set; } = default!;
 
         /// <summary>
@@ -10149,6 +10322,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string StateName { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("stateFilter")]
@@ -10194,6 +10368,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("processNameLong")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ProcessNameLong { get; set; } = default!;
 
         /// <summary>
@@ -10217,6 +10392,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("consultationData")]
@@ -10248,6 +10424,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("createdOn")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreatedOn { get; set; } = default!;
 
         /// <summary>
@@ -10262,6 +10439,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("stateName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string StateName { get; set; } = default!;
 
         /// <summary>
@@ -10290,6 +10468,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("taskRequest")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string TaskRequest { get; set; } = default!;
 
         /// <summary>
@@ -10297,6 +10476,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("taskResponse")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string TaskResponse { get; set; } = default!;
 
     }
@@ -10331,6 +10511,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("expiration")]
+        [System.ComponentModel.DataAnnotations.StringLength(int.MaxValue, MinimumLength = 1)]
         public DateOnly? Expiration { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("loanInterestRate")]
@@ -10345,6 +10526,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("decision")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Decision { get; set; } = default!;
 
     }
@@ -10422,6 +10604,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("proposalForEntry")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string ProposalForEntry { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("eaCodeMain")]
@@ -10451,9 +10634,11 @@ namespace NOBY.ApiContracts
         public int Id { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("documentType")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DocumentType { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("category")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Category { get; set; } = default!;
 
     }
@@ -10466,6 +10651,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("feeName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FeeName { get; set; } = default!;
 
         /// <summary>
@@ -10533,9 +10719,11 @@ namespace NOBY.ApiContracts
         public int Id { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("documentType")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string DocumentType { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("category")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Category { get; set; } = default!;
 
     }
@@ -10548,6 +10736,7 @@ namespace NOBY.ApiContracts
         public int Id { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name { get; set; } = default!;
 
     }
@@ -10698,17 +10887,20 @@ namespace NOBY.ApiContracts
         public System.DateTime? SignatureDateTime { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("signatureState")]
-        public SharedTypesSigningSignatureState SignatureState { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningSignatureState SignatureState { get; set; } = new SharedTypesSigningSignatureState();
 
         [System.Text.Json.Serialization.JsonPropertyName("eaCodeMainItem")]
-        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningEACodeMainItem EaCodeMainItem { get; set; } = new SharedTypesSigningEACodeMainItem();
 
         /// <summary>
         /// Only for CRS
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("customerOnSa")]
-        public SharedTypesSigningCustomerOnSa CustomerOnSa { get; set; } = default!;
+        [System.ComponentModel.DataAnnotations.Required]
+        public SharedTypesSigningCustomerOnSa CustomerOnSa { get; set; } = new SharedTypesSigningCustomerOnSa();
 
         /// <summary>
         /// Příznak, zda byl elektronicky podepisovaný dokument odeslán na klienta.
@@ -10752,6 +10944,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("formId")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string FormId { get; set; } = default!;
 
     }

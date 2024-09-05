@@ -61,8 +61,8 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(typeof(CustomerGetCustomer), StatusCodes.Status200OK)]
-    public async Task<CustomerGetCustomer> GetCustomerDetail([FromBody] SharedTypesCustomerIdentity identityRequest) 
+    [ProducesResponseType(typeof(CustomerGetCustomerDetailResponse), StatusCodes.Status200OK)]
+    public async Task<CustomerGetCustomerDetailResponse> GetCustomerDetail([FromBody] SharedTypesCustomerIdentity identityRequest) 
         => await _mediator.Send(new GetCustomerDetail.GetCustomerDetailRequest(identityRequest));
 
     /// <summary>
