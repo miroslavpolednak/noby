@@ -31,10 +31,15 @@ internal sealed class TriggerService(
             {
                 scheduler.AddTask(trigger.ScheduleTriggerId, trigger.Cron, ct =>
                 {
-                    CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromSeconds(_configuration.JobExecutionTimeoutMinutes.GetValueOrDefault(3600)));
+                    CancellationTokenSource cancellationTokenSource = new(TimeSpan.FromMinutes(_configuration.JobExecutionTimeoutMinutes.GetValueOrDefault(240)));
+                    var token = cancellationTokenSource.Token;
+                    token.Register(() =>
+                    {
+                        _logger.JobTimeoutReached(trigger.ScheduleTriggerId, _configuration.JobExecutionTimeoutMinutes.GetValueOrDefault(3600));
+                    });
 
                     var notification = new JobRunnerNotification(Guid.NewGuid(), trigger.ScheduleJobId, trigger.ScheduleTriggerId, trigger.JobData, true);
-                    _mediator.Publish(notification, cancellationTokenSource.Token);
+                    _mediator.Publish(notification, token);
                 });
             }
             catch (CrontabException e)

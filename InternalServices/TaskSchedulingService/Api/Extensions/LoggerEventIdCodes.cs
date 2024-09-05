@@ -14,4 +14,5 @@ internal sealed class LoggerEventIdCodes
     public const int JobLocked = 609;
     public const int InstanceLockAcquireFailed = 610;
     public const int InstanceUnableToAcquireLock = 611;
+    public const int JobTimeoutReached = 612;
 }

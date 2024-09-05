@@ -2,27 +2,20 @@
 
 internal static class LoggerExtensions
 {
-    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobFailed;
-    private static readonly Action<ILogger, long, Exception> _cancelCaseJobFinished;
-    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobSkipped;
+    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobFailed = LoggerMessage.Define<long, string>(
+        LogLevel.Warning,
+        new EventId(630, nameof(CancelCaseJobFailed)),
+        "CancelCase job failed for CaseId '{CaseId}': {Message}");
 
-    static LoggerExtensions()
-    {
-        _cancelCaseJobFailed = LoggerMessage.Define<long, string>(
-            LogLevel.Warning,
-            new EventId(630, nameof(CancelCaseJobFailed)),
-            "CancelCase job failed for CaseId '{CaseId}': {Message}");
+    private static readonly Action<ILogger, long, Exception> _cancelCaseJobFinished = LoggerMessage.Define<long>(
+        LogLevel.Information,
+        new EventId(631, nameof(CancelCaseJobFinished)),
+        "CancelCase job finished for CaseId '{CaseId}'");
 
-        _cancelCaseJobFinished = LoggerMessage.Define<long>(
-            LogLevel.Information,
-            new EventId(631, nameof(CancelCaseJobFinished)),
-            "CancelCase job finished for CaseId '{CaseId}'");
-
-        _cancelCaseJobSkipped = LoggerMessage.Define<long, string>(
-            LogLevel.Information,
-            new EventId(632, nameof(CancelCaseJobSkipped)),
-            "CancelCase job skipped for CaseId '{CaseId}' due to {Reason}");
-    }
+    private static readonly Action<ILogger, long, string, Exception> _cancelCaseJobSkipped = LoggerMessage.Define<long, string>(
+        LogLevel.Information,
+        new EventId(632, nameof(CancelCaseJobSkipped)),
+        "CancelCase job skipped for CaseId '{CaseId}' due to {Reason}");
 
     public static void CancelCaseJobFailed(this ILogger logger, long caseId, string message, Exception ex)
         => _cancelCaseJobFailed(logger, caseId, message, ex);
