@@ -489,7 +489,7 @@
             Provolání CREM pro získání seznamu ISKN id.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Informace z dokumentu listu vlastnictví
             </summary>

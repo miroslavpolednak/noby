@@ -23,7 +23,8 @@ internal sealed class GetDeedOfOwnershipDocumentHandler(RealEstateValuationServi
             KatuzTitle = entity.KatuzTitle,
             KatuzId = entity.KatuzId,
             AddressPointId = entity.AddressPointId,
-            DeedOfOwnershipNumber = entity.DeedOfOwnershipNumber
+            DeedOfOwnershipNumber = entity.DeedOfOwnershipNumber,
+            Created = new SharedTypes.GrpcTypes.ModificationStamp(entity.CreatedUserId, entity.CreatedUserName, entity.CreatedTime)
         };
 
         if (entity.RealEstateIds is not null)

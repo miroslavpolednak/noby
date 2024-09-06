@@ -18,6 +18,11 @@ internal sealed class AddDeedOfOwnershipDocumentHandler(IRealEstateValuationServ
             throw new ArgumentNullException(nameof(request), "DeedOfOwnershipDocument is empty");
         }
 
+        if (request.DeedOfOwnershipDocumentDownloaded && (request.DeedOfOwnershipDocument!.RealEstateIds?.Count ?? 0) == 0)
+        {
+            throw new NobyValidationException(90032, "PossibleValuationTypeId is not empty");
+        }
+
         var dsRequest = new DomainServices.RealEstateValuationService.Contracts.AddDeedOfOwnershipDocumentRequest
         {
             Address = request.DeedOfOwnershipDocument.Address,
