@@ -27,7 +27,10 @@ internal class IndividualPricingProcessChangedHandler(
         
         // detail tasku
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = taskIdSB });
-        
+
+        // neni v zadani, ale je to v poradku
+        await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, taskDetail, CancellationToken.None);
+
         // dalsi validace
         if (taskDetail.TaskObject.ProcessTypeId == 1 && caseState != EnumCaseStates.InProgress)
         {
@@ -65,8 +68,6 @@ internal class IndividualPricingProcessChangedHandler(
             _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
             return;
         }
-
-        await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, taskDetail, CancellationToken.None);
 
         // nastaveni flow switches
         var flowSwitches = (message.state switch
