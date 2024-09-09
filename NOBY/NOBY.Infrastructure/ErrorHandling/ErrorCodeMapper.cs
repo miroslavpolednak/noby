@@ -60,7 +60,7 @@ public sealed class ErrorCodeMapper
             { 90048, new("Sleva neodpovídá", "Výše slevy požadovaná v nabídce je odlišná od slevy zadané v úkolu Cenová výjimka. Zkontrolujte prosím kalkulaci nabídky a upravte výši slevy.") },
             { 90049, new("Sleva není schválena", "V nabídce je požadována sleva, pro kterou není schválený úkol Cenová výjimka.") },
             { 90050, new("Sleva zřejmě expirovala", "Úkol Cenové výjimky pro slevu požadovanou v nabídce je zrušený zřejmě z důvodu expirace platnosti.") },
-            { 90051, new("Platnost budoucí úrokové sazby v minulosti", "Požadované datum platnosti budoucí úrokové sazby je v minulosti.") },
+            { 90051, new("Platnost sazby od není nastavena správně", "Retenční dodatek již není možné vygenerovat, změňte platnost sazby na následující termín splátky.") },
             { 90052, new("Není povolen souběh požadavků stejného typu. Zkontrolujte rozpracované požadavky.", "Není možné vytvořit nový požadavek, jelikož již existuje rozpracovaný požadavek z dřívějška.") },
             { 90053, new("Nelze podepsat elektronicky, protože je podepisováno na základě plné moci.") },
             { 90054, new("Soubor nelze stáhnout. Soubor neexistuje nebo je stále v procesu nahrávání do eArchivu, opakujte akci později.") },
