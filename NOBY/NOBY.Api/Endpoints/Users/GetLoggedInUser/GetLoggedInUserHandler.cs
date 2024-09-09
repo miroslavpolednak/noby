@@ -23,7 +23,7 @@ internal sealed class GetLoggedInUserHandler(
         DateTime? sessionValidTo = null;
         if (!string.IsNullOrEmpty(tokenExpirationClaim?.Value))
         {
-            sessionValidTo = new DateTime(Convert.ToInt64(tokenExpirationClaim.Value, CultureInfo.InvariantCulture), DateTimeKind.Local);
+            sessionValidTo = new DateTime(Convert.ToInt64(tokenExpirationClaim.Value, CultureInfo.InvariantCulture));
         }
 
         var response = new UsersGetLoggedInUserResponse
