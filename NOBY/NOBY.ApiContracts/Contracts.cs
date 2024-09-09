@@ -3999,28 +3999,22 @@ namespace NOBY.ApiContracts
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public SalesArrangementSharedParametersMortgage Mortgage { get; set; } = new SalesArrangementSharedParametersMortgage();
+        public SalesArrangementSharedParametersMortgage? Mortgage { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("hubn")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public SalesArrangementSharedParametersHubn Hubn { get; set; } = new SalesArrangementSharedParametersHubn();
+        public SalesArrangementSharedParametersHubn? Hubn { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("drawing")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public SalesArrangementSharedParametersDrawing Drawing { get; set; } = new SalesArrangementSharedParametersDrawing();
+        public SalesArrangementSharedParametersDrawing? Drawing { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("generalChange")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public SalesArrangementSharedParametersGeneralChange GeneralChange { get; set; } = new SalesArrangementSharedParametersGeneralChange();
+        public SalesArrangementSharedParametersGeneralChange? GeneralChange { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("customerChange")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public SalesArrangementSharedParametersCustomerChange CustomerChange { get; set; } = new SalesArrangementSharedParametersCustomerChange();
+        public SalesArrangementSharedParametersCustomerChange? CustomerChange { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("customerChange3602")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public SalesArrangementSharedParametersCustomerChange3602 CustomerChange3602 { get; set; } = new SalesArrangementSharedParametersCustomerChange3602();
+        public SalesArrangementSharedParametersCustomerChange3602? CustomerChange3602 { get; set; } = default!;
 
     }
 
@@ -5505,12 +5499,10 @@ namespace NOBY.ApiContracts
         public string Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("houseAndFlat")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public RealEstateValuationSharedSpecificDetailsHouseAndFlat HouseAndFlat { get; set; } = new RealEstateValuationSharedSpecificDetailsHouseAndFlat();
+        public RealEstateValuationSharedSpecificDetailsHouseAndFlat? HouseAndFlat { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("parcel")]
-        [System.ComponentModel.DataAnnotations.Required]
-        public RealEstateValuationSharedSpecificDetailsParcel Parcel { get; set; } = new RealEstateValuationSharedSpecificDetailsParcel();
+        public RealEstateValuationSharedSpecificDetailsParcel? Parcel { get; set; } = default!;
 
     }
 
@@ -11090,14 +11082,14 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("date")]
-        public DateOnly Date { get; set; } = default!;
+        public DateOnly? Date { get; set; } = default!;
 
         /// <summary>
         /// Částka mimořádného vkladu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("amount")]
-        public decimal Amount { get; set; } = default!;
+        public decimal? Amount { get; set; } = default!;
 
         private System.Collections.Generic.IDictionary<string, object>? _additionalProperties;
 
