@@ -41,8 +41,11 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
                     var process = (await _caseService.GetProcessList(epSa.CaseId, cancellationToken))
                                 .First(t => t.ProcessId == epSa.ProcessId);
 
-                    await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
-
+                    if (!process.Cancelled)
+                    {
+                        await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
+                    }
+                    
                     await _mediator.Send(new UpdateSalesArrangementStateRequest(
                         new() { SalesArrangementId = epSa.SalesArrangementId, State = (int)EnumSalesArrangementStates.Cancelled }),
                         cancellationToken);
