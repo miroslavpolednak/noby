@@ -8,6 +8,7 @@ internal static class LoggerExtensions
     private static readonly Action<ILogger, long?, Exception> _kafkaRealEstateValuationByOrderIdNotFound;
     private static readonly Action<ILogger, bool, Exception> _revaluationFinished;
     private static readonly Action<ILogger, bool, long, int, Exception> _createKbmodelFlat;
+    private static readonly Action<ILogger, int, int, Exception> _realEstateValuationStateIdChanged;
 
     static LoggerExtensions()
     {
@@ -40,6 +41,11 @@ internal static class LoggerExtensions
             LogLevel.Information,
             new EventId(LoggerEventIdCodes.CreateKbmodelFlat, nameof(CreateKbmodelFlat)),
             "CreateKbmodelFlat: noPriceAvailable {NoPriceAvailable}; valuation {ValuationId} finished with result price {ResultPrice}");
+
+        _realEstateValuationStateIdChanged = LoggerMessage.Define<int, int>(
+            LogLevel.Information,
+            new EventId(LoggerEventIdCodes.RealEstateValuationStateIdChanged, nameof(RealEstateValuationStateIdChanged)),
+            "RealEstateValuation (ID {RealEstateValuationId}) changed ValuationStateId to {ValuationStateId}.");
     }
 
     public static void AttachmentDeleteFailed(this ILogger logger, in long externalId, in int realEstateValuationAttachmentId, Exception ex)
@@ -59,4 +65,7 @@ internal static class LoggerExtensions
 
     public static void CreateKbmodelFlat(this ILogger logger, in bool noPriceAvailable, in long valuationId, in int resultPrice)
         => _createKbmodelFlat(logger, noPriceAvailable, valuationId, resultPrice, null!);
+
+    public static void RealEstateValuationStateIdChanged(this ILogger logger, int realEstateValuationId, int valuationStateId) => 
+        _realEstateValuationStateIdChanged(logger, realEstateValuationId, valuationStateId, null!);
 }

@@ -54,22 +54,26 @@ internal sealed class InformationRequestProcessChangedHandler(
         await _dbContext.SaveChangesAsync();
     }
 
-    private static void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
+    private void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
     {
         if (realEstateValuationListItem is { ValuationStateId: (int)WorkflowTaskStates.Completed, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: (int)WorkflowTaskStates.ProbihaOceneni })
         {
             realEstateValuationListItem.ValuationStateId = (int)WorkflowTaskStates.Dozadani;
+
+            _logger.RealEstateValuationStateIdChanged(realEstateValuationListItem.RealEstateValuationId, realEstateValuationListItem.ValuationStateId);
         }
     }
 
-    private static void HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem)
+    private void HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem)
     {
         realEstateValuationListItem.ValuationStateId = realEstateValuationListItem.ValuationTypeId switch
         {
-            (int)ValuationTypes.Online => (int)WorkflowTaskStates.Completed,
+            (int)ValuationTypes.Online => (int)WorkflowTaskStates.KontrolaUdaju,
             (int)ValuationTypes.Dts or (int)ValuationTypes.Standard
                 when realEstateValuationListItem.ValuationStateId != (int)WorkflowTaskStates.Completed => (int)WorkflowTaskStates.ProbihaOceneni,
             _ => realEstateValuationListItem.ValuationStateId
         };
+
+        _logger.RealEstateValuationStateIdChanged(realEstateValuationListItem.RealEstateValuationId, realEstateValuationListItem.ValuationStateId);
     } 
 }

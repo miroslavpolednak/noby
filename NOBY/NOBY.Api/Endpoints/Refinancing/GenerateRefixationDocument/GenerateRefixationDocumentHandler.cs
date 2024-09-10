@@ -85,7 +85,7 @@ internal sealed class GenerateRefixationDocumentHandler(
                             ?? throw new NobyValidationException(90032, "No offer was selected");
 
         if ((DateTime)selectedOffer.MortgageRefixation.SimulationInputs.InterestRateValidFrom < DateTime.UtcNow.ToLocalTime().Date || (DateTime?)selectedOffer.Data.ValidTo < DateTime.UtcNow.ToLocalTime().Date)
-            throw new NobyValidationException(90051);
+            throw new NobyValidationException(90032);
 
         return selectedOffer;
     }
