@@ -33,6 +33,7 @@ public class AddressController(IMediator _mediator) : ControllerBase
     [HttpPost("address/detail")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient"])]
     [ProducesResponseType(typeof(AddressGetAddressDetailResponse), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=312CA931-1DA0-4be2-AF0D-4D71962845F2")]

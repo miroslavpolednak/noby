@@ -30,23 +30,30 @@ internal static class NobySwagger
         {
             // add a custom operation filter which sets default values
             x.OperationFilter<SwaggerDefaultValues>();
+            x.OperationFilter<AddAllHttpStatusCodes>();
 
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
             //x.UseOneOfForPolymorphism();
 
             x.SupportNonNullableReferenceTypes();
-            x.UseAllOfToExtendReferenceSchemas();
+            //x.UseAllOfToExtendReferenceSchemas();
 
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
-            x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
+            x.CustomSchemaIds(type =>
+            {
+                string s = type.ToString();
+                var idx = s.LastIndexOf('.');
+                return idx > 0 ? s[(idx + 1)..] : type.ToString().Replace('+', '_');
+            });
             x.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
+            x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NOBY.ApiContracts.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "ExternalServices.AddressWhisperer.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SharedTypes.xml"));
@@ -62,6 +69,58 @@ internal static class NobySwagger
         });
 
         return builder;
+    }
+
+    private sealed class AddAllHttpStatusCodes : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            if (operation.Responses == null)
+            {
+                operation.Responses = new OpenApiResponses();
+            }
+
+            // Add other status codes as needed
+            if (!operation.Responses.ContainsKey(StatusCodes.Status400BadRequest.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status400BadRequest.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Bad Request"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status404NotFound.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status404NotFound.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Not Found"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status500InternalServerError.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status500InternalServerError.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Internal Server Error"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status401Unauthorized.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status401Unauthorized.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Unauthorized"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status403Forbidden.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status403Forbidden.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Forbidden"
+                };
+            }
+        }
     }
 
     private sealed class EnumValuesDescriptionSchemaFilter : ISchemaFilter

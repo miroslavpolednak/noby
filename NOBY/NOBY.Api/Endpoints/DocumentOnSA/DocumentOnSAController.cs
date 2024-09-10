@@ -50,6 +50,7 @@ public class DocumentOnSAController(IMediator _mediator)
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Podepisování"])]
     [ProducesResponseType(typeof(DocumentOnSaStartSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -182,6 +183,7 @@ public class DocumentOnSAController(IMediator _mediator)
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
     [SwaggerOperation(Tags = ["Podepisování"])]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(DocumentOnSaSearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -206,6 +208,7 @@ public class DocumentOnSAController(IMediator _mediator)
     /// </remarks>
     [HttpPost("case/{caseId:long}/document-on-sa/search")]
     [SwaggerOperation(Tags = ["Podepisování"])]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(DocumentOnSaSearchDocumentsOnSaOnCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A")]

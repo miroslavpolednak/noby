@@ -78,7 +78,7 @@
       "dictionaryBaseType": "Dictionary",
       "classStyle": "Poco",
       "jsonLibrary": "SystemTextJson",
-      "generateDefaultValues": true,
+      "generateDefaultValues": false,
       "generateDataAnnotations": true,
       "excludedTypeNames": [
         "EnumCaseStates",

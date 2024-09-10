@@ -169,6 +169,7 @@ public class CodebooksController(IMediator _mediator) : ControllerBase
     /// </summary>
     [HttpPost("banking-days")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(List<DateOnly>), StatusCodes.Status200OK)]
     public async Task<List<DateOnly>> GetNonBankingDays([FromBody] CodebooksGetNonBankingDaysRequest request, [FromServices] ICodebookServiceClient svc, CancellationToken cancellationToken)
         => (await svc.GetNonBankingDays(request.DateFrom, request.DateTo, cancellationToken)).ToList();

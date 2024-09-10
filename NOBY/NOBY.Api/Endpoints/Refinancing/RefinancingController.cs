@@ -212,6 +212,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/retention-document")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -229,6 +230,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/refixation-document")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -246,6 +248,7 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/extra-payment-document")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
     [NobyRequiredCaseStates(EnumCaseStates.InAdministration, EnumCaseStates.InDisbursement)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

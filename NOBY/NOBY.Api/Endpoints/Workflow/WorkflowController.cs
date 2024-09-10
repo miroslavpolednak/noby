@@ -53,6 +53,7 @@ public class WorkflowController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:long}/signing/start")]
     [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Podepisování"])]
     [ProducesResponseType(typeof(WorkflowStartTaskSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -120,6 +121,7 @@ public class WorkflowController(IMediator _mediator) : ControllerBase
     /// <response code="404">Task or case not found</response>
     [HttpPut("{caseId:long}/tasks/{taskId:int}")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Workflow Task"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

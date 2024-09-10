@@ -88,6 +88,7 @@ public class DocumentArchiveController(IMediator _mediator)
     /// </remarks> 
     [HttpPost("case/{caseId:long}/documents")]
     [SwaggerOperation(Tags = ["Dokument"])]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status202Accepted)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5DC440B5-00EB-46dd-8D15-2D7AD41ACD3B")]
     public async Task<IActionResult> SaveDocumentsToArchive(

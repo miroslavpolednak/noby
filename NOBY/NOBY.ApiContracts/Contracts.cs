@@ -5089,7 +5089,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("isLoanRealEstate")]
-        public bool IsLoanRealEstate { get; set; } = false;
+        public bool IsLoanRealEstate { get; set; } = default!;
 
         /// <summary>
         /// ID stavu nemovitosti.
@@ -5517,14 +5517,14 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("poorCondition")]
-        public bool PoorCondition { get; set; } = false;
+        public bool PoorCondition { get; set; } = default!;
 
         /// <summary>
         /// True pokud jsou vlastnická práva nějakým způsobem omezena
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("ownershipRestricted")]
-        public bool OwnershipRestricted { get; set; } = false;
+        public bool OwnershipRestricted { get; set; } = default!;
 
         /// <summary>
         /// Objekt je použit pouze v případě varianty nemovitosti HF+F Byt.
@@ -5550,14 +5550,14 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("leased")]
-        public bool Leased { get; set; } = false;
+        public bool Leased { get; set; } = default!;
 
         /// <summary>
         /// Obecná pronajímatelnost
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("leaseApplicable")]
-        public bool LeaseApplicable { get; set; } = false;
+        public bool LeaseApplicable { get; set; } = default!;
 
     }
 
@@ -5569,14 +5569,14 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("specialPlacement")]
-        public bool SpecialPlacement { get; set; } = false;
+        public bool SpecialPlacement { get; set; } = default!;
 
         /// <summary>
         /// True pokud jde o umístění v suterénu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("basement")]
-        public bool Basement { get; set; } = false;
+        public bool Basement { get; set; } = default!;
 
     }
 
@@ -8692,7 +8692,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("hardCreate")]
-        public bool HardCreate { get; set; } = false;
+        public bool HardCreate { get; set; } = default!;
 
         /// <summary>
         /// Datum narození
@@ -9529,7 +9529,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("sum")]
-        public double? Sum { get; set; } = default!;
+        public decimal? Sum { get; set; } = default!;
 
         /// <summary>
         /// Kod meny

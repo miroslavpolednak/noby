@@ -167,6 +167,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </summary>
     [HttpPut("case/{caseId:long}/offer/{offerId:int}/flags")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] OfferSetOfferFlagsRequest request)
@@ -200,6 +201,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("offer/mortgage/developer-project/search")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferDeveloperSearchResponse), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D43515EA-4014-47a1-AD45-0E80EE43AEB9")]
@@ -214,6 +216,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-offer")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferRefinancingLinkResult), StatusCodes.Status200OK)]
@@ -229,6 +232,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/link-mortgage-retention-offer")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(OfferRefinancingLinkResult), StatusCodes.Status200OK)]
@@ -244,6 +248,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/link-mortgage-extra-payment")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
     [SwaggerOperation(Tags = [ "Modelace" ])]
     [ProducesResponseType(typeof(OfferRefinancingLinkResult), StatusCodes.Status200OK)]
