@@ -539,7 +539,7 @@
             Uložení dokumentů ke Case-u do archivu
             </summary>
             <remarks>
-            Uložení dokumentů do archivu <br/><br/>
+            Uložení dokumentů do archivu
             </remarks> 
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SetDocumentStatusInQueue(System.String,System.Int32,System.Threading.CancellationToken)">
@@ -702,7 +702,7 @@
             Stažení dokumentu k fyzickému podepisování
             </summary>
             <remarks>
-            Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br />
+            Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSaDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -726,7 +726,7 @@
             Vyhledání dokumentů na všech žádostech daného Case dle EACode
             </summary>
             <remarks>
-            Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
+            Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.RefreshElectronicDocument(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -734,7 +734,7 @@
             Aktualizace stavu dokumentu
             </summary>
             <remarks>
-             Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br />
+            Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSAStatus(System.Int32,System.Int32,System.Threading.CancellationToken)">

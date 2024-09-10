@@ -15,10 +15,10 @@ internal sealed class ApplySwaggerRealEstateValuationAttributes
         {
             if (!reqPermSection)
                 operation.Description += _requiredPermissionsLabel;
-            operation.Description += "<br/>RealEstateValuationStateValidation()";
+            operation.Description += "<br />RealEstateValuationStateValidation()";
             reqPermSection = true;
         }
     }
 
-    private const string _requiredPermissionsLabel = "<br/><br/><strong style=\"color:red;\">Required permissions from RealEstateValuation namespace</strong>";
+    private const string _requiredPermissionsLabel = "<br /><br /><strong style=\"color:red;\">Required permissions from RealEstateValuation namespace</strong>";
 }

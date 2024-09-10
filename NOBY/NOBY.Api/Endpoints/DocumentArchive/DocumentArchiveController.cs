@@ -84,7 +84,7 @@ public class DocumentArchiveController(IMediator _mediator)
     /// Uložení dokumentů ke Case-u do archivu
     /// </summary>
     /// <remarks>
-    /// Uložení dokumentů do archivu <br/><br/>
+    /// Uložení dokumentů do archivu
     /// </remarks> 
     [HttpPost("case/{caseId:long}/documents")]
     [SwaggerOperation(Tags = ["Dokument"])]

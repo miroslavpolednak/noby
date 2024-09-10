@@ -139,7 +139,7 @@ public class DocumentOnSAController(IMediator _mediator)
     /// Stažení dokumentu k fyzickému podepisování
     /// </summary>
     /// <remarks>
-    /// Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br />
+    /// Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).
     /// </remarks>
     [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
@@ -204,7 +204,7 @@ public class DocumentOnSAController(IMediator _mediator)
     /// Vyhledání dokumentů na všech žádostech daného Case dle EACode
     /// </summary>
     /// <remarks>
-    /// Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
+    /// Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).
     /// </remarks>
     [HttpPost("case/{caseId:long}/document-on-sa/search")]
     [SwaggerOperation(Tags = ["Podepisování"])]
@@ -228,7 +228,7 @@ public class DocumentOnSAController(IMediator _mediator)
     /// Aktualizace stavu dokumentu
     /// </summary>
     /// <remarks>
-    ///  Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br />
+    /// Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh")]
     [NobySkipCaseStateAndProductSAValidation]
