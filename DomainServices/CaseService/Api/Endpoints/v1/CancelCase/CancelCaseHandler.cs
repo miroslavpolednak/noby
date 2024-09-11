@@ -56,32 +56,30 @@ internal sealed class CancelCaseHandler(
             // odeslat do SB
             await _salesArrangementService.SendToCmp(salesArrangementId, true, cancellation);
         }
-        else // pokud nezname datum prvniho podpisu
+        // pokud nezname datum prvniho podpisu
+        // je debtor identifikovany?
+        else if (await isDebtorIdentified(salesArrangementId, cancellation)) 
         {
-            // je debtor identifikovany?
-            if (await isDebtorIdentified(salesArrangementId, cancellation))
+            await _productService.CancelMortgage(request.CaseId, cancellation);
+
+            var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
+
+            // zavolat RIP
+            if (!string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
             {
-                await _productService.CancelMortgage(request.CaseId, cancellation);
-
-                var saInstance = await _salesArrangementService.GetSalesArrangement(salesArrangementId, cancellation);
-
-                // zavolat RIP
-                if (!string.IsNullOrEmpty(saInstance.RiskBusinessCaseId))
+                var identity = _currentUser.GetUserIdentityFromHeaders();
+                await _riskBusinessCaseService.CommitCase(new RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseRequest
                 {
-                    var identity = _currentUser.GetUserIdentityFromHeaders();
-                    await _riskBusinessCaseService.CommitCase(new RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseRequest
+                    SalesArrangementId = salesArrangementId,
+                    ProductTypeId = entity.ProductTypeId,
+                    RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
+                    FinalResult = request.IsUserInvoked ? RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.CANCELLED_BY_CLIENT : RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.TIMEOUT_BY_EXT_SYS,
+                    UserIdentity = identity is null ? null : new RiskIntegrationService.Contracts.Shared.Identity
                     {
-                        SalesArrangementId = salesArrangementId,
-                        ProductTypeId = entity.ProductTypeId,
-                        RiskBusinessCaseId = saInstance.RiskBusinessCaseId,
-                        FinalResult = request.IsUserInvoked ? RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.CANCELLED_BY_CLIENT : RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseFinalResults.TIMEOUT_BY_EXT_SYS,
-                        UserIdentity = identity is null ? null : new RiskIntegrationService.Contracts.Shared.Identity
-                        {
-                            IdentityScheme = identity.Scheme.ToString(),
-                            IdentityId = identity.Identity
-                        }
-                    }, cancellation);
-                }
+                        IdentityScheme = identity.Scheme.ToString(),
+                        IdentityId = identity.Identity
+                    }
+                }, cancellation);
             }
         }
 

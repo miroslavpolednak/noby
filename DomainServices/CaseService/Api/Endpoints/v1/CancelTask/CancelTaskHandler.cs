@@ -23,6 +23,7 @@ internal sealed class CancelTaskHandler(
         {
             TaskIdSb = request.TaskIdSB
         }, cancellationToken);
+
         await _sbWebApi.CancelTask(request.TaskIdSB, cancellationToken);
 
         // set flow switches

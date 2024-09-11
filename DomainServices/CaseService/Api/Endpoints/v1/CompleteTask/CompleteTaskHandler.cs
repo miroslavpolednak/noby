@@ -35,7 +35,7 @@ internal sealed class CompleteTaskHandler(
 
         await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
 
-        if (request.TaskTypeId == 6 && request.CompletionTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.Signing && request.CompletionTypeId == 2)
         {
             await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
         }
