@@ -38,7 +38,7 @@ public sealed class NobySecurityMiddleware(RequestDelegate _next)
 			{
                 var timeout = context.RequestServices.GetRequiredService<AppConfiguration>().Security?.SessionInactivityTimeout;
 
-				if (timeout.HasValue)
+				if (timeout.HasValue && !context.Request.Headers.ContainsKey(AuthenticationConstants.DoNotRenewAuthenticationTicketHeaderKey))
 				{
 					context.Response.Headers.Append("inactivity-timeout", DateTime.Now.AddMinutes(timeout.Value).ToString("s", CultureInfo.InvariantCulture));
 				}

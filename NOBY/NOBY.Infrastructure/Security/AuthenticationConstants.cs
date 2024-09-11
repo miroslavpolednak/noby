@@ -29,6 +29,11 @@ public static class AuthenticationConstants
     /// </summary>
     public const string RedirectUriQueryParameter = "redirect";
 
+    /// <summary>
+    /// HTTP hlavička, která říká, že se nemá obnovovat autentizační cookie (sliding expiration)
+    /// </summary>
+    public const string DoNotRenewAuthenticationTicketHeaderKey = "noby-system-request";
+
     public const string DefaultAuthenticationUrlPrefix = "auth";
     public const string DefaultAuthenticationUrlSegment = "/" + DefaultAuthenticationUrlPrefix;
     public const string DefaultSignInEndpoint = "/signin";

@@ -11,15 +11,8 @@ public class TestController(IMediator _mediator, IHttpContextAccessor _context)
     : ControllerBase
 {
     /*[HttpGet("test2")]
-    public async Task<IActionResult> T2()
+    public async Task<IActionResult> Test2([FromHeader] string ttt)
     {
-        var service = _context.HttpContext.RequestServices.GetRequiredService<ICaseServiceClient>();
-
-        var i1 = await service.ValidateCaseId(3092450);
-        //var i2 = await service.ValidateCaseId(3092450);
-
-        await service.LinkOwnerToCase(3092450, 5248);
-
-        return Content(System.Text.Json.JsonSerializer.Serialize(i1));
+        return Content(ttt);
     }*/
 }

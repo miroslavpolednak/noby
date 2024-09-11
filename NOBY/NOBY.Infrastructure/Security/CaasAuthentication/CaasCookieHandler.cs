@@ -44,6 +44,14 @@ internal sealed class CaasCookieHandler
 
         options.Events = new CookieAuthenticationEvents
         {
+            OnCheckSlidingExpiration = context =>
+            {
+                if (context.HttpContext.Request.Headers.ContainsKey(AuthenticationConstants.DoNotRenewAuthenticationTicketHeaderKey))
+                {
+                    context.ShouldRenew = false;
+                }
+                return Task.CompletedTask;
+            },
             OnRedirectToAccessDenied = context =>
             {
                 if (isAjaxRequest(context.Request))
