@@ -27,7 +27,10 @@ internal sealed class CaasCookieHandler
         }
         options.Cookie.Path = "/";
         options.Cookie.IsEssential = true;
-        options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
+        if (_configuration.SetSameSiteNoneInAuthCookie)
+        {
+            options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None;
+        }
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
         options.Cookie.Name = AuthenticationConstants.CookieName;

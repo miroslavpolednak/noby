@@ -52,4 +52,9 @@ public sealed class AppConfigurationSecurity
     /// Pokud je nastaveno na true, nekontrolujeme zda redirect query param pri prihlasovani obsahuje stejnou domenu, na jake bezi aktualni instance aplikace.
     /// </summary>
     public bool AllowAnyUrlInSigninRedirect { get; set; }
+
+    /// <summary>
+    /// Nastavi samesite=none v autentizacni cookie
+    /// </summary>
+    public bool SetSameSiteNoneInAuthCookie { get; set; }
 }

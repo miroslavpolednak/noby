@@ -2,7 +2,6 @@
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
 using ExternalServices;
-using System.Text.Json;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -17,12 +16,6 @@ internal static class NobyServices
 
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, NobyCurrentUserAccessor>();
-
-        // disable default asp model validation
-        builder.Services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.SuppressModelStateInvalidFilter = true;
-        });
 
         builder.Services
                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
@@ -45,6 +38,8 @@ internal static class NobyServices
             .AddControllers(x => x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None }))
             .ConfigureApiBehaviorOptions(options =>
             {
+                // disable default asp model validation
+                options.SuppressModelStateInvalidFilter = true;
                 options.SuppressMapClientErrors = true;
             })
             .AddJsonOptions(options =>
