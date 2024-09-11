@@ -132,9 +132,6 @@ public class CancelTaskHandlerTests
                 }
             }));
 
-        _sbWebApiClient
-            .Setup(s => s.CancelTask(It.IsAny<int>(), It.IsAny<CancellationToken>()));
-
         _codebookService
             .Setup(s => s.ProductTypes(It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new List<CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem>

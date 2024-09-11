@@ -3,15 +3,16 @@ using CIS.Infrastructure.Data;
 using DomainServices.CaseService.Api.Database;
 using Microsoft.EntityFrameworkCore;
 using SharedTypes.Enums;
+using System.Runtime.CompilerServices;
 
 namespace DomainServices.CaseService.Tests;
 
 internal static class DatabaseHelpers
 {
-    internal static CaseServiceDbContext CreateDbContext(ICurrentUserAccessor currentUser)
+    internal static CaseServiceDbContext CreateDbContext(ICurrentUserAccessor currentUser, [CallerMemberName] string memberName = "")
     {
         var options = new DbContextOptionsBuilder<CaseServiceDbContext>()
-            .UseInMemoryDatabase(databaseName: "CaseService")
+            .UseInMemoryDatabase(databaseName: $"CaseService_{memberName}")
             .Options;
         var aggregate = new BaseDbContextAggregate<CaseServiceDbContext>(options, new CisEntityFrameworkOptions<CaseServiceDbContext>(), currentUser, TimeProvider.System);
         var dbContext = new CaseServiceDbContext(aggregate);
