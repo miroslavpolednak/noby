@@ -55,12 +55,6 @@ internal class MockDataSetupHelper
                 SalesArrangementId = SalesArrangementIdCase3,
                 RiskBusinessCaseId = "123"
             }));
-
-        _salesArrangementService
-            .Setup(s => s.SendToCmp(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()));
-
-        _salesArrangementService
-            .Setup(s => s.DeleteSalesArrangement(It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<CancellationToken>()));
     }
 
     public const int SalesArrangementIdCase1 = 88;

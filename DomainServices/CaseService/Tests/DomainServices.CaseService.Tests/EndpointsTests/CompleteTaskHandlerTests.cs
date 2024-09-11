@@ -181,12 +181,6 @@ public class CompleteTaskHandlerTests
 
     private async Task<Empty?> getResult(CompleteTaskRequest request)
     {
-        _sbWebApiClient
-            .Setup(x => x.CompleteTask(It.IsAny<ExternalServices.SbWebApi.Dto.CompleteTask.CompleteTaskRequest>(), It.IsAny<CancellationToken>()));
-
-        _documentOnSAService
-            .Setup(x => x.SetProcessingDateInSbQueues(It.IsAny<long>(), It.IsAny<long>(), It.IsAny<CancellationToken>()));
-
         var handler = new Api.Endpoints.v1.CompleteTask.CompleteTaskHandler(_sbWebApiClient.Object, _documentOnSAService.Object);
         return await handler.Handle(request, default);
     }

@@ -197,6 +197,7 @@ public class CancelCaseHandlerTests
         _documentOnSAService
             .Setup(s => s.GetDocumentsOnSAList(It.Is<int>(x => x != MockDataSetupHelper.SalesArrangementIdCase1), It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new DocumentOnSAService.Contracts.GetDocumentsOnSAListResponse()));
+
         _documentOnSAService
             .Setup(s => s.GetDocumentsOnSAList(It.Is<int>(x => x == MockDataSetupHelper.SalesArrangementIdCase1), It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new DocumentOnSAService.Contracts.GetDocumentsOnSAListResponse
@@ -220,12 +221,6 @@ public class CancelCaseHandlerTests
                 })
             );
         
-        _mediator
-            .Setup(s => s.Send(It.IsAny<UpdateCaseStateRequest>(), It.IsAny<CancellationToken>()));
-        
-        _auditLogger
-            .Setup(s => s.Log(It.IsAny<AuditEventTypes>(), It.IsAny<string>(), It.IsAny<ICollection<AuditLoggerHeaderItem>?>(), It.IsAny<ICollection<AuditLoggerHeaderItem>?>(), It.IsAny<AuditLoggerHeaderItem?>(), It.IsAny<string?>(), It.IsAny<IDictionary<string, string>?>(), It.IsAny<IDictionary<string, string>?>()));
-        
         _householdService
             .Setup(s => s.GetHouseholdList(It.IsAny<int>(), It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new List<HouseholdService.Contracts.Household>
@@ -245,12 +240,6 @@ public class CancelCaseHandlerTests
                 new() { CustomerOnSAId = 101, CustomerRoleId = 1, CustomerIdentifiers = { new SharedTypes.GrpcTypes.Identity { IdentityId = 123456, IdentityScheme = SharedTypes.GrpcTypes.Identity.Types.IdentitySchemes.Kb } } },
                 new() { CustomerOnSAId = 102, CustomerRoleId = 2 }
             }));
-
-        _productService
-            .Setup(s => s.CancelMortgage(It.IsAny<long>(), It.IsAny<CancellationToken>()));
-
-        _riskBusinessCaseService
-            .Setup(s => s.CommitCase(It.IsAny<RiskIntegrationService.Contracts.RiskBusinessCase.V2.RiskBusinessCaseCommitCaseRequest>(), It.IsAny<CancellationToken>()));
     }
 
     const int _mainHouseholdId = 500;
