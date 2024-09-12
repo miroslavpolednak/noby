@@ -284,7 +284,7 @@ internal sealed class RealSbWebApiClient(
         };
 
         var httpResponse = await _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/api/refixationservices/hedgerefixationappendix", sbRequest, cancellationToken);
-        var responseObject = await RequestHelper.ProcessResponse<HedgeRefixationAppendix_response>(httpResponse, x => x.Result, [(332, 90068)], cancellationToken: cancellationToken);
+        var responseObject = await RequestHelper.ProcessResponse<HedgeRefixationAppendix_response>(httpResponse, x => x.Result, [(332, ErrorCodeMapper.SbMissingContacts)], cancellationToken: cancellationToken);
 
         return responseObject.Ea_number;
     }
