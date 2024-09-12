@@ -84,9 +84,13 @@ internal sealed class SearchCasesHandler(CaseServiceDbContext _dbContext)
         if (!string.IsNullOrEmpty(request.SearchTerm))
         {
             if (long.TryParse(request.SearchTerm, out long searchCaseId))
-                query = query.Where(t => t.CaseId == searchCaseId);
+            {
+                query = query.Where(t => t.Name.Contains(request.SearchTerm) || t.ContractNumber!.Contains(request.SearchTerm) || t.CaseId == searchCaseId);
+            }
             else
+            {
                 query = query.Where(t => t.Name.Contains(request.SearchTerm) || t.ContractNumber!.Contains(request.SearchTerm));
+            }
         }
 
         return adjustPaging(query, paginable);
