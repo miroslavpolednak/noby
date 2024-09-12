@@ -28,6 +28,11 @@ public sealed class FeBannersService(
                     Severity = (FeBannerBaseItemSeverity)t.Severity
                 })
                 .ToList();
-        }, DateTime.Now.AddMinutes(5));
+        }, DateTime.Now.AddMinutes(15));
+    }
+
+    public void ClearCache()
+    {
+        _cache.Remove("FeBanners");
     }
 }

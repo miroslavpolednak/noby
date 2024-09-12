@@ -28,6 +28,46 @@
             Provolá  CREM službu RUIAN:FindTerritory a vrátí stránkovaný seznam katuz setřízený abecedně podle jména katastrálního území.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.GetAdminFeBanners">
+            <summary>
+            Seznam upozornění na úvodní obrazovce.
+            </summary>
+            <remarks>
+            Načtení seznamu upozornění na úvodní obrazovce v rámci administrace těchto upozornění
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.CreateAdminFeBanner(NOBY.ApiContracts.AdminCreateAdminFeBannerRequest)">
+            <summary>
+            Vytvoření upozornění
+            </summary>
+            <remarks>
+            Vytvoří nové upozornění na úvodní obrazovce.
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.DeleteAdminFeBanner(System.Int32)">
+            <summary>
+            Smazání upozornění na úvodní obrazovce
+            </summary>
+            <remarks>
+            Smaže upozornění.
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.GetAdminFeBanner(System.Int32)">
+            <summary>
+            Detail upozornění na úvodní obrazovce.
+            </summary>
+            <remarks>
+            Načtení detailu upozornění
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.UpdateAdminFeBanner(System.Int32,NOBY.ApiContracts.AdminUpdateAdminFeBannerRequest)">
+            <summary>
+            Uložení upozornění
+            </summary>
+            <remarks>
+            Ukládá změn v existujícím upozornění.
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelCase(System.Int64)">
             <summary>
             Stornování case-u
