@@ -27,7 +27,7 @@ public class BuildingSavingsRequest
 
     public bool IsClientJuridicalPerson { get; set; }
 
-    public DateOnly ClientDateOfBirth { get; set; }
+    public DateOnly? ClientDateOfBirth { get; set; }
 
     public ICollection<ExtraDeposit> ExtraDeposits { get; set; } = [];
 
@@ -47,7 +47,8 @@ public class BuildingSavingsRequest
             SS_StatnaPremia_DatumMesiac = 4,
             SS_StatnaPremia_DruheKolo_DatumDen = 30,
             SS_StatnaPremia_DruheKolo_DatumMesiac = 9,
-            SS_DatumDovrsenia26rokovKlienta = ClientDateOfBirth.AddYears(26) > DateOnly.FromDateTime(DateTime.Now) ? ClientDateOfBirth.AddYears(26).ToString(DateFormat, CultureInfo.InvariantCulture)
+            SS_DatumDovrsenia26rokovKlienta = ClientDateOfBirth is not null && ClientDateOfBirth.Value.AddYears(26) > DateOnly.FromDateTime(DateTime.Now)
+                ? ClientDateOfBirth.Value.AddYears(26).ToString(DateFormat, CultureInfo.InvariantCulture)
                 : null,
             SS_KlientFyzickaPravnicka = Convert.ToInt32(IsClientJuridicalPerson),
             SS_KlientSVJ = Convert.ToInt32(IsClientSVJ),

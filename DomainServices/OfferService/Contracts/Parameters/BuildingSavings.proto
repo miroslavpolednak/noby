@@ -18,7 +18,7 @@ message BuildingSavingsSimulationInputs {
 	bool StateSubsidyRequired = 8;
 	bool IsClientSVJ = 9;
 	bool IsClientJuridicalPerson = 10;
-	cis.types.GrpcDate ClientDateOfBirth = 11;
+	cis.types.NullableGrpcDate ClientDateOfBirth = 11;
 	repeated BuildingSavingsExtraDeposit ExtraDeposits = 12;
 }
 
