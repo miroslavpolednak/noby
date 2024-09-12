@@ -1,12 +1,10 @@
-﻿using CIS.Infrastructure.CisMediatR.Rollback;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using ExternalServices.Eas.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CreateCase;
 
 internal sealed class CreateCaseHandler(
-    IRollbackBag _bag,
     IMediator _mediator,
     UserService.Clients.v1.IUserServiceClient _userService,
     CodebookService.Clients.ICodebookServiceClient _codebookService,
@@ -38,7 +36,6 @@ internal sealed class CreateCaseHandler(
         {
             _dbContext.Cases.Add(entity);
             await _dbContext.SaveChangesAsync(cancellation);
-            _bag.Add(CreateCaseRollback.BagKeyCaseId, entity.CaseId);
 
             _logger.EntityCreated(nameof(Database.Entities.Case), newCaseId);
         }

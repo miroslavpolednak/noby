@@ -7,7 +7,7 @@ public partial class CompleteTaskRequest
 { }
 
 public partial class CreateCaseRequest
-    : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest, CIS.Infrastructure.CisMediatR.Rollback.IRollbackCapable
+    : MediatR.IRequest<CreateCaseResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class CreateExistingCaseRequest
