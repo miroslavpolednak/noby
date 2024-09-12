@@ -56,22 +56,23 @@ internal sealed class InformationRequestProcessChangedHandler(
 
     private void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
     {
-        if (realEstateValuationListItem is { ValuationStateId: (int)WorkflowTaskStates.Completed, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: (int)WorkflowTaskStates.ProbihaOceneni })
-        {
-            realEstateValuationListItem.ValuationStateId = (int)WorkflowTaskStates.Dozadani;
+        if (realEstateValuationListItem.ValuationStateId is not ((int)WorkflowTaskStates.ProbihaOceneni or (int)WorkflowTaskStates.KontrolaUdaju))
+            return;
 
-            _logger.RealEstateValuationStateIdChanged(realEstateValuationListItem.RealEstateValuationId, realEstateValuationListItem.ValuationStateId);
-        }
+        realEstateValuationListItem.ValuationStateId = (int)WorkflowTaskStates.Dozadani;
+
+        _logger.RealEstateValuationStateIdChanged(realEstateValuationListItem.RealEstateValuationId, realEstateValuationListItem.ValuationStateId);
     }
 
     private void HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem)
     {
+        if (realEstateValuationListItem.ValuationStateId is (int)WorkflowTaskStates.Completed)
+            return;
+
         realEstateValuationListItem.ValuationStateId = realEstateValuationListItem.ValuationTypeId switch
         {
             (int)ValuationTypes.Online => (int)WorkflowTaskStates.KontrolaUdaju,
-            (int)ValuationTypes.Dts or (int)ValuationTypes.Standard
-                when realEstateValuationListItem.ValuationStateId != (int)WorkflowTaskStates.Completed => (int)WorkflowTaskStates.ProbihaOceneni,
-            _ => realEstateValuationListItem.ValuationStateId
+            _ => (int)WorkflowTaskStates.ProbihaOceneni
         };
 
         _logger.RealEstateValuationStateIdChanged(realEstateValuationListItem.RealEstateValuationId, realEstateValuationListItem.ValuationStateId);
