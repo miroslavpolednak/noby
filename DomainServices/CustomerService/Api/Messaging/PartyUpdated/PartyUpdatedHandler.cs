@@ -86,7 +86,8 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
                     FirstNameNaturalPerson = OriginalOrDelta(delta?.NaturalPerson?.FirstName, party.NaturalPersonAttributes.FirstName),
                     Name = OriginalOrDelta(delta?.NaturalPerson?.LastName, party.NaturalPersonAttributes.Surname),
                     DateOfBirthNaturalPerson = OriginalOrDeltaD(delta?.NaturalPerson?.DateOfBirth, party.NaturalPersonAttributes.BirthDate.Date),
-                    MaritalStatusId = OriginalOrDeltaI(delta?.NaturalPerson?.MaritalStatusId, maritalStatusId)
+                    MaritalStatusId = OriginalOrDeltaI(delta?.NaturalPerson?.MaritalStatusId, maritalStatusId),
+                    LockedIncomeDateTime = customerOnSa.LockedIncomeDateTime
                 }
             };
 
