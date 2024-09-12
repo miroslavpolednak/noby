@@ -1582,7 +1582,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("offerContacts")]
         public SharedTypesContacts? OfferContacts { get; set; } = default!;
@@ -1643,7 +1643,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("offerContacts")]
         public SharedTypesContacts? OfferContacts { get; set; } = default!;
@@ -1968,8 +1968,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("clientDateOfBirth")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public DateOnly ClientDateOfBirth { get; set; } = default!;
+        public DateOnly? ClientDateOfBirth { get; set; } = default!;
 
         /// <summary>
         /// Simulovat do konce vázací lhůty/marketingové akce
@@ -8050,7 +8049,19 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class UsersGetCurrentBannerItem
+    public partial class UsersGetCurrentBannerItem : FeBannerBaseItem
+    {
+        /// <summary>
+        /// ID banneru
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("id")]
+        public int Id { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class FeBannerBaseItem
     {
         /// <summary>
         /// Nadpis upozornění
@@ -8075,7 +8086,56 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("severity")]
-        public UsersGetCurrentBannerItemSeverity Severity { get; set; } = default!;
+        public FeBannerBaseItemSeverity Severity { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AdministrationFeBannerBase : FeBannerBaseItem
+    {
+        /// <summary>
+        /// Od kdy bude upozornění zobrazeno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("visibleFrom")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime VisibleFrom { get; set; } = default!;
+
+        /// <summary>
+        /// Do kdy bude upozornění zobrazeno
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("visibleTo")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime VisibleTo { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class AdministrationFeBannerDetail : AdministrationFeBannerBase
+    {
+        /// <summary>
+        /// ID upozornění
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("feBannerId")]
+        public int FeBannerId { get; set; } = default!;
+
+        /// <summary>
+        /// Kdo upozornění vytvořil
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdUserName")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string CreatedUserName { get; set; } = default!;
+
+        /// <summary>
+        /// Kdy byl upozornění vytvořen
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("createdTime")]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime CreatedTime { get; set; } = default!;
 
     }
 
@@ -8700,7 +8760,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("birthDate")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime BirthDate { get; set; } = default!;
+        public DateOnly BirthDate { get; set; } = default!;
 
         /// <summary>
         /// Jméno
@@ -8832,7 +8892,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("degreeBeforeId")]
         public int? DegreeBeforeId { get; set; } = default!;
@@ -8984,7 +9044,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
         /// <summary>
         /// Rodne cislo
@@ -9047,7 +9107,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
         /// <summary>
         /// Rodne cislo
@@ -9167,7 +9227,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime DateOfBirth { get; set; } = default!;
+        public DateOnly DateOfBirth { get; set; } = default!;
 
         /// <summary>
         /// Země vydání dokladu
@@ -9682,7 +9742,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("dateOfBirth")]
-        public System.DateTime? DateOfBirth { get; set; } = default!;
+        public DateOnly? DateOfBirth { get; set; } = default!;
 
     }
 
@@ -11151,7 +11211,7 @@ namespace NOBY.ApiContracts
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public enum UsersGetCurrentBannerItemSeverity
+    public enum FeBannerBaseItemSeverity
     {
 
         Error = 1,

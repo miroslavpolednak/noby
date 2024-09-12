@@ -4003,21 +4003,51 @@
             Způsob využití bytu
             </summary>
         </member>
-        <member name="P:NOBY.ApiContracts.UsersGetCurrentBannerItem.Title">
+        <member name="P:NOBY.ApiContracts.UsersGetCurrentBannerItem.Id">
+            <summary>
+            ID banneru
+            </summary>
+        </member>
+        <member name="P:NOBY.ApiContracts.FeBannerBaseItem.Title">
             <summary>
             Nadpis upozornění
             </summary>
         </member>
-        <member name="P:NOBY.ApiContracts.UsersGetCurrentBannerItem.Description">
+        <member name="P:NOBY.ApiContracts.FeBannerBaseItem.Description">
             <summary>
             Obsah upozornění
             </summary>
         </member>
-        <member name="P:NOBY.ApiContracts.UsersGetCurrentBannerItem.Severity">
+        <member name="P:NOBY.ApiContracts.FeBannerBaseItem.Severity">
             <summary>
             Úroveň závažnosti upozornění
             <br/>
             <br/>&lt;small&gt;Enum Values&lt;/small&gt;&lt;ul&gt;&lt;li&gt;1 - Error&lt;/li&gt;&lt;li&gt;2 - Warning&lt;/li&gt;&lt;li&gt;3 - Info&lt;/li&gt;&lt;/ul&gt;
+            </summary>
+        </member>
+        <member name="P:NOBY.ApiContracts.AdministrationFeBannerBase.VisibleFrom">
+            <summary>
+            Od kdy bude upozornění zobrazeno
+            </summary>
+        </member>
+        <member name="P:NOBY.ApiContracts.AdministrationFeBannerBase.VisibleTo">
+            <summary>
+            Do kdy bude upozornění zobrazeno
+            </summary>
+        </member>
+        <member name="P:NOBY.ApiContracts.AdministrationFeBannerDetail.FeBannerId">
+            <summary>
+            ID upozornění
+            </summary>
+        </member>
+        <member name="P:NOBY.ApiContracts.AdministrationFeBannerDetail.CreatedUserName">
+            <summary>
+            Kdo upozornění vytvořil
+            </summary>
+        </member>
+        <member name="P:NOBY.ApiContracts.AdministrationFeBannerDetail.CreatedTime">
+            <summary>
+            Kdy byl upozornění vytvořen
             </summary>
         </member>
         <member name="P:NOBY.ApiContracts.UsersGetLoggedInUserResponse.UserId">

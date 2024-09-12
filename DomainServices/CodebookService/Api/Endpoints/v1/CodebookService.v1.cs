@@ -611,7 +611,7 @@ internal partial class CodebookService
     public override Task<SalesArrangementStatesResponse> SalesArrangementStates(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => Helpers.GetItems(() => (new SalesArrangementStatesResponse()).AddItems(
             FastEnum
-                .GetValues<SharedTypes.Enums.EnumSalesArrangementStates>()
+                .GetValues<EnumSalesArrangementStates>()
                 .Select(t => new SalesArrangementStatesResponse.Types.SalesArrangementStateItem()
                 {
                     Id = (int)t,

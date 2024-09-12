@@ -25,7 +25,7 @@ public sealed class FeBannersService(
                 {
                     Description = t.Description,
                     Title = t.Title,
-                    Severity = (UsersGetCurrentBannerItemSeverity)t.Severity
+                    Severity = (FeBannerBaseItemSeverity)t.Severity
                 })
                 .ToList();
         }, DateTime.Now.AddMinutes(5));
