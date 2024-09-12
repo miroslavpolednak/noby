@@ -174,8 +174,16 @@ internal sealed class LinkModelationToSalesArrangementHandler(
             bool isSwitch8On = await _dbContext
                 .FlowSwitches
                 .AnyAsync(t => t.SalesArrangementId == salesArrangementId && t.FlowSwitchId == (int)FlowSwitches.DoesWflTaskForIPExist && t.Value, cancellation);
-            var fee1 = offerInstance.MortgageOffer.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
-            var fee2 = offerInstanceOld.MortgageOffer.SimulationInputs.Fees?.Select(t => (decimal)t.DiscountPercentage).ToArray() ?? Array.Empty<decimal>();
+            
+            var fee1 = offerInstance.MortgageOffer.SimulationInputs.Fees?
+                .Where(t => t.DiscountPercentage != 0)
+                .Select(t => (decimal)t.DiscountPercentage)
+                .ToArray() ?? [];
+
+            var fee2 = offerInstanceOld.MortgageOffer.SimulationInputs.Fees?
+                .Where(t => t.DiscountPercentage != 0)
+                .Select(t => (decimal)t.DiscountPercentage)
+                .ToArray() ?? [];
 
             if (isSwitch8On
                 && (!Equals(offerInstance.MortgageOffer.BasicParameters.GuaranteeDateTo, offerInstanceOld.MortgageOffer.BasicParameters.GuaranteeDateTo)
@@ -221,7 +229,7 @@ internal sealed class LinkModelationToSalesArrangementHandler(
     private async Task deleteBoundedRealEstateValuations(long caseId, CancellationToken cancellationToken)
     {
         var realEstatesToDelete = (await _realEstateValuationService.GetRealEstateValuationList(caseId, cancellationToken))
-                .Where(t => t.ValuationStateId is (int)WorkflowTaskStates.Neoceneno or (int)WorkflowTaskStates.Rozpracovano);
+            .Where(t => (WorkflowTaskStates)t.ValuationStateId is WorkflowTaskStates.Neoceneno or WorkflowTaskStates.Rozpracovano);
         foreach (var realEstateValuation in realEstatesToDelete)
         {
 #pragma warning disable CA1031 // Do not catch general exception types
