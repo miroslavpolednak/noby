@@ -35,7 +35,7 @@ message UpdateTaskRequest {
 
 	message TaskAmendmentMortgageExtraPayment {
 		cis.types.GrpcDate ExtraPaymentDate = 1;
-		cis.types.GrpcDecimal ExtraPaymentAmount = 2;
+		cis.types.GrpcDecimal Principal = 2;
 		cis.types.GrpcDecimal ExtraPaymentAmountIncludingFee = 3;
 		bool IsFinalExtraPayment = 4;
 	}

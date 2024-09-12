@@ -20,7 +20,7 @@ internal sealed class BuildingSavingsData : SharedComponents.DocumentDataStorage
         public bool StateSubsidyRequired { get; set; }
         public bool IsClientSVJ { get; set; }
         public bool IsClientJuridicalPerson { get; set; }
-        public DateOnly ClientDateOfBirth { get; set; }
+        public DateOnly? ClientDateOfBirth { get; set; }
         public ICollection<ExtraDeposit> ExtraDeposits { get; set; } = [];
 
         public sealed class ExtraDeposit

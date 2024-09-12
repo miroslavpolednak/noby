@@ -8,7 +8,7 @@ internal sealed class ErrorCodeMapper
     public const int ContractNumberSbNotFound = 13031;
     public const int TaskIdNotFound = 13026;
     public const int RefinancingError = 13037;
-    public const int SbMissingContacts = 332;
+    public const int SbMissingContacts = 90068;
     public static IErrorCodesDictionary Init()
     {
         SetMessages(new Dictionary<int, string>()

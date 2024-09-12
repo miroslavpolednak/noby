@@ -23,7 +23,7 @@ internal sealed class GetMortgageExtraPaymentHandler(
         response.ExtraPaymentAmount = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmountIncludingFee ?? 0M;
         //response.ExtraPaymentAmountIncludingFee = (decimal?)data.Process!.MortgageExtraPayment?.ExtraPaymentAmountIncludingFee ?? 0M; //deprecated
         response.IsExtraPaymentFullyRepaid = data.Process.MortgageExtraPayment?.IsFinalExtraPayment ?? false;
-        response.PrincipalAmount = (decimal?)data.Process.MortgageExtraPayment?.ExtraPaymentAmount ?? 0M;
+        response.PrincipalAmount = (decimal?)data.Process.MortgageExtraPayment?.Principal ?? 0M;
         if (data.Process.MortgageExtraPayment?.ExtraPaymentDate is not null)
         {
             response.ExtraPaymentDate = DateOnly.FromDateTime(data.Process.MortgageExtraPayment!.ExtraPaymentDate);

@@ -125,7 +125,7 @@ internal static class CaseExtensions
         var result = new Contracts.ProcessTask.Types.TaskAmendmentMortgageExtraPayment()
         {
             ExtraPaymentDate = taskData.GetDate("ukol_mspl_dat_spl"),
-            ExtraPaymentAmount = taskData.GetNDecimal("ukol_mspl_suma"),
+            Principal = taskData.GetNDecimal("ukol_mspl_suma"),
             ExtraPaymentAmountIncludingFee = taskData.GetNDecimal("ukol_mspl_suma_celkem"),
             IsFinalExtraPayment = taskData.GetBool("ukol_mspl_typ"),
             DocumentId = taskData.GetValueOrDefault("ukol_mspl_dokument_ea_cis") ?? "",
