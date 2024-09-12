@@ -8,7 +8,6 @@ using DomainServices.SalesArrangementService.Clients;
 using ExternalServices.SbWebApi.V1;
 using MediatR;
 using Moq;
-using NSubstitute.ReturnsExtensions;
 
 namespace DomainServices.CaseService.Tests.EndpointsTests;
 
@@ -27,8 +26,8 @@ public class CancelTaskHandlerTests
         _currentUser = new Mock<ICurrentUserAccessor>();
         _mediator = new Mock<IMediator>();
         _sbWebApiClient = new Mock<ISbWebApiClient>();
-        _salesArrangementService = new Mock<ISalesArrangementServiceClient>();
-        _codebookService = new Mock<ICodebookServiceClient>();
+        _salesArrangementService = MockDataSetupHelper.SetupSalesArrangementService();
+        _codebookService = MockDataSetupHelper.SetupCodebookService();
     }
 
     [Fact]
@@ -108,8 +107,6 @@ public class CancelTaskHandlerTests
 
     private void setupExternalData()
     {
-        MockDataSetupHelper.SetupSalesArrangementService(_salesArrangementService);
-
         _mediator
             .Setup(s => s.Send(It.Is<GetTaskDetailRequest>(x => x.TaskIdSb == 1), It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new GetTaskDetailResponse
@@ -130,14 +127,6 @@ public class CancelTaskHandlerTests
                 {
                     TaskTypeId = 2
                 }
-            }));
-
-        _codebookService
-            .Setup(s => s.ProductTypes(It.IsAny<CancellationToken>()))
-            .Returns(() => Task.FromResult(new List<CodebookService.Contracts.v1.ProductTypesResponse.Types.ProductTypeItem>
-            {
-                new() { Id = 20001, MandantId = 2 },
-                new() { Id = 20002, MandantId = 1 }
             }));
     }
 

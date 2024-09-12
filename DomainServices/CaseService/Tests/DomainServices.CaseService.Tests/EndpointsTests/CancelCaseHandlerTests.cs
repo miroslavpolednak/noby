@@ -34,7 +34,7 @@ public class CancelCaseHandlerTests
         _customerOnSAService = new Mock<HouseholdService.Clients.v1.ICustomerOnSAServiceClient>();
         _householdService = new Mock<HouseholdService.Clients.v1.IHouseholdServiceClient>();
         _documentOnSAService = new Mock<DocumentOnSAService.Clients.IDocumentOnSAServiceClient>();
-        _salesArrangementService = new Mock<SalesArrangementService.Clients.ISalesArrangementServiceClient>();
+        _salesArrangementService = MockDataSetupHelper.SetupSalesArrangementService();
         _productService = new Mock<ProductService.Clients.IProductServiceClient>();
     }
 
@@ -192,8 +192,6 @@ public class CancelCaseHandlerTests
 
     private void setupExternalData()
     {
-        MockDataSetupHelper.SetupSalesArrangementService(_salesArrangementService);
-
         _documentOnSAService
             .Setup(s => s.GetDocumentsOnSAList(It.Is<int>(x => x != MockDataSetupHelper.SalesArrangementIdCase1), It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new DocumentOnSAService.Contracts.GetDocumentsOnSAListResponse()));
