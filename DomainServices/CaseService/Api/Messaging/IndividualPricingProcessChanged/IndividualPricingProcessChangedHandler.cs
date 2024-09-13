@@ -37,10 +37,28 @@ internal class IndividualPricingProcessChangedHandler(
             _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
             return;
         }
-        else if (taskDetail.TaskObject.ProcessTypeId != 1)
+        else if (taskDetail.TaskObject.ProcessTypeId != 1 && long.TryParse(message.currentParentProcess.id, out long saProcessId))
         {
-            var p = (await getSalesArrangements(caseId)).FirstOrDefault(t => t.ProcessId == taskId);
-
+            var p = (await getSalesArrangements(caseId)).FirstOrDefault(t => t.ProcessId == saProcessId);
+            if (p is null)
+            {
+                _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+                return;
+            }
+            else if (p.SalesArrangementTypeId is 13 or 14)
+            {
+                var saToCheck = await _salesArrangementService.GetSalesArrangement(p.SalesArrangementId);
+                if (saToCheck.Retention?.ManagedByRC2.GetValueOrDefault() ?? saToCheck.Refixation?.ManagedByRC2.GetValueOrDefault() ?? false)
+                {
+                    _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+                    return;
+                }
+            }
+        }
+        else
+        {
+            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+            return;
         }
 
         if (message.state == ProcessStateEnum.TERMINATED && taskDetail.TaskObject.ProcessTypeId != 1)
@@ -126,10 +144,7 @@ internal class IndividualPricingProcessChangedHandler(
 
     private async Task<List<SalesArrangement>> getSalesArrangements(long caseId)
     {
-        if (_salesArrangementList is null)
-        {
-            _salesArrangementList = (await _salesArrangementService.GetSalesArrangementList(caseId)).SalesArrangements.ToList();
-        }
+        _salesArrangementList ??= (await _salesArrangementService.GetSalesArrangementList(caseId)).SalesArrangements.ToList();
         return _salesArrangementList;
     }
 
