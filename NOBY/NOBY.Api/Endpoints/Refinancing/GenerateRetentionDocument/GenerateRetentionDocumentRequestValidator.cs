@@ -12,7 +12,7 @@ internal sealed class GenerateRetentionDocumentRequestValidator
              () =>
              {
                  RuleFor(x => x.SignatureDeadline)
-                     .GreaterThanOrEqualTo(DateTime.UtcNow.AddDays(1).Date)
+                     .GreaterThanOrEqualTo(DateOnly.FromDateTime(DateTime.UtcNow.AddDays(1)))
                      .WithErrorCode(90032)
                      .WithMessage("SignatureDeadline is lower than current time");
              });

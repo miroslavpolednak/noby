@@ -968,7 +968,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("signatureDeadline")]
-        public System.DateTime? SignatureDeadline { get; set; } = default!;
+        public DateOnly? SignatureDeadline { get; set; } = default!;
 
     }
 
