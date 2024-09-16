@@ -27,13 +27,7 @@ internal partial class CodebookService
     });
 
     public override Task<FeeChangeRequestsResponse> FeeChangeRequests(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
-    => Helpers.GetItems(() =>
-        {
-            var items = _db.GetList<FeeChangeRequestsResponse.Types.FeeChangeRequestsItem>(nameof(FeeChangeRequests));
-            var m = items.Max(t => t.Amount);
-            items.First(t => t.Amount == m).IsDefault = true;
-            return (new FeeChangeRequestsResponse()).AddItems(items);
-        });
+        => _db.GetItems<FeeChangeRequestsResponse, FeeChangeRequestsResponse.Types.FeeChangeRequestsItem>();
 
     public override Task<SignatureTypeDetailResponse> SignatureTypeDetails(Google.Protobuf.WellKnownTypes.Empty request, ServerCallContext context)
         => _db.GetItems<SignatureTypeDetailResponse, SignatureTypeDetailResponse.Types.SignatureTypeDetailItem>();
@@ -48,10 +42,10 @@ internal partial class CodebookService
                Name = t.GetAttribute<System.ComponentModel.DataAnnotations.DisplayAttribute>()?.Name ?? "",
                Indicator = t switch 
                { 
-                   SharedTypes.Enums.EnumRefinancingStates.RozpracovanoVNoby or SharedTypes.Enums.EnumRefinancingStates.PodpisNOBY => 1,
-                   SharedTypes.Enums.EnumRefinancingStates.Zruseno => 2,
-                   SharedTypes.Enums.EnumRefinancingStates.Dokonceno => 3,
-                   SharedTypes.Enums.EnumRefinancingStates.RozpracovanoVSB or SharedTypes.Enums.EnumRefinancingStates.PredanoRC2 or SharedTypes.Enums.EnumRefinancingStates.PodpisSB => 4,
+                   EnumRefinancingStates.RozpracovanoVNoby or SharedTypes.Enums.EnumRefinancingStates.PodpisNOBY => 1,
+                   EnumRefinancingStates.Zruseno => 2,
+                   EnumRefinancingStates.Dokonceno => 3,
+                   EnumRefinancingStates.RozpracovanoVSB or SharedTypes.Enums.EnumRefinancingStates.PredanoRC2 or SharedTypes.Enums.EnumRefinancingStates.PodpisSB => 4,
                    _ => throw new ArgumentException("Can't get indicator for RefinancingState")
                }
                
