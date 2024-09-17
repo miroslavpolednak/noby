@@ -441,7 +441,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRateValidFrom")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime InterestRateValidFrom { get; set; } = default!;
+        public DateOnly InterestRateValidFrom { get; set; } = default!;
 
         /// <summary>
         /// Úroková sazba
@@ -1209,7 +1209,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("validTo")]
-        public System.DateTime? ValidTo { get; set; } = default!;
+        public DateOnly? ValidTo { get; set; } = default!;
 
     }
 
@@ -1367,7 +1367,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("newMaturityDate")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime NewMaturityDate { get; set; } = default!;
+        public DateOnly NewMaturityDate { get; set; } = default!;
 
         /// <summary>
         /// Nová výše splátky, pokud se snižuje výše splátky splacením mimořádné splátky
@@ -1403,7 +1403,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("fixedRateSanctionFreePeriodFrom")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime FixedRateSanctionFreePeriodFrom { get; set; } = default!;
+        public DateOnly FixedRateSanctionFreePeriodFrom { get; set; } = default!;
 
         /// <summary>
         /// Období k fixaci do
@@ -1411,7 +1411,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("fixedRateSanctionFreePeriodTo")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime FixedRateSanctionFreePeriodTo { get; set; } = default!;
+        public DateOnly FixedRateSanctionFreePeriodTo { get; set; } = default!;
 
         /// <summary>
         /// Období bez sankce od
@@ -1419,7 +1419,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("annualSanctionFreePeriodFrom")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime AnnualSanctionFreePeriodFrom { get; set; } = default!;
+        public DateOnly AnnualSanctionFreePeriodFrom { get; set; } = default!;
 
         /// <summary>
         /// Období bez sankce do
@@ -1427,7 +1427,7 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("annualSanctionFreePeriodTo")]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime AnnualSanctionFreePeriodTo { get; set; } = default!;
+        public DateOnly AnnualSanctionFreePeriodTo { get; set; } = default!;
 
         /// <summary>
         /// Částka k období bez sankce
@@ -8973,7 +8973,7 @@ namespace NOBY.ApiContracts
         public string? Name { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("establishedOn")]
-        public System.DateTime? EstablishedOn { get; set; } = default!;
+        public DateOnly? EstablishedOn { get; set; } = default!;
 
     }
 
@@ -8992,7 +8992,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("restrictionUntil")]
-        public System.DateTime? RestrictionUntil { get; set; } = default!;
+        public DateOnly? RestrictionUntil { get; set; } = default!;
 
     }
 
@@ -9358,7 +9358,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("validFrom")]
-        public System.DateTime? ValidFrom { get; set; } = default!;
+        public DateOnly? ValidFrom { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("residenceCountries")]
         public List<CustomerTaxResidenceCountryItem>? ResidenceCountries { get; set; } = default!;

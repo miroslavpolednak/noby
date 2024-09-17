@@ -38,11 +38,11 @@ public static class CustomerMapper
                 LegalCapacity = customerDto.NaturalPerson.LegalCapacity is null ? null : new NaturalPersonDelta.LegalCapacityDelta()
                 {
                     RestrictionTypeId = customerDto.NaturalPerson.LegalCapacity.RestrictionTypeId,
-                    RestrictionUntil = customerDto.NaturalPerson.LegalCapacity.RestrictionUntil
+                    RestrictionUntil = customerDto.NaturalPerson.LegalCapacity.RestrictionUntil?.ToDateTime(TimeOnly.MinValue)
                 },
                 TaxResidences = customerDto.NaturalPerson.TaxResidences is null ? null : new NaturalPersonDelta.TaxResidenceDelta()
                 {
-                    ValidFrom = customerDto.NaturalPerson.TaxResidences.ValidFrom,
+                    ValidFrom = customerDto.NaturalPerson.TaxResidences.ValidFrom?.ToDateTime(TimeOnly.MinValue),
                     ResidenceCountries = customerDto.NaturalPerson.TaxResidences.ResidenceCountries?.Select(c => new NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta
                     {
                         CountryId = c.CountryId,
