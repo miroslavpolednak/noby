@@ -81,7 +81,8 @@ public sealed class ErrorCodeMapper
             { 90070, new("Stav rozpracované žádosti se změnil na pozadí, vraťte se detail obchodního případu a pokračujte standardním průchodem přes aplikaci.") },
             { 90071, new("Neplatný doklad", "Zadaný identifikační doklad byl nalezen v rejstříku neplatných nebo ztracených dokladů. Subjekt nelze založit.") },
             { 90073, new ("Hodnota musí být celé číslo") },
-            { 90074, new ("Obchodní případ není možné zobrazit", "Aplikace NOBY neumožňuje zobrazení ukončených/zrušených obchodních případů.") }
+            { 90074, new("Obchodní případ není možné zobrazit", "Aplikace NOBY neumožňuje zobrazení ukončených/zrušených obchodních případů.") },
+            { 90075, new("Příjem nelze uložit", "Zadané IČ/RČ zaměstnavatele bylo již použito u jiného příjmu žadatele") }
         };
 
         Messages = messages.AsReadOnly();
@@ -100,8 +101,9 @@ public sealed class ErrorCodeMapper
             { 16082, new ErrorCodeDsToApiItem(90069, true) },
 			{ 11036, new ErrorCodeDsToApiItem(90071, false) },
 			{ 11025, new ErrorCodeDsToApiItem(90007, false) },
-			{ 11035, new ErrorCodeDsToApiItem(90044, false) }
-		};
+			{ 11035, new ErrorCodeDsToApiItem(90044, false) },
+            { 16083, new ErrorCodeDsToApiItem(90075, false) },
+        };
 
         DsToApiCodeMapper = mapper.AsReadOnly();
     }

@@ -1,4 +1,5 @@
-﻿using CIS.Core.ErrorCodes;
+﻿using Amazon.Runtime.Internal.Transform;
+using CIS.Core.ErrorCodes;
 
 namespace DomainServices.HouseholdService.Api;
 
@@ -32,7 +33,8 @@ internal sealed class ErrorCodeMapper
     public const int IncomeIdIsEmpty =                  16055;
     public const int Customer2WithoutCustomer1 =        16056;
     public const int HouseholdIdIsEmpty =               16080;
-    public const int EasKbDifference = 16082;
+    public const int EasKbDifference =                  16082;
+    public const int TwoSameIncomes =                   16083;
 
     public static IErrorCodesDictionary Init()
     {
@@ -64,7 +66,8 @@ internal sealed class ErrorCodeMapper
             { CreditorIdAndNameInSameTime, "Creditor.CreditorId and Creditor.Name can't be set in the same time" },
             { IncomeIdIsEmpty, "IncomeId must be > 0" },
             { Customer2WithoutCustomer1, "CustomerOnSAId1 is not set although CustomerOnSAId2 is." },
-            { HouseholdIdIsEmpty, "HouseholdId must be > 0" }
+            { HouseholdIdIsEmpty, "HouseholdId must be > 0" },
+            { TwoSameIncomes, "Multiple employment incomes with the same birth number / cin." }
         });
 
         return Messages;
