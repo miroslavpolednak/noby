@@ -19,7 +19,7 @@ internal sealed class UpdateIncomeHandler(
                 .Where(t => t.Data!.IncomeTypeId == EnumIncomeTypes.Employement && t.DocumentDataStorageId != request.IncomeId)
                 .ToList();
 
-            if (IncomeHelpers.IsIncomeEmployerUnique(request.Employement?.Employer?.Cin, request.Employement?.Employer?.BirthNumber, employmentIncomes))
+            if (employmentIncomes.Any() && IncomeHelpers.IsNotIncomeEmployerUnique(request.Employement?.Employer?.Cin, request.Employement?.Employer?.BirthNumber, employmentIncomes))
             {
                 throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.TwoSameIncomes);
             }

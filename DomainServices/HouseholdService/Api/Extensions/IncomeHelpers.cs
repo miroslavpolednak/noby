@@ -14,9 +14,9 @@ internal static class IncomeHelpers
             _ => throw new NotImplementedException("This customer income type count check is not implemented")
         };
 
-    public static bool IsIncomeEmployerUnique(string? cin, string? birthNumber, List<DocumentDataItem<Database.DocumentDataEntities.Income, int>> employmentIncomes)
+    public static bool IsNotIncomeEmployerUnique(string? cin, string? birthNumber, List<DocumentDataItem<Database.DocumentDataEntities.Income, int>> employmentIncomes)
     {
-        return !employmentIncomes.Any(t =>
+        return employmentIncomes.Any(t =>
                 (!string.IsNullOrEmpty(t.Data!.Employement?.Employer?.Cin) && t.Data!.Employement?.Employer?.Cin == cin)
                 || (!string.IsNullOrEmpty(t.Data!.Employement?.Employer?.BirthNumber) && t.Data!.Employement?.Employer?.BirthNumber == birthNumber));
     }
