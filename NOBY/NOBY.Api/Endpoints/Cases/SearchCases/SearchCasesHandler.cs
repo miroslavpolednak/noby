@@ -18,15 +18,10 @@ internal sealed class SearchCasesHandler(
 
         var filterStates = getStatesFilter(request.FilterId);
 
-        if (!_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
-        {
-            filterStates!.Remove(EnumCaseStates.InAdministration);
-        }
-
         DomainServices.CaseService.Contracts.SearchCasesResponse result;
 
         if (filterStates?.Any() ?? true)
-            result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, filterStates, request.Term, cancellationToken);
+            result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, filterStates, _userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing) ? null : 90, request.Term, cancellationToken);
         else
             result = new DomainServices.CaseService.Contracts.SearchCasesResponse 
             { 

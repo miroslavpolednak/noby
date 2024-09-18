@@ -2,6 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "google/protobuf/wrappers.proto";
 import "PaginationRequest.proto";
 import "PaginationResponse.proto";
 import "Messages/Case.proto";
@@ -18,6 +19,8 @@ message SearchCasesRequest {
 	
 	// Nastaveni strankovani
 	cis.types.PaginationRequest Pagination = 4;
+
+	google.protobuf.Int32Value StateUpdatedTimeLimitInDays = 5;
 }
 
 message SearchCasesResponse {

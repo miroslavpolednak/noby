@@ -81,13 +81,14 @@ internal sealed class CaseServiceClient(
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<EnumCaseStates>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default)
+    public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<EnumCaseStates>? states, int? stateUpdatedTimeLimitInDays, string? searchTerm, CancellationToken cancellationToken = default)
     {
         var request = new SearchCasesRequest
         {
             SearchTerm = searchTerm ?? "",
             Pagination = new PaginationRequest(pagination),
             CaseOwnerUserId = caseOwnerUserId,
+            StateUpdatedTimeLimitInDays = stateUpdatedTimeLimitInDays
         };
         if (states is not null)
             request.State.AddRange(states.Select(t => (int)t));

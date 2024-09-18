@@ -49,7 +49,7 @@ public interface ICaseServiceClient
     /// Seznam Case pro uzivatele
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
-    Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int userId, List<EnumCaseStates>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default);
+    Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int userId, List<EnumCaseStates>? states, int? stateUpdatedTimeLimitInDays, string? searchTerm, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Zmena majitele Case
