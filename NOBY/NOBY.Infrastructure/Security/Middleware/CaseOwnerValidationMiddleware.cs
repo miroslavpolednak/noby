@@ -106,7 +106,7 @@ public sealed class CaseOwnerValidationMiddleware(RequestDelegate _next)
                     false => await getCaseDataFromValidate()
                 };
 
-                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, caseInstance.CaseState, !skipValidateCaseStateAndProductSA, salesArrangementTypeId);
+                SecurityHelpers.CheckCaseOwnerAndState(currentUser, caseInstance.OwnerUserId, (EnumCaseStates)caseInstance.CaseState, caseInstance.StateUpdatedOn, !skipValidateCaseStateAndProductSA, salesArrangementTypeId);
 
                 // pokud endpoint vyzaduje specificky stav Case
                 var requiredCaseStates = endpoint?.Metadata.OfType<NobyRequiredCaseStatesAttribute>().FirstOrDefault();
@@ -116,16 +116,16 @@ public sealed class CaseOwnerValidationMiddleware(RequestDelegate _next)
                 }
             }
 
-            async Task<(int OwnerUserId, int CaseState)> getCaseDataFromDetail()
+            async Task<(int OwnerUserId, int CaseState, DateTime StateUpdatedOn)> getCaseDataFromDetail()
             {
                 var instance = await caseService.GetCaseDetail(caseId!.Value, cancellationToken);
-                return (instance.CaseOwner.UserId, instance.State);
+                return (instance.CaseOwner.UserId, instance.State, instance.StateUpdatedOn);
             }
 
-            async Task<(int OwnerUserId, int CaseState)> getCaseDataFromValidate()
+            async Task<(int OwnerUserId, int CaseState, DateTime StateUpdatedOn)> getCaseDataFromValidate()
             {
                 var instance = await caseService.ValidateCaseId(caseId!.Value, true, cancellationToken);
-                return (instance.OwnerUserId!.Value, instance.State!.Value);
+                return (instance.OwnerUserId!.Value, instance.State!.Value, (DateTime)instance.StateUpdatedOn!);
             }
         }
 

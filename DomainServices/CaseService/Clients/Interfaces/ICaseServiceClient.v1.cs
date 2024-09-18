@@ -29,7 +29,7 @@ public interface ICaseServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">CaseService unavailable</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">Some of underlying services are not available or failed to call</exception>
-    Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default);
+    Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, int? stateUpdatedTimeLimitInDays, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Vraci detail Case
@@ -49,7 +49,7 @@ public interface ICaseServiceClient
     /// Seznam Case pro uzivatele
     /// </summary>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 13003; CaseOwnerUserId must be > 0</exception>
-    Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int userId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default);
+    Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int userId, List<EnumCaseStates>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Zmena majitele Case

@@ -44,12 +44,13 @@ internal sealed class CaseServiceClient(
         return result.CaseId;
     }
 
-    public async Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default)
+    public async Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, int? stateUpdatedTimeLimitInDays, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetCaseCountsAsync(
             new()
             {
-                CaseOwnerUserId = caseOwnerUserId
+                CaseOwnerUserId = caseOwnerUserId,
+                StateUpdatedTimeLimitInDays = stateUpdatedTimeLimitInDays
             }, cancellationToken: cancellationToken);
         return result.CaseCounts.ToList();
     }
@@ -80,16 +81,16 @@ internal sealed class CaseServiceClient(
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default)
+    public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<EnumCaseStates>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default)
     {
         var request = new SearchCasesRequest
         {
             SearchTerm = searchTerm ?? "",
-            Pagination = new SharedTypes.GrpcTypes.PaginationRequest(pagination),
+            Pagination = new PaginationRequest(pagination),
             CaseOwnerUserId = caseOwnerUserId,
         };
         if (states is not null)
-            request.State.AddRange(states);
+            request.State.AddRange(states.Select(t => (int)t));
         return await _service.SearchCasesAsync(request, cancellationToken: cancellationToken);
     }
 

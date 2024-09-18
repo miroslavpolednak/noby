@@ -2,6 +2,7 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "NullableGrpcDateTime.proto";
 import "google/protobuf/wrappers.proto";
 
 message ValidateCaseIdRequest {
@@ -12,6 +13,6 @@ message ValidateCaseIdRequest {
 message ValidateCaseIdResponse {
 	bool Exists = 1;
 	google.protobuf.Int32Value OwnerUserId = 2;
-	// Stav Case
 	google.protobuf.Int32Value State = 3;
+	cis.types.NullableGrpcDateTime StateUpdatedOn = 5;
 }

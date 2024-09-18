@@ -9,7 +9,13 @@ public static class SecurityHelpers
     /// <summary>
     /// Autorizace uzivatele na Case podle OwnerUserId a na stav Case
     /// </summary>
-    public static void CheckCaseOwnerAndState(ICurrentUserAccessor currentUser, in int ownerUserId, in int caseState, bool validateCaseStateAndProductSA = true, in int? salesArrangementTypeId = null)
+    public static void CheckCaseOwnerAndState(
+        ICurrentUserAccessor currentUser, 
+        in int ownerUserId, 
+        in EnumCaseStates caseState, 
+        in DateTime? stateUpdatedOn,
+        in bool validateCaseStateAndProductSA = true, 
+        in int? salesArrangementTypeId = null)
     {
         // vidi vlastni Case nebo ma pravo videt vse
         if (currentUser.User!.Id != ownerUserId && !currentUser.HasPermission(UserPermissions.DASHBOARD_AccessAllCases))
@@ -18,15 +24,15 @@ public static class SecurityHelpers
         }
 
         // zakazane stavy Case
-        if (caseState is (int)EnumCaseStates.Finished or (int)EnumCaseStates.Cancelled or (int)EnumCaseStates.ToBeCancelledConfirmed)
+        if (caseState is EnumCaseStates.Finished or EnumCaseStates.Cancelled or EnumCaseStates.ToBeCancelledConfirmed)
         {
             throw new NobyValidationException(90074);
         }
-        else if (caseState is (int)EnumCaseStates.InAdministration && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
+        else if (caseState is EnumCaseStates.InAdministration && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing) && stateUpdatedOn.HasValue && stateUpdatedOn.Value < DateTime.Now.AddDays(-90))
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: CASE_ViewAfterDrawing missing");
         }
-        else if (validateCaseStateAndProductSA && caseState > 1 && salesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
+        else if (validateCaseStateAndProductSA && caseState != EnumCaseStates.InProgress && salesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: is product SA and CaseState > 1");
         }
