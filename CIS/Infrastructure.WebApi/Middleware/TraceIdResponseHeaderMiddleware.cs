@@ -5,9 +5,10 @@ namespace CIS.Infrastructure.WebApi.Middleware;
 
 public class TraceIdResponseHeaderMiddleware(RequestDelegate _next)
 {
-    private static readonly string _appVersion = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
+    private static readonly string _appVersion = Assembly.GetEntryAssembly()!.GetName().Version?.ToString() ?? "unknown";
 
-	public async Task InvokeAsync(HttpContext context)
+
+    public async Task InvokeAsync(HttpContext context)
     {
         context.Response.OnStarting(() =>
         {
