@@ -7,7 +7,6 @@ public class TraceIdResponseHeaderMiddleware(RequestDelegate _next)
 {
     private static readonly string _appVersion = Assembly.GetEntryAssembly()!.GetName().Version?.ToString() ?? "unknown";
 
-
     public async Task InvokeAsync(HttpContext context)
     {
         context.Response.OnStarting(() =>

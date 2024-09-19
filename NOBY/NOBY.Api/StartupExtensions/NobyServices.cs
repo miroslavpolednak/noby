@@ -2,6 +2,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
 using ExternalServices;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -35,7 +36,10 @@ internal static class NobyServices
 
         // controllers and validation
         builder.Services
-            .AddControllers(x => x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None }))
+            .AddControllers(x =>
+            {
+                x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None });
+            })
             .ConfigureApiBehaviorOptions(options =>
             {
                 // disable default asp model validation

@@ -1,4 +1,5 @@
-﻿using NOBY.Services.FeBanners;
+﻿using Microsoft.EntityFrameworkCore;
+using NOBY.Services.FeBanners;
 
 namespace NOBY.Api.Endpoints.Administration.DeleteAdminFeBanner;
 
@@ -9,7 +10,12 @@ internal sealed class DeleteAdminFeBannerHandler(
 {
     public async Task Handle(DeleteAdminFeBannerRequest request, CancellationToken cancellationToken)
     {
-        var entity = _dbContext.FeBanners.Find(request.FeBannerId);
+        var entity = await _dbContext
+            .FeBanners
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.FeBannerId == request.FeBannerId, cancellationToken)
+            ?? throw new CisNotFoundException(0, "Banner not found");
+
         _dbContext.FeBanners.Remove(entity!);
         await _dbContext.SaveChangesAsync(cancellationToken);
 

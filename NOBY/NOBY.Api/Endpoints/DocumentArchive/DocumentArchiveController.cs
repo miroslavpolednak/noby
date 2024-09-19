@@ -110,12 +110,16 @@ public class DocumentArchiveController(IMediator _mediator)
     [HttpPut("document/{documentId}/status/{statusId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Dokument"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=C23F8DBF-9F26-465b-BB34-8736133D020D")]
-    public async Task SetDocumentStatusInQueue(
+    public async Task<IActionResult> SetDocumentStatusInQueue(
         [FromRoute] string documentId,
         [FromRoute] int statusId,
         CancellationToken cancellationToken)
-         => await _mediator.Send(new SetDocumentStatusInQueueRequest(documentId, statusId), cancellationToken);
+    {
+        await _mediator.Send(new SetDocumentStatusInQueueRequest(documentId, statusId), cancellationToken);
+        return NoContent();
+    }
+        
 }

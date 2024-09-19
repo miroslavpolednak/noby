@@ -74,14 +74,17 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     /// <a href="https://eacloud.ds.kb.cz/webea/index.php?m=1&amp;o=EF40D23F-A77A-4a04-AA79-38779970393E"><img src="https://eacloud.ds.kb.cz/webea/images/element64/diagramactivity.png" width="20" height="20" />Diagram v EA</a>
     /// </remarks>
     [HttpPost("customer-on-sa/{customerOnSAId:int}/identify-by-identity")]
-    [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.CLIENT_Modify)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] CustomerIdentifyByIdentityRequest request)
-        => await _mediator.Send(request.InfuseId(customerOnSAId));
+    public async Task<IActionResult> IdentifyByIdentity([FromRoute] int customerOnSAId, [FromBody] CustomerIdentifyByIdentityRequest request)
+    {
+        await _mediator.Send(request.InfuseId(customerOnSAId));
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Identifikace klienta
@@ -160,8 +163,12 @@ public class CustomerController(IMediator _mediator) : ControllerBase
     [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.CLIENT_Modify)]
     [SwaggerOperation(Tags = ["Klient"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task UpdateCustomerDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] CustomerUpdateCustomerDetailWithChangesRequest request)
-        => await _mediator.Send(request.InfuseId(customerOnSAId));
+    public async Task<IActionResult> UpdateCustomerDetailWithChanges([FromRoute] int customerOnSAId, [FromBody] CustomerUpdateCustomerDetailWithChangesRequest request)
+    {
+        await _mediator.Send(request.InfuseId(customerOnSAId));
+        return NoContent();
+    }
+        
 }

@@ -2,8 +2,6 @@
 using CIS.Infrastructure.WebApi;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.Primitives;
-using Microsoft.Net.Http.Headers;
 using NOBY.Infrastructure.Configuration;
 using NOBY.Infrastructure.Security.Endpoints;
 using NOBY.Infrastructure.Security.Middleware;

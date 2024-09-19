@@ -19,6 +19,11 @@
             Pro HTTP metodu OPTIONS vrací 204 + patřičné hlavičky dle RFC 7231
             </summary>
         </member>
+        <member name="M:CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Pro HTTP metodu OPTIONS vrací 204 + patřičné hlavičky dle RFC 7231
+            </summary>
+        </member>
         <member name="M:CIS.Infrastructure.WebApi.CisWebApiCors.AddCisWebApiCors(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <param name="builder"></param>
             <returns>True if CORS is enabled an</returns>

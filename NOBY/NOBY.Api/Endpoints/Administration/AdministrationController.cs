@@ -45,12 +45,14 @@ public class AdministrationController(IMediator _mediator) : ControllerBase
     [HttpDelete("fe-banners/{feBannerId:int}")]
     //[NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
     [Consumes(MediaTypeNames.Application.Json)]
-    [Produces(MediaTypeNames.Text.Plain)]
     [SwaggerOperation(Tags = ["Administration"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task DeleteAdminFeBanner([FromRoute] int feBannerId)
-        => await _mediator.Send(new DeleteAdminFeBanner.DeleteAdminFeBannerRequest(feBannerId));
-
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteAdminFeBanner([FromRoute] int feBannerId)
+    {
+        await _mediator.Send(new DeleteAdminFeBanner.DeleteAdminFeBannerRequest(feBannerId));
+        return NoContent();
+    }
+    
     /// <summary>
     /// Detail upozornění na úvodní obrazovce.
     /// </summary>
@@ -75,7 +77,11 @@ public class AdministrationController(IMediator _mediator) : ControllerBase
     //[NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Administration"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task UpdateAdminFeBanner([FromRoute] int feBannerId, [FromBody] AdminUpdateAdminFeBannerRequest request)
-        => await _mediator.Send(request.InfuseId(feBannerId));
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> UpdateAdminFeBanner([FromRoute] int feBannerId, [FromBody] AdminUpdateAdminFeBannerRequest request)
+    {
+        await _mediator.Send(request.InfuseId(feBannerId));
+        return NoContent();
+    }
+        
 }

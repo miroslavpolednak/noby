@@ -30,10 +30,13 @@ public sealed class UsersController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("users/signin")]
     [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task SignIn([FromBody] UsersSignInRequest request, CancellationToken cancellationToken)
-        => await _mediator.Send(request, cancellationToken);
-
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> SignIn([FromBody] UsersSignInRequest request, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request, cancellationToken);
+        return NoContent();
+    }
+    
     /// <summary>
     /// Získání obsahu auth cookie pro ePodpisy.
     /// </summary>

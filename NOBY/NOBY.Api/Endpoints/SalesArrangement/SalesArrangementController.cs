@@ -50,15 +50,17 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// <param name="salesArrangementId">ID</param>
     [HttpDelete("{salesArrangementId:int}")]
     [NobyAuthorize(UserPermissions.CHANGE_REQUESTS_Access)]
-    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=513586F4-297B-4e72-BF55-2207943157C6")]
-    public async Task DeleteSalesArrangement([FromRoute] int salesArrangementId)
-        => await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId));
-
+    public async Task<IActionResult> DeleteSalesArrangement([FromRoute] int salesArrangementId)
+    {
+        await _mediator.Send(new DeleteSalesArrangement.DeleteSalesArrangementRequest(salesArrangementId));
+        return NoContent();
+    }
+    
     /// <summary>
     /// Vrací vyhodnocení dané úvěrové žádosti
     /// </summary>
@@ -153,15 +155,17 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/parameters")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=18E19FC4-9238-4249-B43E-A26A9FBBC32C")]
-    public async Task UpdateParameters([FromRoute] int salesArrangementId, [FromBody] SalesArrangementUpdateParametersRequest request)
-        => await _mediator.Send(request.InfuseId(salesArrangementId));
-
+    public async Task<IActionResult> UpdateParameters([FromRoute] int salesArrangementId, [FromBody] SalesArrangementUpdateParametersRequest request)
+    {
+        await _mediator.Send(request.InfuseId(salesArrangementId));
+        return NoContent();
+    }
+    
     /// <summary>
     /// Validace SalesArrangementu a odeslání do StarBuildu
     /// </summary>
@@ -172,15 +176,17 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// <param name="ignoreWarnings">Ignorovat varování a odeslat do Starbuildu</param>
     [HttpPost("{salesArrangementId:int}/send")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Send, UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=DF791F57-8B9E-41b2-94C1-7D73A5B30BBB")]
-    public async Task SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
-        => await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));
-
+    public async Task<IActionResult> SendToCmp([FromRoute] int salesArrangementId, [FromQuery] bool ignoreWarnings = false)
+    {
+        await _mediator.Send(new SendToCmp.SendToCmpRequest(salesArrangementId, ignoreWarnings));
+        return NoContent();
+    }
+    
     /// <summary>
     /// Získání komentáře na SalesArrangementu.
     /// </summary>
@@ -206,12 +212,14 @@ public sealed class SalesArrangementController(IMediator _mediator) : Controller
     /// </remarks>
     [HttpPut("{salesArrangementId:int}/comment")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = [ "Sales Arrangement" ])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5792DE4C-67E9-4e3f-A47A-E4D54C79AD4B")]
-    public async Task UpdateComment([FromRoute] int salesArrangementId, [FromBody] SalesArrangementUpdateCommentRequest? request)
-        => await _mediator.Send(request?.InfuseId(salesArrangementId) ?? throw new NobyValidationException("Payload is empty"));
+    public async Task<IActionResult> UpdateComment([FromRoute] int salesArrangementId, [FromBody] SalesArrangementUpdateCommentRequest? request)
+    {
+        await _mediator.Send(request?.InfuseId(salesArrangementId) ?? throw new NobyValidationException("Payload is empty"));
+        return NoContent();
+    }
 }

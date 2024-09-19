@@ -69,11 +69,15 @@ public class DocumentOnSAController(IMediator _mediator)
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
     [NobySkipCaseStateAndProductSAValidation]
     [SwaggerOperation(Tags = ["Podepisování"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB")]
-    public async Task SendDocumentOnSAPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
-        => await _mediator.Send(new SendDocumentOnSAPreviewRequest(salesArrangementId, documentOnSAId));
+    public async Task<IActionResult> SendDocumentOnSAPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
+    {
+        await _mediator.Send(new SendDocumentOnSAPreviewRequest(salesArrangementId, documentOnSAId));
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Zrušit podepisování dokumentu
@@ -87,13 +91,17 @@ public class DocumentOnSAController(IMediator _mediator)
     [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Podepisování"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=AA714DE2-ACD8-48ed-B146-41D50B7D3BE1")]
-    public async Task StopSigning(
+    public async Task<IActionResult> StopSigning(
         [FromRoute] int salesArrangementId,
         [FromRoute] int documentOnSAId)
-    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
+    {
+        await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
+        return NoContent();
+    }
+    
 
     /// <summary>
     /// Vygenerování náhledu rozpodepsaného dokumentu
@@ -126,14 +134,18 @@ public class DocumentOnSAController(IMediator _mediator)
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
     [NobySkipCaseStateAndProductSAValidation]
     [SwaggerOperation(Tags = ["Podepisování"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9")]
-    public async Task SignDocumentManually(
+    public async Task<IActionResult> SignDocumentManually(
         [FromRoute] int salesArrangementId,
         [FromRoute] int documentOnSAId)
-     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId));
+    {
+        await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId));
+        return NoContent();
+    }
+    
 
     /// <summary>
     /// Stažení dokumentu k fyzickému podepisování

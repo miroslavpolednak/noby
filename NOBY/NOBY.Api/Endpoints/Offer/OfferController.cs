@@ -166,13 +166,15 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// Nastavuje příznaky na modelaci.
     /// </summary>
     [HttpPut("case/{caseId:long}/offer/{offerId:int}/flags")]
-    [Produces(MediaTypeNames.Application.Json)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] OfferSetOfferFlagsRequest request)
-        => await _mediator.Send((request ?? new()).InfuseId(offerId));
-
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] OfferSetOfferFlagsRequest request)
+    {
+        await _mediator.Send((request ?? new()).InfuseId(offerId));
+        return NoContent();
+    }
+    
     /// <summary>
     /// Plný splátkový kalendář dle ID simulace.
     /// </summary>
