@@ -15,6 +15,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Dto\**" />
+	  <EmbeddedResource Remove="Dto\**" />
+	  <None Remove="Dto\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Google.Protobuf" Version="3.28.1" />
 		<PackageReference Include="Grpc.Net.Client" Version="2.65.0" />
 		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.65.0" />
@@ -26,9 +32,5 @@
 		<ProjectReference Include="..\..\..\InternalServices\ServiceDiscovery\Clients\CIS.InternalServices.ServiceDiscovery.Clients.csproj" />
 		<ProjectReference Include="..\..\CustomerService\Contracts\DomainServices.CustomerService.Contracts.csproj" />
 		<ProjectReference Include="..\Contracts\DomainServices.HouseholdService.Contracts.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Dto\" />
 	</ItemGroup>
 </Project>
