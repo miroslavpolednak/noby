@@ -31,7 +31,7 @@ internal sealed class UpdateCustomerDataHandler(
 
         await _dbContext.SaveChangesAsync(cancellation);
 
-        if (customerNameChanged)
+        if (customerNameChanged && entity.State == (int)EnumCaseStates.InProgress)
         {
             await _mediator.Send(new NotifyStarbuildRequest { CaseId = request.CaseId }, cancellation);
         }
