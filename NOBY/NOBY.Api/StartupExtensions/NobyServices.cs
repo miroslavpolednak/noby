@@ -42,9 +42,31 @@ internal static class NobyServices
             })
             .ConfigureApiBehaviorOptions(options =>
             {
-                // disable default asp model validation
-                options.SuppressModelStateInvalidFilter = true;
-                options.SuppressMapClientErrors = true;
+                // disable default asp model validation - tohle chteji vypnout
+                //options.SuppressModelStateInvalidFilter = true;
+                //options.SuppressMapClientErrors = true;
+
+                // misto toho budeme vracet model state chyby
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    List<ApiErrorItem> errors = context
+                        .ModelState
+                        .Select(t => new ApiErrorItem
+                        {
+                            ErrorCode = 90100,
+                            Severity = ApiErrorItemServerity.Error,
+                            Message = "Nastala neočekávaná chyba, opakujte akci později prosím.",
+                            Description = "Chybí povinné parametry.",
+                            Reason = new ApiErrorItem.ErrorReason
+                            { 
+                                ReasonType = "ModelState validation",
+                                ReasonDescription = t.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault() ?? "" 
+                            } 
+                        })
+                        .ToList();
+
+                    return new BadRequestObjectResult(errors);
+                };
             })
             .AddJsonOptions(options =>
             {
