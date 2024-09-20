@@ -9205,6 +9205,12 @@ namespace NOBY.ApiContracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class CustomerGetCustomerDetailWithChangesResponse : CustomerDetailBase
     {
+        /// <summary>
+        /// Příznak nutnosti znovu podepsat žádost
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isNewSigningRequired")]
+        public bool? IsNewSigningRequired { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("emailAddress")]
         public SharedTypesEmailConfirmed? EmailAddress { get; set; } = default!;
@@ -9722,6 +9728,13 @@ namespace NOBY.ApiContracts
 
         [System.Text.Json.Serialization.JsonPropertyName("householdTypeName")]
         public string? HouseholdTypeName { get; set; } = default!;
+
+        /// <summary>
+        /// Příznak nutnosti znovu podepsat žádost
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("isNewSigningRequired")]
+        public bool? IsNewSigningRequired { get; set; } = default!;
 
     }
 
