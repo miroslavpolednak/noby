@@ -37,6 +37,7 @@ internal sealed class GetMortgageRetentionHandler(
         if (((decimal?)data.ActivePriceException?.LoanInterestRate?.LoanInterestRateDiscount ?? 0) > 0)
         {
             response.InterestRateDiscount = data.ActivePriceException!.LoanInterestRate?.LoanInterestRateDiscount;
+            response.InterestRateDiscounted = response.InterestRate - response.InterestRateDiscount;
         }
 
         // IC poplatek
