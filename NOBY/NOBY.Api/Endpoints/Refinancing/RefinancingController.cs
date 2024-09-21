@@ -219,9 +219,12 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=5379DC03-6DFD-411c-9A7C-AB8203677FA9")]
-    public async Task GenerateRetentionDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateRetentionDocumentRequest request) => 
+    public async Task<IActionResult> GenerateRetentionDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateRetentionDocumentRequest request)
+    {
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
-
+        return NoContent();
+    }
+    
     /// <summary>
     /// Generování dokumentu pro Refixace nebo Individuální sdělení
     /// </summary>
@@ -237,9 +240,12 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A415BC33-46AF-40f9-B50C-5F7297DC0B26")]
-    public async Task GenerateRefixationDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateRefixationDocumentRequest request) => 
+    public async Task<IActionResult> GenerateRefixationDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateRefixationDocumentRequest request)
+    {
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
-
+        return NoContent();
+    }
+    
     /// <summary>
     /// Generování dokumentu mimořádné splátky
     /// </summary>
@@ -255,6 +261,9 @@ public sealed class RefinancingController(IMediator _mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerOperation(Tags = ["Refinancing"])]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=6ABBB7A4-03E8-4cd2-8D6B-FAD3C407AC20")]
-    public async Task GenerateExtraPaymentDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateExtraPaymentDocumentRequest request) => 
+    public async Task<IActionResult> GenerateExtraPaymentDocument(long caseId, int salesArrangementId, [FromBody] RefinancingGenerateExtraPaymentDocumentRequest request)
+    {
         await _mediator.Send(request.Infuse(caseId, salesArrangementId));
+        return NoContent();
+    }
 }
