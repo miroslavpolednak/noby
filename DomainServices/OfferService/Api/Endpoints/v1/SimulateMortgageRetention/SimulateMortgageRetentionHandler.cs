@@ -1,13 +1,13 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageRetention;
 
 internal sealed class SimulateMortgageRetentionHandler(
+    IRollbackBag _bag,
     Database.OfferServiceDbContext _dbContext,
     IEasSimulationHTClient _easSimulationHTClient,
     IDocumentDataStorage _documentDataStorage,
@@ -65,29 +65,12 @@ internal sealed class SimulateMortgageRetentionHandler(
         };
         _dbContext.Offers.Add(entity);
 
-        var strategy = _dbContext.Database.CreateExecutionStrategy();
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        _bag.Add(SimulateMortgageRetentionRollback.BagKeyOfferId, entity.OfferId);
 
-        return await strategy.ExecuteAsync(async () =>
-        {
-            var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+        // ulozit json data simulace
+        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
 
-            try
-            {
-                await _dbContext.SaveChangesAsync(cancellationToken);
-
-                // ulozit json data simulace
-                await _documentDataStorage.Add(_dbContext.Database.GetDbConnection(), transaction.GetDbTransaction(), entity.OfferId, documentEntity, cancellationToken);
-
-                await transaction.CommitAsync(cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.DatabaseRollbackInitiated(ex);
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
-
-            return entity;
-        });
+        return entity;
     }
 }

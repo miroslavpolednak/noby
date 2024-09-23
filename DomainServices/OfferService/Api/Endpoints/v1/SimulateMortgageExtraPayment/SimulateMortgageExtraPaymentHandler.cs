@@ -1,12 +1,13 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
-using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
 
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageExtraPayment;
 
 internal sealed class SimulateMortgageExtraPaymentHandler(
+    IRollbackBag _bag,
     Database.OfferServiceDbContext _dbContext,
     IEasSimulationHTClient _easSimulationHTClient,
     IDocumentDataStorage _documentDataStorage,
@@ -37,26 +38,11 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
         };
         _dbContext.Offers.Add(entity);
 
-        var strategy = _dbContext.Database.CreateExecutionStrategy();
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        _bag.Add(SimulateMortgageExtraPaymentRollback.BagKeyOfferId, entity.OfferId);
 
-        await strategy.ExecuteAsync(async () =>
-        {
-            var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
-
-            try
-            {
-                await _dbContext.SaveChangesAsync(cancellationToken);
-
-                // ulozit json data simulace
-                await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
-            }
-            catch (Exception ex)
-            {
-                _logger.DatabaseRollbackInitiated(ex);
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
-        });
+        // ulozit json data simulace
+        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
