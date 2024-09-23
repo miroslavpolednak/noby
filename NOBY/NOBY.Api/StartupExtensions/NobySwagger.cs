@@ -5,7 +5,6 @@ using Asp.Versioning.ApiExplorer;
 using Asp.Versioning;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -18,7 +17,7 @@ internal static class NobySwagger
 {
     static string xmlFileName(Type type) => type.GetTypeInfo().Module.Name.Replace(".dll", ".xml").Replace(".exe", ".xml");
 
-    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder, ICodebookMap codebookMap)
+    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
 
@@ -188,61 +187,6 @@ internal static class NobySwagger
                 Title = "NOBY FRONTEND API",
                 Version = "All version"
             };
-
-            info.Description = text.ToString();
-
-            return info;
-        }
-
-        /// <summary>
-        /// For api versioning to multiple documents according versions
-        /// </summary>
-        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
-        {
-            var text = new StringBuilder("Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>");
-
-            var info = new OpenApiInfo()
-            {
-                Title = "NOBY FRONTEND API",
-                Version = description.ApiVersion.ToString()
-            };
-
-            if (description.IsDeprecated)
-            {
-                text.Append(" This API version has been deprecated.");
-            }
-
-            if (description.SunsetPolicy is SunsetPolicy policy)
-            {
-                if (policy.Date is DateTimeOffset when)
-                {
-                    text.Append(" The API will be sunset on ")
-                        .Append(when.Date.ToShortDateString())
-                        .Append('.');
-                }
-
-                if (policy.HasLinks)
-                {
-                    text.AppendLine();
-
-                    for (var i = 0; i < policy.Links.Count; i++)
-                    {
-                        var link = policy.Links[i];
-
-                        if (link.Type == "text/html")
-                        {
-                            text.AppendLine();
-
-                            if (link.Title.HasValue)
-                            {
-                                text.Append(link.Title.Value).Append(": ");
-                            }
-
-                            text.Append(link.LinkTarget.OriginalString);
-                        }
-                    }
-                }
-            }
 
             info.Description = text.ToString();
 
