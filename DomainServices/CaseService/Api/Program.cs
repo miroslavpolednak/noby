@@ -10,7 +10,6 @@ using DomainServices.CaseService.Api.Messaging.MortgageServicingBatch;
 SharedComponents.GrpcServiceBuilder
                 .CreateGrpcService(args, typeof(Program))
                 .AddApplicationConfiguration<DomainServices.CaseService.Api.Configuration.AppConfiguration>()
-                .AddRollbackCapability()
                 .AddDistributedCache()
                 .AddErrorCodeMapper(DomainServices.CaseService.Api.ErrorCodeMapper.Init())
                 .AddRequiredServices(services =>

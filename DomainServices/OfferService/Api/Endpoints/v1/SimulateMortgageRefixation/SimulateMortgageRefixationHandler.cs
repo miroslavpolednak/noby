@@ -1,6 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
 
@@ -67,25 +68,43 @@ internal sealed class SimulateMortgageRefixationHandler(
 
     private async Task<(int OfferId, ModificationStamp Stamp)> insertOffer(long caseId, DateTime? validTo, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
     {
-        var entity = new Database.Entities.Offer
+        var strategy = _dbContext.Database.CreateExecutionStrategy();
+
+        return await strategy.ExecuteAsync(async () =>
         {
-            ResourceProcessId = Guid.NewGuid(),
-            CaseId = caseId,
-            OfferType = (int)OfferTypes.MortgageRefixation,
-            Origin = (int)OfferOrigins.OfferService,
-            Flags = (int)EnumOfferFlagTypes.Current,
-            ValidTo = validTo
-        };
-        _dbContext.Offers.Add(entity);
+            var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+            var entity = new Database.Entities.Offer
+            {
+                ResourceProcessId = Guid.NewGuid(),
+                CaseId = caseId,
+                OfferType = (int)OfferTypes.MortgageRefixation,
+                Origin = (int)OfferOrigins.OfferService,
+                Flags = (int)EnumOfferFlagTypes.Current,
+                ValidTo = validTo
+            };
+            _dbContext.Offers.Add(entity);
 
-        // ulozit json data simulace
-        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+            try
+            {
+                await _dbContext.SaveChangesAsync(cancellationToken);
 
-        _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
+                // ulozit json data simulace
+                await _documentDataStorage.Add(_dbContext.Database.GetDbConnection(), transaction.GetDbTransaction(), entity.OfferId, documentEntity, cancellationToken);
 
-        return (entity.OfferId, new ModificationStamp(entity));
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.DatabaseRollbackInitiated(ex);
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+
+            _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
+
+            return (entity.OfferId, new ModificationStamp(entity));
+        });
     }
 
     private async Task<ModificationStamp> updateOffer(int offerId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)

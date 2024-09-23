@@ -1,5 +1,7 @@
 ﻿using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
 
@@ -37,19 +39,7 @@ internal sealed class SimulateMortgageRetentionHandler(
         }
 
         // save to DB
-        var entity = new Database.Entities.Offer
-        {
-            ResourceProcessId = Guid.NewGuid(),
-            CaseId = request.CaseId,
-            OfferType = (int)OfferTypes.MortgageRetention,
-            Origin = (int)OfferOrigins.OfferService
-        };
-        _dbContext.Offers.Add(entity);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        // ulozit json data simulace
-        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+        var entity = await saveEntity(request.CaseId, documentEntity, cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
@@ -61,5 +51,43 @@ internal sealed class SimulateMortgageRetentionHandler(
             BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
             SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
         };
+    }
+
+    private async Task<Database.Entities.Offer> saveEntity(long caseId, Database.DocumentDataEntities.MortgageRetentionData documentEntity, CancellationToken cancellationToken)
+    {
+        // save to DB
+        var entity = new Database.Entities.Offer
+        {
+            ResourceProcessId = Guid.NewGuid(),
+            CaseId = caseId,
+            OfferType = (int)OfferTypes.MortgageRetention,
+            Origin = (int)OfferOrigins.OfferService
+        };
+        _dbContext.Offers.Add(entity);
+
+        var strategy = _dbContext.Database.CreateExecutionStrategy();
+
+        return await strategy.ExecuteAsync(async () =>
+        {
+            var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                // ulozit json data simulace
+                await _documentDataStorage.Add(_dbContext.Database.GetDbConnection(), transaction.GetDbTransaction(), entity.OfferId, documentEntity, cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.DatabaseRollbackInitiated(ex);
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+
+            return entity;
+        });
     }
 }

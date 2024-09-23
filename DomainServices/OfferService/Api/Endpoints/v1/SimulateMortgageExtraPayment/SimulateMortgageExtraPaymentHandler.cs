@@ -1,5 +1,6 @@
 ﻿using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
+using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
 
@@ -36,10 +37,26 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
         };
         _dbContext.Offers.Add(entity);
 
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        var strategy = _dbContext.Database.CreateExecutionStrategy();
 
-        // ulozit json data simulace
-        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+        await strategy.ExecuteAsync(async () =>
+        {
+            var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+
+            try
+            {
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                // ulozit json data simulace
+                await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                _logger.DatabaseRollbackInitiated(ex);
+                await transaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        });
 
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
