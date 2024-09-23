@@ -4502,6 +4502,11 @@
             [optional] Cislo dokladu
             </summary>
         </member>
+        <member name="P:NOBY.ApiContracts.CustomerGetCustomerDetailWithChangesResponse.IsNewSigningRequired">
+            <summary>
+            Příznak nutnosti znovu podepsat žádost
+            </summary>
+        </member>
         <member name="P:NOBY.ApiContracts.CustomerIdentifyRequest.FirstName">
             <summary>
             Jméno customera
@@ -4750,6 +4755,11 @@
         <member name="P:NOBY.ApiContracts.HouseholdInList.HouseholdTypeName">
             <summary>
             Typ domacnosti slovne
+            </summary>
+        </member>
+        <member name="P:NOBY.ApiContracts.HouseholdInList.IsNewSigningRequired">
+            <summary>
+            Příznak nutnosti znovu podepsat žádost
             </summary>
         </member>
         <member name="P:NOBY.ApiContracts.HouseholdCustomerBase.CustomerOnSAId">
