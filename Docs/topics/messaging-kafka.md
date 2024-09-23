@@ -138,6 +138,24 @@ RetryPolicy nastavuje, jak se konzument má zachovat, pokud dojde k neošetřen�
 1. Default - výchozí chování, kdy v případě chyby dojde k opakovanému provolání v určitém intervalu.
 2. Durable - funkčnost podobná DeadLetter queue, která vyžaduje SQL databázi. Chybně zpracované zprávy se ukládají a pokračuje se v konzumaci dalších zpráv. Na pozadí běží job, který pravidelně zkouší nezpracovanou zprávu znovu zkonzumovat.
 
+#### WorkersCountStrategy
+Do nastavení je možné přidat atribut WorkersCountStrategy, který přidá pro definovaný topic dynamický výpočet workerů například na základě počtu vláken, co služba využívá (vlákna myšlena virtuální, ne fyzická). 
+```json
+"WorkersCountStrategy": {
+  //Jako název atributu v JSONu se používá název daného topicu, pro který se má dynamický výpočet workerů nastavit
+  "Starbuild-FAT_Workflow_process-event-pub": {
+    "WorkersCountStrategy": "ThreadCount",
+    "EvaluationIntervalSecond": 90,
+    "ThreadCountWorkerCount": {
+      "ThreadsMin": 100, //Minimální počet vláken, při kterém se využije maximální počet workerů (WorkersMax)
+      "ThreadsMax": 200, //Maximální počet vláken - WorkersMin
+      "WorkersMin": 1,
+      "WorkersMax": 10
+    }
+  }
+}
+```
+
 ### Napojení na Kafku
 Každý topic může produkovat buď AVRO, nebo JSON zprávy. V jednom topic může chodit více druhů zpráv stejného typu (avro/json). 
 Při vygenerování zprávy je důležité, aby namespace včetně názvu třídy odpovídal celému názvu, který je uvedený v registru schémat.
