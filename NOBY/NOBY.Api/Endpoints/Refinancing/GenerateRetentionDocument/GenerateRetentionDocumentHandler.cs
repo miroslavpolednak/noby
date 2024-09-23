@@ -48,7 +48,7 @@ public class GenerateRetentionDocumentHandler(
     {
         var offer = await _offerService.GetOffer(offerId, cancellationToken);
 
-        if (((DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom).AddDays(-14).Date <= DateTime.UtcNow.Date)
+        if (((DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom).AddDays(-14).Date < DateTime.UtcNow.Date)
             throw new NobyValidationException(90051);
 
         return offer;
