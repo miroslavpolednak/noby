@@ -4,6 +4,7 @@ using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RealEstateValuationService.Clients;
 using Google.Protobuf.Collections;
 using NOBY.Api.Endpoints.DocumentArchive.GetDocumentList;
+using System.Web;
 using __Contracts = DomainServices.RealEstateValuationService.Contracts;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.GetRealEstateValuationDetail;
@@ -32,7 +33,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
 
         return new RealEstateValuationGetRealEstateValuationDetailResponse
         {
-            Comment = valuationDetail.Comment,
+            Comment = HttpUtility.HtmlEncode(valuationDetail.Comment),
 			RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
             RealEstateValuationDetail = new()
             {
