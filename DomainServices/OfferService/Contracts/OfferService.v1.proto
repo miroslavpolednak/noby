@@ -19,6 +19,7 @@ import "Messages/GetMortgageDetail.proto";
 import "Messages/CreateResponseCode.proto";
 import "Messages/GetResponseCodeList.proto";
 import "Messages/DeleteOfferList.proto";
+import "Messages/CancelOffer.proto";
 
 service OfferService {
 	rpc ValidateOfferId (ValidateOfferIdRequest) returns (ValidateOfferIdResponse);
@@ -52,4 +53,6 @@ service OfferService {
 	rpc GetResponseCodeList (GetResponseCodeListRequest) returns (GetResponseCodeListResponse);
 
 	rpc DeleteOfferList (DeleteOfferListRequest) returns (google.protobuf.Empty);
+
+	rpc CancelOffer (CancelOfferRequest) returns (google.protobuf.Empty);
 }

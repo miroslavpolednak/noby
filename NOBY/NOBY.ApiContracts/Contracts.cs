@@ -289,7 +289,7 @@ namespace NOBY.ApiContracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRateDiscount")]
-        public decimal InterestRateDiscount { get; set; } = default!;
+        public decimal? InterestRateDiscount { get; set; } = default!;
 
     }
 

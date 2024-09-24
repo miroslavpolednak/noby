@@ -39,6 +39,12 @@ internal sealed class UpdateOfferHandler(OfferServiceDbContext _dbContext)
             offer.ValidTo = request.ValidTo;
         }
 
+        if (request.RemoveIsCommunicatedFlag && ((offer.Flags & (int)EnumOfferFlagTypes.Communicated) == (int)EnumOfferFlagTypes.Communicated))
+        {
+            // Remove communicated flag
+            offer.Flags -= (int)EnumOfferFlagTypes.Communicated;
+        }
+
         await _dbContext.SaveChangesAsync(cancellationToken);
 
         return new Empty();

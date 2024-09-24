@@ -21,7 +21,7 @@ public sealed class OfferService(IMediator _mediator)
     public override async Task<GetMortgageDetailResponse> GetMortgageDetail(GetMortgageDetailRequest request, ServerCallContext context)
        => await _mediator.Send(request);
 
-    public override async Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, ServerCallContext context) => 
+    public override async Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, ServerCallContext context) =>
         await _mediator.Send(request);
 
     public override async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, ServerCallContext context)
@@ -60,4 +60,8 @@ public sealed class OfferService(IMediator _mediator)
 
         return new Empty();
     }
+
+    public override async Task<Empty> CancelOffer(CancelOfferRequest request, ServerCallContext context)
+     => await _mediator.Send(request);
+
 }

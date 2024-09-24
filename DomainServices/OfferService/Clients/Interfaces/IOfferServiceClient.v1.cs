@@ -63,4 +63,6 @@ public interface IOfferServiceClient
 
     Task DeleteOfferList(IEnumerable<int> offerIds, CancellationToken cancellationToken = default);
     Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default);
+
+    Task CancelOffer(int offerId, CancellationToken cancellationToken = default);
 }

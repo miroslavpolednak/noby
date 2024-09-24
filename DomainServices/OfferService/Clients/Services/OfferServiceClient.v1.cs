@@ -2,7 +2,7 @@
 
 namespace DomainServices.OfferService.Clients.v1;
 
-internal sealed class OfferServiceClient 
+internal sealed class OfferServiceClient
     : IOfferServiceClient
 {
     public async Task<decimal> GetInterestRate(long caseId, DateOnly futureInterestRateValidTo, int? fixedRatePeriod = default, CancellationToken cancellationToken = default)
@@ -24,8 +24,8 @@ internal sealed class OfferServiceClient
         .ToList();
 
     public async Task<ValidateOfferIdResponse> ValidateOfferId(int offerId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
-        => await _service.ValidateOfferIdAsync(new ValidateOfferIdRequest 
-        { 
+        => await _service.ValidateOfferIdAsync(new ValidateOfferIdRequest
+        {
             OfferId = offerId,
             ThrowExceptionIfNotFound = throwExceptionIfNotFound
         }, cancellationToken: cancellationToken);
@@ -44,16 +44,16 @@ internal sealed class OfferServiceClient
     }
 
     public async Task<GetMortgageDetailResponse> GetMortgageDetail(int offerId, CancellationToken cancellationToken = default)
-        => await _service.GetMortgageDetailAsync(new GetMortgageDetailRequest() 
-        { 
-            OfferId = offerId 
+        => await _service.GetMortgageDetailAsync(new GetMortgageDetailRequest()
+        {
+            OfferId = offerId
         }, cancellationToken: cancellationToken);
 
     public async Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, CancellationToken cancellationToken = default)
         => await _service.SimulateBuildingSavingsAsync(request, cancellationToken: cancellationToken);
 
     public async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, CancellationToken cancellationToken = default)
-        =>  await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
+        => await _service.SimulateMortgageAsync(request, cancellationToken: cancellationToken);
 
     public async Task<SimulateMortgageRetentionResponse> SimulateMortgageRetention(SimulateMortgageRetentionRequest request, CancellationToken cancellationToken = default)
         => await _service.SimulateMortgageRetentionAsync(request, cancellationToken: cancellationToken);
@@ -64,7 +64,7 @@ internal sealed class OfferServiceClient
             OfferId = offerId
         }, cancellationToken: cancellationToken);
 
-    public async Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken = default) 
+    public async Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken = default)
         => await _service.GetOfferDeveloperAsync(new GetOfferDeveloperRequest
         {
             OfferId = offerId
@@ -92,6 +92,9 @@ internal sealed class OfferServiceClient
 
     public async Task DeleteOfferList(IEnumerable<int> offerIds, CancellationToken cancellationToken = default)
         => await _service.DeleteOfferListAsync(new DeleteOfferListRequest { OfferIds = { offerIds } }, cancellationToken: cancellationToken);
+
+    public async Task CancelOffer(int offerId, CancellationToken cancellationToken = default)
+        => await _service.CancelOfferAsync(new() { OfferId = offerId }, cancellationToken: cancellationToken);
 
     private int? _cacheGetOfferResponseId;
     private GetOfferResponse? _cacheGetMortgageOfferResponse;
