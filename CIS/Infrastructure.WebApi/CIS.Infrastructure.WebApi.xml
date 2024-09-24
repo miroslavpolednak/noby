@@ -14,6 +14,11 @@
             Loggování a telemetrie
             </summary>
         </member>
+        <member name="T:CIS.Infrastructure.WebApi.JsonConverterForStringEncoding">
+            <summary>
+            Zajisti, aby veskery json output byl html encoded
+            </summary>
+        </member>
         <member name="T:CIS.Infrastructure.WebApi.Middleware.HttpOptionsMiddleware">
             <summary>
             Pro HTTP metodu OPTIONS vrací 204 + patřičné hlavičky dle RFC 7231

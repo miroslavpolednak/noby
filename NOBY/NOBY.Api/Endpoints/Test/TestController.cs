@@ -11,8 +11,12 @@ public class TestController(IMediator _mediator, IHttpContextAccessor _context)
     : ControllerBase
 {
     /*[HttpGet("test2")]
-    public async Task<IActionResult> Test2([FromHeader] string ttt)
+    public async Task<AddressGetAddressDetailResponse> Test2()
     {
-        return Content(ttt);
+        return new AddressGetAddressDetailResponse
+        {
+            DeliveryDetails = "test",
+            CityDistrict = "<p>city</p>"
+        };
     }*/
 }

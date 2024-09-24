@@ -2,7 +2,6 @@
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
 using ExternalServices;
-using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -71,6 +70,9 @@ internal static class NobyServices
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
+                
+                // esacping problemovych znaku na vystupu
+                //options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForStringEncoding());
             });
 
         // dbcontext
