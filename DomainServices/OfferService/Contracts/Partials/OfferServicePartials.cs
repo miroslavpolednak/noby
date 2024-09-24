@@ -70,3 +70,7 @@ public partial class GetResponseCodeListRequest
 public partial class DeleteOfferListRequest : MediatR.IRequest
 {
 }
+
+public partial class CancelOfferRequest : MediatR.IRequest<Empty>
+{
+}

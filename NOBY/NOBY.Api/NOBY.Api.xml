@@ -1054,6 +1054,14 @@
             Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.CancelOffer(System.Int64,System.Int32)">
+            <summary>
+            Ukončuje platnost modelace.
+            </summary>
+            <remarks>
+            Slouží k ukončení platnosti refixační nabídky pro konkrétní délku fixace, aby mohla být nasimulována znovu.
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Party.PartyController.SearchParties(NOBY.ApiContracts.PartySearchPartiesRequest,System.Threading.CancellationToken)">
             <summary>
             Našeptávač jmen a IČ

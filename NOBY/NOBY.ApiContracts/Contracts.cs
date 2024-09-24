@@ -3088,8 +3088,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Discriminator { get; set; } = default!;
+        public string? Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
         public SalesArrangementSharedParametersMortgage? Mortgage { get; set; } = default!;
@@ -3994,8 +3993,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Discriminator { get; set; } = default!;
+        public string? Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("mortgage")]
         public SalesArrangementSharedParametersMortgage? Mortgage { get; set; } = default!;
@@ -5494,8 +5492,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Discriminator { get; set; } = default!;
+        public string? Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("houseAndFlat")]
         public RealEstateValuationSharedSpecificDetailsHouseAndFlat? HouseAndFlat { get; set; } = default!;
@@ -7566,8 +7563,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Discriminator { get; set; } = default!;
+        public string? Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("employment")]
         public CustomerIncomeSharedDataEmployement? Employment { get; set; } = default!;
@@ -10469,8 +10465,7 @@ namespace NOBY.ApiContracts
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("discriminator")]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public string Discriminator { get; set; } = default!;
+        public string? Discriminator { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("consultationData")]
         public SharedTypesWorkflowAmendmentsConsultationData? ConsultationData { get; set; } = default!;

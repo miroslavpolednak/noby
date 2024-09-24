@@ -15,6 +15,8 @@ grpcurl -insecure -d "{\"BasicParameters\":{\"FixedRateValidTo\":{\"year\":2025,
 
 grpcurl -insecure -d "{\"CaseId\":3075599,\"BasicParameters\":{\"FeeAmountDiscount\":{\"units\":500}},\"SimulationInputs\":{\"ExtraPaymentDate\":{\"year\":2024,\"month\":5,\"day\":8},\"ExtraPaymentAmount\":{\"units\":20000},\"ExtraPaymentReasonId\":1}}" -H "noby-user-id: 3048" -H "noby-user-ident: KBUID=A09FK3" -H "Authorization: Basic YTph" 127.0.0.1:30006 DomainServices.OfferService.v1.OfferService/SimulateMortgageExtraPayment
 
+
+grpcurl -insecure -d "{\"OfferId\":9}" -H "Authorization: Basic YTph" 127.0.0.1:31006 DomainServices.OfferService.v1.OfferService/CancelOffer
 grpcurl -insecure -d "{\"OfferId\":459}" -H "Authorization: Basic YTph" 127.0.0.1:30006 DomainServices.OfferService.v1.OfferService/GetOffer
 grpcurl -insecure -d "{\"OfferId\":459}" -H "Authorization: Basic YTph" 127.0.0.1:30006 DomainServices.OfferService.v1.OfferService/GetMortgageOffer
 grpcurl -insecure -d "{\"OfferId\":459}" -H "Authorization: Basic YTph" 127.0.0.1:30006 DomainServices.OfferService.v1.OfferService/GetMortgageOfferDetail
