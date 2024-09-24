@@ -1,4 +1,5 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
@@ -6,6 +7,7 @@ using SharedTypes.GrpcTypes;
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageRetention;
 
 internal sealed class SimulateMortgageRetentionHandler(
+    IRollbackBag _bag,
     Database.OfferServiceDbContext _dbContext,
     IEasSimulationHTClient _easSimulationHTClient,
     IDocumentDataStorage _documentDataStorage,
@@ -37,19 +39,7 @@ internal sealed class SimulateMortgageRetentionHandler(
         }
 
         // save to DB
-        var entity = new Database.Entities.Offer
-        {
-            ResourceProcessId = Guid.NewGuid(),
-            CaseId = request.CaseId,
-            OfferType = (int)OfferTypes.MortgageRetention,
-            Origin = (int)OfferOrigins.OfferService
-        };
-        _dbContext.Offers.Add(entity);
-
-        await _dbContext.SaveChangesAsync(cancellationToken);
-
-        // ulozit json data simulace
-        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+        var entity = await saveEntity(request.CaseId, documentEntity, cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
@@ -61,5 +51,26 @@ internal sealed class SimulateMortgageRetentionHandler(
             BasicParameters = _offerMapper.MapFromDataBasicParameters(documentEntity.BasicParameters),
             SimulationResults = _offerMapper.MapFromDataOutputs(documentEntity.SimulationOutputs)
         };
+    }
+
+    private async Task<Database.Entities.Offer> saveEntity(long caseId, Database.DocumentDataEntities.MortgageRetentionData documentEntity, CancellationToken cancellationToken)
+    {
+        // save to DB
+        var entity = new Database.Entities.Offer
+        {
+            ResourceProcessId = Guid.NewGuid(),
+            CaseId = caseId,
+            OfferType = (int)OfferTypes.MortgageRetention,
+            Origin = (int)OfferOrigins.OfferService
+        };
+        _dbContext.Offers.Add(entity);
+
+        await _dbContext.SaveChangesAsync(cancellationToken);
+        _bag.Add(SimulateMortgageRetentionRollback.BagKeyOfferId, entity.OfferId);
+
+        // ulozit json data simulace
+        await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
+
+        return entity;
     }
 }

@@ -88,7 +88,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             {
                 grpcBuilder.AddJsonTranscoding(o =>
                 {
-                    o.JsonSettings.WriteEnumsAsIntegers = true;
+                    o.JsonSettings.WriteEnumsAsIntegers = _settings.TranscodingOptions!.WriteEnumsAsIntegers;
                 });
 
                 if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)

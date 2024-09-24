@@ -85,7 +85,7 @@ try
     // swagger
     if (!envConfiguration.DisableContractDescriptionPropagation)
     {
-        builder.AddNobySwagger(codebookMap);
+        builder.AddNobySwagger();
     }
 
     if (appConfiguration.UseKafkaFlowDashboard)

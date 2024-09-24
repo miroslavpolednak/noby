@@ -1,4 +1,6 @@
-﻿namespace SharedComponents.DocumentDataStorage;
+﻿using System.Data;
+
+namespace SharedComponents.DocumentDataStorage;
 
 public interface IDocumentDataStorage
 {
@@ -76,6 +78,26 @@ public interface IDocumentDataStorage
     /// <param name="tableName">Název DDS tabulky</param>
     /// <param name="data">Instance dat</param>
     Task<int> Add<TId, TData>(TId entityId, string tableName, TData data, CancellationToken cancellationToken = default)
+        where TId : IConvertible
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Založí novou instanci dat pro danou entitu.
+    /// </summary>
+    /// <typeparam name="TId">Generické ID entity</typeparam>
+    /// <typeparam name="TData">Entita zastupující ukládaná data / název tabulky v databázi</typeparam>
+    /// <param name="data">Instance dat</param>
+    Task<int> Add<TId, TData>(IDbConnection connection, IDbTransaction transaction, TId entityId, TData data, CancellationToken cancellationToken = default)
+        where TId : IConvertible
+        where TData : class, IDocumentData;
+
+    /// <summary>
+    /// Založí novou instanci dat pro danou entitu.
+    /// </summary>
+    /// <typeparam name="TId">Generické ID entity</typeparam>
+    /// <param name="tableName">Název DDS tabulky</param>
+    /// <param name="data">Instance dat</param>
+    Task<int> Add<TId, TData>(IDbConnection connection, IDbTransaction transaction, TId entityId, string tableName, TData data, CancellationToken cancellationToken = default)
         where TId : IConvertible
         where TData : class, IDocumentData;
 

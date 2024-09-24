@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using Google.Protobuf.WellKnownTypes;
 
 namespace DomainServices.OfferService.Contracts;
 
@@ -22,15 +23,15 @@ public partial class SimulateMortgageRequest
 { }
 
 public partial class SimulateMortgageRetentionRequest
-    : MediatR.IRequest<SimulateMortgageRetentionResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<SimulateMortgageRetentionResponse>, CIS.Core.Validation.IValidatableRequest, IRollbackCapable
 { }
 
 public partial class SimulateMortgageRefixationRequest
-    : MediatR.IRequest<SimulateMortgageRefixationResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<SimulateMortgageRefixationResponse>, CIS.Core.Validation.IValidatableRequest, IRollbackCapable
 { }
 
 public partial class SimulateMortgageExtraPaymentRequest
-    : MediatR.IRequest<SimulateMortgageExtraPaymentResponse>, CIS.Core.Validation.IValidatableRequest
+    : MediatR.IRequest<SimulateMortgageExtraPaymentResponse>, CIS.Core.Validation.IValidatableRequest, IRollbackCapable
 { }
 
 public partial class GetMortgageOfferFPScheduleRequest
