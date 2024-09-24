@@ -2,6 +2,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
 using ExternalServices;
+using CIS.Infrastructure.WebApi;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -69,7 +70,9 @@ internal static class NobyServices
             })
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
+                options.JsonSerializerOptions.Converters.Add(new JsonConverterForNullableDateTime());
+                // FE nechce datetime z ms a timezone
+                options.JsonSerializerOptions.Converters.Add(new JsonConverterForZonelessDateTime());
                 
                 // esacping problemovych znaku na vystupu
                 //options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForStringEncoding());
@@ -94,3 +97,4 @@ internal static class NobyServices
         return builder;
     }
 }
+

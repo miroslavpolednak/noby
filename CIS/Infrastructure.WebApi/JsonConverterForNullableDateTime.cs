@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Globalization;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace CIS.Infrastructure.WebApi;
@@ -28,7 +29,7 @@ public sealed class JsonConverterForNullableDateTime
         }
         else
         {
-            writer.WriteStringValue(value.Value);
+            writer.WriteStringValue(value.Value.ToString("yyyy-MM-ddTHH:mm:ss", CultureInfo.InvariantCulture));
         }
     }
 }

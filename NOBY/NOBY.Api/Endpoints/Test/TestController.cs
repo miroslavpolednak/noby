@@ -11,12 +11,12 @@ public class TestController(IMediator _mediator, IHttpContextAccessor _context)
     : ControllerBase
 {
     /*[HttpGet("test2")]
-    public async Task<AddressGetAddressDetailResponse> Test2()
+    public async Task<RefinancingSharedResponseCode> Test2()
     {
-        return new AddressGetAddressDetailResponse
+        return new RefinancingSharedResponseCode
         {
-            DeliveryDetails = "test",
-            CityDistrict = "<p>city</p>"
+            CreatedTime = DateTime.Now,
+            DataDateTime = DateTime.Now
         };
     }*/
 }
