@@ -23,6 +23,7 @@ public sealed class FeBannersService(
                 .Take(5)
                 .Select(t => new UsersGetCurrentBannerItem
                 {
+                    Id = t.FeBannerId,
                     Description = t.Description,
                     Title = t.Title,
                     Severity = (FeBannerBaseItemSeverity)t.Severity
