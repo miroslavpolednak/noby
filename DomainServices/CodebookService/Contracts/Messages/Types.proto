@@ -23,11 +23,10 @@ message BuildingSavingsPropertiesResponse {
 
 	message BuildingSavingsPropertiesItem {
 		int32 Id = 1;
-		string Code = 2;
-		string Name = 3;
-		int32 MinimumTargetAmount = 4;
-		cis.types.GrpcDecimal MinimumMonthlyDeposit  = 5;
-		bool IsValid = 6;
+		string Name = 2;
+		int32 MinimumTargetAmount = 3;
+		cis.types.GrpcDecimal MinimumMonthlyDeposit  = 4;
+		bool IsValid = 5;
 	}
 }
 

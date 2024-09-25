@@ -70,9 +70,6 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.BuildingSavingsPropertiesResponse.Types.BuildingSavingsPropertiesItem.IdFieldNumber">
             <summary>Field number for the "Id" field.</summary>
         </member>
-        <member name="F:DomainServices.CodebookService.Contracts.v1.BuildingSavingsPropertiesResponse.Types.BuildingSavingsPropertiesItem.CodeFieldNumber">
-            <summary>Field number for the "Code" field.</summary>
-        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.BuildingSavingsPropertiesResponse.Types.BuildingSavingsPropertiesItem.NameFieldNumber">
             <summary>Field number for the "Name" field.</summary>
         </member>
