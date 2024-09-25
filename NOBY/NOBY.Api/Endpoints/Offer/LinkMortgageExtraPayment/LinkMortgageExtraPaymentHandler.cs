@@ -89,8 +89,8 @@ internal sealed class LinkMortgageExtraPaymentHandler(
             {
                 IsFinalExtraPayment = extraPayment.SimulationInputs.IsExtraPaymentFullyRepaid,
                 ExtraPaymentDate = extraPayment.SimulationInputs.ExtraPaymentDate,
-                ExtraPaymentAmount = extraPayment.SimulationResults.PrincipalAmount,
-                ExtraPaymentAmountIncludingFee = extraPayment.SimulationResults.PrincipalAmount + extraPayment.SimulationResults.FeeAmount - ((decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? 0)
+                Principal = extraPayment.SimulationResults.PrincipalAmount,
+                ExtraPaymentAmountIncludingFee = extraPayment.SimulationResults.ExtraPaymentAmount + extraPayment.SimulationResults.FeeAmount - ((decimal?)extraPayment.BasicParameters.FeeAmountDiscount ?? 0)
             }
         };
 

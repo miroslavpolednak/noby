@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.CustomerService.Contracts;
 using FluentValidation;
 
@@ -31,13 +31,13 @@ internal static class CustomerValidationExtensions
         await ValidateContact(customerService, ContactType.Email, emailAddress.EmailAddress, cancellationToken);
     }
 
-    public static IRuleBuilderOptions<T, DateTime> BirthDateValidation<T>(this IRuleBuilder<T, DateTime> ruleBuilder, int errorCode) =>
-        ruleBuilder.InclusiveBetween(new DateTime(1850, 1, 1), DateTime.Today).WithErrorCode(errorCode);
+    public static IRuleBuilderOptions<T, DateOnly> BirthDateValidation<T>(this IRuleBuilder<T, DateOnly> ruleBuilder, int errorCode) =>
+        ruleBuilder.InclusiveBetween(new DateOnly(1850, 1, 1), DateOnly.FromDateTime(DateTime.Now)).WithErrorCode(errorCode);
 
-    public static IRuleBuilderOptions<T, DateTime?> BirthDateValidation<T>(this IRuleBuilder<T, DateTime?> ruleBuilder, int errorCode) =>
-        ruleBuilder.InclusiveBetween(new DateTime(1850, 1, 1), DateTime.Today).WithErrorCode(errorCode);
+    public static IRuleBuilderOptions<T, DateOnly?> BirthDateValidation<T>(this IRuleBuilder<T, DateOnly?> ruleBuilder, int errorCode) =>
+        ruleBuilder.InclusiveBetween(new DateOnly(1850, 1, 1), DateOnly.FromDateTime(DateTime.Now)).WithErrorCode(errorCode);
 
-    public static IRuleBuilderOptions<T, string> BirthNumberValidation<T>(this IRuleBuilder<T, string?> ruleBuilder, Func<T, DateTime> birthDateGetter, int errorCode)
+    public static IRuleBuilderOptions<T, string> BirthNumberValidation<T>(this IRuleBuilder<T, string?> ruleBuilder, Func<T, DateOnly> birthDateGetter, int errorCode)
     {
         return ruleBuilder.NotEmpty().WithErrorCode(errorCode)
                           .Matches(@"^\d+$").WithErrorCode(errorCode)
@@ -51,11 +51,11 @@ internal static class CustomerValidationExtensions
 
                               var birthDateByBirthNumber = TryParseBirthNumber(birthNumber);
 
-                              return birthDateByBirthNumber.HasValue && birthDateByBirthNumber.Equals(birthDateGetter(request).Date);
+                              return birthDateByBirthNumber.HasValue && birthDateByBirthNumber.Equals(birthDateGetter(request));
                           }).WithErrorCode(errorCode);
     }
 
-    private static DateTime? TryParseBirthNumber(string birthNumber)
+    private static DateOnly? TryParseBirthNumber(string birthNumber)
     {
         var year = int.Parse(birthNumber.AsSpan(0, 2), CultureInfo.InvariantCulture);
         var month = int.Parse(birthNumber.AsSpan(2, 2), CultureInfo.InvariantCulture);
@@ -74,7 +74,7 @@ internal static class CustomerValidationExtensions
         if (birthNumber.Length == 10 && ulong.Parse(birthNumber, CultureInfo.InvariantCulture) % 11 != 0)
             return default;
 
-        return new DateTime(year, month, day);
+        return new DateOnly(year, month, day);
     }
 
     private static async Task ValidateContact(

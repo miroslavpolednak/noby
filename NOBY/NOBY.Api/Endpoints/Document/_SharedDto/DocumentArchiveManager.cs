@@ -3,7 +3,7 @@ using CIS.Core.Configuration;
 using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using Google.Protobuf;
 using NOBY.Services.DocumentHelper;
 using System.Globalization;

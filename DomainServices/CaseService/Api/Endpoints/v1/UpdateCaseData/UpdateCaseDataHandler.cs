@@ -1,10 +1,12 @@
-﻿using DomainServices.CaseService.Api.Database;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.UpdateCaseData;
 
 internal sealed class UpdateCaseDataHandler(
     ILogger<UpdateCaseDataHandler> _logger,
+    IGrpcServerResponseCache _responseCache,
     IMediator _mediator,
     CodebookService.Clients.ICodebookServiceClient _codebookService,
     CaseServiceDbContext _dbContext)
@@ -34,9 +36,12 @@ internal sealed class UpdateCaseDataHandler(
 
         await _dbContext.SaveChangesAsync(cancellation);
 
+        await _responseCache.InvalidateEntry(nameof(GetCaseDetail), request.CaseId);
+
         // pokud se zmenil IsEmployeeBonusRequested, zavolat EAS
         if (bonusChanged)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 await _mediator.Send(new NotifyStarbuildRequest
@@ -49,6 +54,7 @@ internal sealed class UpdateCaseDataHandler(
                 // pouze logujeme!
                 _logger.CaseStateChangedFailed(request.CaseId, ex);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         return new Google.Protobuf.WellKnownTypes.Empty();

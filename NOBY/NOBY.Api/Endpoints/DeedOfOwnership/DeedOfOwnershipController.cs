@@ -47,6 +47,7 @@ public sealed class DeedOfOwnershipController(IMediator _mediator)
         [FromQuery] int? deedOfOwnershipNumber,
         [FromQuery] long? deedOfOwnershipId,
         [FromQuery] int? deedOfOwnershipDocumentId,
+        [FromQuery] long? cremDeedOfOwnershipDocumentId,
         CancellationToken cancellationToken)
-        => await _mediator.Send(new GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentRequest(katuzId, deedOfOwnershipNumber, deedOfOwnershipId, deedOfOwnershipDocumentId), cancellationToken);
+        => await _mediator.Send(new GetDeedOfOwnershipDocumentContent.GetDeedOfOwnershipDocumentContentRequest(katuzId, deedOfOwnershipNumber, deedOfOwnershipId, deedOfOwnershipDocumentId, cremDeedOfOwnershipDocumentId), cancellationToken);
 }

@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.Entities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DomainServices.SalesArrangementService.Api.Database.DocumentArchiveService.EntitiesConfigurations;
 
 public class DocumentInterfaceConfigurations : IEntityTypeConfiguration<DocumentInterface>
 {
-    public void Configure(EntityTypeBuilder<DocumentInterface> builder)
+    public void Configure([NotNull] EntityTypeBuilder<DocumentInterface> builder)
     {
         builder.HasKey(e => e.DocumentId);
 

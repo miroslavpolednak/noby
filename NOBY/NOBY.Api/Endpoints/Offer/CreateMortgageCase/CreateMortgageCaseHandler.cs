@@ -1,5 +1,5 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.CaseService.Clients.v1;
@@ -7,7 +7,7 @@ using _Case = DomainServices.CaseService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 using CIS.Infrastructure.CisMediatR.Rollback;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Offer.CreateMortgageCase;
@@ -63,7 +63,7 @@ internal sealed class CreateMortgageCaseHandler(
         _bag.Add(CreateMortgageCaseRollback.BagKeySalesArrangementId, salesArrangementId);
         _logger.EntityCreated(nameof(_SA.SalesArrangement), salesArrangementId);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangementId, EnumSalesArrangementStates.InProgress, cancellationToken);
 
         // pokud je to KB klient, tak si stahni jeho data z CM a updatuj request
         var createCustomerRequest = request.ToDomainServiceRequest(salesArrangementId);

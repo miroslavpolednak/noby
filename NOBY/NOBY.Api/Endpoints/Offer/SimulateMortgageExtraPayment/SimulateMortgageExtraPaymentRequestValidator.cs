@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using FluentValidation;
 using Microsoft.FeatureManagement;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgageExtraPayment;
 
@@ -20,6 +21,10 @@ internal sealed class SimulateMortgageExtraPaymentRequestValidator
 
         RuleFor(t => t)
             .MustAsync(async (_, _) => await featureManager.IsEnabledAsync(SharedTypes.FeatureFlagsConstants.ExtraPayment))
-            .WithErrorCode(90058);
+        .WithErrorCode(90058);
+
+        //Check if integer
+        RuleFor(t => t.ExtraPaymentAmount).Must(epAmount => epAmount is null || epAmount % 1 == 0).WithErrorCode(90073);
+        RuleFor(t => t.FeeAmountDiscount).Must(feeAmount => feeAmount is null || feeAmount % 1 == 0).WithErrorCode(90073);
     }
 }

@@ -38,11 +38,11 @@ public static class CustomerMapper
                 LegalCapacity = customerDto.NaturalPerson.LegalCapacity is null ? null : new NaturalPersonDelta.LegalCapacityDelta()
                 {
                     RestrictionTypeId = customerDto.NaturalPerson.LegalCapacity.RestrictionTypeId,
-                    RestrictionUntil = customerDto.NaturalPerson.LegalCapacity.RestrictionUntil
+                    RestrictionUntil = customerDto.NaturalPerson.LegalCapacity.RestrictionUntil?.ToDateTime(TimeOnly.MinValue)
                 },
                 TaxResidences = customerDto.NaturalPerson.TaxResidences is null ? null : new NaturalPersonDelta.TaxResidenceDelta()
                 {
-                    ValidFrom = customerDto.NaturalPerson.TaxResidences.ValidFrom,
+                    ValidFrom = customerDto.NaturalPerson.TaxResidences.ValidFrom?.ToDateTime(TimeOnly.MinValue),
                     ResidenceCountries = customerDto.NaturalPerson.TaxResidences.ResidenceCountries?.Select(c => new NaturalPersonDelta.TaxResidenceDelta.TaxResidenceItemDelta
                     {
                         CountryId = c.CountryId,
@@ -95,7 +95,7 @@ public static class CustomerMapper
         return changeData;
     }
 
-    public static TCustomerDetail MapCustomerToResponseDto<TCustomerDetail>(CustomerDetailResponse dsCustomer, CustomerOnSA customerOnSA) where TCustomerDetail : CustomerDetailBase
+    public static TCustomerDetail MapCustomerToResponseDto<TCustomerDetail>(DomainServices.CustomerService.Contracts.Customer dsCustomer, CustomerOnSA customerOnSA) where TCustomerDetail : CustomerDetailBase
     {
         var newCustomer = (TCustomerDetail)Activator.CreateInstance(typeof(TCustomerDetail))!;
 
@@ -174,14 +174,14 @@ public static class CustomerMapper
         return newCustomer;
     }
 
-    private static Contact? GetPhone(CustomerDetailResponse customer)
+    private static Contact? GetPhone(DomainServices.CustomerService.Contracts.Customer customer)
     {
         var phone = customer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Mobil);
 
         return string.IsNullOrEmpty(phone?.Mobile?.PhoneNumber) ? default : phone;
     }
 
-    private static Contact? GetEmail(CustomerDetailResponse customer)
+    private static Contact? GetEmail(DomainServices.CustomerService.Contracts.Customer customer)
     {
         var email = customer.Contacts.FirstOrDefault(t => t.ContactTypeId == (int)ContactTypes.Email);
 

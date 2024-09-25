@@ -3,6 +3,7 @@ using CIS.InternalServices;
 using Microsoft.Extensions.DependencyInjection;
 using DomainServices.SalesArrangementService.Clients;
 using __Contracts = DomainServices.SalesArrangementService.Contracts;
+using CIS.Infrastructure.Caching.Grpc;
 
 namespace DomainServices;
 
@@ -18,7 +19,10 @@ public static class SalesArrangementServiceExtensions
         services.AddTransient<IFlowSwitchManager, FlowSwitchManager>();
 
         services.AddCisServiceDiscovery();
-        services.AddScoped<ISalesArrangementServiceClient, DomainServices.SalesArrangementService.Clients.v1.SalesArrangementService>();
+
+        services.AddGrpcClientResponseCaching<SalesArrangementService.Clients.v1.SalesArrangementServiceClient>(ServiceName);
+
+        services.AddScoped<ISalesArrangementServiceClient, DomainServices.SalesArrangementService.Clients.v1.SalesArrangementServiceClient>();
         services.AddScoped<IMaintananceService, MaintananceService>();
 
         services.TryAddCisGrpcClientUsingServiceDiscovery<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(ServiceName);
@@ -30,7 +34,9 @@ public static class SalesArrangementServiceExtensions
     {
         services.AddTransient<IFlowSwitchManager, FlowSwitchManager>();
 
-        services.AddScoped<ISalesArrangementServiceClient, DomainServices.SalesArrangementService.Clients.v1.SalesArrangementService>();
+        services.AddGrpcClientResponseCaching<SalesArrangementService.Clients.v1.SalesArrangementServiceClient>(ServiceName);
+
+        services.AddScoped<ISalesArrangementServiceClient, DomainServices.SalesArrangementService.Clients.v1.SalesArrangementServiceClient>();
         services.AddScoped<IMaintananceService, MaintananceService>();
 
         services.TryAddCisGrpcClientUsingUrl<__Contracts.v1.SalesArrangementService.SalesArrangementServiceClient>(serviceUrl);

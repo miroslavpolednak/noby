@@ -8,7 +8,7 @@ namespace NOBY.Api.Endpoints.Users.SignIn;
 
 internal sealed class SignInHandler(
     ILogger<SignInHandler> _logger,
-    DomainServices.UserService.Clients.IUserServiceClient _userService,
+    DomainServices.UserService.Clients.v1.IUserServiceClient _userService,
     IHttpContextAccessor _httpContext,
     Infrastructure.Configuration.AppConfiguration _configuration,
     IAuditLogger _auditLogger)

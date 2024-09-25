@@ -1,12 +1,13 @@
 using CIS.Infrastructure.Messaging;
 using CIS.Infrastructure.StartupExtensions;
 using DomainServices.RealEstateValuationService.Api.Database;
-using DomainServices.RealEstateValuationService.Api.Messaging;
+using DomainServices.RealEstateValuationService.Api.Endpoints.v1;
 using DomainServices.RealEstateValuationService.ExternalServices;
 using SharedComponents.DocumentDataStorage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
     .AddApplicationConfiguration<DomainServices.RealEstateValuationService.Api.Configuration.AppConfiguration>()
     .AddGrpcServiceOptions(options =>
     {
@@ -42,14 +43,14 @@ SharedComponents.GrpcServiceBuilder
                    msg.AddConsumerAvro(appConfiguration.SbWorkflowProcessTopic!,
                                        handlers =>
                                        {
-                                           handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged.CollateralValuationProcessHandler>();
+                                           handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.CollateralValuationProcessChanged.CollateralValuationProcessChangedHandler>();
                                            handlers.AddHandler<DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged.InformationRequestProcessChangedHandler>();
                                        });
                });
     })
     .MapGrpcServices((app, _) =>
     {
-        app.MapGrpcService<DomainServices.RealEstateValuationService.Api.Endpoints.RealEstateValuationService>();
+        app.MapGrpcService<RealEstateValuationService>();
     })
     .Run();
 

@@ -4,7 +4,7 @@ namespace NOBY.Api.Endpoints.Product.GetCustomersOnProduct;
 
 internal sealed class GetCustomersOnProductHandler(
     DomainServices.ProductService.Clients.IProductServiceClient _productService,
-    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService)
+    DomainServices.CustomerService.Clients.v1.ICustomerServiceClient _customerService)
         : IRequestHandler<GetCustomersOnProductRequest, List<ProductGetCustomersOnProductItem>>
 {
     public async Task<List<ProductGetCustomersOnProductItem>> Handle(GetCustomersOnProductRequest request, CancellationToken cancellationToken)
@@ -20,7 +20,7 @@ internal sealed class GetCustomersOnProductHandler(
             .Where(t => t.CustomerIdentifiers is not null && t.CustomerIdentifiers.HasKbIdentity())
             .ToList();
 
-        var customerDetails = new List<_Cust.CustomerDetailResponse>();
+        var customerDetails = new List<_Cust.Customer>();
         if (identifiedCustomers.Count != 0)
         {
             customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.CustomerIdentifiers.GetKbIdentity()), cancellationToken)).Customers.ToList();

@@ -14,6 +14,7 @@ Flow zadávání změna v OAS:
 Ideálně bude v rámci DevOps pipelines existovat proces, který během buildu aplikace zkompiluje aktuální OAS z OpenAPI repa a nedovolí nasadit aplikaci, pokud se kontrakty mezi aplikací a OAS budou lišit.
 
 ## Základní nastavení OAS
+- endpoint request/response (v JSON `response.content` a `requestBody.content` objekty) je vždy pouze jednoho typu a to **application/json**
 - každé schéma musí obsahovat `"additionalProperties": false`, jinak se do C# bude generovat slovník ostatních vlastností.
 - důsledně používáme `"nullable": true` v případě, že se jedná o nullable property nebo schéma.
 

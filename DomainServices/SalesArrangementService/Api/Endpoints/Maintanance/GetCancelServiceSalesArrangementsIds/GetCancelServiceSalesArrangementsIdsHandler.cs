@@ -13,10 +13,12 @@ internal sealed class GetCancelServiceSalesArrangementsIdsHandler(
 {
     public async Task<GetCancelServiceSalesArrangementsIdsResponse> Handle(GetCancelServiceSalesArrangementsIdsRequest request, CancellationToken cancellationToken)
     {
-        var salesArrangementTypes = (await _codebookService.SalesArrangementTypes(cancellationToken)).Where(s => s.SalesArrangementCategory == 2);
+        var salesArrangementTypes = (await _codebookService.SalesArrangementTypes(cancellationToken))
+            .Where(s => s.SalesArrangementCategory == 2 && !_notAllowedSaTypes.Contains(s.Id))
+            .Select(t => t.Id);
 
         var saIdsForDelete = await _dbContext.SalesArrangements.Where(s =>
-            salesArrangementTypes.Select(r => r.Id).Contains(s.SalesArrangementTypeId)
+            salesArrangementTypes.Contains(s.SalesArrangementTypeId)
             && s.FirstSignatureDate == null 
             && s.CreatedTime < _dateTimeService.GetLocalNow().AddDays(-90)
             )
@@ -27,4 +29,6 @@ internal sealed class GetCancelServiceSalesArrangementsIdsHandler(
         response.SalesArrangementId.AddRange(saIdsForDelete);
         return response;
     }
+
+    private static readonly int[] _notAllowedSaTypes = [13,14,15];
 }

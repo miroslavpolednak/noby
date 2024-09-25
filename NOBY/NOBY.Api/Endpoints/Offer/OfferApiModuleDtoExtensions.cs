@@ -42,12 +42,12 @@ internal static class OfferApiModuleDtoExtensions
                 DiscountPercentage = f.DiscountPercentage,
                 FeeId = f.FeeId
             }).ToList(),
-            RiskLifeInsurance = input.RiskLifeInsurance is null ? null : new OfferSharedInsuranceItem
+            RiskLifeInsurance = input?.RiskLifeInsurance is null ? null : new OfferSharedInsuranceItem
             {
                 Sum = input.RiskLifeInsurance.Sum,
                 Frequency = input.RiskLifeInsurance.Frequency
             },
-            RealEstateInsurance = input.RealEstateInsurance is null ? null : new OfferSharedInsuranceItem
+            RealEstateInsurance = input?.RealEstateInsurance is null ? null : new OfferSharedInsuranceItem
             {
                 Sum = input.RealEstateInsurance.Sum,
                 Frequency = input.RealEstateInsurance.Frequency

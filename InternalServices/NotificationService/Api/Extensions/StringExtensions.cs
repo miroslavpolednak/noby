@@ -44,7 +44,7 @@ internal static partial class StringExtensions
 
     public static string ResolveSenderEmail(this string originalSenderEmail, Dictionary<string, string> _emailSenderMapping)
     {
-        if (_emailSenderMapping.TryGetValue(originalSenderEmail, out string? translatedSenderEmail))
+        if (_emailSenderMapping.TryGetValue(originalSenderEmail.ToLower(default), out string? translatedSenderEmail))
         {
             return translatedSenderEmail;
         }

@@ -35,4 +35,5 @@ public sealed class EventIdCodes
     public const int ExtServiceServerError = 533;
     public const int RollbackHandlerStarted = 530;
     public const int RollbackHandlerStepDone = 531;
+    public const int DatabaseRollbackInitiated = 532;
 }

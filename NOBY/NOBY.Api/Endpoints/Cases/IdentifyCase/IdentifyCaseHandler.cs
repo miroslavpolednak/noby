@@ -144,7 +144,7 @@ internal sealed partial class IdentifyCaseHandler(
         }
         else
         {
-            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
+            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, (EnumCaseStates)caseInstance.State!.Value, caseInstance.StateUpdatedOn);
         }
 
         var taskList = await _caseServiceClient.GetTaskList(caseId.Value, cancellationToken);
@@ -243,7 +243,7 @@ internal sealed partial class IdentifyCaseHandler(
         }
         else
         {
-            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, caseInstance.State!.Value);
+            SecurityHelpers.CheckCaseOwnerAndState(_currentUser, caseInstance.OwnerUserId!.Value, (EnumCaseStates)caseInstance.State!.Value, caseInstance.StateUpdatedOn);
         }
 
         return new CasesIdentifyCaseResponse

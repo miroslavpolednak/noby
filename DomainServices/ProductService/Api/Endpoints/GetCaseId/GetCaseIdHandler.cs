@@ -1,6 +1,8 @@
-﻿namespace DomainServices.ProductService.Api.Endpoints.GetCaseId;
+﻿using DomainServices.CodebookService.Clients;
 
-internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
+namespace DomainServices.ProductService.Api.Endpoints.GetCaseId;
+
+internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient, ICodebookServiceClient _codebookService)
     : IRequestHandler<GetCaseIdRequest, GetCaseIdResponse>
 {
     public async Task<GetCaseIdResponse> Handle(GetCaseIdRequest request, CancellationToken cancellationToken)
@@ -22,7 +24,7 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
     private async Task<long> getCaseIdByContractNumber(string contractNumber, CancellationToken cancellationToken)
     {
         var results = await _mpHomeClient.SearchCases(new CaseSearchRequest { ContractNumber = contractNumber }, cancellationToken);
-        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, contractNumber);
+        return await extractCaseId(results, cancellationToken) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.ContractNumberNotFound, contractNumber);
     }
 
     private async Task<long> getCaseIdByPaymentAccount(PaymentAccountObject paymentAccount, CancellationToken cancellationToken)
@@ -34,24 +36,28 @@ internal sealed class GetCaseIdHandler(IMpHomeClient _mpHomeClient)
         },
           cancellationToken);
 
-        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount?.AccountNumber);
+        return await extractCaseId(results, cancellationToken) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PaymentAccountNotFound, paymentAccount?.AccountNumber);
     }
 
     private async Task<long> getCaseIdByPcpId(string pcpId, CancellationToken cancellationToken)
     {
         var results = await _mpHomeClient.SearchCases(new CaseSearchRequest { PcpInstId = pcpId }, cancellationToken);
-        return extractCaseId(results) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, pcpId);
+        return await extractCaseId(results, cancellationToken) ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.PcpIdNotFound, pcpId);
     }
 
-    private static long? extractCaseId(List<CaseSearchResponse>? results)
+    private async Task<long?> extractCaseId(List<CaseSearchResponse>? results, CancellationToken cancellationToken)
     {
-        if (!results?.Any() ?? false)
+        var productTypes = await _codebookService.ProductTypes(cancellationToken);
+
+        results = FilterResult();
+
+        if (!results.Any())
         {
             return null;
         }
-        else
-        {
-            return results![0].CaseId;
-        }
+
+        return results.First().CaseId;
+
+        List<CaseSearchResponse> FilterResult() => results?.Where(t => productTypes.Any(p => p.Id == t.ProductTypeId)).ToList() ?? [];
     }
 }

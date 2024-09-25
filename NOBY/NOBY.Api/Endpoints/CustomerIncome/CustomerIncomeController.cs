@@ -20,11 +20,15 @@ public class CustomerIncomeController(IMediator _mediator)
     [HttpDelete("{customerOnSAId:int}/income/{incomeId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Klient - příjem"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=91635463-1E2E-4dc5-B427-72C528298C88")]
-    public async Task DeleteIncome([FromRoute] int customerOnSAId, [FromRoute] int incomeId)
-        => await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId));
+    public async Task<IActionResult> DeleteIncome([FromRoute] int customerOnSAId, [FromRoute] int incomeId)
+    {
+        await _mediator.Send(new DeleteIncome.DeleteIncomeRequest(customerOnSAId, incomeId));
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Detail příjmu customera
@@ -56,11 +60,15 @@ public class CustomerIncomeController(IMediator _mediator)
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient - příjem"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FAA06BC2-E216-42fe-9EA7-630528373F92")]
-    public async Task UpdateIncome([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] CustomerIncomeUpdateIncomeRequest? request)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new NobyValidationException("Payload is empty"));
+    public async Task<IActionResult> UpdateIncome([FromRoute] int customerOnSAId, [FromRoute] int incomeId, [FromBody] CustomerIncomeUpdateIncomeRequest? request)
+    {
+        await _mediator.Send(request?.InfuseId(customerOnSAId, incomeId) ?? throw new NobyValidationException("Payload is empty"));
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Vytvoření příjmu customera

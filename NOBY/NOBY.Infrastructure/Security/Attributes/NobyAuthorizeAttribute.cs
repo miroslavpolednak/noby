@@ -16,7 +16,7 @@ public sealed class NobyAuthorizeAttribute
     {
         MustSatisfyAll = mustSatisfyAll;
         RequiredPermissions = requiredPermissions;
-        Arguments = new object[] { MustSatisfyAll, requiredPermissions };
+        Arguments = [MustSatisfyAll, requiredPermissions];
     }
 
     public NobyAuthorizeAttribute(params UserPermissions[] requiredPermissions)
@@ -24,7 +24,7 @@ public sealed class NobyAuthorizeAttribute
     {
         MustSatisfyAll = true;
         RequiredPermissions = requiredPermissions;
-        Arguments = new object[] { MustSatisfyAll, requiredPermissions };
+        Arguments = [MustSatisfyAll, requiredPermissions];
     }
 
     private sealed class NobyAuthorizeFilter

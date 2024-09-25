@@ -31,6 +31,7 @@ SharedComponents.GrpcServiceBuilder
         options.OpenApiVersion = "v2";
         options.OpenApiEndpointVersion = "2.0";
         options.AddOpenApiXmlCommentFromBaseDirectory("CIS.InternalServices.NotificationService.Contracts.xml");
+        options.WriteEnumsAsIntegers = false;
     })
     .Build((builder, configuration) =>
     {

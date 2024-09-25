@@ -15,7 +15,9 @@ internal class WithdrawalProcessChangedHandler(
 {
 	public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.WithdrawalProcessChanged message)
     {
-        var code = message.processData.@private.withdrawalProcessData.processPhase.code;
+        _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.withdrawalProcessData?.processPhase?.code);
+
+        var code = message.processData!.@private.withdrawalProcessData.processPhase.code;
         if (code != 1 && code != 3)
         {
             return;
@@ -51,8 +53,8 @@ internal class WithdrawalProcessChangedHandler(
             var salesArrangementId = salesArrangement.SalesArrangementId;
             var state = code switch
             {
-                1 => 6,
-                3 => 3,
+                1 => EnumSalesArrangementStates.Disbursed,
+                3 => EnumSalesArrangementStates.Cancelled,
                 _ => throw new ArgumentException(nameof(code))
             };
             

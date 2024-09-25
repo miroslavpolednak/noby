@@ -33,7 +33,7 @@ internal sealed class CreateRealEstateValuationHandler(
             IsLoanRealEstate = request.IsLoanRealEstate,
             ValuationTypeId = DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Unknown,
             DeveloperApplied = request.DeveloperApplied,
-            ValuationStateId = (int)RealEstateValuationStates.Rozpracovano,
+            ValuationStateId = (int)WorkflowTaskStates.Rozpracovano,
             IsOnlineDisqualified = false
         };
 
@@ -54,7 +54,7 @@ internal sealed class CreateRealEstateValuationHandler(
             
             if (request.DeveloperApplied && revRequest.DeveloperAllowed)
             {
-                revRequest.ValuationStateId = (int)RealEstateValuationStates.Dokonceno;
+                revRequest.ValuationStateId = (int)WorkflowTaskStates.Completed;
             }
         }
 

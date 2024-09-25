@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DomainServices.OfferService.Api.Endpoints.v1;
 
 [Authorize]
-public class OfferService
+public sealed class OfferService(IMediator _mediator)
     : Contracts.v1.OfferService.OfferServiceBase
 {
     public override async Task<ValidateOfferIdResponse> ValidateOfferId(ValidateOfferIdRequest request, ServerCallContext context)
@@ -21,7 +21,7 @@ public class OfferService
     public override async Task<GetMortgageDetailResponse> GetMortgageDetail(GetMortgageDetailRequest request, ServerCallContext context)
        => await _mediator.Send(request);
 
-    public override async Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, ServerCallContext context) => 
+    public override async Task<SimulateBuildingSavingsResponse> SimulateBuildingSavings(SimulateBuildingSavingsRequest request, ServerCallContext context) =>
         await _mediator.Send(request);
 
     public override async Task<SimulateMortgageResponse> SimulateMortgage(SimulateMortgageRequest request, ServerCallContext context)
@@ -61,7 +61,7 @@ public class OfferService
         return new Empty();
     }
 
-    private readonly IMediator _mediator;
-    public OfferService(IMediator mediator)
-        => _mediator = mediator;
+    public override async Task<Empty> CancelOffer(CancelOfferRequest request, ServerCallContext context)
+     => await _mediator.Send(request);
+
 }

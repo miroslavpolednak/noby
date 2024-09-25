@@ -11,7 +11,8 @@ public static class Extensions
     => new()
     {
         Id = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser).ToC4M(),
-        CompanyId = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser, userInfo.DealerCompanyId?.ToString()).ToC4M()
+        CompanyId = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser, userInfo.DealerCompanyId?.ToString()).ToC4M(),
+        TiedAgentId = _C4M.ResourceIdentifier.Create("BM", "Broker", humanUser, userInfo.BrokerIdVZ?.ToString()).ToC4M(),
     };
 #pragma warning restore CA1305 // Specify IFormatProvider
 

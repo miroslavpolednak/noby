@@ -33,7 +33,7 @@ public class GenerateRetentionDocumentHandler(
 
         await GenerateRetentionDocument(salesArrangement, offer, offerIndividualPrice.HasIndividualPrice, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
     private async Task ValidateSignatureTypeDetailId(RefinancingGenerateRetentionDocumentRequest request, CancellationToken cancellationToken)
@@ -48,7 +48,7 @@ public class GenerateRetentionDocumentHandler(
     {
         var offer = await _offerService.GetOffer(offerId, cancellationToken);
 
-        if ((DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom < DateTime.UtcNow.ToLocalTime().Date)
+        if (((DateTime)offer.MortgageRetention.SimulationInputs.InterestRateValidFrom).AddDays(-14).Date < DateTime.UtcNow.Date)
             throw new NobyValidationException(90051);
 
         return offer;

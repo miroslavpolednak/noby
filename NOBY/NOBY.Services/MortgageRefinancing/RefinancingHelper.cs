@@ -1,5 +1,6 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
+using DomainServices.SalesArrangementService.Clients;
 
 namespace NOBY.Services.MortgageRefinancing;
 
@@ -38,7 +39,7 @@ public static class RefinancingHelper
 
     public static bool IsAnotherSalesArrangementInProgress(List<DomainServices.SalesArrangementService.Contracts.SalesArrangement> saList)
     {
-        return saList.Any(t => _activeSalesArrangementStates.Contains(t.State) 
+        return saList.Any(t => t.IsInState(_activeSalesArrangementStates) 
             && (SalesArrangementTypes)t.SalesArrangementTypeId is (SalesArrangementTypes.GeneralChange
                 or SalesArrangementTypes.HUBN
                 or SalesArrangementTypes.CustomerChange
@@ -112,12 +113,11 @@ public static class RefinancingHelper
         }
     }
 
-    private static readonly int[] _activeSalesArrangementStates = 
+    private static readonly EnumSalesArrangementStates[] _activeSalesArrangementStates = 
     [
-        (int)EnumSalesArrangementStates.InProgress,
-        //(int)SalesArrangementStates.NewArrangement, tmp HACH-11963
-        (int)EnumSalesArrangementStates.InSigning,
-        (int)EnumSalesArrangementStates.ToSend,
-        (int)EnumSalesArrangementStates.RC2,
+        EnumSalesArrangementStates.InProgress,
+        EnumSalesArrangementStates.InSigning,
+        EnumSalesArrangementStates.ToSend,
+        EnumSalesArrangementStates.RC2,
     ];
 }

@@ -1,13 +1,16 @@
 ﻿using _V2 = DomainServices.RiskIntegrationService.Contracts.CreditWorthiness.V2;
 using _C4M = DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
-using DomainServices.RiskIntegrationService.ExternalServices.CreditWorthiness.V3.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
 using CIS.Core.Exceptions;
 
 namespace DomainServices.RiskIntegrationService.Api.Endpoints.CreditWorthiness.V2.Calculate.Mappers;
 
 [CIS.Core.Attributes.ScopedService, CIS.Core.Attributes.SelfService]
-internal sealed class CalculateRequestMapper
+internal sealed class CalculateRequestMapper(
+    HouseholdsChildMapper _householdMapper,
+    AppConfiguration _configuration,
+    CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor,
+    UserService.Clients.v1.IUserServiceClient _userService)
 {
     public async Task<_C4M.CreditWorthinessCalculationArguments> MapToC4m(_V2.CreditWorthinessCalculateRequest request, RiskApplicationTypesResponse.Types.RiskApplicationTypeItem riskApplicationType, CancellationToken cancellation)
     {
@@ -46,22 +49,5 @@ internal sealed class CalculateRequestMapper
         }
 
         return requestModel;
-    }
-
-    private readonly HouseholdsChildMapper _householdMapper;
-    private readonly AppConfiguration _configuration;
-    private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
-    private readonly UserService.Clients.IUserServiceClient _userService;
-
-    public CalculateRequestMapper(
-        HouseholdsChildMapper householdMapper,
-        AppConfiguration configuration,
-        CIS.Core.Security.IServiceUserAccessor serviceUserAccessor,
-        UserService.Clients.IUserServiceClient userService)
-    {
-        _householdMapper = householdMapper;
-        _serviceUserAccessor = serviceUserAccessor;
-        _configuration = configuration;
-        _userService = userService;
     }
 }

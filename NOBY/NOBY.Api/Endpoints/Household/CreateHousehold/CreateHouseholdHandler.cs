@@ -1,13 +1,18 @@
 ﻿using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using _HO = DomainServices.HouseholdService.Contracts;
 
 namespace NOBY.Api.Endpoints.Household.CreateHousehold;
 
-internal sealed class CreateHouseholdHandler
-    : IRequestHandler<HouseholdCreateHouseholdRequest, HouseholdInList>
+internal sealed class CreateHouseholdHandler(
+    IFlowSwitchManager _flowSwitchManager,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    IHouseholdServiceClient _householdService,
+    ICodebookServiceClient _codebookService,
+    ISalesArrangementServiceClient _salesArrangementService)
+        : IRequestHandler<HouseholdCreateHouseholdRequest, HouseholdInList>
 {
     public async Task<HouseholdInList> Handle(HouseholdCreateHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -65,25 +70,5 @@ internal sealed class CreateHouseholdHandler
             HouseholdTypeId = request.HouseholdTypeId,
             HouseholdTypeName = householdType.Name
         };
-    }
-
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IFlowSwitchManager _flowSwitchManager;
-
-    public CreateHouseholdHandler(
-        IFlowSwitchManager flowSwitchManager,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IHouseholdServiceClient householdService,
-        ICodebookServiceClient codebookService,
-        ISalesArrangementServiceClient salesArrangementService)
-    {
-        _flowSwitchManager = flowSwitchManager;
-        _codebookService = codebookService;
-        _householdService = householdService;
-        _customerOnSAService = customerOnSAService;
-        _salesArrangementService = salesArrangementService;
     }
 }

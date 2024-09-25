@@ -17,6 +17,7 @@ public class PartyController(IMediator _mediator) : ControllerBase
     [HttpPost("party/search")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient - příjem"])]
     [ProducesResponseType(typeof(List<PartySearchPartiesResponse>), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=815A085A-B652-489e-987D-CBB0517846C6")]

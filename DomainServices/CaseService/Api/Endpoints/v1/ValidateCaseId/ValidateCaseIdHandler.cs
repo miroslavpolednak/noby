@@ -10,20 +10,25 @@ internal sealed class ValidateCaseIdHandler(CaseServiceDbContext _dbContext)
     {
         var instance = await _dbContext.Cases
             .Where(t => t.CaseId == request.CaseId)
-            .Select(t => new { t.State, t.OwnerUserId })
+            .Select(t => new 
+            { 
+                t.State, 
+                t.OwnerUserId,
+                t.StateUpdateTime
+            })
             .FirstOrDefaultAsync(cancellationToken);
 
         if (request.ThrowExceptionIfNotFound && instance is null)
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
         }
-        Helpers.ThrowIfCaseIsCancelled(instance?.State);
 
         return new ValidateCaseIdResponse
         {
             Exists = instance is not null,
             OwnerUserId = instance?.OwnerUserId,
-            State = instance?.State
+            State = instance?.State,
+            StateUpdatedOn = instance?.StateUpdateTime
         };
     }
 }

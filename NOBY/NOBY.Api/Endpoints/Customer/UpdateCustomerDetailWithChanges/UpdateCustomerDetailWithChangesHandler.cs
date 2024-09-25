@@ -1,10 +1,10 @@
 ﻿using CIS.Core.Security;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.HouseholdService.Contracts.Model;
@@ -14,46 +14,20 @@ using NOBY.Services.SigningHelper;
 
 namespace NOBY.Api.Endpoints.Customer.UpdateCustomerDetailWithChanges;
 
-internal sealed class UpdateCustomerDetailWithChangesHandler : IRequestHandler<CustomerUpdateCustomerDetailWithChangesRequest>
+internal sealed class UpdateCustomerDetailWithChangesHandler(
+    ICaseServiceClient _caseService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    IUserServiceClient _userServiceClient,
+    IDocumentOnSAServiceClient _documentOnSAService,
+    ICurrentUserAccessor _userAccessor,
+    IHouseholdServiceClient _householdService,
+    ICustomerServiceClient _customerService,
+    ICodebookServiceClient _codebookService,
+    ISigningHelperService _signingHelperService,
+    CustomerWithChangedDataService _customerChangedDataService) 
+    : IRequestHandler<CustomerUpdateCustomerDetailWithChangesRequest>
 {
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ISigningHelperService _signingHelperService;
-    private readonly CustomerWithChangedDataService _customerChangedDataService;
-    private readonly IDocumentOnSAServiceClient _documentOnSAService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IUserServiceClient _userServiceClient;
-    private readonly ICurrentUserAccessor _userAccessor;
-
-    public UpdateCustomerDetailWithChangesHandler(
-        ICaseServiceClient caseService,
-        ISalesArrangementServiceClient salesArrangementService,
-        ICustomerOnSAServiceClient customerOnSAService,
-        IUserServiceClient userServiceClient,
-        IDocumentOnSAServiceClient documentOnSAService,
-        ICurrentUserAccessor userAccessor,
-        IHouseholdServiceClient householdService,
-        ICustomerServiceClient customerService,
-        ICodebookServiceClient codebookService,
-        ISigningHelperService signingHelperService,
-        CustomerWithChangedDataService customerChangedDataService)
-    {
-        _documentOnSAService = documentOnSAService;
-        _caseService = caseService;
-        _salesArrangementService = salesArrangementService;
-        _customerOnSAService = customerOnSAService;
-        _userServiceClient = userServiceClient;
-        _userAccessor = userAccessor;
-        _householdService = householdService;
-        _customerService = customerService;
-        _codebookService = codebookService;
-        _signingHelperService = signingHelperService;
-        _customerChangedDataService = customerChangedDataService;
-    }
-
     public async Task Handle(CustomerUpdateCustomerDetailWithChangesRequest request, CancellationToken cancellationToken)
     {
         await _customerService.ValidateMobilePhone(request.MobilePhone, cancellationToken);

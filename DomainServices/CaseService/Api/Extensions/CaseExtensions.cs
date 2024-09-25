@@ -23,22 +23,22 @@ internal static class CaseExtensions
             ProcessTypeId = taskData.GetInteger("ukol_top_proces_typ_noby"),
         };
 
-        task.PhaseTypeId = task.TaskTypeId switch
+        task.PhaseTypeId = (WorkflowTaskTypes)task.TaskTypeId switch
         {
-            1 => taskData.GetInteger("ukol_dozadani_stav"),
-            2 => taskData.GetInteger("ukol_overeni_ic_stav"),
-            6 => taskData.GetInteger("ukol_podpis_stav"),
-            3 or 4 or 7 or 8 => 1,
-            9 => taskData.GetInteger("ukol_faze_rt_procesu"),
-            10 => taskData.GetInteger("ukol_faze_mspl_procesu"),
-            _ => throw new ArgumentOutOfRangeException(nameof(task.PhaseTypeId), "PhaseTypeId can not be set")
+            WorkflowTaskTypes.Dozadani => taskData.GetInteger("ukol_dozadani_stav"),
+            WorkflowTaskTypes.PriceException => taskData.GetInteger("ukol_overeni_ic_stav"),
+            WorkflowTaskTypes.Signing => taskData.GetInteger("ukol_podpis_stav"),
+            WorkflowTaskTypes.Consultation or WorkflowTaskTypes.TaskType4 or WorkflowTaskTypes.PredaniNaSpecialitu or WorkflowTaskTypes.Drawing => 1,
+            WorkflowTaskTypes.RetentionRefixation => taskData.GetInteger("ukol_faze_rt_procesu"),
+            WorkflowTaskTypes.ExtraPayment => taskData.GetInteger("ukol_faze_mspl_procesu"),
+            _ => throw new InvalidOperationException("PhaseTypeId can not be set")
         };
 
-        task.SignatureTypeId = (task.TaskTypeId, taskData.GetNInteger("ukol_podpis_dokument_metoda")) switch
+        task.SignatureTypeId = ((WorkflowTaskTypes)task.TaskTypeId, taskData.GetNInteger("ukol_podpis_dokument_metoda")) switch
         {
-            (6, 1) => SignatureTypes.Paper.ToByte(),
-            (6, 2) => SignatureTypes.Electronic.ToByte(),
-            (6, 3) => SignatureTypes.Paper.ToByte(),
+            (WorkflowTaskTypes.Signing, 1) => SignatureTypes.Paper.ToByte(),
+            (WorkflowTaskTypes.Signing, 2) => SignatureTypes.Electronic.ToByte(),
+            (WorkflowTaskTypes.Signing, 3) => SignatureTypes.Paper.ToByte(),
             _ => null
         };
 
@@ -60,18 +60,18 @@ internal static class CaseExtensions
             ProcessTypeId = taskType,
             ProcessNameLong = taskData.GetValueOrDefault("ukol_proces_nazev_noby") ?? "",
             StateName = getStateName(taskData),
-            ProcessPhaseId = taskData.GetInteger("ukol_proces_typ_noby") switch
+            ProcessPhaseId = taskType switch
             {
-                1 => taskData.GetInteger("ukol_faze_uv_procesu"),
-                2 => taskData.GetInteger("ukol_faze_zm_procesu"),
-                3 => taskData.GetInteger("ukol_faze_rt_procesu"),
-                4 => 1,
+                (int)WorkflowTaskTypes.Dozadani => taskData.GetInteger("ukol_faze_uv_procesu"),
+                (int)WorkflowTaskTypes.PriceException => taskData.GetInteger("ukol_faze_zm_procesu"),
+                (int)WorkflowTaskTypes.Consultation => taskData.GetInteger("ukol_faze_rt_procesu"),
+                (int)WorkflowTaskTypes.TaskType4 => 1,
                 -1 => -1,
                 _ => throw new CisArgumentException(0, taskType.ToString(CultureInfo.InvariantCulture), "ProcessPhaseId")
             },
-            StateIndicator = taskType switch
+            StateIndicator = (WorkflowTaskTypes)taskType switch
             {
-                1 or 2 or 3 or 4 => getStateIndicator(taskData),
+                WorkflowTaskTypes.Dozadani or WorkflowTaskTypes.PriceException or WorkflowTaskTypes.Consultation or WorkflowTaskTypes.TaskType4 => getStateIndicator(taskData),
                 _ => null
             },
             StateIdSB = taskData.GetInteger("ukol_stav_poz"),
@@ -79,24 +79,24 @@ internal static class CaseExtensions
         };
 
         
-        switch (taskType)
+        switch ((WorkflowTaskTypes)taskType)
         {
-            case 3 when taskSubType == 1:
+            case WorkflowTaskTypes.Consultation when taskSubType == 1:
                 result.RefinancingType = (int)EnumRefinancingTypes.MortgageRetention;
                 result.MortgageRetention = GetRetentionProcess(taskData);
                 break;
 
-            case 3 when taskSubType == 2:
+            case WorkflowTaskTypes.Consultation when taskSubType == 2:
                 result.RefinancingType = (int)EnumRefinancingTypes.MortgageRefixation;
                 result.MortgageRefixation = GetRefixationProcess(taskData);
                 break;
 
-            case 3 when taskSubType == 3:
+            case WorkflowTaskTypes.Consultation when taskSubType == 3:
                 result.RefinancingType = (int)EnumRefinancingTypes.MortgageLegalNotice;
                 result.MortgageLegalNotice = GetLegalNoticeProcess(taskData);
                 break;
 
-            case 4:
+            case WorkflowTaskTypes.TaskType4:
                 result.RefinancingType = (int)EnumRefinancingTypes.MortgageExtraPayment;
                 result.MortgageExtraPayment = GetExtraPaymentProcess(taskData);
                 break;
@@ -125,7 +125,7 @@ internal static class CaseExtensions
         var result = new Contracts.ProcessTask.Types.TaskAmendmentMortgageExtraPayment()
         {
             ExtraPaymentDate = taskData.GetDate("ukol_mspl_dat_spl"),
-            ExtraPaymentAmount = taskData.GetNDecimal("ukol_mspl_suma"),
+            Principal = taskData.GetNDecimal("ukol_mspl_suma"),
             ExtraPaymentAmountIncludingFee = taskData.GetNDecimal("ukol_mspl_suma_celkem"),
             IsFinalExtraPayment = taskData.GetBool("ukol_mspl_typ"),
             DocumentId = taskData.GetValueOrDefault("ukol_mspl_dokument_ea_cis") ?? "",
@@ -317,18 +317,6 @@ internal static class CaseExtensions
         {
             return 1;
         }
-    }
-
-    private static int getPhaseTypeId(int taskTypeId, IReadOnlyDictionary<string, string> taskData)
-    {
-        return taskTypeId switch
-        {
-            1 => taskData.GetInteger("ukol_dozadani_stav"),
-            2 => taskData.GetInteger("ukol_overeni_ic_stav"),
-            6 => taskData.GetInteger("ukol_podpis_stav"),
-            3 or 4 or 7 or 8 => 1,
-            _ => throw new ArgumentOutOfRangeException(nameof(taskTypeId), taskTypeId, null)
-        };
     }
 
     private static string getStateName(IReadOnlyDictionary<string, string> taskData)

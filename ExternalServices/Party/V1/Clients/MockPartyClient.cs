@@ -12,6 +12,6 @@ internal class MockPartyClient : IPartyClient
 
     public Task<SuggestJuridicalPersonsResponse1> SuggestJuridicalPersons(string? countryCode, string searchText, string v33UserId, CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(new SuggestJuridicalPersonsResponse1 { suggestJuridicalPersonsResponse = new SuggestJuridicalPersonsResponse { juridicalPersonList = [] } });
+        return Task.FromResult(new SuggestJuridicalPersonsResponse1 { suggestJuridicalPersonsResponse = new SuggestJuridicalPersonsResponse { juridicalPersonList = [], pagingResult = new PagingResult { numberOfEntriesTotal = 0 } } });
     }
 }

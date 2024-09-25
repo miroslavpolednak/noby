@@ -10,8 +10,8 @@ public partial class CreateCustomerRequest
     : MediatR.IRequest<CreateCustomerResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class CustomerDetailRequest
-    : MediatR.IRequest<CustomerDetailResponse>, CIS.Core.Validation.IValidatableRequest
+public partial class GetCustomerDetailRequest
+    : MediatR.IRequest<Customer>, CIS.Core.Validation.IValidatableRequest
 { }
 
 public partial class CustomerListRequest
@@ -37,5 +37,5 @@ public partial class ValidateContactRequest
 public partial class FormatAddressRequest : MediatR.IRequest<FormatAddressResponse>, CIS.Core.Validation.IValidatableRequest
 { }
 
-public partial class UpdateContactsRequest : MediatR.IRequest, CIS.Core.Validation.IValidatableRequest
+public partial class UpdateContactsRequest : MediatR.IRequest<Empty>, CIS.Core.Validation.IValidatableRequest
 { }

@@ -2,7 +2,7 @@
 using CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.Shared;
 using CIS.InternalServices.DataAggregatorService.Api.Services;
 using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.ProductService.Clients;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData;

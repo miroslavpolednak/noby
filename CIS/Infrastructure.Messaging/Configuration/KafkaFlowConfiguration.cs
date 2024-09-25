@@ -1,4 +1,5 @@
-﻿using Confluent.Kafka;
+﻿using CIS.Infrastructure.Messaging.KafkaFlow.Configuration.WorkersCountStrategy;
+using Confluent.Kafka;
 
 namespace CIS.Infrastructure.Messaging.Configuration;
 
@@ -29,7 +30,11 @@ public class KafkaFlowConfiguration
 
     public int TimeBetweenTriesMs { get; set; } = 500;
 
-    public int BufferSize { get; set; } = 2;
+    public int BufferSize { get; set; } = 5;
+
+    public int WorkersCount { get; set; } = 10;
+
+    public Dictionary<string, WorkersCountStrategyConfiguration> WorkersCountStrategy { get; set; } = new();
 
     public AdminConfiguration? Admin { get; set; }
 

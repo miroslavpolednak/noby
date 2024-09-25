@@ -1,5 +1,5 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.CustomModels;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ServiceWrappers;

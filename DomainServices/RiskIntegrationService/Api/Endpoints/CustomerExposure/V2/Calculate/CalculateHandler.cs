@@ -39,7 +39,7 @@ internal sealed class CalculateHandler
         return await response.ToServiceResponse(_codebookService, cancellation);
     }
 
-    private readonly UserService.Clients.IUserServiceClient _userService;
+    private readonly UserService.Clients.v1.IUserServiceClient _userService;
     private readonly _cl.ICustomerExposureClient _client;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly AppConfiguration _configuration;
@@ -52,7 +52,7 @@ internal sealed class CalculateHandler
         _cl.ICustomerExposureClient client,
         CodebookService.Clients.ICodebookServiceClient codebookService,
         ICisEnvironmentConfiguration cisEnvironment,
-        UserService.Clients.IUserServiceClient userService)
+        UserService.Clients.v1.IUserServiceClient userService)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;

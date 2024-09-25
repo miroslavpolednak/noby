@@ -10,7 +10,7 @@ internal class LoanApplicationCustomer
     private readonly List<GenericCodebookResponse.Types.GenericCodebookItem> _degreesBefore;
 
     public LoanApplicationCustomer(CustomerOnSA customerOnSA,
-                                   CustomerDetailResponse customerDetail,
+                                   DomainServices.CustomerService.Contracts.Customer customerDetail,
                                    IReadOnlyDictionary<int, Income> incomes,
                                    List<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
     {
@@ -22,7 +22,7 @@ internal class LoanApplicationCustomer
         Incomes = new LoanApplicationCustomerIncomes(customerOnSA, incomes);
     }
 
-    public CustomerDetailResponse CustomerDetail { get; }
+    public DomainServices.CustomerService.Contracts.Customer CustomerDetail { get; }
 
     public GrpcAddress? PermanentAddress { get; }
 

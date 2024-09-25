@@ -1,10 +1,9 @@
 ﻿using CIS.Core.Exceptions;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients;
-using DomainServices.UserService.Contracts;
+using DomainServices.UserService.Clients.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.VersionData;
 
@@ -56,7 +55,7 @@ internal sealed class LoanApplicationVersionDataProvider : DocumentVersionDataPr
         var saValidationResult = await _salesArrangementService.ValidateSalesArrangementId(salesArrangementId, true, cancellationToken);
         var caseValidationResult = await _caseService.ValidateCaseId(saValidationResult.CaseId!.Value, true, cancellationToken); 
 
-        User? user = null;
+        DomainServices.UserService.Clients.Dto.UserDto? user = null;
 
         if (caseValidationResult.OwnerUserId.HasValue)
             user = await _userService.GetUser(caseValidationResult.OwnerUserId.Value, cancellationToken);

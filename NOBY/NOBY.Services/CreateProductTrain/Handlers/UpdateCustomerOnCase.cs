@@ -1,11 +1,13 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 using _Case = DomainServices.CaseService.Contracts;
 using DomainServices.CaseService.Clients.v1;
 
 namespace NOBY.Services.CreateProductTrain.Handlers;
 
 [ScopedService, SelfService]
-internal sealed class UpdateCustomerOnCase
+internal sealed class UpdateCustomerOnCase(
+    ICustomerOnSAServiceClient _customerService,
+    ICaseServiceClient _caseService)
 {
     public async Task Run(long caseId, int customerOnSAId, CancellationToken cancellationToken)
     {
@@ -23,16 +25,5 @@ internal sealed class UpdateCustomerOnCase
                 Identity = customerInstance.CustomerIdentifiers.FirstOrDefault()
             }, cancellationToken);
         }
-    }
-
-    private readonly ICaseServiceClient _caseService;
-    private readonly ICustomerOnSAServiceClient _customerService;
-
-    public UpdateCustomerOnCase(
-        ICustomerOnSAServiceClient customerService,
-        ICaseServiceClient caseService)
-    {
-        _customerService = customerService;
-        _caseService = caseService;
     }
 }

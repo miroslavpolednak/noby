@@ -7,6 +7,8 @@ using SharedComponents.DocumentDataStorage;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
+    .AddRollbackCapability()
     .AddApplicationConfiguration<DomainServices.OfferService.Api.Configuration.AppConfiguration>()
     .AddErrorCodeMapper(DomainServices.OfferService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>

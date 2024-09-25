@@ -1,17 +1,28 @@
 ﻿using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.CustomerService.Clients.v1;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using Mandants = SharedTypes.GrpcTypes.Mandants;
-using CIS.Infrastructure.CisMediatR.Rollback;
 using NOBY.Api.Endpoints.Customer.Shared;
+using CIS.Infrastructure.CisMediatR.Rollback;
 
 namespace NOBY.Api.Endpoints.Customer.CreateCustomer;
 
-internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCustomerRequest, CustomerCreateCustomerResponse>
+internal sealed class CreateCustomerHandler(
+    IRollbackBag _bag,
+    ISalesArrangementServiceClient _salesArrangementService,
+    Services.CreateProductTrain.ICreateProductTrainService _createProductTrain,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    ICustomerServiceClient _customerService,
+    IProductServiceClient _productService,
+    IHouseholdServiceClient _householdService,
+    ICodebookServiceClient _codebookService,
+    Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb,
+    ILogger<CreateCustomerHandler> _logger) 
+    : IRequestHandler<CustomerCreateCustomerRequest, CustomerCreateCustomerResponse>
 {
     public async Task<CustomerCreateCustomerResponse> Handle(CustomerCreateCustomerRequest request, CancellationToken cancellationToken)
     {
@@ -27,7 +38,7 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCust
 
         if (saCategory.SalesArrangementCategory == (int)SalesArrangementCategories.ProductRequest && customerOnSA.CustomerRoleId != (int)SharedTypes.Enums.EnumCustomerRoles.Debtor)
         {
-            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
+            if (!customerOnSaList.Any(c => c.CustomerRoleId == (int)EnumCustomerRoles.Debtor && c.CustomerIdentifiers.HasKbIdentity()))
                 throw new NobyValidationException(90001, "Main customer is not identified");
         }
 
@@ -51,7 +62,9 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCust
             resultCode = CustomerCreateCustomerResponseResultCode.Identified;
 
             if (customerOnSaList.Any(c => c.CustomerIdentifiers.Any(i => i.IdentityScheme == Identity.Types.IdentitySchemes.Kb && i.IdentityId == kbId)))
+            {
                 throw new NobyValidationException(90001, $"Customer with Kb ID {kbId} already exists on SA");
+            }
         }
         // Více klientů
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11024")
@@ -59,21 +72,10 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCust
             _logger.LogInformation(ex, "CreateCustomer: more clients found");
             throw new NobyValidationException(90006, 409);
         }
-        // Registry nefungují
-        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11025")
-        {
-            _logger.LogInformation(ex, "CreateCustomer: registry failed");
-            throw new NobyValidationException(90007);
-        }
         catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11026")
         {
             _logger.LogInformation(ex, "CreateCustomer: registry failed");
             throw new NobyValidationException(90008, 500);
-        }
-        catch (CisValidationException ex) when (ex.Errors[0].ExceptionCode == "11035")
-        {
-            _logger.LogInformation(ex, "CreateCustomer: Special handling of identification document type and issuing country combination");
-            throw new NobyValidationException(90044);
         }
         catch
         {
@@ -104,7 +106,7 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCust
             // pokud je vse OK, zalozit customera v konsDb
             await _createOrUpdateCustomerKonsDb.CreateOrUpdate(updateResponse.CustomerIdentifiers, cancellationToken);
 
-            var relationshipTypeId = customerOnSA.CustomerRoleId == (int)SharedTypes.Enums.EnumCustomerRoles.Codebtor ? 2 : 0;
+            var relationshipTypeId = customerOnSA.CustomerRoleId == (int)EnumCustomerRoles.Codebtor ? 2 : 0;
             var partnerId = updateResponse.CustomerIdentifiers.GetMpIdentity().IdentityId;
             await _productService.CreateContractRelationship(partnerId, saInstance.CaseId, relationshipTypeId, cancellationToken);
         }
@@ -144,40 +146,5 @@ internal sealed class CreateCustomerHandler : IRequestHandler<CustomerCreateCust
                    .HasKbIdentity()
                    ?? false;
         }
-    }
-
-    private readonly IRollbackBag _bag;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly Services.CreateProductTrain.ICreateProductTrainService _createProductTrain;
-    private readonly ILogger<CreateCustomerHandler> _logger;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly IProductServiceClient _productService;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService _createOrUpdateCustomerKonsDb;
-
-    public CreateCustomerHandler(
-        IRollbackBag rollbackBag,
-        ISalesArrangementServiceClient salesArrangementService,
-        Services.CreateProductTrain.ICreateProductTrainService createProductTrain,
-        ICustomerOnSAServiceClient customerOnSAService,
-        ICustomerServiceClient customerService,
-        IProductServiceClient productService,
-        IHouseholdServiceClient householdService,
-        ICodebookServiceClient codebookService,
-        Services.CreateOrUpdateCustomerKonsDb.CreateOrUpdateCustomerKonsDbService createOrUpdateCustomerKonsDb,
-        ILogger<CreateCustomerHandler> logger)
-    {
-        _bag = rollbackBag;
-        _salesArrangementService = salesArrangementService;
-        _createProductTrain = createProductTrain;
-        _customerOnSAService = customerOnSAService;
-        _customerService = customerService;
-        _productService = productService;
-        _householdService = householdService;
-        _codebookService = codebookService;
-        _createOrUpdateCustomerKonsDb = createOrUpdateCustomerKonsDb;
-        _logger = logger;
     }
 }

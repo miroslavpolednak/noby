@@ -3,7 +3,7 @@
   "info": {
     "title": "MPDigi API",
     "description": "<a href='https://tfs.cleverlance.com/tfs/TFS2015_Collection/MPDigi/_git/MPDigi.Backend?path=%2F.ReadMe%2FAuthentication.md&version=GBmaster&_a=contents'>Autentifikácia</a>",
-    "version": "1.1 FOMS"
+    "version": "1.1"
   },
   "paths": {
     "/api/1.1/foms/Case/{caseId}/exists": {
@@ -26,7 +26,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -86,7 +86,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -141,7 +141,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -210,7 +210,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -279,7 +279,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -322,7 +322,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -387,7 +387,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -430,7 +430,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -490,7 +490,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -550,7 +550,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -650,7 +650,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -693,7 +693,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -769,7 +769,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -812,7 +812,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -901,7 +901,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -961,7 +961,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1003,7 +1003,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1063,7 +1063,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1105,7 +1105,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1165,7 +1165,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1251,7 +1251,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -1294,7 +1294,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1356,7 +1356,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1416,7 +1416,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1483,7 +1483,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -1526,7 +1526,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1618,7 +1618,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -1661,7 +1661,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1750,7 +1750,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1810,7 +1810,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1931,7 +1931,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1991,7 +1991,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2065,7 +2065,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -2108,7 +2108,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2198,7 +2198,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -2241,7 +2241,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2331,7 +2331,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -2374,7 +2374,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2448,7 +2448,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -2491,7 +2491,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2568,7 +2568,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2628,7 +2628,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2653,7 +2653,7 @@
         "tags": [
           "Partner"
         ],
-        "summary": "Odstraní vazbu mezi dvěma partnery na základě ich ID.<br />\r\nSmazáním vazby je ukončena její platnostDo.",
+        "summary": "Odstraní vazbu mezi dvěma partnery na základě ich ID.\r\n\r\nSmazáním vazby je ukončena její platnostDo.",
         "operationId": "FomsDeletePartnerRelationLink",
         "parameters": [
           {
@@ -2679,7 +2679,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -2722,7 +2722,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2800,7 +2800,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2869,7 +2869,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2911,7 +2911,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -2971,7 +2971,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -3040,7 +3040,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -3083,7 +3083,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -3172,7 +3172,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -3215,7 +3215,7 @@
             }
           },
           "500": {
-            "description": "Server Error",
+            "description": "Internal Server Error",
             "content": {
               "text/plain": {
                 "schema": {
@@ -3611,7 +3611,9 @@
           "OtherPhoneContact",
           "CaasMobile",
           "CaasEmail",
-          "DataBox"
+          "DataBox",
+          "Phone",
+          "Email2"
         ],
         "type": "string"
       },
@@ -3813,8 +3815,6 @@
         "required": [
           "issuedBy",
           "issuedOn",
-          "issuingCountry",
-          "issuingCountryId",
           "number",
           "type",
           "validTo"
@@ -3831,20 +3831,21 @@
             "description": "Číslo dokladu"
           },
           "issuedBy": {
-            "maxLength": 50,
+            "maxLength": 255,
             "minLength": 1,
             "type": "string",
             "description": "Vydavatel dokladu"
           },
           "issuingCountry": {
             "maxLength": 2,
-            "minLength": 1,
             "type": "string",
-            "description": "ISO kod krajiny, která vydala doklad"
+            "description": "ISO kod krajiny, která vydala doklad",
+            "nullable": true
           },
           "issuingCountryId": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "nullable": true
           },
           "issuedOn": {
             "type": "string",
@@ -4670,7 +4671,8 @@
               "type": "array",
               "items": {
                 "type": "string"
-              }
+              },
+              "nullable": true
             },
             "nullable": true,
             "readOnly": true
@@ -4875,9 +4877,6 @@
       "PartnerBaseRequest": {
         "required": [
           "ecommunication",
-          "gender",
-          "lastname",
-          "name",
           "pep",
           "resident",
           "sans",
@@ -4907,14 +4906,14 @@
             "nullable": true
           },
           "name": {
-            "minLength": 1,
             "type": "string",
-            "description": "Jméno"
+            "description": "Jméno",
+            "nullable": true
           },
           "lastname": {
-            "minLength": 1,
             "type": "string",
-            "description": "Příjmení"
+            "description": "Příjmení",
+            "nullable": true
           },
           "dateOfBirth": {
             "type": "string",
@@ -4978,6 +4977,9 @@
             "description": "KYC Status",
             "format": "int32",
             "nullable": true
+          },
+          "partnerType": {
+            "$ref": "#/components/schemas/PartnerType"
           }
         },
         "additionalProperties": false
@@ -5000,9 +5002,6 @@
       "PartnerRequest": {
         "required": [
           "ecommunication",
-          "gender",
-          "lastname",
-          "name",
           "pep",
           "resident",
           "sans",
@@ -5032,14 +5031,14 @@
             "nullable": true
           },
           "name": {
-            "minLength": 1,
             "type": "string",
-            "description": "Jméno"
+            "description": "Jméno",
+            "nullable": true
           },
           "lastname": {
-            "minLength": 1,
             "type": "string",
-            "description": "Příjmení"
+            "description": "Příjmení",
+            "nullable": true
           },
           "dateOfBirth": {
             "type": "string",
@@ -5103,6 +5102,9 @@
             "description": "KYC Status",
             "format": "int32",
             "nullable": true
+          },
+          "partnerType": {
+            "$ref": "#/components/schemas/PartnerType"
           },
           "identificationDocuments": {
             "type": "array",
@@ -5137,11 +5139,8 @@
           "contacts",
           "dataSource",
           "ecommunication",
-          "gender",
           "id",
           "identificationDocuments",
-          "lastname",
-          "name",
           "pep",
           "resident",
           "sans",
@@ -5171,14 +5170,14 @@
             "nullable": true
           },
           "name": {
-            "minLength": 1,
             "type": "string",
-            "description": "Jméno"
+            "description": "Jméno",
+            "nullable": true
           },
           "lastname": {
-            "minLength": 1,
             "type": "string",
-            "description": "Příjmení"
+            "description": "Příjmení",
+            "nullable": true
           },
           "dateOfBirth": {
             "type": "string",
@@ -5242,6 +5241,9 @@
             "description": "KYC Status",
             "format": "int32",
             "nullable": true
+          },
+          "partnerType": {
+            "$ref": "#/components/schemas/PartnerType"
           },
           "id": {
             "type": "integer",
@@ -5323,6 +5325,13 @@
           }
         },
         "additionalProperties": false
+      },
+      "PartnerType": {
+        "enum": [
+          "Individual",
+          "Legal"
+        ],
+        "type": "string"
       },
       "ProblemDetails": {
         "type": "object",

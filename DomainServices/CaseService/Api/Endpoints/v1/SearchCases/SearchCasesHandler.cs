@@ -7,7 +7,9 @@ using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.SearchCases;
 
-internal sealed class SearchCasesHandler(CaseServiceDbContext _dbContext)
+internal sealed class SearchCasesHandler(
+    TimeProvider _timeProvider,
+    CaseServiceDbContext _dbContext)
         : IRequestHandler<SearchCasesRequest, SearchCasesResponse>
 {
     /// <summary>
@@ -79,14 +81,27 @@ internal sealed class SearchCasesHandler(CaseServiceDbContext _dbContext)
 
         // omezeni na state
         if (request.State?.Any() ?? false)
+        {
             query = query.Where(t => request.State.Contains(t.State));
+        }
+
+        if (request.StateUpdatedTimeLimitInDays.HasValue)
+        {
+            DateTime? dexp = request.StateUpdatedTimeLimitInDays.HasValue ? _timeProvider.GetLocalNow().Date.AddDays(request.StateUpdatedTimeLimitInDays.Value * -1) : null;
+            query = query.Where(t => t.State != (int)EnumCaseStates.InAdministration || t.StateUpdateTime >= dexp);
+        }
+
         // hledani podle retezce
         if (!string.IsNullOrEmpty(request.SearchTerm))
         {
-            if (long.TryParse(request.SearchTerm, out long searchCaseId))
-                query = query.Where(t => t.CaseId == searchCaseId);
+            if (long.TryParse(request.SearchTerm, out long searchCaseId)) // muze to byt hledani podle caseId
+            {
+                query = query.Where(t => t.Name.Contains(request.SearchTerm) || t.ContractNumber!.Contains(request.SearchTerm) || t.CaseId == searchCaseId);
+            }
             else
+            {
                 query = query.Where(t => t.Name.Contains(request.SearchTerm) || t.ContractNumber!.Contains(request.SearchTerm));
+            }
         }
 
         return adjustPaging(query, paginable);

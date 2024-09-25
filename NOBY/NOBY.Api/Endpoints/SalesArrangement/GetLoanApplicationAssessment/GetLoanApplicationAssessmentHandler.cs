@@ -3,7 +3,7 @@ using DomainServices.OfferService.Contracts;
 using DomainServices.RiskIntegrationService.Contracts.CustomerExposure.V2;
 using DomainServices.RiskIntegrationService.Contracts.RiskBusinessCase.V2;
 using DomainServices.RiskIntegrationService.Contracts.Shared.V1;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 

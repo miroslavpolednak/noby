@@ -2,7 +2,7 @@
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using KafkaFlow;
@@ -72,7 +72,7 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
                     Identity = @case.Customer.Identity,
                     FirstNameNaturalPerson = OriginalOrDelta(delta?.NaturalPerson?.FirstName, party.NaturalPersonAttributes.FirstName),
                     Name = OriginalOrDelta(delta?.NaturalPerson?.LastName, party.NaturalPersonAttributes.Surname),
-                    DateOfBirthNaturalPerson = OriginalOrDeltaD(delta?.NaturalPerson?.DateOfBirth, party.NaturalPersonAttributes.BirthDate.Date)
+                    DateOfBirthNaturalPerson = OriginalOrDeltaD(delta?.NaturalPerson?.DateOfBirth, DateOnly.FromDateTime(party.NaturalPersonAttributes.BirthDate.Date))
                 };
                 await _caseClient.UpdateCustomerData(salesArrangement.CaseId, customerData);
             }
@@ -85,8 +85,9 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
                 {
                     FirstNameNaturalPerson = OriginalOrDelta(delta?.NaturalPerson?.FirstName, party.NaturalPersonAttributes.FirstName),
                     Name = OriginalOrDelta(delta?.NaturalPerson?.LastName, party.NaturalPersonAttributes.Surname),
-                    DateOfBirthNaturalPerson = OriginalOrDeltaD(delta?.NaturalPerson?.DateOfBirth, party.NaturalPersonAttributes.BirthDate.Date),
-                    MaritalStatusId = OriginalOrDeltaI(delta?.NaturalPerson?.MaritalStatusId, maritalStatusId)
+                    DateOfBirthNaturalPerson = OriginalOrDeltaD(delta?.NaturalPerson?.DateOfBirth, DateOnly.FromDateTime(party.NaturalPersonAttributes.BirthDate.Date)),
+                    MaritalStatusId = OriginalOrDeltaI(delta?.NaturalPerson?.MaritalStatusId, maritalStatusId),
+                    LockedIncomeDateTime = customerOnSa.LockedIncomeDateTime
                 }
             };
 
@@ -110,7 +111,7 @@ internal sealed class PartyUpdatedHandler : IMessageHandler<PartyUpdatedV1>
     private static string? OriginalOrDelta(string? delta, string? original)
         => string.IsNullOrEmpty(delta) ? original : delta;
 
-    private static DateTime? OriginalOrDeltaD(DateTime? delta, DateTime? original)
+    private static DateOnly? OriginalOrDeltaD(DateOnly? delta, DateOnly? original)
         => delta ?? original;
 
     private static int? OriginalOrDeltaI(int? delta, int? original)

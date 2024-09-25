@@ -146,6 +146,7 @@ internal sealed class SimulateMortgageHandler(
 
         CreditWorthinessSimpleCalculateResponse? result = null;
 
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             var creditWorthinessRequest = new CreditWorthinessSimpleCalculateRequest
@@ -175,13 +176,14 @@ internal sealed class SimulateMortgageHandler(
                     LoanDuration = simulationResults.uverVysledky.splatnostUveru,
                     LoanInterestRate = simulationResults.uverVysledky.sazbaPoskytnuta,
                     LoanAmount = (int)simulationResults.uverVysledky.vyseUveru,
-                    LoanPaymentAmount = (int)((decimal?)simulationResults.uverVysledky.splatkaUveru ?? 0m),
+                    LoanPaymentAmount = (int)simulationResults.uverVysledky.splatkaUveru,
                     FixedRatePeriod = request.SimulationInputs.FixedRatePeriod ?? 0
                 }
             };
             result = await _creditWorthinessService.SimpleCalculate(creditWorthinessRequest, cancellationToken);
         }
         catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
         var documentEntity = _worthinessMapper.MapToData(request.CreditWorthinessSimpleInputs, result);
         await _documentDataStorage.Add(offerId, documentEntity, cancellationToken);

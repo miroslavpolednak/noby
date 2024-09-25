@@ -1,9 +1,11 @@
-﻿using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.HouseholdService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Household.GetHousehold;
 
-internal sealed class GetHouseholdHandler
-    : IRequestHandler<GetHouseholdRequest, HouseholdGetHouseholdResponse>
+internal sealed class GetHouseholdHandler(
+    IHouseholdServiceClient _householdService,
+    ICustomerOnSAServiceClient _customerOnSAService)
+        : IRequestHandler<GetHouseholdRequest, HouseholdGetHouseholdResponse>
 {
     public async Task<HouseholdGetHouseholdResponse> Handle(GetHouseholdRequest request, CancellationToken cancellationToken)
     {
@@ -17,7 +19,7 @@ internal sealed class GetHouseholdHandler
         if (household.CustomerOnSAId2.HasValue)
             response.Customer2 = await getCustomer(household.CustomerOnSAId2.Value, cancellationToken);
 
-        bool isPartner = Helpers.AreCustomersPartners(response.Customer1?.MaritalStatusId, response.Customer2?.MaritalStatusId);
+        bool isPartner = DomainServices.HouseholdService.Clients.Helpers.AreCustomersPartners(response.Customer1?.MaritalStatusId, response.Customer2?.MaritalStatusId);
         response.AreCustomersPartners = isPartner;
 
         return response;
@@ -27,16 +29,5 @@ internal sealed class GetHouseholdHandler
     {
         var customer = await _customerOnSAService.GetCustomer(customerOnSAId, cancellationToken);
         return customer?.ToApiResponse();
-    }
-
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-
-    public GetHouseholdHandler(
-        IHouseholdServiceClient householdService,
-        ICustomerOnSAServiceClient customerOnSAService)
-    {
-        _customerOnSAService = customerOnSAService;
-        _householdService = householdService;
     }
 }

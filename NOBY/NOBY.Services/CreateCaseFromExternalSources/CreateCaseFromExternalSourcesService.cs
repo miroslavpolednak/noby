@@ -9,7 +9,7 @@ namespace NOBY.Services.CreateCaseFromExternalSources;
 [TransientService, SelfService]
 public sealed class CreateCaseFromExternalSourcesService(
     ICurrentUserAccessor _currentUser,
-    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
+    DomainServices.CustomerService.Clients.v1.ICustomerServiceClient _customerService,
     DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
     DomainServices.ProductService.Clients.IProductServiceClient _productService,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
@@ -27,10 +27,10 @@ public sealed class CreateCaseFromExternalSourcesService(
         }
 
         // stav Case
-        int caseState = getState(mortgageInstance);
+        var caseState = getState(mortgageInstance);
         
         // kontrola na uzivatele a stav
-        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState);
+        SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState, null);
 
         // instance uzivatele
         var mpIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
@@ -59,7 +59,7 @@ public sealed class CreateCaseFromExternalSourcesService(
 		var createCaseRequest = new DomainServices.CaseService.Contracts.CreateExistingCaseRequest
         {
             CaseId = caseId,
-            State = caseState,
+            State = (int)caseState,
             CaseOwnerUserId = Convert.ToInt32(mortgageInstance.CaseOwnerUserOrigId ?? mortgageInstance.CaseOwnerUserCurrentId, CultureInfo.InvariantCulture),
             Data = new DomainServices.CaseService.Contracts.CaseData
             {
@@ -102,17 +102,17 @@ public sealed class CreateCaseFromExternalSourcesService(
             && mortgageData.ProductTypeId > 0;
     }
 
-    private static int getState(MortgageData mortgageInstance)
+    private static EnumCaseStates getState(MortgageData mortgageInstance)
     {
         return mortgageInstance.MortgageState switch
         {
-            0 or 1 or 3 or 4 => 8,
-            2 => 7,
-            5 or 6 or 7 or 8 => 6,
-            9 => 4,
-            10 => 3,
-            11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? 5 : 4,
-            _ => 8
+            0 or 1 or 3 or 4 => EnumCaseStates.InApprovalConfirmed,
+            2 => EnumCaseStates.Cancelled,
+            5 or 6 or 7 or 8 => EnumCaseStates.Finished,
+            9 => EnumCaseStates.InDisbursement,
+            10 => EnumCaseStates.InSigning,
+            11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? EnumCaseStates.InAdministration : EnumCaseStates.InDisbursement,
+            _ => EnumCaseStates.InApprovalConfirmed
         };
     }
 }

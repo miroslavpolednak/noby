@@ -11,6 +11,8 @@ internal sealed class LoanExtraPaymentProcessChangedHandler(
 {
     public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanExtraPaymentProcessChanged message)
     {
+        _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.loanExtraPaymentProcessData?.processPhase?.code);
+
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(LoanExtraPaymentProcessChangedHandler), message.@case.caseId.id);
@@ -45,7 +47,7 @@ internal sealed class LoanExtraPaymentProcessChangedHandler(
 
         if (sa is not null)
         {
-            var newState = message.state == cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED ? (int)EnumSalesArrangementStates.Finished : (int)EnumSalesArrangementStates.Cancelled;
+            var newState = message.state == cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED ? EnumSalesArrangementStates.Finished : EnumSalesArrangementStates.Cancelled;
             await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, newState);
         }
         else

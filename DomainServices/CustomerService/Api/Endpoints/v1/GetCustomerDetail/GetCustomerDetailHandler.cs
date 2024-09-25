@@ -9,9 +9,9 @@ internal sealed class GetCustomerDetailHandler(
     IMpHomeClient _mpHome,
     MpHomeDetailMapper _mpHomeMapper,
     CustomerManagementDetailProvider _cmDetailProvider)
-    : IRequestHandler<CustomerDetailRequest, CustomerDetailResponse>
+    : IRequestHandler<GetCustomerDetailRequest, Customer>
 {
-    public Task<CustomerDetailResponse> Handle(CustomerDetailRequest request, CancellationToken cancellationToken)
+    public Task<Customer> Handle(GetCustomerDetailRequest request, CancellationToken cancellationToken)
     {
         return request.Identity.IdentityScheme switch
         {
@@ -22,7 +22,7 @@ internal sealed class GetCustomerDetailHandler(
         };
     }
 
-    private async Task<CustomerDetailResponse> loadPartner(long partnerId, CancellationToken cancellationToken)
+    private async Task<Customer> loadPartner(long partnerId, CancellationToken cancellationToken)
     {
         var partner = await _mpHome.GetPartner(partnerId, cancellationToken)
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CustomerNotFound, partnerId);
@@ -30,7 +30,7 @@ internal sealed class GetCustomerDetailHandler(
         return await _mpHomeMapper.MapDetailResponse(partner, cancellationToken);
     }
 
-    private async Task<CustomerDetailResponse> loadKBCustomerByMPIdentity(long partnerId, CancellationToken cancellationToken)
+    private async Task<Customer> loadKBCustomerByMPIdentity(long partnerId, CancellationToken cancellationToken)
     {
         var partner = await _mpHome.GetPartner(partnerId, cancellationToken)
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CustomerNotFound, partnerId);

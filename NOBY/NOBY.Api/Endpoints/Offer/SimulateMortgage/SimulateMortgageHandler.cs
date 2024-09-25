@@ -2,6 +2,7 @@
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 
 namespace NOBY.Api.Endpoints.Offer.SimulateMortgage;
 

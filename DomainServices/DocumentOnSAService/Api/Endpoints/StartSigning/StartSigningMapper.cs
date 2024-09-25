@@ -10,10 +10,10 @@ using System.Text.Json;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.SalesArrangementService.Contracts;
 using SharedTypes.GrpcTypes;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using ExternalServices.ESignatures.Dto;
 using CIS.Core.Security;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.CodebookService.Clients;
 using System.Globalization;
 using DomainServices.CaseService.Clients.v1;
@@ -33,44 +33,20 @@ using DomainServices.ProductService.Contracts;
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.StartSigning;
 
 [TransientService, SelfService]
-public class StartSigningMapper
+public class StartSigningMapper(
+    TimeProvider _dateTime,
+    IDocumentArchiveServiceClient _documentArchiveServiceClient,
+    ICustomerServiceClient _customerServiceClient,
+    ICurrentUserAccessor _currentUser,
+    IUserServiceClient _userServiceClient,
+    ICodebookServiceClient _codebookServiceClient,
+    ICaseServiceClient _caseServiceClient,
+    IDocumentGeneratorServiceClient _documentGeneratorServiceClient,
+    IProductServiceClient _productServiceClient,
+    IMediator _mediator)
 {
     private const string _signatureAnchorTemplate = "X_SIG_";
-    private readonly TimeProvider _dateTime;
-    private readonly IDocumentArchiveServiceClient _documentArchiveServiceClient;
-    private readonly ICustomerServiceClient _customerServiceClient;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly IUserServiceClient _userServiceClient;
-    private readonly ICodebookServiceClient _codebookServiceClient;
-    private readonly ICaseServiceClient _caseServiceClient;
-    private readonly IDocumentGeneratorServiceClient _documentGeneratorServiceClient;
-    private readonly IProductServiceClient _productServiceClient;
-    private readonly IMediator _mediator;
-
-    public StartSigningMapper(
-        TimeProvider dateTime,
-        IDocumentArchiveServiceClient documentArchiveServiceClient,
-        ICustomerServiceClient customerServiceClient,
-        ICurrentUserAccessor currentUser,
-        IUserServiceClient userServiceClient,
-        ICodebookServiceClient codebookServiceClient,
-        ICaseServiceClient caseServiceClient,
-        IDocumentGeneratorServiceClient documentGeneratorServiceClient,
-        IProductServiceClient productServiceClient,
-        IMediator mediator)
-    {
-        _dateTime = dateTime;
-        _documentArchiveServiceClient = documentArchiveServiceClient;
-        _customerServiceClient = customerServiceClient;
-        _currentUser = currentUser;
-        _userServiceClient = userServiceClient;
-        _codebookServiceClient = codebookServiceClient;
-        _caseServiceClient = caseServiceClient;
-        _documentGeneratorServiceClient = documentGeneratorServiceClient;
-        _productServiceClient = productServiceClient;
-        _mediator = mediator;
-    }
-
+    
     public async Task<UploadDocumentRequest> MapUploadDocumentRequest(long referenceId, string filename, SalesArrangement salesArrangement, DocumentOnSa documentOnSa, CancellationToken cancellationToken)
     {
         var docGenRequest = GenerateDocumentRequestMapper.CreateGenerateDocumentRequest(salesArrangement, documentOnSa);

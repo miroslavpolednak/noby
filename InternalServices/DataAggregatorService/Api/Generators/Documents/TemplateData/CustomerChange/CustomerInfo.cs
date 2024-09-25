@@ -1,15 +1,14 @@
 ﻿using CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.Shared;
 using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.CustomerService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.TemplateData.CustomerChange;
 
 internal class CustomerInfo
 {
-    private readonly CustomerDetailResponse _customer;
+    private readonly DomainServices.CustomerService.Contracts.Customer _customer;
     private readonly ICollection<GenericCodebookResponse.Types.GenericCodebookItem> _degreesBefore;
 
-    public CustomerInfo(CustomerDetailResponse customer, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
+    public CustomerInfo(DomainServices.CustomerService.Contracts.Customer customer, ICollection<GenericCodebookResponse.Types.GenericCodebookItem> degreesBefore)
     {
         _customer = customer;
         _degreesBefore = degreesBefore;

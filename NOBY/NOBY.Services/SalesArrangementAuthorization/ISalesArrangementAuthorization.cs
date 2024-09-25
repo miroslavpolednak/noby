@@ -19,7 +19,7 @@ public interface ISalesArrangementAuthorizationService
     void ValidateRefinancingPermissions(in int salesArrangementTypeId, in UserPermissions refinancingPermission, in UserPermissions nonRefinancingPermission);
 
     public static ReadOnlyCollection<int> RefinancingSATypes => _refinancingSATypes;
-    private static ReadOnlyCollection<int> _refinancingSATypes = (new int[]
+    private static readonly ReadOnlyCollection<int> _refinancingSATypes = (new int[]
         {
             (int)SalesArrangementTypes.MortgageRefixation,
             (int)SalesArrangementTypes.MortgageRetention,
@@ -27,7 +27,7 @@ public interface ISalesArrangementAuthorizationService
         }).AsReadOnly();
 
     public static ReadOnlyCollection<int> NonRefinancingSATypes => _nonRefinancingSATypes;
-    private static ReadOnlyCollection<int> _nonRefinancingSATypes = (new int[]
+    private static readonly ReadOnlyCollection<int> _nonRefinancingSATypes = (new int[]
         {
             (int)SalesArrangementTypes.Mortgage,
             (int)SalesArrangementTypes.Drawing,

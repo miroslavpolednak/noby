@@ -17,7 +17,7 @@ public static class MapAuthenticationEndpoints
         return appBuilder.UseEndpoints(t =>
         {
             // sign in
-            t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, () =>
+            t.MapGet(AuthenticationConstants.DefaultAuthenticationUrlPrefix + AuthenticationConstants.DefaultSignInEndpoint, ([FromQuery] string? redirect) =>
             {
             })
                 .RequireAuthorization()
@@ -39,7 +39,7 @@ public static class MapAuthenticationEndpoints
                 [FromServices] IAuditLogger logger,
                 [FromQuery] string? redirect) =>
                 {
-                    string redirectUrl = Uri.TryCreate(redirect, UriKind.Absolute, out var uri) ? uri.ToString() : "/";
+                    string redirectUrl = SecurityHelpers.GetSafeRedirectUri(context.HttpContext!.Request, configuration.Security!);
                     string userLogin = context.HttpContext!.User.Claims.First(t => t.Type == SecurityConstants.ClaimTypeIdent).Value;
 
                     context.HttpContext!.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

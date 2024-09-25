@@ -8,4 +8,5 @@ internal sealed class LoggerEventIdCodes
     public const int RealEstateValuationNotFound = 22504;
     public const int RevaluationFinished = 22505;
     public const int CreateKbmodelFlat = 22506;
+    public const int RealEstateValuationStateIdChanged = 22507;
 }

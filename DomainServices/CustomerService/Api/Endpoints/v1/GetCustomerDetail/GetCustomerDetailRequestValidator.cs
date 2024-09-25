@@ -4,7 +4,7 @@ using FluentValidation;
 namespace DomainServices.CustomerService.Api.Endpoints.v1.GetCustomerDetail;
 
 internal sealed class GetCustomerDetailRequestValidator
-    : AbstractValidator<CustomerDetailRequest>
+    : AbstractValidator<GetCustomerDetailRequest>
 {
     public GetCustomerDetailRequestValidator()
     {

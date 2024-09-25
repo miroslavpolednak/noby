@@ -4,24 +4,34 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <Company>Wookiee.Apps s.r.o.</Company>
+	  <Product>Common Infrastructure Solution</Product>
+	  <Authors>Filip Tuma</Authors>
+	  <ImplicitUsings>enable</ImplicitUsings>
+	  <Version>1.0.0.0</Version>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>1701;1702;CS0660;CS0661</NoWarn>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup>
+	  <DocumentationFile>NOBY.ApiContracts.xml</DocumentationFile>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <PublishDocumentationFile>true</PublishDocumentationFile>
     <NoWarn>1701;1702;CS0660;CS0661</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="12.3.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CIS\Infrastructure.WebApi\CIS.Infrastructure.WebApi.csproj" />
     <ProjectReference Include="..\..\DomainServices\OfferService\Contracts\DomainServices.OfferService.Contracts.csproj" />
     <ProjectReference Include="..\..\Shared\SharedTypes\SharedTypes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NOBY.ApiContracts.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

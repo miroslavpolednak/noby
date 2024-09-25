@@ -19,6 +19,9 @@
         <member name="F:DomainServices.UserService.Contracts.GetUserRIPAttributesRequest.IdentitySchemeFieldNumber">
             <summary>Field number for the "IdentityScheme" field.</summary>
         </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserMortgageSpecialistRequest.UserIdFieldNumber">
+            <summary>Field number for the "UserId" field.</summary>
+        </member>
         <member name="T:DomainServices.UserService.Contracts.v1.UserServiceV1Reflection">
             <summary>Holder for reflection information generated from UserService.v1.proto</summary>
         </member>
@@ -247,6 +250,33 @@
         </member>
         <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.BrokerIdFieldNumber">
             <summary>Field number for the "BrokerId" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.UserRIPAttributes.BrokerIdVZFieldNumber">
+            <summary>Field number for the "BrokerIdVZ" field.</summary>
+        </member>
+        <member name="T:DomainServices.UserService.Contracts.GetUserMortgageSpecialistReflection">
+            <summary>Holder for reflection information generated from Messages/GetUserMortgageSpecialist.proto</summary>
+        </member>
+        <member name="P:DomainServices.UserService.Contracts.GetUserMortgageSpecialistReflection.Descriptor">
+            <summary>File descriptor for Messages/GetUserMortgageSpecialist.proto</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserMortgageSpecialistResponse.FirstnameFieldNumber">
+            <summary>Field number for the "Firstname" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserMortgageSpecialistResponse.LastnameFieldNumber">
+            <summary>Field number for the "Lastname" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserMortgageSpecialistResponse.EmailFieldNumber">
+            <summary>Field number for the "Email" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserMortgageSpecialistResponse.PhoneFieldNumber">
+            <summary>Field number for the "Phone" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserMortgageSpecialistResponse.MortgageCenterIdFieldNumber">
+            <summary>Field number for the "MortgageCenterId" field.</summary>
+        </member>
+        <member name="F:DomainServices.UserService.Contracts.GetUserMortgageSpecialistResponse.MortgageCenterAdditionalIdFieldNumber">
+            <summary>Field number for the "MortgageCenterAdditionalId" field.</summary>
         </member>
     </members>
 </doc>

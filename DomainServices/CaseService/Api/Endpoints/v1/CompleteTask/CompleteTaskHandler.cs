@@ -19,7 +19,7 @@ internal sealed class CompleteTaskHandler(
                 { "ukol_mandant", "2" },
                 { "ukol_uver_id", request.CaseId.ToString(CultureInfo.InvariantCulture) },
                 { "wfl_refobj_dokumenty", string.Join(",", request.TaskDocumentIds) },
-                { getTaskUserResponseDef(request.TaskTypeId), request.TaskUserResponse ?? "" }
+                { getTaskUserResponseDef(request.TaskTypeId), request.TaskUserResponse?.ReplacePipesToSb() ?? "" }
             }
         };
 
@@ -35,7 +35,7 @@ internal sealed class CompleteTaskHandler(
 
         await _sbWebApiClient.CompleteTask(sbRequest, cancellationToken);
 
-        if (request.TaskTypeId == 6 && request.CompletionTypeId == 2)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.Signing && request.CompletionTypeId == 2)
         {
             await _documentOnSAService.SetProcessingDateInSbQueues(request.TaskId, request.CaseId, cancellationToken);
         }

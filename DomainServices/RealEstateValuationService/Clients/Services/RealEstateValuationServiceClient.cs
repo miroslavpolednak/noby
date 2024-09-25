@@ -99,12 +99,9 @@ internal sealed class RealEstateValuationServiceClient(Contracts.v1.RealEstateVa
         await _service.OrderOnlineValuationAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task OrderDTSValuation(int realEstateValuationId, CancellationToken cancellationToken = default)
+    public async Task OrderDTSValuation(OrderDTSValuationRequest request, CancellationToken cancellationToken = default)
     {
-        await _service.OrderDTSValuationAsync(new OrderDTSValuationRequest
-        {
-            RealEstateValuationId = realEstateValuationId
-        }, cancellationToken: cancellationToken);
+        await _service.OrderDTSValuationAsync(request, cancellationToken: cancellationToken);
     }
 
     public async Task OrderStandardValuation(OrderStandardValuationRequest request, CancellationToken cancellationToken = default)
@@ -112,7 +109,7 @@ internal sealed class RealEstateValuationServiceClient(Contracts.v1.RealEstateVa
         await _service.OrderStandardValuationAsync(request, cancellationToken: cancellationToken);
     }
 
-    public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, RealEstateValuationStates valuationStateId, CancellationToken cancellationToken = default)
+    public async Task UpdateStateByRealEstateValuation(int realEstateValuationId, WorkflowTaskStates valuationStateId, CancellationToken cancellationToken = default)
     {
         await _service.UpdateStateByRealEstateValuationAsync(new()
         {

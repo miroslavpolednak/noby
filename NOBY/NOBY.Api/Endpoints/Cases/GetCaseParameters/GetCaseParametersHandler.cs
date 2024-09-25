@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Security;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.GetCaseParameters;
@@ -9,9 +10,9 @@ internal sealed class GetCaseParametersHandler(
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
     DomainServices.ProductService.Clients.IProductServiceClient _productService,
     DomainServices.OfferService.Clients.v1.IOfferServiceClient _offerService,
-    DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService,
-    DomainServices.UserService.Clients.IUserServiceClient _userService,
-    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
+    ISalesArrangementServiceClient _salesArrangementService,
+    DomainServices.UserService.Clients.v1.IUserServiceClient _userService,
+    DomainServices.CustomerService.Clients.v1.ICustomerServiceClient _customerService,
     ICurrentUserAccessor _currentUserAccessor) 
     : IRequestHandler<GetCaseParametersRequest, CasesGetCaseParametersResponse>
 {
@@ -27,7 +28,7 @@ internal sealed class GetCaseParametersHandler(
 
         // seznam produktovych SA
         var saList = await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken);
-        var saInProgress = saList.FirstOrDefault(t => _allowedSAStates.Contains(t.State));
+        var saInProgress = saList.FirstOrDefault(t => SalesArrangementHelpers.IsSalesArrangementInState(_allowedSAStates, (EnumSalesArrangementStates)t.State));
         if (saInProgress is not null)
         {
             response.SalesArrangementInProgress = new()
@@ -163,7 +164,7 @@ internal sealed class GetCaseParametersHandler(
         return response;
     }
 
-    private async Task<DomainServices.UserService.Contracts.User?> getUserInstance(long? userId, CancellationToken cancellationToken)
+    private async Task<DomainServices.UserService.Clients.Dto.UserDto?> getUserInstance(long? userId, CancellationToken cancellationToken)
     {
         if (!userId.HasValue)
             return null;
@@ -178,11 +179,11 @@ internal sealed class GetCaseParametersHandler(
         }
     }
 
-    private static readonly int[] _allowedSAStates =
+    private static readonly EnumSalesArrangementStates[] _allowedSAStates =
     [
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.ToSend,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement,
-        (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress 
+        EnumSalesArrangementStates.InSigning,
+        EnumSalesArrangementStates.ToSend,
+        EnumSalesArrangementStates.NewArrangement,
+        EnumSalesArrangementStates.InProgress 
     ];
 }

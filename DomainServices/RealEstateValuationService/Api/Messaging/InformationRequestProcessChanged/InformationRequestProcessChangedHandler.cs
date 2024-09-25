@@ -7,21 +7,12 @@ using KafkaFlow;
 
 namespace DomainServices.RealEstateValuationService.Api.Messaging.InformationRequestProcessChanged;
 
-internal sealed class InformationRequestProcessChangedHandler  : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
+internal sealed class InformationRequestProcessChangedHandler(
+    RealEstateValuationServiceDbContext _dbContext,
+    ICaseServiceClient _caseService,
+    ILogger<InformationRequestProcessChangedHandler> _logger) 
+    : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
 {
-    private readonly RealEstateValuationServiceDbContext _dbContext;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ILogger<InformationRequestProcessChangedHandler> _logger;
-
-    public InformationRequestProcessChangedHandler(RealEstateValuationServiceDbContext dbContext,
-                                                   ICaseServiceClient caseService,
-                                                   ILogger<InformationRequestProcessChangedHandler> logger)
-    {
-        _dbContext = dbContext;
-        _caseService = caseService;
-        _logger = logger;
-    }
-
     public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
@@ -45,7 +36,7 @@ internal sealed class InformationRequestProcessChangedHandler  : IMessageHandler
         var realEstateValuation = await _dbContext.RealEstateValuations
                                                   .FirstOrDefaultAsync(r => r.CaseId == caseId && r.OrderId == orderId);
 
-        if (realEstateValuation == null || realEstateValuation.ValuationStateId == 5)
+        if (realEstateValuation == null || realEstateValuation.ValuationStateId == (int)WorkflowTaskStates.Cancelled)
         {
             return;
         }
@@ -63,22 +54,27 @@ internal sealed class InformationRequestProcessChangedHandler  : IMessageHandler
         await _dbContext.SaveChangesAsync();
     }
 
-    private static void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
+    private void HandleStateActiveOrSuspended(RealEstateValuation realEstateValuationListItem)
     {
-        if (realEstateValuationListItem is { ValuationStateId: 4, ValuationTypeId: (int)ValuationTypes.Online } or { ValuationStateId: 8 })
-        {
-            realEstateValuationListItem.ValuationStateId = 9;
-        }
+        if (realEstateValuationListItem.ValuationStateId is not ((int)WorkflowTaskStates.ProbihaOceneni or (int)WorkflowTaskStates.KontrolaUdaju))
+            return;
+
+        realEstateValuationListItem.ValuationStateId = (int)WorkflowTaskStates.Dozadani;
+
+        _logger.RealEstateValuationStateIdChanged(realEstateValuationListItem.RealEstateValuationId, realEstateValuationListItem.ValuationStateId);
     }
 
-    private static void HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem)
+    private void HandleStateCompletedOrTerminated(RealEstateValuation realEstateValuationListItem)
     {
+        if (realEstateValuationListItem.ValuationStateId is (int)WorkflowTaskStates.Completed)
+            return;
+
         realEstateValuationListItem.ValuationStateId = realEstateValuationListItem.ValuationTypeId switch
         {
-            (int)ValuationTypes.Online => 4,
-            (int)ValuationTypes.Dts or (int)ValuationTypes.Standard
-                when realEstateValuationListItem.ValuationStateId != 4 => 8,
-            _ => realEstateValuationListItem.ValuationStateId
+            (int)ValuationTypes.Online => (int)WorkflowTaskStates.KontrolaUdaju,
+            _ => (int)WorkflowTaskStates.ProbihaOceneni
         };
+
+        _logger.RealEstateValuationStateIdChanged(realEstateValuationListItem.RealEstateValuationId, realEstateValuationListItem.ValuationStateId);
     } 
 }

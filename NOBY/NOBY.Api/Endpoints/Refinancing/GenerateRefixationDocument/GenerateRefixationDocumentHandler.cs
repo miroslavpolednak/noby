@@ -1,4 +1,5 @@
-﻿using DomainServices.CaseService.Clients.v1;
+﻿using CIS.Core.Exceptions.ExternalServices;
+using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
@@ -50,7 +51,7 @@ internal sealed class GenerateRefixationDocumentHandler(
         else
             await GenerateInterestRateNotificationDocument(salesArrangement, offer, cancellationToken);
 
-        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, (int)SharedTypes.Enums.EnumSalesArrangementStates.InSigning, cancellationToken);
+        await _salesArrangementService.UpdateSalesArrangementState(salesArrangement.SalesArrangementId, EnumSalesArrangementStates.InSigning, cancellationToken);
     }
 
     private async Task ValidateSignatureTypeDetailId(RefinancingGenerateRefixationDocumentRequest request, GetMortgageResponse product, CancellationToken cancellationToken)
@@ -84,7 +85,7 @@ internal sealed class GenerateRefixationDocumentHandler(
                             ?? throw new NobyValidationException(90032, "No offer was selected");
 
         if ((DateTime)selectedOffer.MortgageRefixation.SimulationInputs.InterestRateValidFrom < DateTime.UtcNow.ToLocalTime().Date || (DateTime?)selectedOffer.Data.ValidTo < DateTime.UtcNow.ToLocalTime().Date)
-            throw new NobyValidationException(90051);
+            throw new NobyValidationException(90032);
 
         return selectedOffer;
     }
@@ -147,7 +148,14 @@ internal sealed class GenerateRefixationDocumentHandler(
             MaturityDate = simulationResults.MaturityDate
         };
 
-        await _sbWebApi.GenerateHedgeAppendixDocument(request, cancellationToken);
+        try
+        {
+            await _sbWebApi.GenerateHedgeAppendixDocument(request, cancellationToken);
+        }
+        catch (CisExternalServiceValidationException ex) when (ex.FirstExceptionCode == "90068")
+        {
+            throw new NobyValidationException(90068);
+        }
     }
 
     private async Task GenerateInterestRateNotificationDocument(_SA salesArrangement, GetOfferListResponse.Types.GetOfferListItem offer, CancellationToken cancellationToken)

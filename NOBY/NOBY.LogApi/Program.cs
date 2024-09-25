@@ -22,6 +22,7 @@ try
         .AddCisLogging()
         .AddCisAudit();
     builder.Services.AddCisSecurityHeaders();
+    builder.AddCisDistributedCache();
 
     builder.Services.AddTransient<ICurrentUserAccessor, CurrentUserAccessor>();
 

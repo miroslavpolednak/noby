@@ -52,5 +52,5 @@ public sealed class KbPartyHeaderHttpHandler
         return await base.SendAsync(request, cancellationToken);
     }
 
-    private record FallbackIdentity(string Schema, string Id) { }
+    private sealed record FallbackIdentity(string Schema, string Id) { }
 }

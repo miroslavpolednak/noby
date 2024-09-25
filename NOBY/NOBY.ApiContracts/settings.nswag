@@ -78,7 +78,7 @@
       "dictionaryBaseType": "Dictionary",
       "classStyle": "Poco",
       "jsonLibrary": "SystemTextJson",
-      "generateDefaultValues": true,
+      "generateDefaultValues": false,
       "generateDataAnnotations": true,
       "excludedTypeNames": [
         "EnumCaseStates",
@@ -100,7 +100,7 @@
       "inlineNamedTuples": true,
       "inlineNamedAny": false,
       "generateDtoTypes": true,
-      "generateOptionalPropertiesAsNullable": false,
+      "generateOptionalPropertiesAsNullable": true,
       "generateNullableReferenceTypes": true,
       "templateDirectory": null,
       "serviceHost": null,

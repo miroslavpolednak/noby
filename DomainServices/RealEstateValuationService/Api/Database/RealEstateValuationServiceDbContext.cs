@@ -3,12 +3,9 @@ using DomainServices.RealEstateValuationService.Api.Database.Entities;
 
 namespace DomainServices.RealEstateValuationService.Api.Database;
 
-internal sealed class RealEstateValuationServiceDbContext
-    : BaseDbContext<RealEstateValuationServiceDbContext>
+internal sealed class RealEstateValuationServiceDbContext(BaseDbContextAggregate<RealEstateValuationServiceDbContext> aggregate)
+        : BaseDbContext<RealEstateValuationServiceDbContext>(aggregate)
 {
-    public RealEstateValuationServiceDbContext(BaseDbContextAggregate<RealEstateValuationServiceDbContext> aggregate)
-        : base(aggregate) { }
-
     public DbSet<RealEstateValuation> RealEstateValuations { get; set; }
     public DbSet<DeedOfOwnershipDocument> DeedOfOwnershipDocuments { get; set; }
     public DbSet<RealEstateValuationAttachment> Attachments { get; set; }

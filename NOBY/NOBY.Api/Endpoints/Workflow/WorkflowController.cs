@@ -53,6 +53,7 @@ public class WorkflowController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("{caseId:long}/tasks/{taskId:long}/signing/start")]
     [Consumes(MediaTypeNames.Application.Json)]
+    [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Podepisování"])]
     [ProducesResponseType(typeof(WorkflowStartTaskSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -119,14 +120,17 @@ public class WorkflowController(IMediator _mediator) : ControllerBase
     /// </remarks>
     /// <response code="404">Task or case not found</response>
     [HttpPut("{caseId:long}/tasks/{taskId:int}")]
-    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Workflow Task"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D1B83124-CCEE-4a22-A82C-64F462BA3A9B")]
-    public async Task UpdateTaskDetail([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] WorkflowUpdateTaskDetailRequest? request, CancellationToken cancellationToken)
-        => await _mediator.Send(request?.InfuseIds(caseId, taskId) ?? throw new NobyValidationException("Payload is empty"), cancellationToken);
-
+    public async Task<IActionResult> UpdateTaskDetail([FromRoute] long caseId, [FromRoute] long taskId, [FromBody] WorkflowUpdateTaskDetailRequest? request, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(request?.InfuseIds(caseId, taskId) ?? throw new NobyValidationException("Payload is empty"), cancellationToken);
+        return NoContent();
+    }
+    
     /// <summary>
     /// Získání aktuální cenové výjimky
     /// </summary>

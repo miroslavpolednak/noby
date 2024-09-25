@@ -59,7 +59,7 @@ public interface ISalesArrangementServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16006; SalesArrangementState #{} does not exist.</exception>
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 16007; SalesArrangement {} is already in state {}</exception>
     /// <exception cref="CIS.Core.Exceptions.CisServiceUnavailableException">SalesArrangement unavailable</exception>
-    Task UpdateSalesArrangementState(int salesArrangementId, int state, CancellationToken cancellationToken = default);
+    Task UpdateSalesArrangementState(int salesArrangementId, EnumSalesArrangementStates state, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Update obsahu SA
@@ -105,6 +105,8 @@ public interface ISalesArrangementServiceClient
     Task UpdatePcpId(int salesArrangementId, string pcpId, CancellationToken cancellationToken = default);
 
     Task<SetContractNumberResponse> SetContractNumber(int salesArrangementId, int customerOnSaId, CancellationToken cancellationToken = default);
+
+    Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementIdWithoutCache(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default);
 
     Task<ValidateSalesArrangementIdResponse> ValidateSalesArrangementId(int salesArrangementId, bool throwExceptionIfNotFound, CancellationToken cancellationToken = default);
 

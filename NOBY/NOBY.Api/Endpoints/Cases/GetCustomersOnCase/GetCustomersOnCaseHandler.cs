@@ -9,8 +9,8 @@ namespace NOBY.Api.Endpoints.Cases.GetCustomersOnCase;
 
 internal sealed class GetCustomersOnCaseHandler(
     DomainServices.ProductService.Clients.IProductServiceClient _productService,
-    DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService,
-    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    DomainServices.CustomerService.Clients.v1.ICustomerServiceClient _customerService,
+    DomainServices.HouseholdService.Clients.v1.ICustomerOnSAServiceClient _customerOnSAService,
     DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
     DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
@@ -71,7 +71,7 @@ internal sealed class GetCustomersOnCaseHandler(
 
         // detail customeru z customerService
         var identifiedCustomers = customerIdentities.Where(t => t.Identity is not null).ToList();
-        var customerDetails = new List<_Cust.CustomerDetailResponse>();
+        var customerDetails = new List<_Cust.Customer>();
         if (identifiedCustomers.Count != 0)
         {
             customerDetails = (await _customerService.GetCustomerList(identifiedCustomers.Select(t => t.Identity!), cancellationToken)).Customers.ToList();
@@ -79,7 +79,7 @@ internal sealed class GetCustomersOnCaseHandler(
 
         var finalCustomerList = customerIdentities.Select(t =>
         {
-            var customer = t.Identity is null ? new _Cust.CustomerDetailResponse
+            var customer = t.Identity is null ? new _Cust.Customer
             {
                 NaturalPerson = new _Cust.NaturalPerson
                 {

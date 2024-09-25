@@ -1,10 +1,8 @@
-﻿using DomainServices.UserService.Contracts;
+﻿namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ExtendedObjects;
 
-namespace CIS.InternalServices.DataAggregatorService.Api.Services.DataServices.ExtendedObjects;
-
-internal class UserExtended : ExtendedObject<User>
+internal class UserExtended : ExtendedObject<DomainServices.UserService.Clients.Dto.UserDto>
 {
-    public UserInfoObject Info => Source.UserInfo;
+    public DomainServices.UserService.Contracts.UserInfoObject Info => Source.UserInfo;
 
     public string FullNameWithDetails => $"{Source.UserInfo.DisplayName} (IČP: {Info.Icp}, ČPM: {Info.Cpm})";
 

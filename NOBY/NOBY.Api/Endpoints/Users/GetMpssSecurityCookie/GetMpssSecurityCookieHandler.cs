@@ -4,7 +4,7 @@ namespace NOBY.Api.Endpoints.Users.GetMpssSecurityCookie;
 
 internal sealed class GetMpssSecurityCookieHandler(
 	MPSS.Security.Noby.IPortal _portal,
-	DomainServices.UserService.Clients.IUserServiceClient _userServiceClient,
+	DomainServices.UserService.Clients.v1.IUserServiceClient _userServiceClient,
 	ICurrentUserAccessor _currentUser)
 		: IRequestHandler<GetMpssSecurityCookieRequest, string>
 {

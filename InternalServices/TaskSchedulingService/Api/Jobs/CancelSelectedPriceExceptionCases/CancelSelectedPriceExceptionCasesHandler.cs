@@ -1,4 +1,5 @@
-﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
+﻿using CIS.Core.Exceptions.ExternalServices;
+using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelSelectedPriceExceptionCases;
 
@@ -25,6 +26,12 @@ internal sealed class CancelSelectedPriceExceptionCasesHandler(
                 await _caseService.CancelTask(priceException.CaseId, priceException.TaskIdSB, cancellationToken);
 
                 await _maintananceClient.DeleteConfirmedPriceException(priceException.CaseId, cancellationToken);
+            }
+            catch (CisExternalServiceServerErrorException ex)
+            {
+                await _maintananceClient.DeleteConfirmedPriceException(priceException.CaseId, cancellationToken);
+
+                _logger.FailedToCancelCaseDeleted(priceException.CaseId, ex);
             }
             catch (Exception ex)
             {

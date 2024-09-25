@@ -5,7 +5,6 @@ using Asp.Versioning.ApiExplorer;
 using Asp.Versioning;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using NOBY.Api.Endpoints.Codebooks.CodebookMap;
 using NOBY.Infrastructure.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -18,7 +17,7 @@ internal static class NobySwagger
 {
     static string xmlFileName(Type type) => type.GetTypeInfo().Module.Name.Replace(".dll", ".xml").Replace(".exe", ".xml");
 
-    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder, ICodebookMap codebookMap)
+    public static WebApplicationBuilder AddNobySwagger(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
 
@@ -30,23 +29,30 @@ internal static class NobySwagger
         {
             // add a custom operation filter which sets default values
             x.OperationFilter<SwaggerDefaultValues>();
+            x.OperationFilter<AddAllHttpStatusCodes>();
 
             // zapojení rozšířených anotací nad controllery
             x.EnableAnnotations();
             //x.UseOneOfForPolymorphism();
 
             x.SupportNonNullableReferenceTypes();
-            x.UseAllOfToExtendReferenceSchemas();
+            //x.UseAllOfToExtendReferenceSchemas();
 
             // všechny parametry budou camel case
             x.DescribeAllParametersInCamelCase();
             x.UseInlineDefinitionsForEnums();
 
-            x.CustomSchemaIds(type => type.ToString().Replace('+', '_'));
+            x.CustomSchemaIds(type =>
+            {
+                string s = type.ToString();
+                var idx = s.LastIndexOf('.');
+                return idx > 0 ? s[(idx + 1)..] : type.ToString().Replace('+', '_');
+            });
             x.CustomOperationIds(e => $"{e.ActionDescriptor.RouteValues["action"]}");
 
             // generate the XML docs that'll drive the swagger docs
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName(typeof(Program))));
+            x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "NOBY.ApiContracts.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "ExternalServices.AddressWhisperer.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "DomainServices.CodebookService.Contracts.xml"));
             x.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "SharedTypes.xml"));
@@ -62,6 +68,58 @@ internal static class NobySwagger
         });
 
         return builder;
+    }
+
+    private sealed class AddAllHttpStatusCodes : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            if (operation.Responses == null)
+            {
+                operation.Responses = new OpenApiResponses();
+            }
+
+            // Add other status codes as needed
+            if (!operation.Responses.ContainsKey(StatusCodes.Status400BadRequest.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status400BadRequest.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Bad Request"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status404NotFound.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status404NotFound.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Not Found"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status500InternalServerError.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status500InternalServerError.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Internal Server Error"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status401Unauthorized.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status401Unauthorized.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Unauthorized"
+                };
+            }
+
+            if (!operation.Responses.ContainsKey(StatusCodes.Status403Forbidden.ToString(CultureInfo.InvariantCulture)))
+            {
+                operation.Responses[StatusCodes.Status403Forbidden.ToString(CultureInfo.InvariantCulture)] = new OpenApiResponse
+                {
+                    Description = "Forbidden"
+                };
+            }
+        }
     }
 
     private sealed class EnumValuesDescriptionSchemaFilter : ISchemaFilter
@@ -129,61 +187,6 @@ internal static class NobySwagger
                 Title = "NOBY FRONTEND API",
                 Version = "All version"
             };
-
-            info.Description = text.ToString();
-
-            return info;
-        }
-
-        /// <summary>
-        /// For api versioning to multiple documents according versions
-        /// </summary>
-        private static OpenApiInfo CreateInfoForApiVersion(ApiVersionDescription description)
-        {
-            var text = new StringBuilder("Obecná specifikace <b>error handlingu</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=589534698](https://wiki.kb.cz/pages/viewpage.action?pageId=589534698)</li></ul>Specifikace <b>HTTP hlaviček</b> <ul><li>[https://wiki.kb.cz/pages/viewpage.action?pageId=513345095](https://wiki.kb.cz/pages/viewpage.action?pageId=513345095)</li></ul>");
-
-            var info = new OpenApiInfo()
-            {
-                Title = "NOBY FRONTEND API",
-                Version = description.ApiVersion.ToString()
-            };
-
-            if (description.IsDeprecated)
-            {
-                text.Append(" This API version has been deprecated.");
-            }
-
-            if (description.SunsetPolicy is SunsetPolicy policy)
-            {
-                if (policy.Date is DateTimeOffset when)
-                {
-                    text.Append(" The API will be sunset on ")
-                        .Append(when.Date.ToShortDateString())
-                        .Append('.');
-                }
-
-                if (policy.HasLinks)
-                {
-                    text.AppendLine();
-
-                    for (var i = 0; i < policy.Links.Count; i++)
-                    {
-                        var link = policy.Links[i];
-
-                        if (link.Type == "text/html")
-                        {
-                            text.AppendLine();
-
-                            if (link.Title.HasValue)
-                            {
-                                text.Append(link.Title.Value).Append(": ");
-                            }
-
-                            text.Append(link.LinkTarget.OriginalString);
-                        }
-                    }
-                }
-            }
 
             info.Description = text.ToString();
 

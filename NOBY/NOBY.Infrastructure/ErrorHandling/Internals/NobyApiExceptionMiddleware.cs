@@ -129,10 +129,7 @@ public sealed class NobyApiExceptionMiddleware(
         => singleErrorResult(ErrorCodeMapper.DefaultExceptionCode, message, customDefaultExceptionCode);
 
     private static List<ApiErrorItem> singleErrorResult(in int errorCode, in string message, in int? customDefaultExceptionCode = null)
-        => new()
-        {
-            createErrorItem(errorCode, message, customDefaultExceptionCode)
-        };
+        => [createErrorItem(errorCode, message, customDefaultExceptionCode)];
 
     private static ApiErrorItem createErrorItem(in int errorCode, in string message, in int? customDefaultExceptionCode = null)
     {

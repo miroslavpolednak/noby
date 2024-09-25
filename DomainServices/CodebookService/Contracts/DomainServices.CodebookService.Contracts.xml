@@ -1190,6 +1190,9 @@
         <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types.SalesArrangementStateItem.StarbuildIdFieldNumber">
             <summary>Field number for the "StarbuildId" field.</summary>
         </member>
+        <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types.SalesArrangementStateItem.IndicatorFieldNumber">
+            <summary>Field number for the "Indicator" field.</summary>
+        </member>
         <member name="F:DomainServices.CodebookService.Contracts.v1.SalesArrangementStatesResponse.Types.SalesArrangementStateItem.IsDefaultFieldNumber">
             <summary>Field number for the "IsDefault" field.</summary>
         </member>

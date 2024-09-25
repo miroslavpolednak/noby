@@ -40,7 +40,7 @@ internal sealed class GetMortgageExtraPaymentListHandler(
                 SalesArrangementId = currentProcessSA?.SalesArrangementId,
                 CreatedOn = process.CreatedOn,
                 ExtraPaymentAmount = process.MortgageExtraPayment.ExtraPaymentAmountIncludingFee,
-                PrincipalAmount = process.MortgageExtraPayment.ExtraPaymentAmount,
+                PrincipalAmount = process.MortgageExtraPayment.Principal,
                 ExtraPaymentDate = DateOnly.FromDateTime(process.MortgageExtraPayment.ExtraPaymentDate),
                 PaymentState = process.MortgageExtraPayment.PaymentState,
                 IsExtraPaymentFullyRepaid = process.MortgageExtraPayment.IsFinalExtraPayment,

@@ -15,3 +15,7 @@ public partial class GetUserPermissionsRequest
 public partial class GetUserRIPAttributesRequest
     : MediatR.IRequest<UserRIPAttributes>
 { }
+
+public partial class GetUserMortgageSpecialistRequest
+	: MediatR.IRequest<GetUserMortgageSpecialistResponse>
+{ }

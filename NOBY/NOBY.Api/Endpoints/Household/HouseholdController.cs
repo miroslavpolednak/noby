@@ -90,12 +90,15 @@ public class HouseholdController : ControllerBase
     [HttpPut("household/{householdId:int}")]
     [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
-    [SwaggerOperation(Tags = new[] { "Domácnost" })]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [SwaggerOperation(Tags = ["Domácnost"])]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task UpdateHousehold([FromRoute] int householdId, [FromBody] HouseholdUpdateHouseholdRequest? request)
-        => await _mediator.Send(request?.InfuseId(householdId) ?? throw new NobyValidationException("Payload is empty"));
-
+    public async Task<IActionResult> UpdateHousehold([FromRoute] int householdId, [FromBody] HouseholdUpdateHouseholdRequest? request)
+    {
+        await _mediator.Send(request?.InfuseId(householdId) ?? throw new NobyValidationException("Payload is empty"));
+        return NoContent();
+    }
+    
     /// <summary>
     /// Update customeru na domácnosti
     /// </summary>

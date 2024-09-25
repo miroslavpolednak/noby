@@ -28,6 +28,46 @@
             Provolá  CREM službu RUIAN:FindTerritory a vrátí stránkovaný seznam katuz setřízený abecedně podle jména katastrálního území.
             </remarks>
         </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.GetAdminFeBanners">
+            <summary>
+            Seznam upozornění na úvodní obrazovce.
+            </summary>
+            <remarks>
+            Načtení seznamu upozornění na úvodní obrazovce v rámci administrace těchto upozornění
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.CreateAdminFeBanner(NOBY.ApiContracts.AdminCreateAdminFeBannerRequest)">
+            <summary>
+            Vytvoření upozornění
+            </summary>
+            <remarks>
+            Vytvoří nové upozornění na úvodní obrazovce.
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.DeleteAdminFeBanner(System.Int32)">
+            <summary>
+            Smazání upozornění na úvodní obrazovce
+            </summary>
+            <remarks>
+            Smaže upozornění.
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.GetAdminFeBanner(System.Int32)">
+            <summary>
+            Detail upozornění na úvodní obrazovce.
+            </summary>
+            <remarks>
+            Načtení detailu upozornění
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Administration.AdministrationController.UpdateAdminFeBanner(System.Int32,NOBY.ApiContracts.AdminUpdateAdminFeBannerRequest)">
+            <summary>
+            Uložení upozornění
+            </summary>
+            <remarks>
+            Ukládá změn v existujícím upozornění.
+            </remarks>
+        </member>
         <member name="M:NOBY.Api.Endpoints.Cases.CasesController.CancelCase(System.Int64)">
             <summary>
             Stornování case-u
@@ -489,7 +529,7 @@
             Provolání CREM pro získání seznamu ISKN id.
             </remarks>
         </member>
-        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+        <member name="M:NOBY.Api.Endpoints.DeedOfOwnership.DeedOfOwnershipController.GetDeedOfOwnershipDocumentContent(System.Nullable{System.Int32},System.Nullable{System.Int32},System.Nullable{System.Int64},System.Nullable{System.Int32},System.Nullable{System.Int64},System.Threading.CancellationToken)">
             <summary>
             Informace z dokumentu listu vlastnictví
             </summary>
@@ -539,7 +579,7 @@
             Uložení dokumentů ke Case-u do archivu
             </summary>
             <remarks>
-            Uložení dokumentů do archivu <br/><br/>
+            Uložení dokumentů do archivu
             </remarks> 
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentArchive.DocumentArchiveController.SetDocumentStatusInQueue(System.String,System.Int32,System.Threading.CancellationToken)">
@@ -702,7 +742,7 @@
             Stažení dokumentu k fyzickému podepisování
             </summary>
             <remarks>
-            Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br />
+            Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSaDetail(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -726,7 +766,7 @@
             Vyhledání dokumentů na všech žádostech daného Case dle EACode
             </summary>
             <remarks>
-            Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
+            Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.RefreshElectronicDocument(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -734,7 +774,7 @@
             Aktualizace stavu dokumentu
             </summary>
             <remarks>
-             Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br />
+            Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.DocumentOnSA.DocumentOnSAController.GetDocumentOnSAStatus(System.Int32,System.Int32,System.Threading.CancellationToken)">
@@ -1012,6 +1052,14 @@
             </summary>
             <remarks>
             Nalinkuje mimořádnou splátku na stávající SalesArrangement a upraví, nebo vytvoří IC workflow proces.
+            </remarks>
+        </member>
+        <member name="M:NOBY.Api.Endpoints.Offer.OfferController.CancelOffer(System.Int64,System.Int32)">
+            <summary>
+            Ukončuje platnost modelace.
+            </summary>
+            <remarks>
+            Slouží k ukončení platnosti refixační nabídky pro konkrétní délku fixace, aby mohla být nasimulována znovu.
             </remarks>
         </member>
         <member name="M:NOBY.Api.Endpoints.Party.PartyController.SearchParties(NOBY.ApiContracts.PartySearchPartiesRequest,System.Threading.CancellationToken)">
@@ -1598,11 +1646,6 @@
         </member>
         <member name="M:NOBY.Api.StartupExtensions.NobySwagger.ConfigureSwaggerOptions.Configure(Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenOptions)">
             <inheritdoc />
-        </member>
-        <member name="M:NOBY.Api.StartupExtensions.NobySwagger.ConfigureSwaggerOptions.CreateInfoForApiVersion(Asp.Versioning.ApiExplorer.ApiVersionDescription)">
-            <summary>
-            For api versioning to multiple documents according versions
-            </summary>
         </member>
         <member name="T:NOBY.Api.StartupExtensions.NobySwagger.SwaggerDefaultValues">
             <summary>

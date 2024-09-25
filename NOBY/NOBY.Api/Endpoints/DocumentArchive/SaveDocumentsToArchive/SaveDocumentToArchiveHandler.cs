@@ -5,7 +5,7 @@ using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using Google.Protobuf;
 using NOBY.Services.DocumentHelper;
 using NOBY.Services.EaCodeMain;
@@ -135,7 +135,8 @@ public class SaveDocumentToArchiveHandler(
                .Where(f => documentTypesForEaCodeMain.Contains(f.DocumentTypeId!.Value)
                            && !string.IsNullOrWhiteSpace(f.FormId)
                            && !f.IsFinal
-                           && f.IsSigned);
+                           && f.IsSigned
+                           && f.SignatureTypeId == (int)SignatureTypes.Paper);
 
             var documentOnSa = documentsOnSaFiltered.FirstOrDefault(r => r.FormId == docInfo.FormId);
 

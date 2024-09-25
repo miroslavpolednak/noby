@@ -63,9 +63,11 @@ internal sealed class GetCaseParametersMapper(DomainServices.CodebookService.Cli
         }).ToList();
     }
 
+#pragma warning disable CA1822 // Mark members as static
     public CasesGetCaseParametersCaseOwnerUser? GetCaseOwnerOrigUser(
-        DomainServices.UserService.Contracts.User? caseOwnerOrig,
-        DomainServices.UserService.Contracts.User? caseOwnerCurrent)
+#pragma warning restore CA1822 // Mark members as static
+        DomainServices.UserService.Clients.Dto.UserDto? caseOwnerOrig,
+        DomainServices.UserService.Clients.Dto.UserDto? caseOwnerCurrent)
     {
         var user = caseOwnerOrig ?? caseOwnerCurrent;
 

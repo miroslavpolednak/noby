@@ -14,12 +14,12 @@ internal sealed class SaveLocalSurveyDetailsHandler(IRealEstateValuationServiceC
             throw new NobyValidationException(90032, "ValuationTypeId is not Online or Standard");
         }
 
-        if (revDetail.ValuationTypeId == DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Online && revDetail.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
+        if (revDetail.ValuationTypeId == DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Online && revDetail.ValuationStateId != (int)WorkflowTaskStates.DoplneniDokumentu)
         {
             throw new NobyValidationException(90032, "Online is not in state 10");
         }
 
-        if (revDetail.ValuationTypeId == DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Standard && revDetail.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
+        if (revDetail.ValuationTypeId == DomainServices.RealEstateValuationService.Contracts.ValuationTypes.Standard && revDetail.ValuationStateId != (int)WorkflowTaskStates.Rozpracovano)
         {
             throw new NobyValidationException(90032, "Standard is not in state 7");
         }
@@ -35,6 +35,7 @@ internal sealed class SaveLocalSurveyDetailsHandler(IRealEstateValuationServiceC
             LoanPurposeDetails = revDetail.LoanPurposeDetails,
             ParcelDetails = revDetail.ParcelDetails,
             OnlinePreorderDetails = revDetail.OnlinePreorderDetails,
+            Comment = request.Comment ?? "",
             LocalSurveyDetails = new DomainServices.RealEstateValuationService.Contracts.LocalSurveyData
             {
                 RealEstateValuationLocalSurveyFunctionCode = request.FunctionCode ?? "",

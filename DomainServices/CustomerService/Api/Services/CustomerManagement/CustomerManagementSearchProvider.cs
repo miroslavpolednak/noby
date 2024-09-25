@@ -13,7 +13,7 @@ internal sealed class CustomerManagementSearchProvider(
     private List<GendersResponse.Types.GenderItem> _genders = null!;
     private List<IdentificationDocumentTypesResponse.Types.IdentificationDocumentTypeItem> _docTypes = null!;
 
-    public async Task<IEnumerable<CustomerDetailResponse>> Search(SearchCustomersRequest searchRequest, CancellationToken cancellationToken)
+    public async Task<IEnumerable<Customer>> Search(SearchCustomersRequest searchRequest, CancellationToken cancellationToken)
     {
         await InitializeCodebooks(cancellationToken);
 
@@ -22,7 +22,7 @@ internal sealed class CustomerManagementSearchProvider(
         return foundCustomers.Where(c => c.Party.NaturalPersonAttributes is not null)
                              .Select(c =>
                              {
-                                 var item = new CustomerDetailResponse
+                                 var item = new Customer
                                  {
                                      NaturalPerson = new NaturalPerson
                                      {
@@ -103,7 +103,7 @@ internal sealed class CustomerManagementSearchProvider(
         };
     }
 
-    private void FillAddressData(CustomerDetailResponse result, CM.Contracts.AddressLinePoint? address)
+    private void FillAddressData(Customer result, CM.Contracts.AddressLinePoint? address)
     {
         if (address is null)
             return;

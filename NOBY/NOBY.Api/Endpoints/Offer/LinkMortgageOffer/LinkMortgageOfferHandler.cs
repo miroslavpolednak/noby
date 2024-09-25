@@ -19,7 +19,7 @@ internal sealed class LinkMortgageOfferHandler(
         SalesArrangementType = SalesArrangementTypes.Mortgage,
         OfferType = OfferTypes.Mortgage,
         AdditionalValidation = AdditionalValidation,
-        ValidStates = { SharedTypes.Enums.EnumSalesArrangementStates.InSigning, SharedTypes.Enums.EnumSalesArrangementStates.ToSend }
+        ValidStates = [EnumSalesArrangementStates.InSigning, EnumSalesArrangementStates.ToSend, EnumSalesArrangementStates.InProgress, EnumSalesArrangementStates.NewArrangement]
     };
 
 	public async Task<OfferRefinancingLinkResult> Handle(OfferLinkMortgageOfferRequest request, CancellationToken cancellationToken)

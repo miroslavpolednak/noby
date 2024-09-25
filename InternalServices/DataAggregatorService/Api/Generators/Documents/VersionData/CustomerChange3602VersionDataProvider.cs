@@ -1,6 +1,6 @@
 ﻿using CIS.Core.Exceptions;
 using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.Documents.VersionData;
 

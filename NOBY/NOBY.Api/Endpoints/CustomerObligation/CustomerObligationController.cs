@@ -17,11 +17,15 @@ public class CustomerObligationController(IMediator _mediator)
     [HttpDelete("{customerOnSAId:int}/obligation/{obligationId:int}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Klient - závazek"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A3325947-AFC4-444a-989E-1531C4AFFEDE")]
-    public async Task DeleteObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId)
-        => await _mediator.Send(new DeleteObligation.DeleteObligationRequest(customerOnSAId, obligationId));
+    public async Task<IActionResult> DeleteObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId)
+    {
+        await _mediator.Send(new DeleteObligation.DeleteObligationRequest(customerOnSAId, obligationId));
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Detail závazku customera
@@ -47,11 +51,15 @@ public class CustomerObligationController(IMediator _mediator)
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Klient - závazek"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=9AA4E44C-58B8-44c5-897A-64857ADD69DE")]
-    public async Task UpdateObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId, [FromBody] CustomerObligationUpdateObligationRequest? request)
-        => await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new NobyValidationException("Payload is empty"));
+    public async Task<IActionResult> UpdateObligation([FromRoute] int customerOnSAId, [FromRoute] int obligationId, [FromBody] CustomerObligationUpdateObligationRequest? request)
+    {
+        await _mediator.Send(request?.InfuseId(customerOnSAId, obligationId) ?? throw new NobyValidationException("Payload is empty"));
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Vytvoření závazku customera

@@ -1,8 +1,7 @@
 ﻿using SharedTypes.Enums;
 using CIS.Testing;
 using CIS.Testing.Database;
-using DomainServices.UserService.Clients.Services;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Xunit;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,9 +11,8 @@ using CIS.InternalServices.DataAggregatorService.Clients;
 using DomainServices.SalesArrangementService.Clients;
 using NSubstitute;
 using DomainServices.CodebookService.Clients;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.DocumentArchiveService.Clients;
-using CIS.Infrastructure.BackgroundServices;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using ExternalServices.Eas.V1;
 using DomainServices.ProductService.Clients;
@@ -22,7 +20,7 @@ using ExternalServices.ESignatures.V1;
 using _Domain = DomainServices.DocumentOnSAService.Contracts;
 using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients.v1;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using CIS.InternalServices.DocumentGeneratorService.Clients;
 using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.ExternalServices.SbQueues.V1.Repositories;
@@ -79,7 +77,7 @@ public abstract class IntegrationTestBase : IClassFixture<WebApplicationFactoryF
         .ConfigureServices(services =>
         {
             // This mock is necessary for mock of service discovery
-            services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserService>();
+            services.RemoveAll<IUserServiceClient>().AddSingleton<IUserServiceClient, MockUserServiceClient>();
 
             services.RemoveAll<ICodebookServiceClient>().AddSingleton<ICodebookServiceClient, CodebookService.Clients.Services.CodebookServiceMock>();
 

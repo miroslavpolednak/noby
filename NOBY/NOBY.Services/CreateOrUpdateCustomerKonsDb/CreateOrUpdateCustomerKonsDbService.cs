@@ -4,7 +4,9 @@ using Microsoft.Extensions.Logging;
 namespace NOBY.Services.CreateOrUpdateCustomerKonsDb;
 
 [TransientService, SelfService]
-public sealed class CreateOrUpdateCustomerKonsDbService
+public sealed class CreateOrUpdateCustomerKonsDbService(
+    DomainServices.CustomerService.Clients.v1.ICustomerServiceClient _customerService,
+    ILogger<CreateOrUpdateCustomerKonsDbService> _logger)
 {
     public async Task CreateOrUpdate(IEnumerable<Identity> identities, CancellationToken cancellationToken)
     {
@@ -13,7 +15,7 @@ public sealed class CreateOrUpdateCustomerKonsDbService
         if (kbIdentity is null) return;
         var mpIdentity = identities.GetMpIdentityOrDefault();
 
-        DomainServices.CustomerService.Contracts.CustomerDetailResponse? konsDbCustomer = null;
+        DomainServices.CustomerService.Contracts.Customer? konsDbCustomer = null;
         try
         {
             //TODO rollbackovat i vytvoreni klienta?
@@ -89,16 +91,5 @@ public sealed class CreateOrUpdateCustomerKonsDbService
             }));
 
         await _customerService.CreateCustomer(request, cancellationToken);
-    }
-
-    private readonly DomainServices.CustomerService.Clients.ICustomerServiceClient _customerService;
-    private readonly ILogger<CreateOrUpdateCustomerKonsDbService> _logger;
-
-    public CreateOrUpdateCustomerKonsDbService(
-        DomainServices.CustomerService.Clients.ICustomerServiceClient customerService,
-        ILogger<CreateOrUpdateCustomerKonsDbService> logger)
-    {
-        _customerService = customerService;
-        _logger = logger;
     }
 }

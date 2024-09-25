@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Asp.Versioning;
+using NOBY.Api.Endpoints.Offer.CancelOffer;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace NOBY.Api.Endpoints.Offer;
@@ -166,11 +167,14 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// Nastavuje příznaky na modelaci.
     /// </summary>
     [HttpPut("case/{caseId:long}/offer/{offerId:int}/flags")]
-    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] OfferSetOfferFlagsRequest request)
-        => await _mediator.Send((request ?? new()).InfuseId(offerId));
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> SetOfferFlags([FromRoute] long caseId, [FromRoute] int offerId, [FromBody] OfferSetOfferFlagsRequest request)
+    {
+        await _mediator.Send((request ?? new()).InfuseId(offerId));
+        return NoContent();
+    }
 
     /// <summary>
     /// Plný splátkový kalendář dle ID simulace.
@@ -200,6 +204,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPost("offer/mortgage/developer-project/search")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferDeveloperSearchResponse), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=D43515EA-4014-47a1-AD45-0E80EE43AEB9")]
@@ -214,6 +219,7 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/sales-arrangement/{salesArrangementId:int}/link-mortgage-offer")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferRefinancingLinkResult), StatusCodes.Status200OK)]
@@ -229,8 +235,9 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/link-mortgage-retention-offer")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferRefinancingLinkResult), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=92B4B98B-3F57-4541-9828-EB8CFDFA9035")]
     public async Task<OfferRefinancingLinkResult> LinkMortgageRetentionOffer([FromRoute] long caseId, [FromBody][Required] OfferLinkMortgageRetentionOfferRequest request)
@@ -244,10 +251,29 @@ public sealed class OfferController(IMediator _mediator) : ControllerBase
     /// </remarks>
     [HttpPut("case/{caseId:long}/link-mortgage-extra-payment")]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_RefinancingAccess)]
-    [SwaggerOperation(Tags = [ "Modelace" ])]
+    [SwaggerOperation(Tags = ["Modelace"])]
     [ProducesResponseType(typeof(OfferRefinancingLinkResult), StatusCodes.Status200OK)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=138F178A-72B5-46f6-85B2-D8414F5043B3")]
-    public async Task<OfferRefinancingLinkResult> LinkMortgageExtraPayment([FromRoute] long caseId,  [FromBody][Required] OfferLinkMortgageExtraPaymentRequest request)
+    public async Task<OfferRefinancingLinkResult> LinkMortgageExtraPayment([FromRoute] long caseId, [FromBody][Required] OfferLinkMortgageExtraPaymentRequest request)
         => await _mediator.Send(request.InfuseId(caseId));
+
+
+    /// <summary>
+    /// Ukončuje platnost modelace.
+    /// </summary>
+    /// <remarks>
+    /// Slouží k ukončení platnosti refixační nabídky pro konkrétní délku fixace, aby mohla být nasimulována znovu.
+    /// </remarks>
+    [HttpPost("case/{caseId:long}/offer/{offerId:int}/cancel")]
+    [SwaggerOperation(Tags = ["Modelace"])]
+    [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [NobyAuthorize(UserPermissions.REFINANCING_Manage)]
+    [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=9C78B026-D427-4de4-B2F1-63F3EA0D9E6B")]
+    public async Task CancelOffer([FromRoute] long caseId, [FromRoute] int offerId)
+     => await _mediator.Send(new CancelOfferRequest(caseId, offerId));
+
 }

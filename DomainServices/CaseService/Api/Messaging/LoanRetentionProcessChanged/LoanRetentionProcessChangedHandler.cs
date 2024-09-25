@@ -11,6 +11,8 @@ internal sealed class LoanRetentionProcessChangedHandler(
 {
     public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.LoanRetentionProcessChanged message)
     {
+        _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.loanRetentionProcessData?.processPhase?.code);
+
         if (message.state is not (cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED
             or cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.TERMINATED))
             return;
@@ -46,7 +48,7 @@ internal sealed class LoanRetentionProcessChangedHandler(
 
         if (sa is not null)
         {
-            var newState = message.state == cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED ? (int)EnumSalesArrangementStates.Finished : (int)EnumSalesArrangementStates.Cancelled;
+            var newState = message.state == cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ProcessStateEnum.COMPLETED ? EnumSalesArrangementStates.Finished : EnumSalesArrangementStates.Cancelled;
             await _salesArrangementService.UpdateSalesArrangementState(sa.SalesArrangementId, newState);
         }
         else

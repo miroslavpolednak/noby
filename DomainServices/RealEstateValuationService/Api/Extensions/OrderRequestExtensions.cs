@@ -10,10 +10,10 @@ internal static class OrderRequestExtensions
     public static void FillBaseOrderData(
         this ExternalServices.PreorderService.Dto.IOrderBaseData model,
         CaseService.Contracts.Case caseInstance,
-        CustomerDetailResponse customer,
-        UserService.Contracts.User currentUser,
-        long[]? realEstateIds,
-        long[]? attachments
+        Customer customer,
+        UserService.Clients.Dto.UserDto currentUser,
+        in long[]? realEstateIds,
+        in long[]? attachments
         )
     {
         model.DealNumber = caseInstance.Data.ContractNumber;
@@ -36,10 +36,10 @@ internal static class OrderRequestExtensions
 
     public static void FillBaseStandardOrderData(
         this ExternalServices.PreorderService.Dto.IOrderStandardBaseData model,
-        UserService.Contracts.User currentUser,
+        UserService.Clients.Dto.UserDto currentUser,
         Database.Entities.RealEstateValuation entity,
         SpecificDetailHouseAndFlatObject? houseAndFlat,
-        in Services.OrderAggregate.GetProductPropertiesResult productProps)
+        in Dto.GetProductPropertiesResult productProps)
     {
         model.ProductOwner = "01";
         model.ContactPersonName = $"{currentUser.UserInfo.FirstName} {currentUser.UserInfo.LastName}";

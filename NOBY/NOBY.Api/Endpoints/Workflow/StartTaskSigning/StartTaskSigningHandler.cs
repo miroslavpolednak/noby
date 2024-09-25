@@ -73,18 +73,14 @@ internal sealed class StartTaskSigningHandler(
         }
         else if (process.RefinancingType == (int)EnumRefinancingTypes.MortgageRetention)
         {
-            var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention
-                                                                                      && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled
-                                                                                      && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished);
+            var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRetention && s.IsInState(SalesArrangementHelpers.ActiveSalesArrangementStates));
 
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
 
         }
         else if (process.RefinancingType == (int)EnumRefinancingTypes.MortgageRefixation)
         {
-            var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation
-                                                                                     && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Cancelled
-                                                                                     && s.State != (int)SharedTypes.Enums.EnumSalesArrangementStates.Finished);
+            var sa = salesArrangementsResponse.SalesArrangements.SingleOrDefault(s => s.SalesArrangementTypeId == (int)SalesArrangementTypes.MortgageRefixation && s.IsInState(SalesArrangementHelpers.ActiveSalesArrangementStates));
 
             return sa ?? await GetSaAccordingToSaCategory(salesArrangementsResponse, cancellationToken);
         }

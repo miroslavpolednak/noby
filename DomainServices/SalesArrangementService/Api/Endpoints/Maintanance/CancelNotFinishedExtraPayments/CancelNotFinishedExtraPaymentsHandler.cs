@@ -28,6 +28,7 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
 
         foreach (var epSa in newExtraPaymentsSA)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 var existNonCancelEPTaskInSb = (await _caseService.GetTaskList(epSa.CaseId, cancellationToken))
@@ -40,8 +41,11 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
                     var process = (await _caseService.GetProcessList(epSa.CaseId, cancellationToken))
                                 .First(t => t.ProcessId == epSa.ProcessId);
 
-                    await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
-
+                    if (!process.Cancelled)
+                    {
+                        await _caseService.CancelTask(epSa.CaseId, process.ProcessIdSb, cancellationToken: cancellationToken);
+                    }
+                    
                     await _mediator.Send(new UpdateSalesArrangementStateRequest(
                         new() { SalesArrangementId = epSa.SalesArrangementId, State = (int)EnumSalesArrangementStates.Cancelled }),
                         cancellationToken);
@@ -52,6 +56,7 @@ internal sealed class CancelNotFinishedExtraPaymentsHandler(
                 // muze se stat, ze task neni nalezen a pak pada zpracovani vsech ostatnich SA
                 _logger.CancelNotFinishedExtraPaymentsFailed(epSa.CaseId, ex.Message, ex);
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         return new();

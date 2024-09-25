@@ -8,12 +8,12 @@ internal sealed class MpHomeDetailMapper(
     IMediator _mediator,
     ICodebookServiceClient _codebookService)
 {
-    public async Task<CustomerDetailResponse> MapDetailResponse(PartnerResponse partner, CancellationToken cancellationToken)
+    public async Task<Customer> MapDetailResponse(PartnerResponse partner, CancellationToken cancellationToken)
     {
         var titles1 = await _codebookService.AcademicDegreesBefore(cancellationToken);
         var titles2 = await _codebookService.AcademicDegreesAfter(cancellationToken);
 
-        CustomerDetailResponse customer = new()
+        Customer customer = new()
         {
             Identities = { getIdentities(partner.Id, partner.KbId) },
             NaturalPerson = new()
@@ -41,7 +41,12 @@ internal sealed class MpHomeDetailMapper(
         {
             foreach (var address in partner.Addresses)
             {
-                customer.Addresses.Add(await mapAddress(address, cancellationToken));
+                var parsedAddress = await mapAddress(address, cancellationToken);
+
+                if (parsedAddress is null)
+                    continue;
+                    
+                customer.Addresses.Add(parsedAddress);
             }
         }
 
@@ -82,7 +87,7 @@ internal sealed class MpHomeDetailMapper(
 
     private async Task<SharedTypes.GrpcTypes.GrpcAddress?> mapAddress(AddressData? address, CancellationToken cancellationToken)
     {
-        if (address is null)
+        if (address is null || string.IsNullOrWhiteSpace(address.LandRegistryNumber) || string.IsNullOrWhiteSpace(address.PostCode))
         {
             return null;
         }

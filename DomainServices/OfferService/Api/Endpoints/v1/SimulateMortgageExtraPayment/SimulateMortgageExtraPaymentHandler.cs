@@ -1,4 +1,5 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
 using SharedComponents.DocumentDataStorage;
 using SharedTypes.GrpcTypes;
@@ -6,6 +7,7 @@ using SharedTypes.GrpcTypes;
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageExtraPayment;
 
 internal sealed class SimulateMortgageExtraPaymentHandler(
+    IRollbackBag _bag,
     Database.OfferServiceDbContext _dbContext,
     IEasSimulationHTClient _easSimulationHTClient,
     IDocumentDataStorage _documentDataStorage,
@@ -37,6 +39,7 @@ internal sealed class SimulateMortgageExtraPaymentHandler(
         _dbContext.Offers.Add(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+        _bag.Add(SimulateMortgageExtraPaymentRollback.BagKeyOfferId, entity.OfferId);
 
         // ulozit json data simulace
         await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);

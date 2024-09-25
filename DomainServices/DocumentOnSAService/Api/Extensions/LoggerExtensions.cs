@@ -10,9 +10,9 @@ public static class LoggerExtensions
     static LoggerExtensions()
     {
         _updateCustomerFailed = LoggerMessage.Define<int>(
-            LogLevel.Error,
-            new EventId(LoggerEventIdCodes.UpdateCustomerFailed, nameof(UpdateCustomerFailed)),
-           "Update customerOnSa {CustomerOnSaId} failed");
+                LogLevel.Error,
+                new EventId(LoggerEventIdCodes.UpdateCustomerFailed, nameof(UpdateCustomerFailed)),
+               "Update customerOnSa {CustomerOnSaId} failed");
 
         _updateOfSbQueuesFailed = LoggerMessage.Define<long>(
             LogLevel.Error,
@@ -41,4 +41,5 @@ public static class LoggerExtensions
 
     public static void StopSigningError(this ILogger logger, int documentOnSaId, Exception exception)
     => _stopSigningError(logger, documentOnSaId, exception);
+
 }

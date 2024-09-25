@@ -1,10 +1,12 @@
-﻿using DomainServices.CaseService.Api.Database;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.UpdateCustomerData;
 
 internal sealed class UpdateCustomerDataHandler(
     IMediator _mediator,
+    IGrpcServerResponseCache _responseCache,
     CaseServiceDbContext _dbContext)
         : IRequestHandler<UpdateCustomerDataRequest, Google.Protobuf.WellKnownTypes.Empty>
 {
@@ -29,10 +31,12 @@ internal sealed class UpdateCustomerDataHandler(
 
         await _dbContext.SaveChangesAsync(cancellation);
 
-        if (customerNameChanged)
+        if (customerNameChanged && entity.State == (int)EnumCaseStates.InProgress)
         {
             await _mediator.Send(new NotifyStarbuildRequest { CaseId = request.CaseId }, cancellation);
         }
+
+        await _responseCache.InvalidateEntry(nameof(GetCaseDetail), request.CaseId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

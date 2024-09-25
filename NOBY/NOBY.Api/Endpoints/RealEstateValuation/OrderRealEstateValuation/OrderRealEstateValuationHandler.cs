@@ -1,4 +1,5 @@
 ﻿using DomainServices.RealEstateValuationService.Clients;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NOBY.Api.Endpoints.RealEstateValuation.OrderRealEstateValuation;
 
@@ -19,7 +20,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
             case EnumRealEstateValuationTypes.Online:
                 if (!revInstance.PreorderId.HasValue 
                     || revInstance.OrderId.HasValue 
-                    || revInstance.ValuationStateId != (int)RealEstateValuationStates.DoplneniDokumentu)
+                    || revInstance.ValuationStateId != (int)WorkflowTaskStates.DoplneniDokumentu)
                 {
                     throw new NobyValidationException(90032, "Valuation:Online OrderId or PreorderId already set or state is out of allowed range");
                 }
@@ -43,7 +44,7 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
 
             case EnumRealEstateValuationTypes.Standard:
                 if (revInstance.OrderId.HasValue 
-                    || !(new[] { (int)RealEstateValuationStates.DoplneniDokumentu, (int)RealEstateValuationStates.Rozpracovano }).Contains(revInstance.ValuationStateId))
+                    || !(new[] { (int)WorkflowTaskStates.DoplneniDokumentu, (int)WorkflowTaskStates.Rozpracovano }).Contains(revInstance.ValuationStateId))
                 {
                     throw new NobyValidationException(90032, "Valuation:Standard OrderId already set or state is out of allowed range");
                 }
@@ -56,13 +57,14 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                 await _realEstateValuationService.OrderStandardValuation(new DomainServices.RealEstateValuationService.Contracts.OrderStandardValuationRequest
                 {
                     RealEstateValuationId = request.RealEstateValuationId,
+                    Comment = request.Comment ?? "",
                     LocalSurveyDetails = createData(request),
                 }, cancellationToken);
                 break;
 
             case EnumRealEstateValuationTypes.Dts:
                 if (revInstance.OrderId.HasValue 
-                    || revInstance.ValuationStateId != (int)RealEstateValuationStates.Rozpracovano)
+                    || revInstance.ValuationStateId != (int)WorkflowTaskStates.Rozpracovano)
                 {
                     throw new NobyValidationException(90032, "Valuation:Dts OrderId already set or state is out of allowed range");
                 }
@@ -72,7 +74,11 @@ internal sealed class OrderRealEstateValuationHandler(IRealEstateValuationServic
                     throw new NobyValidationException(90064);
                 }
 
-                await _realEstateValuationService.OrderDTSValuation(request.RealEstateValuationId, cancellationToken);
+                await _realEstateValuationService.OrderDTSValuation(new DomainServices.RealEstateValuationService.Contracts.OrderDTSValuationRequest
+                {
+                    RealEstateValuationId = request.RealEstateValuationId,
+                    Comment = request?.Comment ?? ""
+                }, cancellationToken);
                 break;
         }
     }

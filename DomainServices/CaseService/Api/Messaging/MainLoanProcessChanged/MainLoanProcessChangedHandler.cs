@@ -10,13 +10,15 @@ internal class MainLoanProcessChangedHandler(
 {
 	public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.MainLoanProcessChanged message)
     {
+        _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.mainLoanProcessData?.processPhase?.code);
+
         if (!long.TryParse(message.@case.caseId.id, out var caseId))
         {
             _logger.KafkaMessageCaseIdIncorrectFormat(nameof(MainLoanProcessChangedHandler), message.@case.caseId.id);
             return;
         }
 
-        var caseState = message.processData.@private.mainLoanProcessData.processPhase.code;
+        var caseState = message.processData!.@private.mainLoanProcessData.processPhase.code ;
         _logger.UpdateCaseStateStart(caseId, caseState);
 
         try

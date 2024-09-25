@@ -18,15 +18,10 @@ internal sealed class SearchCasesHandler(
 
         var filterStates = getStatesFilter(request.FilterId);
 
-        if (filterStates is not null && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing))
-        {
-            filterStates.Remove((int)EnumCaseStates.InAdministration);
-        }
-
         DomainServices.CaseService.Contracts.SearchCasesResponse result;
 
         if (filterStates?.Any() ?? true)
-            result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, filterStates, request.Term, cancellationToken);
+            result = await _caseService.SearchCases(paginable, _userAccessor.User!.Id, filterStates, _userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing) ? null : 90, request.Term, cancellationToken);
         else
             result = new DomainServices.CaseService.Contracts.SearchCasesResponse 
             { 
@@ -41,15 +36,15 @@ internal sealed class SearchCasesHandler(
         };
     }
 
-    static List<int>? getStatesFilter(int? filterId)
+    static List<EnumCaseStates>? getStatesFilter(int? filterId)
         => filterId switch
         {
-            1 => [1, 2, 3, 4, 5, 8, 9],
-            2 => [1, 2, 8],
-            3 => [3],
-            4 => [4],
-            5 => [5],
-            _ => throw new NotImplementedException($"Filter {filterId} is not implemented")
+            1 => [EnumCaseStates.InProgress, EnumCaseStates.InApproval, EnumCaseStates.InSigning, EnumCaseStates.InDisbursement, EnumCaseStates.InAdministration, EnumCaseStates.InApprovalConfirmed, EnumCaseStates.ToBeCancelled],
+            2 => [EnumCaseStates.InProgress, EnumCaseStates.InApproval, EnumCaseStates.InApprovalConfirmed],
+            3 => [EnumCaseStates.InSigning],
+            4 => [EnumCaseStates.InDisbursement],
+            5 => [EnumCaseStates.InAdministration],
+            _ => null
         };
 
     static readonly List<Paginable.MapperField> _sortingMapper =

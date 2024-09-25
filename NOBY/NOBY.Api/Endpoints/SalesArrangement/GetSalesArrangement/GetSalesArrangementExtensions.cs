@@ -179,7 +179,7 @@ internal static class GetSalesArrangementExtensions
             ExpectedDateOfDrawing = new()
             {
                 IsActive = model.ExpectedDateOfDrawing?.IsActive ?? false,
-                AgreedExpectedDateOfDrawing = model.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing,
+                AgreedExpectedDateOfDrawing = model.ExpectedDateOfDrawing?.AgreedExpectedDateOfDrawing ?? DateTime.Now,
                 NewExpectedDateOfDrawing = model.ExpectedDateOfDrawing?.NewExpectedDateOfDrawing
             },
             DrawingDateTo = new()

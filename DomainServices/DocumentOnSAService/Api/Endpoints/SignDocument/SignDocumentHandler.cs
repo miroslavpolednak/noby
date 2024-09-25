@@ -1,12 +1,10 @@
-﻿using CIS.Core;
-using CIS.Core.Security;
+﻿using CIS.Core.Security;
 using SharedTypes.Enums;
 using SharedAudit;
-using SharedTypes.GrpcTypes;
 using DomainServices.CaseService.Clients.v1;
 using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.CustomerService.Contracts;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
@@ -14,14 +12,12 @@ using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Api.Database.Entities;
 using DomainServices.DocumentOnSAService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.ProductService.Clients;
-using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Clients;
-using DomainServices.UserService.Contracts;
+using DomainServices.UserService.Clients.v1;
 using ExternalServices.Eas.V1;
 using ExternalServices.Sulm.V1;
 using FastEnumUtility;
@@ -40,8 +36,39 @@ using SharedTypes.Extensions;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.SignDocument;
 
-public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, Empty>
+public sealed class SignDocumentHandler(
+	DocumentOnSAServiceDbContext _dbContext,
+	TimeProvider _dateTime,
+	ICurrentUserAccessor _currentUser,
+	ISalesArrangementServiceClient _salesArrangementService,
+	IEasClient _easClient,
+	ISulmClientHelper _sulmClientHelper,
+	IHouseholdServiceClient _householdService,
+	ICustomerOnSAServiceClient _customerOnSAService,
+	IProductServiceClient _productService,
+	IAuditLogger _auditLogger,
+	ISalesArrangementStateManager _salesArrangementStateManager,
+	HouseholdService.Clients.ICustomerChangeDataMerger _customerChangeDataMerger,
+	ICustomerServiceClient _customerService,
+	ICodebookServiceClient _codebookService,
+	ICaseServiceClient _caseService,
+	ILogger<SignDocumentHandler> _logger,
+	IDocumentArchiveServiceClient _documentArchiveService,
+	IUserServiceClient _userService,
+	ICommonSigningMethods _commonSigningMethods) 
+    : IRequestHandler<SignDocumentRequest, Empty>
 {
+    private readonly static EnumSalesArrangementStates[] _allowedSalesArrangementStates = 
+    [
+		EnumSalesArrangementStates.InProgress,
+		EnumSalesArrangementStates.InApproval,
+		EnumSalesArrangementStates.Cancelled,
+		EnumSalesArrangementStates.NewArrangement,
+		EnumSalesArrangementStates.Disbursed,
+		EnumSalesArrangementStates.ToSend,
+		EnumSalesArrangementStates.Finished,
+		EnumSalesArrangementStates.RC2
+	];
     public List<CustomerOnSA> CustomersOnSABuffer { get; set; } = [];
 
     /// <summary>
@@ -51,69 +78,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
     private const string _defaultContractNumber = "HF00111111125";
 
-    private readonly DocumentOnSAServiceDbContext _dbContext;
-    private readonly TimeProvider _dateTime;
-    private readonly ICurrentUserAccessor _currentUser;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly IEasClient _easClient;
-    private readonly ISulmClientHelper _sulmClientHelper;
-    private readonly IHouseholdServiceClient _householdService;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly IProductServiceClient _productService;
-    private readonly IAuditLogger _auditLogger;
-    private readonly ISalesArrangementStateManager _salesArrangementStateManager;
-    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICodebookServiceClient _codebookService;
-    private readonly ICaseServiceClient _caseService;
-    private readonly ILogger<SignDocumentHandler> _logger;
-    private readonly IDocumentArchiveServiceClient _documentArchiveService;
-    private readonly IUserServiceClient _userService;
-    private readonly ICommonSigningMethods _commonSigningMethods;
-
-    public SignDocumentHandler(
-        DocumentOnSAServiceDbContext dbContext,
-        TimeProvider dateTime,
-        ICurrentUserAccessor currentUser,
-        ISalesArrangementServiceClient salesArrangementService,
-        IEasClient easClient,
-        ISulmClientHelper sulmClientHelper,
-        IHouseholdServiceClient householdService,
-        ICustomerOnSAServiceClient customerOnSaService,
-        IProductServiceClient productService,
-        IAuditLogger auditLogger,
-        ISalesArrangementStateManager salesArrangementStateManager,
-        ICustomerChangeDataMerger customerChangeDataMerger,
-        ICustomerServiceClient customerService,
-        ICodebookServiceClient codebookService,
-        ICaseServiceClient caseService,
-        ILogger<SignDocumentHandler> logger,
-        IDocumentArchiveServiceClient documentArchiveService,
-        IUserServiceClient userService,
-        ICommonSigningMethods commonSigningMethods)
-    {
-        _dbContext = dbContext;
-        _dateTime = dateTime;
-        _currentUser = currentUser;
-        _salesArrangementService = salesArrangementService;
-        _easClient = easClient;
-        _sulmClientHelper = sulmClientHelper;
-        _householdService = householdService;
-        _customerOnSAService = customerOnSaService;
-        _productService = productService;
-        _auditLogger = auditLogger;
-        _salesArrangementStateManager = salesArrangementStateManager;
-        _customerChangeDataMerger = customerChangeDataMerger;
-        _customerService = customerService;
-        _codebookService = codebookService;
-        _caseService = caseService;
-        _logger = logger;
-        _documentArchiveService = documentArchiveService;
-        _userService = userService;
-        _commonSigningMethods = commonSigningMethods;
-    }
-
-    public async Task<Empty> Handle(SignDocumentRequest request, CancellationToken cancellationToken)
+	public async Task<Empty> Handle(SignDocumentRequest request, CancellationToken cancellationToken)
     {
         var documentOnSa = await _dbContext.DocumentOnSa.FirstOrDefaultAsync(r => r.DocumentOnSAId == request.DocumentOnSAId!.Value, cancellationToken)
             ?? throw ErrorCodeMapper.CreateNotFoundException(ErrorCodeMapper.DocumentOnSANotExist, request.DocumentOnSAId!.Value);
@@ -126,7 +91,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
 
         var salesArrangement = await _salesArrangementService.GetSalesArrangement(documentOnSa.SalesArrangementId, cancellationToken);
 
-        if (documentOnSa.Source != Source.Workflow && salesArrangement.State != EnumSalesArrangementStates.InSigning.ToByte())
+        if (documentOnSa.Source != Source.Workflow && salesArrangement.IsInState(_allowedSalesArrangementStates))
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.SigningInvalidSalesArrangementState);
 
         var signatureDate = _dateTime.GetLocalNow().DateTime;
@@ -382,7 +347,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         return updateRequest;
     }
 
-    private static _CustomerService.UpdateCustomerRequest MapUpdateCustomerRequest(int mandantId, CustomerDetailResponse customerDetail)
+    private static _CustomerService.UpdateCustomerRequest MapUpdateCustomerRequest(int mandantId, Customer customerDetail)
     {
         return new _CustomerService.UpdateCustomerRequest
         {
@@ -457,13 +422,6 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         if (documentOnSa.DocumentTypeId.GetValueOrDefault() == DocumentTypes.ZADOSTHU.ToByte()
         && await _dbContext.DocumentOnSa.Where(d => d.SalesArrangementId == documentOnSa.SalesArrangementId && d.DocumentTypeId == DocumentTypes.ZADOSTHU.ToByte()).AllAsync(r => !r.IsSigned, cancellationToken))
         {
-            var result = await _easClient.AddFirstSignatureDate((int)salesArrangement.CaseId, signatureDate, cancellationToken);
-
-            if (result is not null && result.CommonValue != 0)
-            {
-                throw new CisValidationException(ErrorCodeMapper.EasAddFirstSignatureDateReturnedErrorState, $"Eas AddFirstSignatureDate returned error state: {result.CommonValue} with message: {result.CommonText}");
-            }
-
             //SalesArrangement FirstSignatureDate
             await UpdateSalesArrangementFirstSignatureDate(salesArrangement, signatureDate, cancellationToken);
 
@@ -492,7 +450,7 @@ public sealed class SignDocumentHandler : IRequestHandler<SignDocumentRequest, E
         documentOnSa.SignatureConfirmedBy = _currentUser.User?.Id;
     }
 
-    private string GetAuthorUserLoginForDocumentUpload(User user)
+    private string GetAuthorUserLoginForDocumentUpload(DomainServices.UserService.Clients.Dto.UserDto user)
     {
         if (!string.IsNullOrWhiteSpace(user.UserInfo.Icp))
             return user.UserInfo.Icp;

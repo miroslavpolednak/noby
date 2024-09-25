@@ -1,5 +1,8 @@
 ﻿namespace DomainServices.UserService.Clients.Authorization;
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
+#pragma warning disable CA1008 // Enums should have zero value
+
 public enum UserPermissions : int
 {
     WFL_TASK_DETAIL_PaperSigningDocuments = 100,
@@ -51,5 +54,5 @@ public enum UserPermissions : int
     DOCUMENT_SIGNING_RefinancingManage = 246,
     CHANGE_REQUESTS_RefinancingAccess = 247,
     SALES_ARRANGEMENT_RefinancingAccess = 248,
-    WFL_TASK_DETAIL_RetentionManage = 249 
+    ADMIN_FeBannersManage = 249
 }

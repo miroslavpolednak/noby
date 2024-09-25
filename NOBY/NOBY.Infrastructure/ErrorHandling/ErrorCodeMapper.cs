@@ -60,7 +60,7 @@ public sealed class ErrorCodeMapper
             { 90048, new("Sleva neodpovídá", "Výše slevy požadovaná v nabídce je odlišná od slevy zadané v úkolu Cenová výjimka. Zkontrolujte prosím kalkulaci nabídky a upravte výši slevy.") },
             { 90049, new("Sleva není schválena", "V nabídce je požadována sleva, pro kterou není schválený úkol Cenová výjimka.") },
             { 90050, new("Sleva zřejmě expirovala", "Úkol Cenové výjimky pro slevu požadovanou v nabídce je zrušený zřejmě z důvodu expirace platnosti.") },
-            { 90051, new("Platnost budoucí úrokové sazby v minulosti", "Požadované datum platnosti budoucí úrokové sazby je v minulosti.") },
+            { 90051, new("Platnost sazby od není nastavena správně", "Retenční dodatek již není možné vygenerovat, změňte platnost sazby na následující termín splátky.") },
             { 90052, new("Není povolen souběh požadavků stejného typu. Zkontrolujte rozpracované požadavky.", "Není možné vytvořit nový požadavek, jelikož již existuje rozpracovaný požadavek z dřívějška.") },
             { 90053, new("Nelze podepsat elektronicky, protože je podepisováno na základě plné moci.") },
             { 90054, new("Soubor nelze stáhnout. Soubor neexistuje nebo je stále v procesu nahrávání do eArchivu, opakujte akci později.") },
@@ -78,7 +78,11 @@ public sealed class ErrorCodeMapper
             { 90067, new("Modré produkty jsou zakázány.") },
             { 90068, new("Nelze vygenerovat dodatek, protože hlavní dlužník či spoludlužníci nemají vyplněn jeden nebo více kontaktů. Doplňte klientům email resp. telefon (hlavní telefon) přes aplikaci CURE, počkejte na synchronizaci kontaktů do systému Starbuild a generování dodatku opakujte.") },
             { 90069, new("--DS error--") },
-            { 90070, new("Stav rozpracované žádosti se změnil na pozadí, vraťte se detail obchodního případu a pokračujte standardním průchodem přes aplikaci.") }
+            { 90070, new("Stav rozpracované žádosti se změnil na pozadí, vraťte se detail obchodního případu a pokračujte standardním průchodem přes aplikaci.") },
+            { 90071, new("Neplatný doklad", "Zadaný identifikační doklad byl nalezen v rejstříku neplatných nebo ztracených dokladů. Subjekt nelze založit.") },
+            { 90073, new ("Hodnota musí být celé číslo") },
+            { 90074, new("Obchodní případ není možné zobrazit", "Aplikace NOBY neumožňuje zobrazení ukončených/zrušených obchodních případů.") },
+            { 90075, new("Příjem nelze uložit", "Zadané IČ/RČ zaměstnavatele bylo již použito u jiného příjmu žadatele") }
         };
 
         Messages = messages.AsReadOnly();
@@ -95,6 +99,10 @@ public sealed class ErrorCodeMapper
             { 18087, new ErrorCodeDsToApiItem(90039, false) },
             { 19043, new ErrorCodeDsToApiItem(90021, false) },
             { 16082, new ErrorCodeDsToApiItem(90069, true) },
+			{ 11036, new ErrorCodeDsToApiItem(90071, false) },
+			{ 11025, new ErrorCodeDsToApiItem(90007, false) },
+			{ 11035, new ErrorCodeDsToApiItem(90044, false) },
+            { 16083, new ErrorCodeDsToApiItem(90075, false) },
         };
 
         DsToApiCodeMapper = mapper.AsReadOnly();

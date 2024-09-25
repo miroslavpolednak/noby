@@ -17,7 +17,7 @@ internal sealed class MortgageRefinancingSalesArrangementCreateService(
 		var saList = await _salesArrangementService.GetSalesArrangementList(caseId, cancellationToken);
 		int? saId = saList
 			.SalesArrangements
-			.FirstOrDefault(sa => sa.SalesArrangementTypeId == (int)salesArrangementType && sa.State is ((int)SharedTypes.Enums.EnumSalesArrangementStates.NewArrangement or (int)SharedTypes.Enums.EnumSalesArrangementStates.InProgress))
+			.FirstOrDefault(sa => sa.SalesArrangementTypeId == (int)salesArrangementType && sa.IsInState([EnumSalesArrangementStates.NewArrangement, EnumSalesArrangementStates.InProgress]))
 			?.SalesArrangementId;
 
 		// pokud SA neexistuje

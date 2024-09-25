@@ -6,6 +6,16 @@ internal static class TaskDataExtensions
 {
     private static CultureInfo _czCulture = new CultureInfo("cs-CZ");
 
+    public static string? ReplacePipesToSb(this string? input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input;
+        }
+
+        return input.Replace("|", "I", StringComparison.InvariantCulture);
+    }
+
     public static decimal GetDecimal(this IReadOnlyDictionary<string, string> taskData, string key)
     {
         if (decimal.TryParse(taskData[key], CultureInfo.InvariantCulture, out decimal d))

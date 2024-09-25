@@ -1,24 +1,14 @@
-﻿using DomainServices.CustomerService.Clients;
-using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.CustomerService.Clients.v1;
+using DomainServices.HouseholdService.Clients.v1;
 
 namespace NOBY.Services.Customer;
 
 [ScopedService, SelfService]
-public class CustomerWithChangedDataService
+public sealed class CustomerWithChangedDataService(
+    ICustomerOnSAServiceClient _customerOnSAService,
+    ICustomerServiceClient _customerService,
+    DomainServices.HouseholdService.Clients.ICustomerChangeDataMerger _customerChangeDataMerger)
 {
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
-
-    public CustomerWithChangedDataService(ICustomerOnSAServiceClient customerOnSAService,
-                                          ICustomerServiceClient customerService,
-                                          ICustomerChangeDataMerger customerChangeDataMerger)
-    {
-        _customerOnSAService = customerOnSAService;
-        _customerService = customerService;
-        _customerChangeDataMerger = customerChangeDataMerger;
-    }
-
     public async Task<CustomerInfo> GetCustomerInfo(int customerOnSaId, CancellationToken cancellationToken = default)
     {
         var customerOnSa = await _customerOnSAService.GetCustomer(customerOnSaId, cancellationToken);

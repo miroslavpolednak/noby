@@ -1,4 +1,5 @@
 ﻿using DomainServices.OfferService.Contracts;
+using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Infrastructure.ErrorHandling;
 
@@ -21,7 +22,7 @@ public class MortgageOfferLinkValidator
         if (salesArrangement.SalesArrangementTypeId != (int)SalesArrangementType || offer.Data.OfferType != OfferType)
             throw new NobyValidationException(90032);
 
-        if (!ValidStates.Contains((EnumSalesArrangementStates)salesArrangement.State))
+        if (!salesArrangement.IsInState(ValidStates))
             throw new NobyValidationException(90032);
 
         if (await AdditionalValidation(salesArrangement, offer, cancellationToken))

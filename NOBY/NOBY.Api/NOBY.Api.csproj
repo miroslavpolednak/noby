@@ -23,11 +23,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <Compile Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
-	  <Content Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
-	  <EmbeddedResource Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
-	  <None Remove="Endpoints\Offer\CommunicateMortgageRefixation\**" />
 	  <None Remove="wwwroot\**" />
 	</ItemGroup>
 	
@@ -36,17 +32,17 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.2" />
     <PackageReference Include="CompareNETObjects" Version="4.83.0" />
     <PackageReference Include="FastMember" Version="1.5.0" />
-    <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.9" />
+    <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.8" />
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="3.5.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.62.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.64.1" />
     <PackageReference Include="Newtonsoft.Json.Schema" Version="4.0.1" />
-    <PackageReference Include="PublicHoliday" Version="2.39.0" />
-    <PackageReference Include="Scrutor" Version="4.2.2" />
-    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.6.2" />
+    <PackageReference Include="PublicHoliday" Version="2.41.0" />
+    <PackageReference Include="Scrutor" Version="5.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -82,10 +78,6 @@
     <ProjectReference Include="..\NOBY.ApiContracts\NOBY.ApiContracts.csproj" />
     <ProjectReference Include="..\NOBY.Infrastructure\NOBY.Infrastructure.csproj" />
     <ProjectReference Include="..\NOBY.Services\NOBY.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Endpoints\Customer\GetCustomerDetail\Dto\" />
   </ItemGroup>
 
 </Project>

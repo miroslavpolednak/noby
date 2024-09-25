@@ -10,6 +10,8 @@ internal class CollateralValuationProcessChangedHandler(
 {
 	public async Task Handle(IMessageContext context, cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged message)
     {
+        _logger.TempMessageHeaderLog(context, message.eventId, message.state.ToString(), message.processData?.@private?.collateralValuationProcessData?.processPhase?.code);
+
         if (!int.TryParse(message.currentTask.id, out var currentTaskId))
         {
             _logger.KafkaMessageCurrentTaskIdIncorrectFormat(nameof(CollateralValuationProcessChangedHandler), message.currentTask.id);

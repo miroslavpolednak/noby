@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.UpdateSalesArrangementState;
 
 internal sealed class UpdateSalesArrangementStateHandler(
+    IGrpcServerResponseCache _responseCache,
     Database.SalesArrangementServiceDbContext _dbContext, 
     TimeProvider _timeProvider)
 		: IRequestHandler<Contracts.UpdateSalesArrangementStateRequest, Google.Protobuf.WellKnownTypes.Empty>
@@ -20,6 +22,8 @@ internal sealed class UpdateSalesArrangementStateHandler(
         entity.StateUpdateTime = _timeProvider.GetLocalNow().DateTime;
 
         await _dbContext.SaveChangesAsync(cancellation);
+
+        await _responseCache.InvalidateEntry(nameof(ValidateSalesArrangementId), request.SalesArrangementId);
 
         return new Google.Protobuf.WellKnownTypes.Empty();
     }

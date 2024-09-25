@@ -25,6 +25,11 @@ public sealed class FluentBuilderJsonTranscodingOptions
     /// </summary>
     public string OpenApiEndpointVersion { get; set; } = "1.0";
 
+    /// <summary>
+    /// Gets or sets a value indicating whether to write enum values as integers. Default is true.
+    /// </summary>
+    public bool WriteEnumsAsIntegers { get; set;} = true;
+
     internal List<string>? OpenApiXmlCommentsPaths { get; set; }
 
     /// <summary>

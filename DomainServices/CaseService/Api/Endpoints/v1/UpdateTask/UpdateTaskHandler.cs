@@ -33,7 +33,7 @@ internal sealed class UpdateTaskHandler(ISbWebApiClient _sbWebApi)
 
             case UpdateTaskRequest.AmendmentsOneofCase.MortgageExtraPayment:
                 metadata.Add("ukol_mspl_dat_spl", ((DateOnly)request.MortgageExtraPayment.ExtraPaymentDate).ToSbFormat());
-                metadata.Add("ukol_mspl_suma", request.MortgageExtraPayment.ExtraPaymentAmount.ToSbFormat());
+                metadata.Add("ukol_mspl_suma", request.MortgageExtraPayment.Principal.ToSbFormat());
                 metadata.Add("ukol_mspl_suma_celkem", request.MortgageExtraPayment.ExtraPaymentAmountIncludingFee.ToSbFormat());
                 metadata.Add("ukol_mspl_typ", request.MortgageExtraPayment.IsFinalExtraPayment.ToSbFormat());
                 break;

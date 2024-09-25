@@ -127,9 +127,9 @@ internal sealed class JobRunnerHandler
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
     // kes Type jobu
-    private static ConcurrentDictionary<Guid, Type> _jobTypes = new ConcurrentDictionary<Guid, Type>();
+    private static readonly ConcurrentDictionary<Guid, Type> _jobTypes = new();
     // TraceId - activity
-    private static ActivitySource _activitySource = new(typeof(JobRunnerHandler).Name);
+    private static readonly ActivitySource _activitySource = new(typeof(JobRunnerHandler).Name);
     // nakesovany connection string kvuli distr locku. mrda pes na to ze neni thread safe
     private static string? _connectionString;
 
@@ -156,9 +156,6 @@ internal sealed class JobRunnerHandler
         _timeProvider = timeProvider;
         _serviceScopeFactory = serviceScopeFactory;
 
-        if (_connectionString == null)
-        {
-            _connectionString = configuration.GetConnectionString(CIS.Core.CisGlobalConstants.DefaultConnectionStringKey);
-        }
+        _connectionString ??= configuration.GetConnectionString(CIS.Core.CisGlobalConstants.DefaultConnectionStringKey);
     }
 }

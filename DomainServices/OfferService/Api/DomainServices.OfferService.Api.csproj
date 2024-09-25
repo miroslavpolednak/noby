@@ -11,15 +11,15 @@
   </PropertyGroup>
 
 	<PropertyGroup>
-		<AnalysisMode>Recommended</AnalysisMode>
+		<AnalysisMode>All</AnalysisMode>
 	</PropertyGroup>
 
 	<ItemGroup>
     <PackageReference Include="dbup-core" Version="5.0.87" />
-    <PackageReference Include="MediatR" Version="12.3.0" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
-	  <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
-	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.64.0" />
+	  <PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
+	  <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.66.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
   </ItemGroup>

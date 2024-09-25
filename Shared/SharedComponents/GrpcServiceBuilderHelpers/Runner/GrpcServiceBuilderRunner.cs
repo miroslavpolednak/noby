@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
 using DomainServices;
 using Microsoft.OpenApi.Models;
+using CIS.Infrastructure.Caching.Grpc;
 
 namespace SharedComponents.GrpcServiceBuilderHelpers;
 
@@ -54,6 +55,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             if (_settings.AddDistributedCache)
             {
                 _settings.Builder.AddCisDistributedCache();
+                _settings.Builder.Services.AddGrpcServerResponseCaching();
             }
 
             // add service discovery for all consuments
@@ -86,7 +88,7 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             {
                 grpcBuilder.AddJsonTranscoding(o =>
                 {
-                    o.JsonSettings.WriteEnumsAsIntegers = true;
+                    o.JsonSettings.WriteEnumsAsIntegers = _settings.TranscodingOptions!.WriteEnumsAsIntegers;
                 });
 
                 if (!_settings.EnvironmentConfiguration.DisableContractDescriptionPropagation)

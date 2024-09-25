@@ -1,11 +1,13 @@
-﻿using DomainServices.CaseService.Api.Database;
+﻿using CIS.Infrastructure.Caching.Grpc;
+using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Api.Endpoints.v1.CreateCase;
 using DomainServices.CaseService.Contracts;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CreateExistingCase;
 
 internal sealed class CreateExistingCaseHandler(
-    UserService.Clients.IUserServiceClient _userService,
+    IGrpcServerResponseCache _responseCache,
+    UserService.Clients.v1.IUserServiceClient _userService,
     CaseServiceDbContext _dbContext,
     ILogger<CreateCaseHandler> _logger,
     TimeProvider _timeProvider)
@@ -31,6 +33,8 @@ internal sealed class CreateExistingCaseHandler(
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateAlreadyExistsException(ErrorCodeMapper.CaseAlreadyExist, request.CaseId);
         }
+
+        await _responseCache.InvalidateEntry(nameof(ValidateCaseId), request.CaseId);
 
         return new CreateCaseResponse()
         {

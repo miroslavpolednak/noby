@@ -4,7 +4,7 @@ using DomainServices.OfferService.Clients.Interfaces;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.SyncDatamartRefixation;
 
-public class SyncDatamartRefixationHandler(IMaintananceService _maintanance) 
+public class SyncDatamartRefixationHandler(IMaintananceServiceClient _maintanance) 
     : IJob
 {
     public async Task Execute(string? jobData, CancellationToken cancellationToken)

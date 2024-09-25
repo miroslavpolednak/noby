@@ -94,7 +94,7 @@ public class DocumentController(DocumentManager _documentManager, IMediator _med
     [Produces(MediaTypeNames.Application.Pdf)]
     [ProducesResponseType(typeof(FileResult), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [Obsolete]
+    [Obsolete("Odstranit casem?")]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=91D71957-A737-4ee8-9EFC-A3B62878153C")]
     public async Task<IActionResult> GetCancelConfirmationDocument([FromRoute] int customerOnSAId, CancellationToken cancellationToken)
     {

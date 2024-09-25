@@ -1,11 +1,10 @@
-﻿using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Contracts;
+﻿using DomainServices.HouseholdService.Contracts;
 
 namespace DomainServices.HouseholdService.Clients;
 
 public interface ICustomerChangeDataMerger
 {
-    void MergeAll(CustomerDetailResponse customer, CustomerOnSA customerOnSA);
-    void MergeClientData(CustomerDetailResponse customer, CustomerOnSA customerOnSA);
-    void MergeTaxResidence(NaturalPerson naturalPerson, CustomerOnSA customerOnSA);
+    void MergeAll(DomainServices.CustomerService.Contracts.Customer customer, CustomerOnSA customerOnSA);
+    void MergeClientData(DomainServices.CustomerService.Contracts.Customer customer, CustomerOnSA customerOnSA);
+    void MergeTaxResidence(DomainServices.CustomerService.Contracts.NaturalPerson naturalPerson, CustomerOnSA customerOnSA);
 }

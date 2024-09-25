@@ -3,21 +3,9 @@ using System.Reflection;
 
 namespace CIS.Infrastructure.WebApi.Middleware;
 
-public class TraceIdResponseHeaderMiddleware
+public class TraceIdResponseHeaderMiddleware(RequestDelegate _next)
 {
-    static string _appVersion = "";
-
-    static TraceIdResponseHeaderMiddleware()
-    {
-        _appVersion = Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-    }
-
-    private readonly RequestDelegate _next;
-
-    public TraceIdResponseHeaderMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
+    private static readonly string _appVersion = Assembly.GetEntryAssembly()!.GetName().Version?.ToString() ?? "unknown";
 
     public async Task InvokeAsync(HttpContext context)
     {

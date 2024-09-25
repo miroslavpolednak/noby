@@ -34,4 +34,9 @@ internal sealed class MockCremClient
     {
         throw new NotImplementedException();
     }
+
+    public Task<bool> TryToConfirmDownload(long documentId, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
 }

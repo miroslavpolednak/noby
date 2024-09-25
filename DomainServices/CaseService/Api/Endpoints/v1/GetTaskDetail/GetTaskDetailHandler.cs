@@ -51,7 +51,7 @@ internal sealed partial class GetTaskDetailHandler(
             taskDetail.PerformanName = performer.PerformerName;
             taskDetail.PerformerCode = performer.PerformerCode;
         }
-        catch { }
+        catch (CisNotFoundException) { }
 
         return taskDetail;
     }
@@ -60,7 +60,7 @@ internal sealed partial class GetTaskDetailHandler(
     {
         var taskType = taskData.GetInteger("ukol_typ_noby");
 
-        if (taskType == 2)
+        if (taskType == (int)WorkflowTaskTypes.PriceException)
         {
             if (!string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_overeni_pozadavek")) || !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_overeni_odpoved")))
             {
@@ -73,12 +73,12 @@ internal sealed partial class GetTaskDetailHandler(
         }
         else
         {
-            var text = taskType switch
+            var text = (WorkflowTaskTypes)taskType switch
             {
-                1 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_dozadani_noby")) => taskData["ukol_dozadani_noby"],
-                3 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_konzultace_noby")) => taskData["ukol_konzultace_noby"],
-                6 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_noby")) => taskData["ukol_podpis_noby"],
-                7 when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_predanihs_noby")) => taskData["ukol_predanihs_noby"],
+                WorkflowTaskTypes.Dozadani when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_dozadani_noby")) => taskData["ukol_dozadani_noby"],
+                WorkflowTaskTypes.Consultation when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_konzultace_noby")) => taskData["ukol_konzultace_noby"],
+                WorkflowTaskTypes.Signing when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_podpis_noby")) => taskData["ukol_podpis_noby"],
+                WorkflowTaskTypes.PredaniNaSpecialitu when !string.IsNullOrEmpty(taskData.GetValueOrDefault("ukol_predanihs_noby")) => taskData["ukol_predanihs_noby"],
                 _ => null
             };
 

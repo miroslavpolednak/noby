@@ -1,6 +1,5 @@
-﻿using DomainServices.CustomerService.Clients;
-using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Clients;
+﻿using DomainServices.CustomerService.Clients.v1;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.RiskLoanApplication;
@@ -85,7 +84,7 @@ internal class RiskLoanApplicationData : AggregatedData
         return customersWithDetail;
     }
 
-    private async Task<Dictionary<long, CustomerDetailResponse>> LoadCustomers(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
+    private async Task<Dictionary<long, DomainServices.CustomerService.Contracts.Customer>> LoadCustomers(IEnumerable<CustomerOnSA> customersOnSa, CancellationToken cancellationToken)
     {
         var customerIds = customersOnSa.SelectMany(c => c.CustomerIdentifiers)
                                        .Where(c => c.IdentityScheme == Identity.Types.IdentitySchemes.Kb)

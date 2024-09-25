@@ -4,13 +4,20 @@ using DomainServices.OfferService.Clients.v1;
 using DomainServices.RiskIntegrationService.Contracts.LoanApplication.V2;
 using DomainServices.SalesArrangementService.Clients;
 using System.Text.Json;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using CIS.InternalServices.DataAggregatorService.Clients;
 
 namespace NOBY.Services.RiskCaseProcessor;
 
 [TransientService, SelfService]
-public sealed class RiskCaseProcessorService
+public sealed class RiskCaseProcessorService(
+    DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService,
+    DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService,
+    IDataAggregatorServiceClient _dataAggregatorService,
+    ICurrentUserAccessor _currentUserAccessor,
+    IUserServiceClient _userService,
+    IOfferServiceClient _offerService,
+    ISalesArrangementServiceClient _salesArrangementService)
 {
     public async Task<(string RiskSegment, string RiskBusinessCaseId, string LoanApplicationDataVersion)> CreateOrUpdateRiskCase(
         int salesArrangementId,
@@ -65,31 +72,5 @@ public sealed class RiskCaseProcessorService
         var riskSegment = await _loanApplicationService.Save(loanApplicationSaveRequest, cancellationToken);
 
         return (riskSegment, loanApplicationSaveRequest.LoanApplicationDataVersion);
-    }
-
-    private readonly IDataAggregatorServiceClient _dataAggregatorService;
-    private readonly ICurrentUserAccessor _currentUserAccessor;
-    private readonly IUserServiceClient _userService;
-    private readonly IOfferServiceClient _offerService;
-    private readonly ISalesArrangementServiceClient _salesArrangementService;
-    private readonly DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient _loanApplicationService;
-    private readonly DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient _riskBusinessCaseService;
-
-    public RiskCaseProcessorService(
-        DomainServices.RiskIntegrationService.Clients.LoanApplication.V2.ILoanApplicationServiceClient loanApplicationService,
-        DomainServices.RiskIntegrationService.Clients.RiskBusinessCase.V2.IRiskBusinessCaseServiceClient riskBusinessCaseService,
-        IDataAggregatorServiceClient dataAggregatorService,
-        ICurrentUserAccessor currentUserAccessor,
-        IUserServiceClient userService,
-        IOfferServiceClient offerService,
-        ISalesArrangementServiceClient salesArrangementService)
-    {
-        _dataAggregatorService = dataAggregatorService;
-        _currentUserAccessor = currentUserAccessor;
-        _userService = userService;
-        _loanApplicationService = loanApplicationService;
-        _riskBusinessCaseService = riskBusinessCaseService;
-        _offerService = offerService;
-        _salesArrangementService = salesArrangementService;
     }
 }

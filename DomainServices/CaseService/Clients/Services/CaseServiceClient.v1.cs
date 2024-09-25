@@ -2,24 +2,34 @@
 using SharedTypes.Enums;
 using DomainServices.CaseService.Contracts;
 using SharedTypes.GrpcTypes;
+using CIS.Infrastructure.Caching.Grpc;
 
 namespace DomainServices.CaseService.Clients.v1;
 
-internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClient _service)
+internal sealed class CaseServiceClient(
+    Contracts.v1.CaseService.CaseServiceClient _service,
+    IGrpcClientResponseCache<CaseServiceClient> _cache)
     : ICaseServiceClient
 {
     public async Task<ValidateCaseIdResponse> ValidateCaseId(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
     {
-        if (_cacheValidateCaseIdResponse is null || _cacheValidateCaseIdResponseId != caseId)
-        {
-            _cacheValidateCaseIdResponse = await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
+        return await _cache.GetLocalOrDistributed(
+            caseId, 
+            async (c) => await ValidateCaseIdWithoutCache(caseId, throwExceptionIfNotFound, c), 
+            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
             {
-                CaseId = caseId,
-                ThrowExceptionIfNotFound = throwExceptionIfNotFound
-            }, cancellationToken: cancellationToken);
-            _cacheValidateCaseIdResponseId = caseId;
-        }
-        return _cacheValidateCaseIdResponse;
+                SlidingExpiration = TimeSpan.FromMinutes(30)
+            },
+            cancellationToken);
+    }
+
+    public async Task<ValidateCaseIdResponse> ValidateCaseIdWithoutCache(long caseId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default)
+    {
+        return await _service.ValidateCaseIdAsync(new ValidateCaseIdRequest
+        {
+            CaseId = caseId,
+            ThrowExceptionIfNotFound = throwExceptionIfNotFound
+        }, cancellationToken: cancellationToken);
     }
 
     public async Task<long> CreateCase(CreateCaseRequest model, CancellationToken cancellationToken = default)
@@ -34,12 +44,13 @@ internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClie
         return result.CaseId;
     }
 
-    public async Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, CancellationToken cancellationToken = default)
+    public async Task<List<GetCaseCountsResponse.Types.CaseCountsItem>> GetCaseCounts(int caseOwnerUserId, int? stateUpdatedTimeLimitInDays, CancellationToken cancellationToken = default)
     {
         var result = await _service.GetCaseCountsAsync(
             new()
             {
-                CaseOwnerUserId = caseOwnerUserId
+                CaseOwnerUserId = caseOwnerUserId,
+                StateUpdatedTimeLimitInDays = stateUpdatedTimeLimitInDays
             }, cancellationToken: cancellationToken);
         return result.CaseCounts.ToList();
     }
@@ -51,27 +62,36 @@ internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClie
 
     public async Task<Case> GetCaseDetail(long caseId, CancellationToken cancellationToken = default)
     {
-        if (_cacheGetCaseDetail is null || _cacheGetCaseDetail.CaseId != caseId)
-        {
-            _cacheGetCaseDetail = await _service.GetCaseDetailAsync(
+        return await _cache.GetLocalOrDistributed(
+            caseId, 
+            async (c) => await GetCaseDetailWithoutCache(caseId, c),
+            new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromMinutes(30)
+            },
+            cancellationToken);
+    }
+
+    public async Task<Case> GetCaseDetailWithoutCache(long caseId, CancellationToken cancellationToken = default)
+    {
+        return await _service.GetCaseDetailAsync(
             new()
             {
                 CaseId = caseId
             }, cancellationToken: cancellationToken);
-        }
-        return _cacheGetCaseDetail;
     }
 
-    public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<int>? states = null, string? searchTerm = null, CancellationToken cancellationToken = default)
+    public async Task<SearchCasesResponse> SearchCases(IPaginableRequest pagination, int caseOwnerUserId, List<EnumCaseStates>? states, int? stateUpdatedTimeLimitInDays, string? searchTerm, CancellationToken cancellationToken = default)
     {
         var request = new SearchCasesRequest
         {
             SearchTerm = searchTerm ?? "",
-            Pagination = new SharedTypes.GrpcTypes.PaginationRequest(pagination),
+            Pagination = new PaginationRequest(pagination),
             CaseOwnerUserId = caseOwnerUserId,
+            StateUpdatedTimeLimitInDays = stateUpdatedTimeLimitInDays
         };
         if (states is not null)
-            request.State.AddRange(states);
+            request.State.AddRange(states.Select(t => (int)t));
         return await _service.SearchCasesAsync(request, cancellationToken: cancellationToken);
     }
 
@@ -166,7 +186,7 @@ internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClie
             }, cancellationToken: cancellationToken);
     }
 
-    public async Task CancelTask(long caseId, int taskIdSB, CancellationToken cancellationToken = default(CancellationToken))
+    public async Task CancelTask(long caseId, int taskIdSB, CancellationToken cancellationToken = default)
     {
         await _service.CancelTaskAsync(new CancelTaskRequest
         {
@@ -201,9 +221,4 @@ internal sealed class CaseServiceClient(Contracts.v1.CaseService.CaseServiceClie
 
         return response.Cases;
     }
-
-    // kesovani vysledku validateCase
-    private long? _cacheValidateCaseIdResponseId;
-    private ValidateCaseIdResponse? _cacheValidateCaseIdResponse;
-    private Case? _cacheGetCaseDetail;
 }

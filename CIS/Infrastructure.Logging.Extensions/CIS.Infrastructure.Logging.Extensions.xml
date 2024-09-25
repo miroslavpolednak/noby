@@ -41,7 +41,7 @@
             Extension metody pro ILogger pro události týkající se entit.
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityAlreadyExist(Microsoft.Extensions.Logging.ILogger,System.String,System.Int64,System.Exception)">
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityAlreadyExist(Microsoft.Extensions.Logging.ILogger,System.String@,System.Int64@,System.Exception)">
             <summary>
             Entita již existuje (např. v databázi).
             </summary>
@@ -53,7 +53,7 @@
             Entita již existuje (např. v databázi).
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityNotFound(Microsoft.Extensions.Logging.ILogger,System.String,System.Int64,System.Exception)">
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityNotFound(Microsoft.Extensions.Logging.ILogger,System.String@,System.Int64@,System.Exception)">
             <summary>
             Entita nebyla nalezena (např. ID neexistuje v databázi)
             </summary>
@@ -65,7 +65,7 @@
             Entita nebyla nalezena (např. ID neexistuje v databázi)
             </summary>
         </member>
-        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityCreated(Microsoft.Extensions.Logging.ILogger,System.String,System.Int64)">
+        <member name="M:CIS.Infrastructure.Logging.EntityLoggerExtensions.EntityCreated(Microsoft.Extensions.Logging.ILogger,System.String@,System.Int64@)">
             <summary>
             Entita byla právě vytvořena.
             </summary>

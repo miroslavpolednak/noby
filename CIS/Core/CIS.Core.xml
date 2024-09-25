@@ -917,11 +917,6 @@
             Prefix for external service's Key in ServiceDiscovery database.
             </summary>
         </member>
-        <member name="F:CIS.Core.CisGlobalConstants.DomainServicesClientsConfigurationSectionName">
-            <summary>
-            Name of section in appsettings.json which holds configuration settings for domain services.
-            </summary>
-        </member>
         <member name="F:CIS.Core.CisGlobalConstants.EnvironmentConfigurationSectionName">
             <summary>
             Name of section in appsettings.json which holds CIS environment configuration

@@ -181,6 +181,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "topics", "topics", "{C2933E
 		Docs\topics\feapi-error-handling.md = Docs\topics\feapi-error-handling.md
 		Docs\topics\feapi-openapi-contracts.md = Docs\topics\feapi-openapi-contracts.md
 		Docs\topics\filestorage.md = Docs\topics\filestorage.md
+		Docs\topics\grpc-reponse-caching.md = Docs\topics\grpc-reponse-caching.md
 		Docs\topics\grpc-service-startup.md = Docs\topics\grpc-service-startup.md
 		Docs\topics\grpc-services-api.md = Docs\topics\grpc-services-api.md
 		Docs\topics\grpc-services-clients.md = Docs\topics\grpc-services-clients.md
@@ -254,6 +255,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "Datab
 		DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql = DomainServices\OfferService\DatabaseMigrations\00023-RefixationJsonBdpEdit.sql
 		DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql = DomainServices\OfferService\DatabaseMigrations\00024-BdpImport_FixedRemovingCurrentState.sql
 		DomainServices\OfferService\DatabaseMigrations\00025-HACH-12003_UpdateInterestratePrecision.sql = DomainServices\OfferService\DatabaseMigrations\00025-HACH-12003_UpdateInterestratePrecision.sql
+		DomainServices\OfferService\DatabaseMigrations\00026-HACH-12156.sql = DomainServices\OfferService\DatabaseMigrations\00026-HACH-12156.sql
+		DomainServices\OfferService\DatabaseMigrations\00027-HACH-11873_BuildingSavingsData.sql = DomainServices\OfferService\DatabaseMigrations\00027-HACH-11873_BuildingSavingsData.sql
+		DomainServices\OfferService\DatabaseMigrations\00027-HACH-12613_ResponseCode_ValidTo_NotNull.sql = DomainServices\OfferService\DatabaseMigrations\00027-HACH-12613_ResponseCode_ValidTo_NotNull.sql
+		DomainServices\OfferService\DatabaseMigrations\00028-HACH-12653_ImportFromBdp.sql = DomainServices\OfferService\DatabaseMigrations\00028-HACH-12653_ImportFromBdp.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DatabaseMigrations", "DatabaseMigrations", "{DED83C45-FD79-47CA-8ADB-CDB821F07B0B}"
@@ -608,6 +613,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CIS.InternalServices.DocumentGeneratorService.PdfFieldsMapGenerator", "InternalServices\DocumentGeneratorService\PdfFieldsMapGenerator\CIS.InternalServices.DocumentGeneratorService.PdfFieldsMapGenerator.csproj", "{0B94BB3E-4C3A-47ED-AAB0-CA5A99C59F1D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalServices.Party", "ExternalServices\Party\ExternalServices.Party.csproj", "{7A99CDB3-733D-443C-93B6-96AA23E1167E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{B5384BA5-403B-47C3-9188-DB0761F7D70B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

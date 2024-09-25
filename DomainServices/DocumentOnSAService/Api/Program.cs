@@ -9,6 +9,7 @@ using CIS.Infrastructure.Messaging;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
 	.AddApplicationConfiguration<DomainServices.DocumentOnSAService.Api.Configuration.AppConfiguration>()
 	.AddErrorCodeMapper(DomainServices.DocumentOnSAService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>

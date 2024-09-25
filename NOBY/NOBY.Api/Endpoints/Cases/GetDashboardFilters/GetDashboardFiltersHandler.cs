@@ -7,10 +7,9 @@ internal sealed class GetDashboardFiltersHandler(
 {
     public async Task<List<CasesGetDashboardFiltersResponseItem>> Handle(GetDashboardFiltersRequest request, CancellationToken cancellationToken)
     {
+        bool hasPerm = _userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing);
         // zavolat BE sluzbu
-        var result = await _caseService.GetCaseCounts(_userAccessor.User!.Id, cancellationToken);
-
-        result.RemoveAll(x => x.State is (6 or 7 or 10) || x.State is 5 && !_userAccessor.HasPermission(UserPermissions.CASE_ViewAfterDrawing));
+        var result = await _caseService.GetCaseCounts(_userAccessor.User!.Id, hasPerm ? null : 90, cancellationToken);
 
         // rucne vytvorena kolekce podle Motalika
         return
@@ -19,31 +18,46 @@ internal sealed class GetDashboardFiltersHandler(
             {
                 FilterId = 1,
                 Text = "Vše",
-                CaseCount = result.Select(t => t.Count).Sum()
+                CaseCount = result
+                    .Where(t => (EnumCaseStates)t.State is not (EnumCaseStates.Finished or EnumCaseStates.Cancelled or EnumCaseStates.ToBeCancelledConfirmed))
+                    .Select(t => !hasPerm && t.State == 5 ? t.CountLimited!.Value : t.CountTotal)
+                    .Sum()
             },
             new CasesGetDashboardFiltersResponseItem
             {
                 FilterId = 2,
                 Text = "Žádosti o úvěr",
-                CaseCount = result.Where(t => t.State is 1 or 2 or 8).Select(t => t.Count).Sum()
+                CaseCount = result
+                    .Where(t => (EnumCaseStates)t.State is EnumCaseStates.InProgress or EnumCaseStates.InApproval or EnumCaseStates.InApprovalConfirmed)
+                    .Select(t => t.CountTotal)
+                    .Sum()
             },
             new CasesGetDashboardFiltersResponseItem
             {
                 FilterId = 3,
                 Text = "Podepisování smluv",
-                CaseCount = result.Where(t => t.State == 3).Select(t => t.Count).Sum()
+                CaseCount = result
+                    .Where(t => t.State == (int)EnumCaseStates.InSigning)
+                    .Select(t => t.CountTotal)
+                    .Sum()
             },
             new CasesGetDashboardFiltersResponseItem
             {
                 FilterId = 4,
                 Text = "Čerpání",
-                CaseCount = result.Where(t => t.State == 4).Select(t => t.Count).Sum()
+                CaseCount = result
+                    .Where(t => t.State == (int)EnumCaseStates.InDisbursement)
+                    .Select(t => t.CountTotal)
+                    .Sum()
             },
             new CasesGetDashboardFiltersResponseItem
             {
                 FilterId = 5,
                 Text = "Správa",
-                CaseCount = result.Where(t => t.State == 5).Select(t => t.Count).Sum()
+                CaseCount = result
+                    .Where(t => t.State == (int)EnumCaseStates.InAdministration)
+                    .Select(t => hasPerm ? t.CountTotal : t.CountLimited!.Value)
+                    .Sum()
             }
         ];
     }

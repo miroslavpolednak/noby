@@ -1,4 +1,5 @@
-﻿using DomainServices.OfferService.Contracts;
+﻿using CIS.Infrastructure.CisMediatR.Rollback;
+using DomainServices.OfferService.Contracts;
 using ExternalServices.EasSimulationHT.V1;
 using Microsoft.EntityFrameworkCore;
 using SharedComponents.DocumentDataStorage;
@@ -7,6 +8,7 @@ using SharedTypes.GrpcTypes;
 namespace DomainServices.OfferService.Api.Endpoints.v1.SimulateMortgageRefixation;
 
 internal sealed class SimulateMortgageRefixationHandler(
+    IRollbackBag _bag,
     IEasSimulationHTClient _easSimulationHTClient, 
     Database.OfferServiceDbContext _dbContext, 
     ILogger<SimulateMortgageRefixationHandler> _logger, 
@@ -57,16 +59,16 @@ internal sealed class SimulateMortgageRefixationHandler(
         }
         else
         {
-            var (offerId, stamp) = await insertOffer(request.CaseId, request.ValidTo, documentEntity, cancellationToken);
-            result.Created = stamp;
-            result.OfferId = offerId;
+            var entity = await insertOffer(request.CaseId, request.ValidTo, documentEntity, cancellationToken);
+            result.Created = new ModificationStamp(entity);
+            result.OfferId = entity.OfferId;
         }
 
         return result;
     }
 
-    private async Task<(int OfferId, ModificationStamp Stamp)> insertOffer(long caseId, DateTime? validTo, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
-    {
+    private async Task<Database.Entities.Offer> insertOffer(long caseId, DateTime? validTo, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)
+{
         var entity = new Database.Entities.Offer
         {
             ResourceProcessId = Guid.NewGuid(),
@@ -79,13 +81,14 @@ internal sealed class SimulateMortgageRefixationHandler(
         _dbContext.Offers.Add(entity);
 
         await _dbContext.SaveChangesAsync(cancellationToken);
+        _bag.Add(SimulateMortgageRefixationRollback.BagKeyOfferId, entity.OfferId);
 
         // ulozit json data simulace
         await _documentDataStorage.Add(entity.OfferId, documentEntity, cancellationToken);
 
         _logger.EntityCreated(nameof(Database.Entities.Offer), entity.OfferId);
 
-        return (entity.OfferId, new ModificationStamp(entity));
+        return entity;
     }
 
     private async Task<ModificationStamp> updateOffer(int offerId, Database.DocumentDataEntities.MortgageRefixationData documentEntity, CancellationToken cancellationToken)

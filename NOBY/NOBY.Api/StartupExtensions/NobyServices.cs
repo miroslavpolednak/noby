@@ -2,7 +2,7 @@
 using CIS.Infrastructure.StartupExtensions;
 using MPSS.Security.Noby;
 using ExternalServices;
-using System.Text.Json;
+using CIS.Infrastructure.WebApi;
 
 namespace NOBY.Api.StartupExtensions;
 
@@ -17,12 +17,6 @@ internal static class NobyServices
 
         // user accessor
         builder.Services.AddTransient<CIS.Core.Security.ICurrentUserAccessor, NobyCurrentUserAccessor>();
-
-        // disable default asp model validation
-        builder.Services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.SuppressModelStateInvalidFilter = true;
-        });
 
         builder.Services
                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assemblyType.Assembly))
@@ -42,17 +36,46 @@ internal static class NobyServices
 
         // controllers and validation
         builder.Services
-            .AddControllers(x => x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None }))
+            .AddControllers(x =>
+            {
+                x.Filters.Add(new ResponseCacheAttribute { NoStore = true, Location = ResponseCacheLocation.None });
+            })
             .ConfigureApiBehaviorOptions(options =>
             {
-                options.SuppressMapClientErrors = true;
+                // disable default asp model validation - tohle chteji vypnout
+                //options.SuppressModelStateInvalidFilter = true;
+                //options.SuppressMapClientErrors = true;
+
+                // misto toho budeme vracet model state chyby
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    List<ApiErrorItem> errors = context
+                        .ModelState
+                        .Select(t => new ApiErrorItem
+                        {
+                            ErrorCode = 90100,
+                            Severity = ApiErrorItemServerity.Error,
+                            Message = "Nastala neočekávaná chyba, opakujte akci později prosím.",
+                            Description = "Chybí povinné parametry.",
+                            Reason = new ApiErrorItem.ErrorReason
+                            { 
+                                ReasonType = "ModelState validation",
+                                ReasonDescription = t.Value?.Errors.Select(e => e.ErrorMessage).FirstOrDefault() ?? "" 
+                            } 
+                        })
+                        .ToList();
+
+                    return new BadRequestObjectResult(errors);
+                };
             })
             .AddJsonOptions(options =>
             {
-                options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForNullableDateTime());
-                //TODO ODSTRANIT az FE bude reflektovat rozdil mezi datetime a date !!!!!!!!!!!!!!!!!!!!!!!
-                options.JsonSerializerOptions.Converters.Add(new TempJsonConverterForDateOnly());
-                options.JsonSerializerOptions.Converters.Add(new TempJsonConverterForNullableDateOnly());
+                options.JsonSerializerOptions.Converters.Add(new JsonConverterForNullableDateTime());
+                // FE nechce datetime z ms a timezone
+                options.JsonSerializerOptions.Converters.Add(new JsonConverterForZonelessDateTime());
+                
+                // esacping problemovych znaku na vystupu
+                //options.JsonSerializerOptions.Converters.Add(new CIS.Infrastructure.WebApi.JsonConverterForStringEncoding());
             });
 
         // dbcontext
@@ -75,58 +98,3 @@ internal static class NobyServices
     }
 }
 
-public sealed class TempJsonConverterForDateOnly
-    : System.Text.Json.Serialization.JsonConverter<DateOnly>
-{
-    public override DateOnly Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        if (reader.TokenType == JsonTokenType.Null)
-        {
-            return DateOnly.MaxValue;
-        }
-        else
-        {
-            return reader.TryGetDateTime(out DateTime d) ? DateOnly.FromDateTime(d) : DateOnly.MaxValue;
-        }
-    }
-
-    public override void Write(Utf8JsonWriter writer, DateOnly value, JsonSerializerOptions options)
-    {
-        if (value == DateOnly.MinValue)
-        {
-            writer.WriteStringValue("");
-        }
-        else
-        {
-            writer.WriteStringValue($"{value:yyyy-MM-dd}");
-        }
-    }
-}
-
-public sealed class TempJsonConverterForNullableDateOnly
-    : System.Text.Json.Serialization.JsonConverter<DateOnly?>
-{
-    public override DateOnly? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        if (reader.TokenType == JsonTokenType.Null)
-        {
-            return null;
-        }
-        else
-        {
-            return reader.TryGetDateTime(out DateTime d) ? DateOnly.FromDateTime(d) : null;
-        }
-    }
-
-    public override void Write(Utf8JsonWriter writer, DateOnly? value, JsonSerializerOptions options)
-    {
-        if (!value.HasValue)
-        {
-            writer.WriteStringValue("");
-        }
-        else
-        {
-            writer.WriteStringValue($"{value.Value:yyyy-MM-dd}");
-        }
-    }
-}

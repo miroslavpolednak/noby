@@ -32,7 +32,7 @@ internal sealed class UpdateCustomerIdentifiersHandler(
         //Does partner exist?
         try
         {
-            await _mediator.Send(new CustomerDetailRequest { Identity = mpIdentity }, cancellationToken);
+            await _mediator.Send(new GetCustomerDetailRequest { Identity = mpIdentity }, cancellationToken);
         }
         catch (CisNotFoundException)
         {

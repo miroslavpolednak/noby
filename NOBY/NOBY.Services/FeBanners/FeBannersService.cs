@@ -23,11 +23,17 @@ public sealed class FeBannersService(
                 .Take(5)
                 .Select(t => new UsersGetCurrentBannerItem
                 {
+                    Id = t.FeBannerId,
                     Description = t.Description,
                     Title = t.Title,
-                    Severity = (UsersGetCurrentBannerItemSeverity)t.Severity
+                    Severity = (FeBannerBaseItemSeverity)t.Severity
                 })
                 .ToList();
-        }, DateTime.Now.AddMinutes(5));
+        }, DateTime.Now.AddMinutes(15));
+    }
+
+    public void ClearCache()
+    {
+        _cache.Remove("FeBanners");
     }
 }

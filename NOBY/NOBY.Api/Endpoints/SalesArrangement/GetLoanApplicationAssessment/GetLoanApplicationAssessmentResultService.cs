@@ -11,10 +11,10 @@ namespace NOBY.Api.Endpoints.SalesArrangement.GetLoanApplicationAssessment;
 
 [ScopedService, SelfService]
 internal sealed class GetLoanApplicationAssessmentResultService(
-    DomainServices.HouseholdService.Clients.ICustomerOnSAServiceClient _customerOnSAService,
+    DomainServices.HouseholdService.Clients.v1.ICustomerOnSAServiceClient _customerOnSAService,
     DomainServices.CodebookService.Clients.ICodebookServiceClient _codebookService,
     ICurrentUserAccessor _currentUser,
-    DomainServices.HouseholdService.Clients.IHouseholdServiceClient _householdService)
+    DomainServices.HouseholdService.Clients.v1.IHouseholdServiceClient _householdService)
 {
     public async Task<SalesArrangementGetLoanApplicationAssessmentResponse> CreateResult(
         int salesArrangementId,

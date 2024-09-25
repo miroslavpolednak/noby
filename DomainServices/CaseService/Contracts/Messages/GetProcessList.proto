@@ -61,7 +61,7 @@ message ProcessTask {
 
 	message TaskAmendmentMortgageExtraPayment {
 		cis.types.NullableGrpcDate ExtraPaymentDate = 1;
-		cis.types.NullableGrpcDecimal ExtraPaymentAmount = 2;
+		cis.types.NullableGrpcDecimal Principal = 2;
 		cis.types.NullableGrpcDecimal ExtraPaymentAmountIncludingFee = 3;
 		bool IsFinalExtraPayment = 4;
 		google.protobuf.StringValue DocumentId = 5;

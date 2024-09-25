@@ -4,6 +4,7 @@ using ExternalServices;
 SharedComponents
     .GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
     .AddErrorCodeMapper(DomainServices.ProductService.Api.ErrorCodeMapper.Init())
     .AddRequiredServices(services =>
     {

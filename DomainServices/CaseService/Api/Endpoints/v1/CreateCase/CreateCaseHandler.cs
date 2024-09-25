@@ -1,14 +1,12 @@
-﻿using CIS.Infrastructure.CisMediatR.Rollback;
-using DomainServices.CaseService.Api.Database;
+﻿using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using ExternalServices.Eas.V1;
 
 namespace DomainServices.CaseService.Api.Endpoints.v1.CreateCase;
 
 internal sealed class CreateCaseHandler(
-    IRollbackBag _bag,
     IMediator _mediator,
-    UserService.Clients.IUserServiceClient _userService,
+    UserService.Clients.v1.IUserServiceClient _userService,
     CodebookService.Clients.ICodebookServiceClient _codebookService,
     IEasClient _easClient,
     CaseServiceDbContext _dbContext,
@@ -38,7 +36,6 @@ internal sealed class CreateCaseHandler(
         {
             _dbContext.Cases.Add(entity);
             await _dbContext.SaveChangesAsync(cancellation);
-            _bag.Add(CreateCaseRollback.BagKeyCaseId, entity.CaseId);
 
             _logger.EntityCreated(nameof(Database.Entities.Case), newCaseId);
         }
@@ -48,6 +45,7 @@ internal sealed class CreateCaseHandler(
         }
 
         // notify SB about state changed, nezajima nas, kdyz to nedopadne
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             await _mediator.Send(new NotifyStarbuildRequest
@@ -57,6 +55,7 @@ internal sealed class CreateCaseHandler(
             }, cancellation);
         }
         catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
 
         return new CreateCaseResponse()
         {

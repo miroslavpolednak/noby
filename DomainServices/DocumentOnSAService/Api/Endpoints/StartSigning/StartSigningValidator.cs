@@ -38,7 +38,7 @@ public class StartSigningValidator : AbstractValidator<StartSigningRequest>
             if (request.DocumentTypeId is null)
                 return false;
 
-            if (!FastEnum.IsDefined<DocumentTypes>((byte)request.DocumentTypeId.Value))
+            if (!FastEnum.IsDefined((DocumentTypes)request.DocumentTypeId.Value))
                 return false;
         }
         return true;

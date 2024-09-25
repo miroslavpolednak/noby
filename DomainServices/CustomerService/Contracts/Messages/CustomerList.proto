@@ -3,12 +3,12 @@ package DomainServices.CustomerService;
 option csharp_namespace = "DomainServices.CustomerService.Contracts";
 
 import "Identity.proto";
-import "Messages/CustomerDetail.proto";
+import "Messages/Customer.proto";
 
 message CustomerListRequest {
     repeated cis.types.Identity Identities = 1;
 }
 
 message CustomerListResponse {
-	repeated CustomerDetailResponse Customers = 1;
+	repeated Customer Customers = 1;
 }

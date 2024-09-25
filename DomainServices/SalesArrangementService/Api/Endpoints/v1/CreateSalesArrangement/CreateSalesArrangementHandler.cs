@@ -1,6 +1,6 @@
 ﻿using CIS.Infrastructure.CisMediatR.Rollback;
 using DomainServices.SalesArrangementService.Contracts;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 
 namespace DomainServices.SalesArrangementService.Api.Endpoints.CreateSalesArrangement;
 

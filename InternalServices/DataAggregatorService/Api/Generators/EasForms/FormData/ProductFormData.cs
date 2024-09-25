@@ -2,7 +2,7 @@
 using CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.FormData.ProductRequest;
 using CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.FormData.ProductRequest.ConditionalValues;
 using DomainServices.OfferService.Contracts;
-using DomainServices.UserService.Clients;
+using DomainServices.UserService.Clients.v1;
 using DomainServices.UserService.Contracts;
 
 namespace CIS.InternalServices.DataAggregatorService.Api.Generators.EasForms.FormData;

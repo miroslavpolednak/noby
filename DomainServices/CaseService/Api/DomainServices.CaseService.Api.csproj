@@ -10,16 +10,16 @@
   </PropertyGroup>
 
 	<PropertyGroup>
-		<AnalysisMode>Recommended</AnalysisMode>
+		<AnalysisMode>All</AnalysisMode>
 		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MediatR" Version="12.3.0" />
-		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.7" />
+		<PackageReference Include="MediatR" Version="12.4.1" />
+		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.8" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.0" />
-		<PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
-		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.64.0" />
+		<PackageReference Include="Grpc.AspNetCore" Version="2.66.0" />
+		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.66.0" />
 		<PackageReference Include="System.ServiceModel.Http" Version="8.0.0" />
 	</ItemGroup>
 

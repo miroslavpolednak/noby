@@ -8,6 +8,7 @@ using CIS.Core;
 
 SharedComponents.GrpcServiceBuilder
     .CreateGrpcService(args, typeof(Program))
+    .AddDistributedCache()
     .AddApplicationConfiguration<DomainServices.DocumentArchiveService.Api.Configuration.AppConfiguration>()
     .AddGrpcServiceOptions(options =>
     {

@@ -3,15 +3,8 @@
 /// <summary>
 /// Pro HTTP metodu OPTIONS vrací 204 + patřičné hlavičky dle RFC 7231
 /// </summary>
-public class HttpOptionsMiddleware
+public sealed class HttpOptionsMiddleware(RequestDelegate _next)
 {
-    private readonly RequestDelegate _next;
-
-    public HttpOptionsMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext context)
     {
         await _next(context);

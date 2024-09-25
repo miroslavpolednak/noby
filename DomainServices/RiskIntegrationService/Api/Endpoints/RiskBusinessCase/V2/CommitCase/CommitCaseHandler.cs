@@ -98,7 +98,7 @@ internal sealed class CommitCaseHandler
     private readonly CIS.Core.Security.IServiceUserAccessor _serviceUserAccessor;
     private readonly CodebookService.Clients.ICodebookServiceClient _codebookService;
     private readonly ICisEnvironmentConfiguration _cisEnvironment;
-    private readonly UserService.Clients.IUserServiceClient _userService;
+    private readonly UserService.Clients.v1.IUserServiceClient _userService;
 
     public CommitCaseHandler(
         AppConfiguration configuration,
@@ -106,7 +106,7 @@ internal sealed class CommitCaseHandler
         _cl.IRiskBusinessCaseClient client,
         CodebookService.Clients.ICodebookServiceClient codebookService,
         ICisEnvironmentConfiguration cisEnvironment,
-        UserService.Clients.IUserServiceClient userService)
+        UserService.Clients.v1.IUserServiceClient userService)
     {
         _serviceUserAccessor = serviceUserAccessor;
         _configuration = configuration;

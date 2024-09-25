@@ -17,7 +17,8 @@ internal sealed class GetOfferGuaranteeDateToCheckHandler(
                 f.FlowSwitchId == (int)FlowSwitches.IsOfferGuaranteed
                 && f.Value
                 && _saStates.Contains(f.SalesArrangement.State)
-                && f.SalesArrangement.OfferGuaranteeDateTo < _dateTime.GetLocalNow().DateTime)
+                && f.SalesArrangement.OfferGuaranteeDateTo != null
+                && f.SalesArrangement.OfferGuaranteeDateTo!.Value.Date < _dateTime.GetLocalNow().Date)
             .Select(t => new GetOfferGuaranteeDateToCheckResponse.Types.GetOfferGuaranteeDateToCheckItem 
             { 
                 SalesArrangementId = t.SalesArrangementId, 

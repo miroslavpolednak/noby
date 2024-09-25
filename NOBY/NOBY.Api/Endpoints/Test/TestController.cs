@@ -7,22 +7,16 @@ namespace NOBY.Api.Endpoints.Test;
 [Route("api/v{v:apiVersion}/test")]
 [AllowAnonymous]
 [ApiVersion(1)]
-public class TestController : ControllerBase
+public class TestController(IMediator _mediator, IHttpContextAccessor _context) 
+    : ControllerBase
 {
-
-    //[ApiVersion(2)]
-    //[HttpGet("test2")]
-    //public async Task<string> T2()
-    //{
-    //    return "test v2";
-    //}
-
-    private readonly IHttpContextAccessor _context;
-    private readonly IMediator _mediator;
-
-    public TestController(IMediator mediator, IHttpContextAccessor context)
+    /*[HttpGet("test2")]
+    public async Task<RefinancingSharedResponseCode> Test2()
     {
-        _context = context;
-        _mediator = mediator;
-    }
+        return new RefinancingSharedResponseCode
+        {
+            CreatedTime = DateTime.Now,
+            DataDateTime = DateTime.Now
+        };
+    }*/
 }

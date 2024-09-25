@@ -2,14 +2,18 @@
 using CIS.Infrastructure.Data;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Globalization;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace SharedComponents.DocumentDataStorage;
 
-internal sealed class DocumentDataStorageProvider
-    : IDocumentDataStorage
+internal sealed class DocumentDataStorageProvider(
+    CIS.Core.Security.ICurrentUserAccessor _currentUserAccessor,
+    TimeProvider _dateTime,
+    IConnectionProvider<Database.IDocumentDataStorageConnection> _connectionProvider)
+        : IDocumentDataStorage
 {
     public TData? Deserialize<TData>(ReadOnlySpan<char> data)
         where TData : class, IDocumentData
@@ -86,7 +90,30 @@ internal sealed class DocumentDataStorageProvider
         return Add<TId, TData>(entityId, getEntityType<TData>(), data, cancellationToken);
     }
 
-    public Task<int> Add<TId, TData>(TId entityId, string tableName, TData data, CancellationToken cancellationToken = default) 
+    public Task<int> Add<TId, TData>(TId entityId, string tableName, TData data, CancellationToken cancellationToken = default)
+        where TId : IConvertible
+        where TData : class, IDocumentData
+    {
+        var (insertSql, varsToInsert) = getVarsToInsert(entityId, tableName, data);
+        return _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(insertSql, varsToInsert, cancellationToken);
+    }
+
+    public Task<int> Add<TId, TData>(IDbConnection connection, IDbTransaction transaction, TId entityId, TData data, CancellationToken cancellationToken = default)
+        where TId : IConvertible
+        where TData : class, IDocumentData
+    {
+        return Add<TId, TData>(connection, transaction, entityId, getEntityType<TData>(), data, cancellationToken);
+    }
+
+    public Task<int> Add<TId, TData>(IDbConnection connection, IDbTransaction transaction, TId entityId, string tableName, TData data, CancellationToken cancellationToken = default)
+        where TId : IConvertible
+        where TData : class, IDocumentData
+    {
+        var (insertSql, varsToInsert) = getVarsToInsert(entityId, tableName, data);
+        return connection.QueryFirstOrDefaultAsync<int>(insertSql, varsToInsert, transaction);
+    }
+
+    private (string InsertSql, object VarsToInsert) getVarsToInsert<TId, TData>(in TId entityId, in string tableName, TData data) 
         where TId : IConvertible
         where TData : class, IDocumentData
     {
@@ -106,7 +133,7 @@ internal sealed class DocumentDataStorageProvider
             CreatedTime = _dateTime.GetLocalNow().DateTime
         };
 
-        return _connectionProvider.ExecuteDapperFirstOrDefaultAsync<int>(insertSql, varsToInsert, cancellationToken);
+        return (insertSql, varsToInsert);
     }
 
     public Task Update<TData>(int documentDataStorageId, TData data) 
@@ -236,10 +263,6 @@ internal sealed class DocumentDataStorageProvider
         return typeof(TData).Name;
     }
 
-    private readonly CIS.Core.Security.ICurrentUserAccessor _currentUserAccessor;
-    private readonly TimeProvider _dateTime;
-    private readonly IConnectionProvider<Database.IDocumentDataStorageConnection> _connectionProvider;
-
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         IgnoreReadOnlyFields = true,
@@ -247,14 +270,4 @@ internal sealed class DocumentDataStorageProvider
         DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
-
-    public DocumentDataStorageProvider(
-        CIS.Core.Security.ICurrentUserAccessor currentUserAccessor, 
-        TimeProvider dateTime, 
-        IConnectionProvider<Database.IDocumentDataStorageConnection> connectionProvider)
-    {
-        _currentUserAccessor = currentUserAccessor;
-        _dateTime = dateTime;
-        _connectionProvider = connectionProvider;
-    }
 }

@@ -7,7 +7,7 @@ public class NaturalPersonDelta
     public string? BirthNumber { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
-    public DateTime? DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
     public int? DegreeBeforeId { get; set; }
     public int? DegreeAfterId { get; set; }
     public string? BirthName { get; set; }

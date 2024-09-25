@@ -15,9 +15,10 @@ internal static class NobyAppBuilder
         => app.MapWhen(_isSpaCall, appBuilder =>
         {
             appBuilder.UseSpaStaticFiles();
-            appBuilder.UseStaticFiles("/docs");
 
-            app.UseStaticFiles(new StaticFileOptions
+            app.UseStaticFiles("/docs");
+
+            appBuilder.UseStaticFiles(new StaticFileOptions
             {
                 ContentTypeProvider = new FileExtensionContentTypeProvider
                 {
@@ -32,6 +33,23 @@ internal static class NobyAppBuilder
             appBuilder.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "wwwroot";
+                spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                {
+                    OnPrepareResponse = ctx =>
+                    {
+                        if (ctx.File.Name == "index.html" || ctx.File.Name == "simple-login.html")
+                        {
+                            var headers = ctx.Context.Response.GetTypedHeaders();
+                            headers.CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue
+                            {
+                                NoCache = true,
+                                NoStore = true,
+                                MustRevalidate = true,
+                                MaxAge = TimeSpan.Zero
+                            };
+                        }
+                    }
+                };
             });
         });
 

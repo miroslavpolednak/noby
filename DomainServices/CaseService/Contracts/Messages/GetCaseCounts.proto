@@ -2,14 +2,18 @@
 package DomainServices.CaseService;
 option csharp_namespace = "DomainServices.CaseService.Contracts";
 
+import "google/protobuf/wrappers.proto";
+
 message GetCaseCountsRequest {
 	int32 CaseOwnerUserId = 1;
+	google.protobuf.Int32Value StateUpdatedTimeLimitInDays = 2;
 }
 
 message GetCaseCountsResponse {
 	message CaseCountsItem {
 		int32 State = 1;
-		int32 Count = 2;
+		int32 CountTotal = 2;
+		google.protobuf.Int32Value CountLimited = 3;
 	}
 
 	repeated CaseCountsItem CaseCounts = 1;

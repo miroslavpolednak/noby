@@ -50,6 +50,7 @@ public class DocumentOnSAController(IMediator _mediator)
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/start")]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [Produces(MediaTypeNames.Application.Json)]
+    [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Podepisování"])]
     [ProducesResponseType(typeof(DocumentOnSaStartSigningResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -68,11 +69,15 @@ public class DocumentOnSAController(IMediator _mediator)
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSAId}/send-document-preview")]
     [NobySkipCaseStateAndProductSAValidation]
     [SwaggerOperation(Tags = ["Podepisování"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=A81B1C2A-B1DF-49da-8048-C574DFACA5DB")]
-    public async Task SendDocumentOnSAPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
-        => await _mediator.Send(new SendDocumentOnSAPreviewRequest(salesArrangementId, documentOnSAId));
+    public async Task<IActionResult> SendDocumentOnSAPreview([FromRoute] int salesArrangementId, [FromRoute] int documentOnSAId)
+    {
+        await _mediator.Send(new SendDocumentOnSAPreviewRequest(salesArrangementId, documentOnSAId));
+        return NoContent();
+    }
+        
 
     /// <summary>
     /// Zrušit podepisování dokumentu
@@ -86,13 +91,17 @@ public class DocumentOnSAController(IMediator _mediator)
     [NobySkipCaseStateAndProductSAValidation]
     [NobyAuthorize(UserPermissions.DOCUMENT_SIGNING_Manage, UserPermissions.SALES_ARRANGEMENT_Access)]
     [SwaggerOperation(Tags = ["Podepisování"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=AA714DE2-ACD8-48ed-B146-41D50B7D3BE1")]
-    public async Task StopSigning(
+    public async Task<IActionResult> StopSigning(
         [FromRoute] int salesArrangementId,
         [FromRoute] int documentOnSAId)
-    => await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
+    {
+        await _mediator.Send(new StopSigningRequest(salesArrangementId, documentOnSAId));
+        return NoContent();
+    }
+    
 
     /// <summary>
     /// Vygenerování náhledu rozpodepsaného dokumentu
@@ -125,20 +134,24 @@ public class DocumentOnSAController(IMediator _mediator)
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}/sign-manually")]
     [NobySkipCaseStateAndProductSAValidation]
     [SwaggerOperation(Tags = ["Podepisování"])]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=FB2ED39E-233F-4b4c-A855-12CA1AC3A0B9")]
-    public async Task SignDocumentManually(
+    public async Task<IActionResult> SignDocumentManually(
         [FromRoute] int salesArrangementId,
         [FromRoute] int documentOnSAId)
-     => await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId));
+    {
+        await _mediator.Send(new SignDocumentManuallyRequest(salesArrangementId, documentOnSAId));
+        return NoContent();
+    }
+    
 
     /// <summary>
     /// Stažení dokumentu k fyzickému podepisování
     /// </summary>
     /// <remarks>
-    /// Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).<br /><br />
+    /// Pro podepisovací procesy, které jsou validní, poskytuje dokument ke stažení pro fyzické podepsání (nelze použít pro Starbuild (WF) dokumenty).
     /// </remarks>
     [HttpGet("document/sales-arrangement/{salesArrangementId}/document-on-sa/{documentOnSAId}")]
     [NobyAuthorize(UserPermissions.SALES_ARRANGEMENT_Access)]
@@ -182,6 +195,7 @@ public class DocumentOnSAController(IMediator _mediator)
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/document-on-sa/search")]
     [SwaggerOperation(Tags = ["Podepisování"])]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(DocumentOnSaSearchDocumentsOnSaResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -202,10 +216,11 @@ public class DocumentOnSAController(IMediator _mediator)
     /// Vyhledání dokumentů na všech žádostech daného Case dle EACode
     /// </summary>
     /// <remarks>
-    /// Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).<br /><br />
+    /// Vyhledání formId (businessovém identifikátoru dokumentů) na všech sales arrangementech na Case dle hlavního hesla (eArchivu).
     /// </remarks>
     [HttpPost("case/{caseId:long}/document-on-sa/search")]
     [SwaggerOperation(Tags = ["Podepisování"])]
+    [Consumes(MediaTypeNames.Application.Json)]
     [ProducesResponseType(typeof(DocumentOnSaSearchDocumentsOnSaOnCaseResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [SwaggerEaDiagram("https://eacloud.ds.kb.cz/webea/index.php?m=1&o=85D55F65-BA7A-4d86-8E2B-523EA1918A0A")]
@@ -225,7 +240,7 @@ public class DocumentOnSAController(IMediator _mediator)
     /// Aktualizace stavu dokumentu
     /// </summary>
     /// <remarks>
-    ///  Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).<br /><br />
+    /// Pokud zjistí změnu stavu dokumentu v ePodpisech, dojde k provedení všech návazných akcí (podpis dokumentu, zrušení podepisování dokumentu a jiné).
     /// </remarks>
     [HttpPost("sales-arrangement/{salesArrangementId}/signing/{documentOnSaId}/refresh")]
     [NobySkipCaseStateAndProductSAValidation]

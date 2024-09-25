@@ -1,9 +1,9 @@
 ﻿using CIS.Core.Attributes;
 using SharedTypes.GrpcTypes;
 using DomainServices.CodebookService.Clients;
-using DomainServices.CustomerService.Clients;
+using DomainServices.CustomerService.Clients.v1;
 using DomainServices.CustomerService.Contracts;
-using DomainServices.HouseholdService.Clients;
+using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.HouseholdService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
 using SharedTypes.Extensions;
@@ -11,28 +11,14 @@ using SharedTypes.Extensions;
 namespace DomainServices.SalesArrangementService.Api.Endpoints.ValidateSalesArrangement.ValidationStrategy;
 
 [ScopedService, SelfService]
-internal sealed class CheckFormWithCustomerDetailValidationStrategy : ISalesArrangementValidationStrategy
+internal sealed class CheckFormWithCustomerDetailValidationStrategy(
+    CheckFormSalesArrangementValidation _checkFormValidation,
+    ICustomerOnSAServiceClient _customerOnSAService,
+    ICustomerServiceClient _customerService,
+    HouseholdService.Clients.ICustomerChangeDataMerger _customerChangeDataMerger,
+    ICodebookServiceClient _codebookService) 
+    : ISalesArrangementValidationStrategy
 {
-    private readonly CheckFormSalesArrangementValidation _checkFormValidation;
-    private readonly ICustomerOnSAServiceClient _customerOnSAService;
-    private readonly ICustomerServiceClient _customerService;
-    private readonly ICustomerChangeDataMerger _customerChangeDataMerger;
-    private readonly ICodebookServiceClient _codebookService;
-
-    public CheckFormWithCustomerDetailValidationStrategy(
-        CheckFormSalesArrangementValidation checkFormValidation,
-        ICustomerOnSAServiceClient customerOnSAService,
-        ICustomerServiceClient customerService,
-        ICustomerChangeDataMerger customerChangeDataMerger,
-        ICodebookServiceClient codebookService)
-    {
-        _checkFormValidation = checkFormValidation;
-        _customerOnSAService = customerOnSAService;
-        _customerService = customerService;
-        _customerChangeDataMerger = customerChangeDataMerger;
-        _codebookService = codebookService;
-    }
-
     public async Task<ValidateSalesArrangementResponse> Validate(SalesArrangement salesArrangement, CancellationToken cancellationToken)
     {
         var customersOnSa = await _customerOnSAService.GetCustomerList(salesArrangement.SalesArrangementId, cancellationToken);
@@ -75,7 +61,7 @@ internal sealed class CheckFormWithCustomerDetailValidationStrategy : ISalesArra
         bool EducationLevelsValidation() => educationLevels.Any(m => m.Id != 0 && m.Id == naturalPerson.EducationLevelId);
     }
 
-    private static void ValidateAddresses(CustomerDetailResponse customer)
+    private static void ValidateAddresses(Customer customer)
     {
         if (customer.Addresses.Any(a => a.AddressTypeId == (int)AddressTypes.Mailing))
             return;
