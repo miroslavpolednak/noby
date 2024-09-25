@@ -36,7 +36,7 @@ internal sealed class UpdateCustomerService(
         var createdClient = await _easClient.CreateNewOrGetExisingClient(model, cancellationToken);
         
         // kontrola zda si EAS nepriradilo jine KBID
-        if (dbIdentity.IdentityId != createdClient.KbId)
+        if (createdClient.KbId.GetValueOrDefault() > 0 && dbIdentity.IdentityId != createdClient.KbId)
         {
             throw new CisValidationException(ErrorCodeMapper.EasKbDifference, $"Vybraného klienta nelze použít, použijte místo něj klienta {createdClient.FirstName} {createdClient.LastName}, {createdClient.BirthNumber} s KBID {createdClient.KbId}.");
         }
