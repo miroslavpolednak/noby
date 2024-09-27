@@ -31,60 +31,66 @@ internal class IndividualPricingProcessChangedHandler(
         // neni v zadani, ale je to v poradku
         await _activeTasksService.UpdateActiveTaskByTaskIdSb(caseId, taskDetail, CancellationToken.None);
 
-        // dalsi validace
-        if (taskDetail.TaskObject.ProcessTypeId == 1 && caseState != EnumCaseStates.InProgress)
+        if (message.state == ProcessStateEnum.TERMINATED)
         {
-            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
-            return;
+            if (taskDetail.TaskObject.ProcessTypeId != 1)
+            {
+                // ukonceni
+                await _dbContext.ConfirmedPriceExceptions.Where(t => t.TaskId == taskId).ExecuteDeleteAsync(CancellationToken.None);
+
+                _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+                return;
+            }
         }
-        else if (taskDetail.TaskObject.ProcessTypeId != 1 && long.TryParse(message.currentParentProcess.id, out long saProcessId))
+        else if (message.state is (ProcessStateEnum.ACTIVE or ProcessStateEnum.COMPLETED))
         {
-            var p = (await getSalesArrangements(caseId)).FirstOrDefault(t => t.ProcessId == saProcessId);
-            if (p is null)
+            // dalsi validace
+            if (taskDetail.TaskObject.ProcessTypeId == 1 && caseState != EnumCaseStates.InProgress)
             {
                 _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
                 return;
             }
-            else if (p.SalesArrangementTypeId is 13 or 14)
+            else if (taskDetail.TaskObject.ProcessTypeId != 1 && long.TryParse(message.currentParentProcess.id, out long saProcessId))
             {
-                var saToCheck = await _salesArrangementService.GetSalesArrangement(p.SalesArrangementId);
-                if (saToCheck.Retention?.ManagedByRC2.GetValueOrDefault() ?? saToCheck.Refixation?.ManagedByRC2.GetValueOrDefault() ?? false)
+                var p = (await getSalesArrangements(caseId)).FirstOrDefault(t => t.ProcessId == saProcessId);
+                if (p is null)
                 {
                     _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
                     return;
                 }
+                else if (p.SalesArrangementTypeId is 13 or 14)
+                {
+                    var saToCheck = await _salesArrangementService.GetSalesArrangement(p.SalesArrangementId);
+                    if (saToCheck.Retention?.ManagedByRC2.GetValueOrDefault() ?? saToCheck.Refixation?.ManagedByRC2.GetValueOrDefault() ?? false)
+                    {
+                        _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+                        return;
+                    }
+                }
             }
-        }
-        else
-        {
-            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
-            return;
-        }
-
-        if (message.state == ProcessStateEnum.TERMINATED && taskDetail.TaskObject.ProcessTypeId != 1)
-        {
-            // ukonceni
-            await _dbContext.ConfirmedPriceExceptions.Where(t => t.TaskId == taskId).ExecuteDeleteAsync(CancellationToken.None);
-
-            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
-            return;
-        }
-        //Schválené/zamítnuté IC
-        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE) 
-            && taskDetail.TaskObject.DecisionId is (1 or 2) 
-            && taskDetail.TaskObject.PhaseTypeId == 2) 
-        {
-            //Jde o schválené/zamítnuté IC k jinému než Hlavnímu úvěrovému procesu
-            if (taskDetail.TaskObject.ProcessTypeId != 1 && await salesArrangementExists(caseId, taskId))
+            else
             {
-                await saveEntity(taskId, taskIdSB, caseId, message.occurredOn, null);
+                _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+                return;
             }
-        }
-        else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE)
-            && taskDetail.TaskObject.ProcessTypeId != 1)
-        {
-            _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
-            return;
+
+            //Schválené/zamítnuté IC
+            if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE)
+                && taskDetail.TaskObject.DecisionId is (1 or 2)
+                && taskDetail.TaskObject.PhaseTypeId == 2)
+            {
+                //Jde o schválené/zamítnuté IC k jinému než Hlavnímu úvěrovému procesu
+                if (taskDetail.TaskObject.ProcessTypeId != 1 && await salesArrangementExists(caseId, taskId))
+                {
+                    await saveEntity(taskId, taskIdSB, caseId, message.occurredOn, taskDetail.TaskObject.DecisionId == 1);
+                }
+            }
+            else if (message.state is (ProcessStateEnum.COMPLETED or ProcessStateEnum.ACTIVE)
+                && taskDetail.TaskObject.ProcessTypeId != 1)
+            {
+                _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
+                return;
+            }
         }
 
         // nastaveni flow switches
@@ -105,7 +111,7 @@ internal class IndividualPricingProcessChangedHandler(
             }
         }
     }
-
+    
     private (int TaskIdSB, long TaskId, long CaseId, EnumCaseStates CaseState, bool IsValid) initialValidations(IndividualPricingProcessChanged message)
     {
         if (!int.TryParse(message.currentTask.id, out var taskIdSB))
@@ -154,7 +160,7 @@ internal class IndividualPricingProcessChangedHandler(
         return list.Any(t => t.ProcessId == taskId);
     }
 
-    private async Task saveEntity(long taskId, int taskIdSB, long caseId, DateTime? confirmedDate, DateTime? declinedDate)
+    private async Task saveEntity(long taskId, int taskIdSB, long caseId, DateTime date, bool confirmed)
     {
         var existingConfirmedEntity = _dbContext.ConfirmedPriceExceptions.FirstOrDefault(t => t.TaskId == taskId);
 
@@ -168,8 +174,8 @@ internal class IndividualPricingProcessChangedHandler(
             _dbContext.ConfirmedPriceExceptions.Add(existingConfirmedEntity);
         }
         
-        existingConfirmedEntity.ConfirmedDate = confirmedDate.HasValue ? DateOnly.FromDateTime(confirmedDate.Value) : null;
-        existingConfirmedEntity.DeclinedDate = declinedDate.HasValue ? DateOnly.FromDateTime(declinedDate.Value) : null;
+        existingConfirmedEntity.ConfirmedDate = confirmed ? DateOnly.FromDateTime(date) : null;
+        existingConfirmedEntity.DeclinedDate = !confirmed ? DateOnly.FromDateTime(date) : null;
         existingConfirmedEntity.CreatedTime = DateTime.Now;
         existingConfirmedEntity.TaskIdSB = taskIdSB;
 
