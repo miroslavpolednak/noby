@@ -18,7 +18,7 @@ internal sealed class GetCaseByIdHandler(
         catch (CisNotFoundException)
         {
             // osetrena vyjimka - spoustime logiku na vytvoreni case z konsDB
-            await _createCaseFromExternalSources.CreateCase(request.CaseId, cancellationToken);
+            await _createCaseFromExternalSources.CreateCase(request.CaseId);
             caseInstance = await _caseService.GetCaseDetail(request.CaseId, cancellationToken);
         }
 

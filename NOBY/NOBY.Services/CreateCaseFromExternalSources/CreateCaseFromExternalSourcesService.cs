@@ -15,10 +15,11 @@ public sealed class CreateCaseFromExternalSourcesService(
     DomainServices.CaseService.Clients.v1.ICaseServiceClient _caseService,
     DomainServices.SalesArrangementService.Clients.ISalesArrangementServiceClient _salesArrangementService)
 {
-    public async Task CreateCase(long caseId, CancellationToken cancellationToken)
+    // schvalne be CancellationTokenu, nechci aby to slo cancellovat
+    public async Task CreateCase(long caseId)
     {
-        var mortgageInstance = (await _productService.GetMortgage(caseId, cancellationToken)).Mortgage;
-        var productType = (await _codebookService.ProductTypes(cancellationToken))
+        var mortgageInstance = (await _productService.GetMortgage(caseId)).Mortgage;
+        var productType = (await _codebookService.ProductTypes())
             .FirstOrDefault(t => t.Id == mortgageInstance.ProductTypeId);
         
         if (productType?.MandantId != (int)Mandants.Kb || !validateMortgageData(mortgageInstance))
@@ -33,30 +34,13 @@ public sealed class CreateCaseFromExternalSourcesService(
         SecurityHelpers.CheckCaseOwnerAndState(_currentUser, Convert.ToInt32(mortgageInstance.CaseOwnerUserCurrentId.GetValueOrDefault()), caseState, null);
 
         // instance uzivatele
-        var mpIdentity =  new SharedTypes.GrpcTypes.Identity(mortgageInstance.PartnerId, IdentitySchemes.Mp);
-        var customer = await _customerService.GetCustomerDetail(mpIdentity, cancellationToken);
-
-		// prioritne chceme pouzit customera z CM
-        var kbIdentity = customer.Identities.GetKbIdentityOrDefault();
-        if (productType.MandantId == (int)Mandants.Kb && kbIdentity is not null)
-        {
-            customer = await _customerService.GetCustomerDetail(kbIdentity, cancellationToken);	
-		}
+        var (customer, mpIdentity, kbIdentity) = await getCustomer(mortgageInstance.PartnerId, productType.MandantId);
 
 		// update PCPID pokud neexistuje
-		string? pcpId = mortgageInstance.PcpId;
-		if (string.IsNullOrEmpty(mortgageInstance.PcpId) && kbIdentity is not null)
-		{
-			pcpId = await _productService.UpdateMortgagePcpId(new UpdateMortgagePcpIdRequest
-			{
-				Identity = kbIdentity,
-				ProductId = caseId,
-				ProductTypeId = mortgageInstance.ProductTypeId
-			}, cancellationToken);
-		}
+		string? pcpId = await getPcpId(caseId, mortgageInstance, kbIdentity);
 
-		// vytvorit case
-		var createCaseRequest = new DomainServices.CaseService.Contracts.CreateExistingCaseRequest
+        // vytvorit case
+        var createCaseRequest = new DomainServices.CaseService.Contracts.CreateExistingCaseRequest
         {
             CaseId = caseId,
             State = (int)caseState,
@@ -76,21 +60,66 @@ public sealed class CreateCaseFromExternalSourcesService(
                 Cin = customer.NaturalPerson?.BirthNumber
             }
         };
-        await _caseService.CreateExistingCase(createCaseRequest, cancellationToken);
+
+        await _caseService.CreateExistingCase(createCaseRequest);
 
         // zalozit SA
         var saRequest = new DomainServices.SalesArrangementService.Contracts.CreateSalesArrangementRequest
         {
             CaseId = caseId,
             ContractNumber = mortgageInstance.ContractNumber,
-            SalesArrangementTypeId = 1,
+            SalesArrangementTypeId = (int)SalesArrangementTypes.Mortgage,
             PcpId = pcpId,
             State = (int)EnumSalesArrangementStates.InApproval
         };
-        await _salesArrangementService.CreateSalesArrangement(saRequest, cancellationToken);
+
+        try
+        {
+            await _salesArrangementService.CreateSalesArrangement(saRequest);
+        }
+        catch
+        {
+            await _caseService.DeleteCase(caseId);
+            throw;
+        }
 
         // update active task - pozor, spravne se pouze vola getTaskList, tim se uvnitr Case service updatuji tasky
-        await _caseService.GetTaskList(caseId, cancellationToken);
+        await _caseService.GetTaskList(caseId);
+    }
+
+    private async Task<string?> getPcpId(long caseId, MortgageData mortgageInstance, SharedTypes.GrpcTypes.Identity? kbIdentity)
+    {
+        if (string.IsNullOrEmpty(mortgageInstance.PcpId) && kbIdentity is not null)
+        {
+            return await _productService.UpdateMortgagePcpId(new UpdateMortgagePcpIdRequest
+            {
+                Identity = kbIdentity,
+                ProductId = caseId,
+                ProductTypeId = mortgageInstance.ProductTypeId
+            });
+        }
+        else
+        {
+            return mortgageInstance.PcpId;
+        }
+    }
+
+    private async Task<(DomainServices.CustomerService.Contracts.Customer Customer, SharedTypes.GrpcTypes.Identity MpIdentity, SharedTypes.GrpcTypes.Identity? KbIdentity)> getCustomer(long partnerId, int? mandant)
+    {
+        var mpIdentity = new SharedTypes.GrpcTypes.Identity(partnerId, IdentitySchemes.Mp);
+        var customer = await _customerService.GetCustomerDetail(mpIdentity);
+
+        // prioritne chceme pouzit customera z CM
+        var kbIdentity = customer.Identities.GetKbIdentityOrDefault();
+        if (mandant == (int)Mandants.Kb && kbIdentity is not null)
+        {
+            var kbCustomer = await _customerService.GetCustomerDetail(kbIdentity);
+            return (kbCustomer, mpIdentity, kbIdentity);
+        }
+        else
+        {
+            return (customer, mpIdentity, kbIdentity);
+        }
     }
 
     private static bool validateMortgageData(MortgageData mortgageData)

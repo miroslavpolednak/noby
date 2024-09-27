@@ -140,7 +140,7 @@ internal sealed partial class IdentifyCaseHandler(
         var caseInstance = await _caseServiceClient.ValidateCaseId(caseId.Value, false, cancellationToken);
         if (!caseInstance.Exists)
         {
-            await _createCaseFromExternalSources.CreateCase(caseId.Value, cancellationToken);
+            await _createCaseFromExternalSources.CreateCase(caseId.Value);
         }
         else
         {
@@ -234,7 +234,7 @@ internal sealed partial class IdentifyCaseHandler(
             // osetrena vyjimka - spoustime logiku na vytvoreni case z konsDB
             try
             {
-                await _createCaseFromExternalSources.CreateCase(caseId, cancellationToken);
+                await _createCaseFromExternalSources.CreateCase(caseId);
             }
             catch (CisNotFoundException)
             {
