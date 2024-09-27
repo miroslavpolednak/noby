@@ -7,17 +7,9 @@ internal sealed class UpdateAdminFeBannerRequestValidator
 {
     public UpdateAdminFeBannerRequestValidator()
     {
-        RuleFor(t => t.Title)
-            .NotEmpty();
-
-        RuleFor(t => t.Description)
-            .NotEmpty();
-
-        RuleFor(t => t.VisibleFrom)
-            .NotEmpty();
-
         RuleFor(t => t.VisibleTo)
             .NotEmpty()
-            .Must(t => t > DateTime.Now);
+            .Must(t => t > DateTime.Now)
+            .WithMessage("Čas platnosti do musí být v budoucnu");
     }
 }
