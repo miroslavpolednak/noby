@@ -121,14 +121,15 @@ internal sealed class GrpcServiceBuilderRunner<TConfiguration>
             var app = _settings.Builder.Build();
             log.ApplicationBuilt();
 
-            // default
-            app.UseServiceDiscovery();
-            
+            // pro transcoding vyzadujeme HTTPS
             if (_settings.EnableJsonTranscoding)
             {
                 app.UseHsts();
             }
 
+            // default
+            app.UseServiceDiscovery();
+            
             app.UseRouting();
 
             app.UseAuthentication()

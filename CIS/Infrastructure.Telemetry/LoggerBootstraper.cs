@@ -90,7 +90,7 @@ internal sealed class LoggerBootstraper
         {
             loggerConfiguration.Enrich.With(new Enrichers.PayloadMaxLengthEnricher(configuration.MaxPayloadLength!.Value));
         }
-
+        
         // enrich from CIS env
         if (_cisConfiguration is not null)
         {
