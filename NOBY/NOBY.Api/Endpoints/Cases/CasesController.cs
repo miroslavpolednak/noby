@@ -71,7 +71,9 @@ public class CasesController(IMediator _mediator) : ControllerBase
     /// Detail Case-u.
     /// </summary>
     /// <remarks>
-    /// Načtení detailu Case-u
+    /// Načtení detailu Case-u.
+    /// 
+    /// V případě kdy není nalezen Case v databázi NOBY, pokoušíme se najít daný případ v KonsDB. Pokud je v KonsDB, vytvoříme Case a SalesArrangement z data z KonsDB. Pokud nastane během vytváření Case/SalesArrangement chyba, celá operace se rollbackuje.
     /// </remarks>
     /// <param name="caseId">ID Case-u</param>
     /// <returns>Zakladni informace o Case-u.</returns>
@@ -133,6 +135,8 @@ public class CasesController(IMediator _mediator) : ControllerBase
     /// - ID obchodního případu (vždy 1 case)
     /// - čísla smlouvy (vždy 1 case)
     /// - identity klienta (vrací kolekci case-s)
+    /// 
+    /// V případě kdy není nalezen Case v databázi NOBY, pokoušíme se najít daný případ v KonsDB. Pokud je v KonsDB, vytvoříme Case a SalesArrangement z data z KonsDB. Pokud nastane během vytváření Case/SalesArrangement chyba, celá operace se rollbackuje.
     /// </remarks>
     /// <param name="request">Typ kritéria a jeho hodnota pro vyhledávání.</param>
     [HttpPost("identify")]
