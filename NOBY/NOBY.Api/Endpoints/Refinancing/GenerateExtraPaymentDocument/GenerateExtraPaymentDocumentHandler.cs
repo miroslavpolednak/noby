@@ -57,7 +57,7 @@ internal sealed class GenerateExtraPaymentDocumentHandler(
     {
         var offer = await _offerService.GetOffer(offerId, cancellationToken);
 
-        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < new CzechRepublicPublicHoliday().NextWorkingDay(DateTime.Now, 3).AddDays(1))
+        if (offer.MortgageExtraPayment.SimulationInputs.ExtraPaymentDate < new CzechRepublicPublicHoliday().NextWorkingDay(DateTime.Now, 3))
             throw new NobyValidationException(90055);
 
         var simulationRequest = new SimulateMortgageExtraPaymentRequest
