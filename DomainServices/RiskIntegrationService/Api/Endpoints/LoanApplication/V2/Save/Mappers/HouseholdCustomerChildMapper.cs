@@ -17,6 +17,8 @@ internal sealed class HouseholdCustomerChildMapper
         var housingConditions = await _codebookService.HousingConditions(_cancellationToken);
         var identificationDocuments = await _codebookService.IdentificationDocumentTypes(_cancellationToken);
 
+        // check if custormer birth number contains apl
+
         return (await customers.SelectAsync(async customer => new _C4M.LoanApplicationCounterParty
         {
             Id = customer.InternalCustomerId,
@@ -29,7 +31,7 @@ internal sealed class HouseholdCustomerChildMapper
             }.ToC4M(),
             GroupEmployee = customer.IsGroupEmployee,
             SpecialRelationsWithKB = customer.SpecialRelationsWithKB,
-            BirthNumber = customer.BirthNumber,
+            BirthNumber =  (customer.BirthNumber?.Any(char.IsLetter) ?? true) ? null : customer.BirthNumber,
             RoleCode = Helpers.GetEnumFromString<_C4M.RoleType>(customerRoles.FirstOrDefault(t => t.Id == customer.CustomerRoleId)?.RdmCode),
             Firstname = customer.Firstname,
             Surname = customer.Surname,
