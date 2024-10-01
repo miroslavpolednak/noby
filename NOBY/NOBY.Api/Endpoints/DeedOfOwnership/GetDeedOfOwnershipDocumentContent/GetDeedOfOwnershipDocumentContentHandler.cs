@@ -1,6 +1,7 @@
 ﻿using CIS.Core.Exceptions.ExternalServices;
 using DomainServices.RealEstateValuationService.Clients;
 using ExternalServices.Crem.V1;
+using ExternalServices.Crem.V1.Contracts;
 
 namespace NOBY.Api.Endpoints.DeedOfOwnership.GetDeedOfOwnershipDocumentContent;
 
@@ -89,7 +90,12 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler(
                 response.DeedOfOwnershipNumber = firstDeedOfOwnershipNumber;
             }
             response.Owners = await getOwners(response.CremDeedOfOwnershipDocumentId, cancellationToken);
-            response.LegalRelations = await getLegalRelations(response.CremDeedOfOwnershipDocumentId, cancellationToken);
+
+            var legalRelations = await _cremClient.GetLegalRelations(response.CremDeedOfOwnershipDocumentId, cancellationToken);
+
+            response.LegalRelationsSectionB1 = getLegalRelations(legalRelations, DeedOfOwnershipLegalRelationSection.B1);
+            response.LegalRelationsSectionC = getLegalRelations(legalRelations, DeedOfOwnershipLegalRelationSection.C);
+            response.LegalRelationsSectionD = getLegalRelations(legalRelations, DeedOfOwnershipLegalRelationSection.D);
         }
 
         return response;
@@ -114,14 +120,15 @@ internal sealed class GetDeedOfOwnershipDocumentContentHandler(
         return (estates, realEstates?.FirstOrDefault()?.DeedOfOwnershipNumber);
     }
 
-    private async Task<List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations>?> getLegalRelations(long cremDeedOfOwnershipDocumentId, CancellationToken cancellationToken)
+    private static List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation>? getLegalRelations(ICollection<DeedOfOwnershipLegalRelation>? legalRelations, DeedOfOwnershipLegalRelationSection section)
     {
-        var legalRelations = await _cremClient.GetLegalRelations(cremDeedOfOwnershipDocumentId, cancellationToken);
-
-        return legalRelations?.Select(t => new DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations
-        {
-            LegalRelationDescription = t.PlainText
-        }).ToList();
+        return legalRelations?
+            .Where(t => t.Section == section)
+            .Select(t => new DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation
+            {
+                LegalRelationDescription = t.PlainText
+            })
+            .ToList();
     }
 
     private async Task<List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentOwners>?> getOwners(long cremDeedOfOwnershipDocumentId, CancellationToken cancellationToken)

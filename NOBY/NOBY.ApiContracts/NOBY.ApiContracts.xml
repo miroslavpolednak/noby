@@ -3938,12 +3938,12 @@
             Indikátor úspěšného stažení dokumentu
             </summary>
         </member>
-        <member name="T:NOBY.ApiContracts.DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations">
+        <member name="T:NOBY.ApiContracts.DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation">
             <summary>
             Omezení vlastnických práv na listu vlastnictví
             </summary>
         </member>
-        <member name="P:NOBY.ApiContracts.DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations.LegalRelationDescription">
+        <member name="P:NOBY.ApiContracts.DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation.LegalRelationDescription">
             <summary>
             Textový popis omezení vlastnického práva
             </summary>

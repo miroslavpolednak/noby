@@ -7913,8 +7913,14 @@ namespace NOBY.ApiContracts
         [System.Text.Json.Serialization.JsonPropertyName("owners")]
         public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentOwners>? Owners { get; set; } = default!;
 
-        [System.Text.Json.Serialization.JsonPropertyName("legalRelations")]
-        public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations>? LegalRelations { get; set; } = default!;
+        [System.Text.Json.Serialization.JsonPropertyName("legalRelationsSectionB1")]
+        public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation>? LegalRelationsSectionB1 { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("legalRelationsSectionC")]
+        public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation>? LegalRelationsSectionC { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("legalRelationsSectionD")]
+        public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation>? LegalRelationsSectionD { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("realEstates")]
         public List<DeedOfOwnershipGetDeedOfOwnershipDocumentContentRealEstates>? RealEstates { get; set; } = default!;
@@ -7925,7 +7931,7 @@ namespace NOBY.ApiContracts
     /// Omezení vlastnických práv na listu vlastnictví
     /// </summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelations
+    public partial class DeedOfOwnershipGetDeedOfOwnershipDocumentContentLegalRelation
     {
         /// <summary>
         /// Textový popis omezení vlastnického práva
