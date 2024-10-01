@@ -9,6 +9,6 @@ public enum RefixationDocumentTypes
     [EnumMember, Display(Name = "Individuální sdělení")]
     InterestRateNotification = 1,
 
-    [EnumMember, Display(Name = "Hedge dodatek")]
+    [EnumMember, Display(Name = "Dodatek")]
     HedgeAppendix = 2
 }
