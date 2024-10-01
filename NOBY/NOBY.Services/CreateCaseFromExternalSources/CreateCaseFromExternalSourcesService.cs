@@ -135,13 +135,13 @@ public sealed class CreateCaseFromExternalSourcesService(
     {
         return mortgageInstance.MortgageState switch
         {
-            0 or 1 or 3 or 4 => EnumCaseStates.InApprovalConfirmed,
+            0 or 1 or 3 or 4 => EnumCaseStates.InProcessingConfirmed,
             2 => EnumCaseStates.Cancelled,
             5 or 6 or 7 or 8 => EnumCaseStates.Finished,
             9 => EnumCaseStates.InDisbursement,
             10 => EnumCaseStates.InSigning,
             11 => ((DateTime?)mortgageInstance.DrawingFinishedDate).HasValue ? EnumCaseStates.InAdministration : EnumCaseStates.InDisbursement,
-            _ => EnumCaseStates.InApprovalConfirmed
+            _ => EnumCaseStates.InProcessingConfirmed
         };
     }
 }

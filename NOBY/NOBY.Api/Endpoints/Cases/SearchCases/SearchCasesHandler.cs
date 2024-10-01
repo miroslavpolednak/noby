@@ -39,8 +39,8 @@ internal sealed class SearchCasesHandler(
     static List<EnumCaseStates>? getStatesFilter(int? filterId)
         => filterId switch
         {
-            1 => [EnumCaseStates.InProgress, EnumCaseStates.InApproval, EnumCaseStates.InSigning, EnumCaseStates.InDisbursement, EnumCaseStates.InAdministration, EnumCaseStates.InApprovalConfirmed, EnumCaseStates.ToBeCancelled],
-            2 => [EnumCaseStates.InProgress, EnumCaseStates.InApproval, EnumCaseStates.InApprovalConfirmed],
+            1 => [EnumCaseStates.InProgress, EnumCaseStates.InProcessing, EnumCaseStates.InSigning, EnumCaseStates.InDisbursement, EnumCaseStates.InAdministration, EnumCaseStates.InProcessingConfirmed, EnumCaseStates.ToBeCancelled],
+            2 => [EnumCaseStates.InProgress, EnumCaseStates.InProcessing, EnumCaseStates.InProcessingConfirmed],
             3 => [EnumCaseStates.InSigning],
             4 => [EnumCaseStates.InDisbursement],
             5 => [EnumCaseStates.InAdministration],

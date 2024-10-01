@@ -113,13 +113,13 @@ internal sealed class GetCaseMenuFlagsHandler(
     private static readonly int[] _values = [ 100, 110, 200, 300 ];
     private static readonly EnumCaseStates[] _caseStates1 =
     [
-        EnumCaseStates.InApproval,
+        EnumCaseStates.InProcessing,
         EnumCaseStates.InSigning,
         EnumCaseStates.InDisbursement,
         EnumCaseStates.InAdministration,
         EnumCaseStates.Finished,
         EnumCaseStates.Cancelled,
-        EnumCaseStates.InApprovalConfirmed,
+        EnumCaseStates.InProcessingConfirmed,
         EnumCaseStates.ToBeCancelledConfirmed
     ];
 }

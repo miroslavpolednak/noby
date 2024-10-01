@@ -21,11 +21,11 @@ internal sealed class GetRefinancingParametersHandler(
     private static readonly EnumCaseStates[] _caseStates1 =
     [
         EnumCaseStates.InProgress,
-        EnumCaseStates.InApproval,
+        EnumCaseStates.InProcessing,
         EnumCaseStates.InSigning,
         EnumCaseStates.Finished,
         EnumCaseStates.Cancelled,
-        EnumCaseStates.InApprovalConfirmed,
+        EnumCaseStates.InProcessingConfirmed,
         EnumCaseStates.ToBeCancelledConfirmed
     ];
 

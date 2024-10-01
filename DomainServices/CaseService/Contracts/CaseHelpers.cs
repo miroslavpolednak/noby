@@ -18,13 +18,13 @@ public static class CaseHelpers
 
     public static readonly EnumCaseStates[] AllExceptInProgressStates =
     [
-        EnumCaseStates.InApproval,
+        EnumCaseStates.InProcessing,
         EnumCaseStates.InSigning,
         EnumCaseStates.InDisbursement,
         EnumCaseStates.InAdministration,
         EnumCaseStates.Finished,
         EnumCaseStates.Cancelled,
-        EnumCaseStates.InApprovalConfirmed,
+        EnumCaseStates.InProcessingConfirmed,
         EnumCaseStates.ToBeCancelled,
         EnumCaseStates.ToBeCancelledConfirmed
     ];

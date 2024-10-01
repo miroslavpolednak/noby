@@ -67,18 +67,18 @@ internal sealed class GetDashboardFiltersHandler(
     private static readonly EnumCaseStates[] _caseStates1 =
     [
         EnumCaseStates.InProgress,
-        EnumCaseStates.InApproval,
+        EnumCaseStates.InProcessing,
         EnumCaseStates.InSigning,
         EnumCaseStates.InDisbursement,
         EnumCaseStates.InAdministration,
-        EnumCaseStates.InApprovalConfirmed,
+        EnumCaseStates.InProcessingConfirmed,
         EnumCaseStates.ToBeCancelled
     ];
 
     private static readonly EnumCaseStates[] _caseStates2 =
     [
         EnumCaseStates.InProgress,
-        EnumCaseStates.InApproval,
-        EnumCaseStates.InApprovalConfirmed
+        EnumCaseStates.InProcessing,
+        EnumCaseStates.InProcessingConfirmed
     ];
 }
