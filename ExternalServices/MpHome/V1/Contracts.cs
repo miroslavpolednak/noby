@@ -566,6 +566,12 @@ namespace ExternalServices.MpHome.V1.Contracts
         [System.Runtime.Serialization.EnumMember(Value = @"NDB")]
         NDB = 8,
 
+        [System.Runtime.Serialization.EnumMember(Value = @"MPHome_App")]
+        MPHome_App = 9,
+
+        [System.Runtime.Serialization.EnumMember(Value = @"MPHome_Trigger")]
+        MPHome_Trigger = 10,
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.1.0.0 (NJsonSchema v11.0.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -773,14 +779,14 @@ namespace ExternalServices.MpHome.V1.Contracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("issuedOn")]
-        public System.DateTime IssuedOn { get; set; } = default!;
+        public System.DateTime? IssuedOn { get; set; } = default!;
 
         /// <summary>
         /// Datum platnosti dokladu
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("validTo")]
-        public System.DateTime ValidTo { get; set; } = default!;
+        public System.DateTime? ValidTo { get; set; } = default!;
 
     }
 
@@ -1258,21 +1264,21 @@ namespace ExternalServices.MpHome.V1.Contracts
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("monthlyInstallment")]
-        public decimal? MonthlyInstallment { get; set; } = default!;
+        public double? MonthlyInstallment { get; set; } = default!;
 
         /// <summary>
         /// VyseUveru
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("loanAmount")]
-        public decimal? LoanAmount { get; set; } = default!;
+        public double? LoanAmount { get; set; } = default!;
 
         /// <summary>
         /// Řádná sazba
         /// </summary>
 
         [System.Text.Json.Serialization.JsonPropertyName("interestRate")]
-        public decimal? InterestRate { get; set; } = default!;
+        public double? InterestRate { get; set; } = default!;
 
         /// <summary>
         /// Perioda fixace

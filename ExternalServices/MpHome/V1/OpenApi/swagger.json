@@ -3672,7 +3672,9 @@
           "MPHome_eId",
           "MPHome_UnsecuredLoan",
           "StarBuildHF",
-          "NDB"
+          "NDB",
+          "MPHome_App",
+          "MPHome_Trigger"
         ],
         "type": "string"
       },
@@ -3814,10 +3816,8 @@
       "IdentificationDocument": {
         "required": [
           "issuedBy",
-          "issuedOn",
           "number",
-          "type",
-          "validTo"
+          "type"
         ],
         "type": "object",
         "properties": {
@@ -3850,12 +3850,14 @@
           "issuedOn": {
             "type": "string",
             "description": "Datum vydání dokladu",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           },
           "validTo": {
             "type": "string",
             "description": "Datum platnosti dokladu",
-            "format": "date-time"
+            "format": "date-time",
+            "nullable": true
           }
         },
         "additionalProperties": false,
