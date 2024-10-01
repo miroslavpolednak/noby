@@ -1,6 +1,6 @@
 ﻿using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Contracts.v1;
-using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Services.MortgageRefinancing;
 

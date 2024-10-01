@@ -4,6 +4,7 @@ using SharedTypes.GrpcTypes;
 using System.ComponentModel.DataAnnotations;
 using CIS.Core;
 using NOBY.Services.Customer;
+using DomainServices.CaseService.Contracts;
 
 namespace NOBY.Api.Endpoints.Cases.GetCustomersOnCase;
 
@@ -26,7 +27,7 @@ internal sealed class GetCustomersOnCaseHandler(
 
         List<(Identity? Identity, _HO.CustomerOnSA? CustomerOnSA, int Role, string RoleName, bool Agent, bool IsKYCSuccessful)> customerIdentities;
 
-        if (caseInstance.State == (int)SharedTypes.Enums.EnumCaseStates.InProgress)
+        if (caseInstance.IsInState([EnumCaseStates.InProgress]))
         {
             var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
             // z parameters nacist Agent
@@ -42,7 +43,7 @@ internal sealed class GetCustomersOnCaseHandler(
                     t.CustomerIdentifiers?.GetKbIdentityOrDefault(),
                     (_HO.CustomerOnSA?)t,
                     t.CustomerRoleId,
-                    ((SharedTypes.Enums.EnumCustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
+                    ((EnumCustomerRoles)t.CustomerRoleId).GetAttribute<DisplayAttribute>()!.Name ?? "",
                     saDetail.Mortgage?.Agent.GetValueOrDefault() == t.CustomerOnSAId,
                     false
                 ))

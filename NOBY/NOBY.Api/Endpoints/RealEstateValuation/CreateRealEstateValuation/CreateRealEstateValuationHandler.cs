@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.RealEstateValuationService.Clients;
@@ -37,7 +38,7 @@ internal sealed class CreateRealEstateValuationHandler(
             IsOnlineDisqualified = false
         };
 
-        if (caseInstance.State == (int)EnumCaseStates.InProgress)
+        if (caseInstance.IsInState([EnumCaseStates.InProgress]))
         {
             var saInstance = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
 

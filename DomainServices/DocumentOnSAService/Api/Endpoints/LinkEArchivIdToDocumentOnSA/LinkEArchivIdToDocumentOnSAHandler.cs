@@ -2,8 +2,9 @@
 using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
-using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using Google.Protobuf.WellKnownTypes;
+using DomainServices.SalesArrangementService.Clients;
 
 namespace DomainServices.DocumentOnSAService.Api.Endpoints.LinkEArchivIdToDocumentOnSA;
 

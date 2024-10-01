@@ -82,7 +82,9 @@ internal sealed class CreateTaskHandler(
     {
         var mandant = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == entity.ProductTypeId).MandantId;
 
-        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException && entity.State == (int)EnumCaseStates.InProgress && mandant == (int)Mandants.Kb)
+        if (request.TaskTypeId == (int)WorkflowTaskTypes.PriceException 
+            && CaseHelpers.IsCaseInState([EnumCaseStates.InProgress], (EnumCaseStates)entity.State)
+            && mandant == (int)Mandants.Kb)
         {
             var salesArrangementId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken))
                 .First()

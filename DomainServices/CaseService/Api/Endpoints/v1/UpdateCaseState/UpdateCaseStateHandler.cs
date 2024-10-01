@@ -32,9 +32,8 @@ internal sealed class UpdateCaseStateHandler(
         }
 
         // Zakázané přechody mezi stavy
-        if (currentCaseState == (int)EnumCaseStates.Finished
-            || currentCaseState == (int)EnumCaseStates.Cancelled
-            || request.State == (int)EnumCaseStates.InProgress)
+        if (CaseHelpers.IsCaseInState([EnumCaseStates.Finished, EnumCaseStates.Cancelled], (EnumCaseStates)currentCaseState)
+            || CaseHelpers.IsCaseInState([EnumCaseStates.InProgress], (EnumCaseStates)request.State))
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.CaseStateNotAllowed);
         }

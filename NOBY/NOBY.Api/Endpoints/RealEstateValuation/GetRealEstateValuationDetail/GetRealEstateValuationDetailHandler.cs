@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CodebookService.Contracts.v1;
 using DomainServices.RealEstateValuationService.Clients;
@@ -37,7 +38,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
 			RealEstateValuationListItem = getListItem(valuationDetail, state, priceTypes),
             RealEstateValuationDetail = new()
             {
-                CaseInProgress = caseInstance.State == (int)EnumCaseStates.InProgress,
+                CaseInProgress = caseInstance.IsInState([EnumCaseStates.InProgress]),
                 RealEstateVariant = getRealEstateVariant(valuationDetail.RealEstateTypeId),
                 RealEstateSubtypeId = valuationDetail.RealEstateSubtypeId,
                 LoanPurposeDetails = valuationDetail.LoanPurposeDetails is null ? null : new RealEstateValuationSharedLoanPurposeDetail 

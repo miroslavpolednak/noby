@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.HouseholdService.Clients.v1;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Services.SalesArrangementAuthorization;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.DeleteSalesArrangement;

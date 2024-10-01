@@ -27,7 +27,7 @@ internal sealed class CancelCaseHandler(
             ?? throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateNotFoundException(ErrorCodeMapper.CaseNotFound, request.CaseId);
 
         // Pokud stav case není 1 (příprava žádosti) vracíme chybu, nelze stornovat
-        if (entity.State != (int)EnumCaseStates.InProgress)
+        if (CaseHelpers.IsCaseInState(CaseHelpers.AllExceptInProgressStates, (EnumCaseStates)entity.State))
         {
             throw CIS.Core.ErrorCodes.ErrorCodeMapperBase.CreateValidationException(ErrorCodeMapper.UnableToCancelCase, request.CaseId);
         }
@@ -51,7 +51,7 @@ internal sealed class CancelCaseHandler(
 		// dojde k odeslání elektronicky podepsaných dokumentů do archivu (getDocumentsOnSAList nad produktovou žádostí zafiltrovaný na IsSigned = true a SignatureTypeId = 3 a IsArchived = false)
 		await setDocumentArchived(documents, cancellation);
 
-		if (newCaseState == EnumCaseStates.ToBeCancelled) // pokud mame datum prvniho podpisu
+		if (CaseHelpers.IsCaseInState([EnumCaseStates.ToBeCancelled], newCaseState)) // pokud mame datum prvniho podpisu
         {
             // odeslat do SB
             await _salesArrangementService.SendToCmp(salesArrangementId, true, cancellation);

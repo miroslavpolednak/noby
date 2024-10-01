@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Security;
 using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.DocumentArchiveService.Clients;
 using DomainServices.DocumentArchiveService.Contracts;
 using DomainServices.ProductService.Clients;
@@ -35,22 +36,26 @@ internal sealed class GetCaseMenuFlagsHandler(
             TasksMenuItem = new() { IsActive = true },
             ChangeRequestsMenuItem = new CasesGetCaseMenuFlagsItem
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)EnumCaseStates.InProgress && caseInstance.State != (int)EnumCaseStates.ToBeCancelled
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) 
+                    && CaseHelpers.IsCaseInState(_caseStates1, (EnumCaseStates)caseInstance.State!)
             },
             RealEstatesMenuItem = new CasesGetCaseMenuFlagsItem
             {
                 Flag = CasesGetCaseMenuFlagsItemFlag.NoFlag,
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access) && caseInstance.State != (int)EnumCaseStates.InProgress && caseInstance.State != (int)EnumCaseStates.ToBeCancelled
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.SALES_ARRANGEMENT_Access)
+                    && CaseHelpers.IsCaseInState(_caseStates1, (EnumCaseStates)caseInstance.State!)
             },
             DocumentsMenuItem = await getDocuments(documentsInQueue, cancellationToken),
             CovenantsMenuItem = await getCovenants(request.CaseId, cancellationToken),
             RefinancingMenuItem = new()
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)EnumCaseStates.InDisbursement or (int)EnumCaseStates.InAdministration)
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) 
+                    && (CaseHelpers.IsCaseInState([EnumCaseStates.InDisbursement, EnumCaseStates.InAdministration], (EnumCaseStates)caseInstance.State!))
             },
             ExtraPaymentMenuItem = new()
             {
-                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage) && (caseInstance.State is (int)EnumCaseStates.InDisbursement or (int)EnumCaseStates.InAdministration)
+                IsActive = _currentUserAccessor.HasPermission(UserPermissions.REFINANCING_Manage)
+                    && (CaseHelpers.IsCaseInState([EnumCaseStates.InDisbursement, EnumCaseStates.InAdministration], (EnumCaseStates)caseInstance.State!))
             }
         };
     }
@@ -106,5 +111,16 @@ internal sealed class GetCaseMenuFlagsHandler(
 
     private static readonly int[] _requiredStatusesInDocumentQueue = [100, 110, 200];
     private static readonly int[] _values = [ 100, 110, 200, 300 ];
+    private static readonly EnumCaseStates[] _caseStates1 =
+    [
+        EnumCaseStates.InApproval,
+        EnumCaseStates.InSigning,
+        EnumCaseStates.InDisbursement,
+        EnumCaseStates.InAdministration,
+        EnumCaseStates.Finished,
+        EnumCaseStates.Cancelled,
+        EnumCaseStates.InApprovalConfirmed,
+        EnumCaseStates.ToBeCancelledConfirmed
+    ];
 }
 

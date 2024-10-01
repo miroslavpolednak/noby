@@ -1,4 +1,6 @@
-﻿namespace NOBY.Api.Endpoints.Cases.GetDashboardFilters;
+﻿using DomainServices.CaseService.Contracts;
+
+namespace NOBY.Api.Endpoints.Cases.GetDashboardFilters;
 
 internal sealed class GetDashboardFiltersHandler(
     CIS.Core.Security.ICurrentUserAccessor _userAccessor,
@@ -19,7 +21,7 @@ internal sealed class GetDashboardFiltersHandler(
                 FilterId = 1,
                 Text = "Vše",
                 CaseCount = result
-                    .Where(t => (EnumCaseStates)t.State is not (EnumCaseStates.Finished or EnumCaseStates.Cancelled or EnumCaseStates.ToBeCancelledConfirmed))
+                    .Where(t => CaseHelpers.IsCaseInState(_caseStates1, (EnumCaseStates)t.State))
                     .Select(t => !hasPerm && t.State == 5 ? t.CountLimited!.Value : t.CountTotal)
                     .Sum()
             },
@@ -28,7 +30,7 @@ internal sealed class GetDashboardFiltersHandler(
                 FilterId = 2,
                 Text = "Žádosti o úvěr",
                 CaseCount = result
-                    .Where(t => (EnumCaseStates)t.State is EnumCaseStates.InProgress or EnumCaseStates.InApproval or EnumCaseStates.InApprovalConfirmed)
+                    .Where(t => CaseHelpers.IsCaseInState(_caseStates2, (EnumCaseStates)t.State))
                     .Select(t => t.CountTotal)
                     .Sum()
             },
@@ -37,7 +39,7 @@ internal sealed class GetDashboardFiltersHandler(
                 FilterId = 3,
                 Text = "Podepisování smluv",
                 CaseCount = result
-                    .Where(t => t.State == (int)EnumCaseStates.InSigning)
+                    .Where(t => CaseHelpers.IsCaseInState([EnumCaseStates.InSigning], (EnumCaseStates)t.State))
                     .Select(t => t.CountTotal)
                     .Sum()
             },
@@ -46,7 +48,7 @@ internal sealed class GetDashboardFiltersHandler(
                 FilterId = 4,
                 Text = "Čerpání",
                 CaseCount = result
-                    .Where(t => t.State == (int)EnumCaseStates.InDisbursement)
+                    .Where(t => CaseHelpers.IsCaseInState([EnumCaseStates.InDisbursement], (EnumCaseStates)t.State))
                     .Select(t => t.CountTotal)
                     .Sum()
             },
@@ -55,10 +57,28 @@ internal sealed class GetDashboardFiltersHandler(
                 FilterId = 5,
                 Text = "Správa",
                 CaseCount = result
-                    .Where(t => t.State == (int)EnumCaseStates.InAdministration)
+                    .Where(t => CaseHelpers.IsCaseInState([EnumCaseStates.InAdministration], (EnumCaseStates)t.State))
                     .Select(t => hasPerm ? t.CountTotal : t.CountLimited!.Value)
                     .Sum()
             }
         ];
     }
+
+    private static readonly EnumCaseStates[] _caseStates1 =
+    [
+        EnumCaseStates.InProgress,
+        EnumCaseStates.InApproval,
+        EnumCaseStates.InSigning,
+        EnumCaseStates.InDisbursement,
+        EnumCaseStates.InAdministration,
+        EnumCaseStates.InApprovalConfirmed,
+        EnumCaseStates.ToBeCancelled
+    ];
+
+    private static readonly EnumCaseStates[] _caseStates2 =
+    [
+        EnumCaseStates.InProgress,
+        EnumCaseStates.InApproval,
+        EnumCaseStates.InApprovalConfirmed
+    ];
 }

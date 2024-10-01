@@ -1,4 +1,5 @@
 ﻿using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;

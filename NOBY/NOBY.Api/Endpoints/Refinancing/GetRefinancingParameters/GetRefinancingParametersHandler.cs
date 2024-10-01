@@ -5,6 +5,7 @@ using DomainServices.CodebookService.Clients;
 using DomainServices.ProductService.Clients;
 using DomainServices.ProductService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using NOBY.Services.MortgageRefinancing;
 
 namespace NOBY.Api.Endpoints.Refinancing.GetRefinancingParameters;
@@ -17,11 +18,22 @@ internal sealed class GetRefinancingParametersHandler(
     ICodebookServiceClient _codebookService)
         : IRequestHandler<GetRefinancingParametersRequest, RefinancingGetRefinancingParametersResponse>
 {
+    private static readonly EnumCaseStates[] _caseStates1 =
+    [
+        EnumCaseStates.InProgress,
+        EnumCaseStates.InApproval,
+        EnumCaseStates.InSigning,
+        EnumCaseStates.Finished,
+        EnumCaseStates.Cancelled,
+        EnumCaseStates.InApprovalConfirmed,
+        EnumCaseStates.ToBeCancelledConfirmed
+    ];
+
     public async Task<RefinancingGetRefinancingParametersResponse> Handle(GetRefinancingParametersRequest request, CancellationToken cancellationToken)
     {
         var caseInstance = await _caseService.ValidateCaseId(request.CaseId, false, cancellationToken);
 
-        if (caseInstance.State is not (int)EnumCaseStates.InDisbursement and not (int)EnumCaseStates.InAdministration)
+        if (caseInstance.IsInState(_caseStates1))
         {
             throw new NobyValidationException(90032);
         }

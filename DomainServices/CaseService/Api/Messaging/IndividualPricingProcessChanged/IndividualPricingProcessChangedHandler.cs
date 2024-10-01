@@ -45,7 +45,7 @@ internal class IndividualPricingProcessChangedHandler(
         else if (message.state is (ProcessStateEnum.ACTIVE or ProcessStateEnum.COMPLETED))
         {
             // dalsi validace
-            if (taskDetail.TaskObject.ProcessTypeId == 1 && caseState != EnumCaseStates.InProgress)
+            if (taskDetail.TaskObject.ProcessTypeId == 1 && CaseHelpers.IsCaseInState(CaseHelpers.AllExceptInProgressStates, EnumCaseStates.InProgress))
             {
                 _logger.KafkaIndividualPricingProcessChangedSkipped(caseId, taskIdSB, taskDetail.TaskObject.ProcessTypeId);
                 return;

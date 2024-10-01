@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.RealEstateValuationService.Clients;
@@ -20,7 +21,7 @@ internal sealed class GetRealEstateValuationListHandler(
 
         // dopocitana oceneni na zaklade dat v SA
         List<RealEstateValuationSharedRealEstateValuationListItem>? computedValuations = null;
-        if (caseInstance.State == (int)EnumCaseStates.InProgress)
+        if (caseInstance.IsInState([EnumCaseStates.InProgress]))
         {
             computedValuations = await getComputedValuations(request.CaseId, cancellationToken);
         }

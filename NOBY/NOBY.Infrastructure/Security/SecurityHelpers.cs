@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Security;
+using DomainServices.CaseService.Contracts;
 using DomainServices.UserService.Clients.Authorization;
 using NOBY.Infrastructure.ErrorHandling;
 
@@ -24,15 +25,15 @@ public static class SecurityHelpers
         }
 
         // zakazane stavy Case
-        if (caseState is EnumCaseStates.Finished or EnumCaseStates.Cancelled or EnumCaseStates.ToBeCancelledConfirmed)
+        if (CaseHelpers.IsCaseInState([EnumCaseStates.Finished, EnumCaseStates.Cancelled, EnumCaseStates.ToBeCancelledConfirmed], caseState))
         {
             throw new NobyValidationException(90074);
         }
-        else if (caseState is EnumCaseStates.InAdministration && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing) && stateUpdatedOn.HasValue && stateUpdatedOn.Value < DateTime.Now.AddDays(-90))
+        else if (CaseHelpers.IsCaseInState([EnumCaseStates.InAdministration], caseState) && !currentUser.HasPermission(UserPermissions.CASE_ViewAfterDrawing) && stateUpdatedOn.HasValue && stateUpdatedOn.Value < DateTime.Now.AddDays(-90))
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: CASE_ViewAfterDrawing missing");
         }
-        else if (validateCaseStateAndProductSA && caseState != EnumCaseStates.InProgress && salesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
+        else if (validateCaseStateAndProductSA && CaseHelpers.IsCaseInState(CaseHelpers.AllExceptInProgressStates, caseState) && salesArrangementTypeId == (int)SalesArrangementTypes.Mortgage)
         {
             throw new CisAuthorizationException($"CaseOwnerValidation: is product SA and CaseState > 1");
         }

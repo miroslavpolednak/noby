@@ -4,6 +4,7 @@ using DomainServices.DocumentOnSAService.Api.Common;
 using DomainServices.DocumentOnSAService.Api.Database;
 using DomainServices.DocumentOnSAService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using ExternalServices.ESignatures.V1;
 using FastEnumUtility;
 using Google.Protobuf.WellKnownTypes;

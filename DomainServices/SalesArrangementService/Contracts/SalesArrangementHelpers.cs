@@ -1,7 +1,7 @@
 ﻿using SharedTypes.Enums;
 using System.Diagnostics.CodeAnalysis;
 
-namespace DomainServices.SalesArrangementService.Clients;
+namespace DomainServices.SalesArrangementService.Contracts;
 
 public static class SalesArrangementHelpers
 {
