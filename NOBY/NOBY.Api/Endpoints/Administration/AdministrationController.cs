@@ -15,7 +15,7 @@ public class AdministrationController(IMediator _mediator) : ControllerBase
     /// Načtení seznamu upozornění na úvodní obrazovce v rámci administrace těchto upozornění
     /// </remarks>
     [HttpGet("fe-banners")]
-    //[NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
+    [NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Administration"])]
     [ProducesResponseType(typeof(List<AdministrationFeBannerDetail>), StatusCodes.Status200OK)]
@@ -29,7 +29,7 @@ public class AdministrationController(IMediator _mediator) : ControllerBase
     /// Vytvoří nové upozornění na úvodní obrazovce.
     /// </remarks>
     [HttpPost("fe-banners")]
-    //[NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
+    [NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Administration"])]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
@@ -43,7 +43,7 @@ public class AdministrationController(IMediator _mediator) : ControllerBase
     /// Smaže upozornění.
     /// </remarks>
     [HttpDelete("fe-banners/{feBannerId:int}")]
-    //[NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
+    [NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Administration"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -60,7 +60,7 @@ public class AdministrationController(IMediator _mediator) : ControllerBase
     /// Načtení detailu upozornění
     /// </remarks>
     [HttpGet("fe-banners/{feBannerId:int}")]
-    //[NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
+    [NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
     [Produces(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Administration"])]
     [ProducesResponseType(typeof(AdministrationFeBannerDetail), StatusCodes.Status200OK)]
@@ -74,7 +74,7 @@ public class AdministrationController(IMediator _mediator) : ControllerBase
     /// Ukládá změn v existujícím upozornění.
     /// </remarks>
     [HttpPut("fe-banners/{feBannerId:int}")]
-    //[NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
+    [NobyAuthorize(UserPermissions.ADMIN_FeBannersManage)]
     [Consumes(MediaTypeNames.Application.Json)]
     [SwaggerOperation(Tags = ["Administration"])]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
