@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.CodebookService.Clients;
 using DomainServices.CustomerService.Clients.v1;
 using DomainServices.OfferService.Clients.v1;
@@ -155,7 +156,7 @@ internal sealed class OrderAggregate(
 
     public async Task<GetProductPropertiesResult> GetProductProperties(int caseState, long caseId, CancellationToken cancellationToken)
     {
-        if (caseState == (int)EnumCaseStates.InProgress)
+        if (CaseHelpers.IsCaseInState([EnumCaseStates.InProgress], (EnumCaseStates)caseState))
         {
             var offerId = (await _salesArrangementService.GetProductSalesArrangements(caseId, cancellationToken)).First().OfferId;
             var offer = await _offerService.GetOffer(offerId!.Value, cancellationToken);

@@ -1,5 +1,6 @@
 ﻿using CIS.InternalServices.TaskSchedulingService.Api.Scheduling.Jobs;
 using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 
 namespace CIS.InternalServices.TaskSchedulingService.Api.Jobs.CancelCaseBySalesArrangementConditions;
 
@@ -26,7 +27,7 @@ internal sealed class CancelCaseBySalesArrangementConditionsHandler(
                 {
                     _logger.CancelCaseJobSkipped(caseId, "Case does not exist");
                 }
-                else if (caseInstance.State != (int)EnumCaseStates.InProgress)
+                else if (CaseHelpers.IsCaseInState(CaseHelpers.AllExceptInProgressStates, (EnumCaseStates)caseInstance.State!))
                 {
                     _logger.CancelCaseJobSkipped(caseId, $"CaseState is {caseInstance.State}");
                 }

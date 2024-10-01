@@ -1,5 +1,6 @@
 ﻿using CIS.Infrastructure.Caching.Grpc;
 using DomainServices.HouseholdService.Contracts;
+using DomainServices.SalesArrangementService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 
 namespace DomainServices.HouseholdService.Api.Endpoints.Household.v1.CreateHousehold;

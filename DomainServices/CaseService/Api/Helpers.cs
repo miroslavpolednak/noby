@@ -1,10 +1,12 @@
-﻿namespace DomainServices.CaseService.Api;
+﻿using DomainServices.CaseService.Contracts;
+
+namespace DomainServices.CaseService.Api;
 
 internal static class Helpers
 {
     public static void ThrowIfCaseIsCancelled(int? caseState)
     {
-        if (caseState.HasValue && DisallowedStates.Contains(caseState.Value))
+        if (caseState.HasValue && CaseHelpers.IsCaseInState(DisallowedStates, (EnumCaseStates)caseState.Value))
         {
             throw ErrorCodeMapper.CreateValidationException(ErrorCodeMapper.CaseCancelled);
         }
@@ -12,9 +14,9 @@ internal static class Helpers
 
     public static readonly int[] AllowedTaskTypeId = [1, 2, 3, 4, 6, 7, 8, 9];
 
-    public static readonly int[] DisallowedStates = 
+    public static readonly EnumCaseStates[] DisallowedStates = 
     [
-        (int)EnumCaseStates.ToBeCancelledConfirmed,
-        (int)EnumCaseStates.Cancelled
+        EnumCaseStates.ToBeCancelledConfirmed,
+        EnumCaseStates.Cancelled
     ];
 }

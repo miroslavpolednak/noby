@@ -1,4 +1,5 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.OfferService.Clients.v1;
 using DomainServices.ProductService.Clients;
 using DomainServices.RealEstateValuationService.Clients;
@@ -37,7 +38,7 @@ internal sealed class GetRealEstateValuationTypesHandler(
             RealEstateValuationId = request.RealEstateValuationId
         };
 
-        if (caseInstance.State!.Value == (int)EnumCaseStates.InProgress)
+        if (caseInstance.IsInState([EnumCaseStates.InProgress]))
         {
             var productSA = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First();
             var offerInstance = await _offerService.GetOffer(productSA.OfferId!.Value, cancellationToken);

@@ -1,4 +1,5 @@
 ﻿using CIS.Core.Security;
+using DomainServices.CaseService.Contracts;
 using DomainServices.SalesArrangementService.Clients;
 using DomainServices.SalesArrangementService.Contracts;
 
@@ -38,7 +39,7 @@ internal sealed class GetCaseParametersHandler(
             };
         }
 
-        response.CaseParameters.AddRange(caseInstance.State == (int)EnumCaseStates.InProgress
+        response.CaseParameters.AddRange(caseInstance.IsInState([EnumCaseStates.InProgress])
             ? await getCaseInProgress(caseInstance, saList, cancellationToken)
             : await getCaseFromSb(caseInstance, cancellationToken));
 
@@ -46,7 +47,7 @@ internal sealed class GetCaseParametersHandler(
     }
 
     private async Task<List<CasesGetCaseParametersCaseParameters>> getCaseInProgress(
-        DomainServices.CaseService.Contracts.Case caseInstance,
+        Case caseInstance,
         List<GetProductSalesArrangementsResponse.Types.SalesArrangement> salesArrangements,
         CancellationToken cancellationToken)
     {

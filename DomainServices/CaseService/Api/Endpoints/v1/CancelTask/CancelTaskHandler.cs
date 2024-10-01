@@ -28,7 +28,9 @@ internal sealed class CancelTaskHandler(
 
         // set flow switches
         var mandant = (await _codebookService.ProductTypes(cancellationToken)).First(t => t.Id == entity.ProductTypeId).MandantId;
-        if (taskDetail.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.PriceException && entity.State == (int)EnumCaseStates.InProgress && mandant == (int)Mandants.Kb)
+        if (taskDetail.TaskObject?.TaskTypeId == (int)WorkflowTaskTypes.PriceException 
+            && CaseHelpers.IsCaseInState([EnumCaseStates.InProgress], (EnumCaseStates)entity.State) 
+            && mandant == (int)Mandants.Kb)
         {
             var saId = (await _salesArrangementService.GetProductSalesArrangements(request.CaseId, cancellationToken)).First().SalesArrangementId;
             await _salesArrangementService.SetFlowSwitches(saId,

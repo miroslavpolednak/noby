@@ -1,15 +1,13 @@
 ﻿using DomainServices.CaseService.Clients.v1;
+using DomainServices.CaseService.Contracts;
 using DomainServices.ProductService.Clients;
 using NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services.Internals;
 
 namespace NOBY.Api.Endpoints.SalesArrangement.CreateSalesArrangement.Services;
 
-internal sealed class CustomerChange3602BValidator
-    : BaseValidator<CustomerChange3602BBuilder>, ICreateSalesArrangementParametersValidator
+internal sealed class CustomerChange3602BValidator(BuilderValidatorAggregate aggregate)
+        : BaseValidator<CustomerChange3602BBuilder>(aggregate), ICreateSalesArrangementParametersValidator
 {
-    public CustomerChange3602BValidator(BuilderValidatorAggregate aggregate)
-        : base(aggregate) { }
-
     public override async Task<ICreateSalesArrangementParametersBuilder> Validate(CancellationToken cancellationToken = default)
     {
         ValidateUserPermissions(UserPermissions.CHANGE_REQUESTS_Access);
@@ -18,7 +16,7 @@ internal sealed class CustomerChange3602BValidator
         var productService = GetRequiredService<IProductServiceClient>();
 
         var caseInstance = await caseService.GetCaseDetail(Request.CaseId, cancellationToken);
-        if (caseInstance.State == (int)EnumCaseStates.InProgress)
+        if (caseInstance.IsInState([EnumCaseStates.InProgress]))
         {
             throw new NobyValidationException(90040);
         }

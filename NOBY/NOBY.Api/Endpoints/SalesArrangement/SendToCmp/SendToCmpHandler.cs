@@ -65,7 +65,7 @@ internal sealed class SendToCmpHandler(
 			await _salesArrangementService.SendToCmp(saInstance.SalesArrangementId, false, cancellationToken);
 
             // update case state
-            await _caseService.UpdateCaseState(saInstance.CaseId, (int)EnumCaseStates.InApproval, cancellationToken);
+            await _caseService.UpdateCaseState(saInstance.CaseId, (int)EnumCaseStates.InProcessing, cancellationToken);
         }
         else
         {

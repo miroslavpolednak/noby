@@ -21,18 +21,18 @@ public enum EnumCaseStates : byte
         
     [EnumMember]
     [Display(Name = "Žádost předána ke zpracování")]
-    InApproval = 2,
+    InProcessing = 2,
         
     [EnumMember]
-    [Display(Name = "Podpis za klienta")]
+    [Display(Name = "Schváleno / Podepisování s klientem")]
     InSigning = 3,
 
     [EnumMember]
-    [Display(Name = "Čerpání")]
+    [Display(Name = "Smlouva účinná")]
     InDisbursement = 4,
 
     [EnumMember]
-    [Display(Name = "Správa/splácení")]
+    [Display(Name = "Splácení úvěru")]
     InAdministration = 5,
 
     [EnumMember]
@@ -45,7 +45,7 @@ public enum EnumCaseStates : byte
 
     [EnumMember]
     [Display(Name = "Zpracování žádosti")]
-    InApprovalConfirmed = 8,
+    InProcessingConfirmed = 8,
 
     [EnumMember]
     [Display(Name = "Žádost předána ke stornu")]
@@ -54,4 +54,16 @@ public enum EnumCaseStates : byte
     [EnumMember]
     [Display(Name = "Zpracování storna žádosti")]
     ToBeCancelledConfirmed = 10,
+
+    [EnumMember]
+    [Display(Name = "Předáno do schvalování")]
+    InApproval = 11,
+
+    [EnumMember]
+    [Display(Name = "Vráceno zpracovateli")]
+    ReturnedForProcessing = 12,
+
+    [EnumMember]
+    [Display(Name = "Žádost o čerpání přijata ke zpracování")]
+    DrawdownRequested = 13
 }

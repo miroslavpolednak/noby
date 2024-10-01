@@ -1,6 +1,7 @@
 ﻿using DomainServices.CodebookService.Clients;
 using DomainServices.DocumentOnSAService.Clients;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 using _SA = DomainServices.SalesArrangementService.Contracts;
 using FastEnumUtility;
 using NOBY.Services.SigningHelper;

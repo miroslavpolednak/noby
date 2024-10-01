@@ -1,5 +1,6 @@
 ﻿using CIS.Core.Attributes;
 using DomainServices.SalesArrangementService.Clients;
+using DomainServices.SalesArrangementService.Contracts;
 
 namespace NOBY.Api.ApiServices;
 
@@ -8,7 +9,7 @@ internal sealed class MortgageRefinancingSalesArrangementCreateService(
 	ISalesArrangementServiceClient _salesArrangementService,
 	IMediator _mediator)
 {
-	public async Task<DomainServices.SalesArrangementService.Contracts.SalesArrangement> GetOrCreateSalesArrangement(
+	public async Task<SalesArrangement> GetOrCreateSalesArrangement(
 		long caseId, 
 		SalesArrangementTypes salesArrangementType, 
 		CancellationToken cancellationToken)
