@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging.Testing;
 using DomainServices.CaseService.Api.Database;
 using DomainServices.CaseService.Contracts;
 using DomainServices.SalesArrangementService.Contracts;
+using System.Globalization;
 
 namespace DomainServices.CaseService.Tests.Messaging;
 
@@ -163,6 +164,31 @@ public class IndividualPricingProcessChangedHandlerTests
 
         _salesArrangementService.Verify(x => x.SetFlowSwitches(It.IsAny<int>(), It.Is<List<EditableFlowSwitch>>(z => 
             z.Count(y => y.FlowSwitchId == 8 && y.Value.GetValueOrDefault()) == 1), It.IsAny<CancellationToken>()), Times.Once());
+    }
+
+    [Fact]
+    public async Task Handle_Custom1_ShouldSetFlowSwitches()
+    {
+        using var dbContext = DatabaseHelpers.CreateDbContext(_currentUser.Object);
+        var message = createBaseMessage(ProcessStateEnum.COMPLETED, taskIdSB: 9278839);
+
+        _mediator
+           .Setup(s => s.Send(It.Is<GetTaskDetailRequest>(x => x.TaskIdSb == 9278839), It.IsAny<CancellationToken>()))
+           .Returns(() => Task.FromResult(new GetTaskDetailResponse
+           {
+               TaskObject = new()
+               {
+                   DecisionId = 1,
+                   PhaseTypeId = 1,
+                   ProcessTypeId = 1
+               }
+           }));
+
+        await handle(dbContext, message);
+
+        _salesArrangementService.Verify(x => x.SetFlowSwitches(It.IsAny<int>(), It.Is<List<EditableFlowSwitch>>(z =>
+            z.Count(y => y.FlowSwitchId == 9 && y.Value.GetValueOrDefault()) == 1
+            && z.Count(y => y.FlowSwitchId == 10 && !y.Value.GetValueOrDefault()) == 1), It.IsAny<CancellationToken>()), Times.Once());
     }
 
     private async Task handle(CaseServiceDbContext dbContext, IndividualPricingProcessChanged message)
