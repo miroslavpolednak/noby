@@ -101,11 +101,11 @@ internal static class LoggerExtensions
             new EventId(LoggerEventIdCodes.KafkaConsumerStarted, nameof(KafkaMortgageChangedFinished)),
             "Kafka message processing in {Consumer} for CaseId {CaseId}: TargetAmount set to {Amount}");
 
-    private static readonly Action<ILogger, long, int, int, Exception> _kafkaIndividualPricingProcessChangedSkipped =
-        LoggerMessage.Define<long, int, int>(
+    private static readonly Action<ILogger, long, int, int, int, Exception> _kafkaIndividualPricingProcessChangedSkipped =
+        LoggerMessage.Define<long, int, int, int>(
             LogLevel.Debug,
             new EventId(LoggerEventIdCodes.KafkaIndividualPricingProcessChangedSkipped, nameof(KafkaIndividualPricingProcessChangedSkipped)),
-            "IndividualPricingProcessChanged skipped for Case {CaseId} and Task {TaskId} because of ProcessTypeId={ProcessTypeId}");
+            "IndividualPricingProcessChanged skipped for Case {CaseId} and Task {TaskId} because of ProcessTypeId={ProcessTypeId}; Step={Step}");
 
     private static readonly Action<ILogger, string, long, long, string, Exception> _kafkaHandlerSkippedDueToState =
         LoggerMessage.Define<string, long, long, string>(
@@ -168,8 +168,8 @@ internal static class LoggerExtensions
     public static void BeforeUpdateActiveTasks(this ILogger logger, in bool isActive, in bool activeTaskFound)
         => _beforeUpdateActiveTasks(logger, isActive, activeTaskFound, null!);
 
-    public static void KafkaIndividualPricingProcessChangedSkipped(this ILogger logger, in long caseId, in int taskId, in int processTypeId)
-        => _kafkaIndividualPricingProcessChangedSkipped(logger, caseId, taskId, processTypeId, null!);
+    public static void KafkaIndividualPricingProcessChangedSkipped(this ILogger logger, in long caseId, in int taskId, in int processTypeId, in int step)
+        => _kafkaIndividualPricingProcessChangedSkipped(logger, caseId, taskId, processTypeId, step, null!);
 
     public static void KafkaHandlerSkippedDueToState(this ILogger logger, in string consumerTypeName, in long caseId, in long taskId, in string state)
         => _kafkaHandlerSkippedDueToState(logger, consumerTypeName, caseId, taskId, state, null!);

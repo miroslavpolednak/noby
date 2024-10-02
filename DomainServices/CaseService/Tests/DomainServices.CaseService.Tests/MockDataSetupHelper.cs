@@ -1,5 +1,4 @@
-﻿using CIS.Core.Exceptions;
-using Moq;
+﻿using Moq;
 
 namespace DomainServices.CaseService.Tests;
 
@@ -35,7 +34,11 @@ internal class MockDataSetupHelper
             .Setup(s => s.GetProductSalesArrangements(It.Is<long>(x => x == 1), It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new List<SalesArrangementService.Contracts.GetProductSalesArrangementsResponse.Types.SalesArrangement>
             {
-                new() { SalesArrangementId = SalesArrangementIdCase1 }
+                new() 
+                { 
+                    SalesArrangementId = SalesArrangementIdCase1,
+                    State = (int)EnumSalesArrangementStates.InProgress
+                }
             }));
 
         salesArrangementService
@@ -63,7 +66,11 @@ internal class MockDataSetupHelper
             .Setup(s => s.GetSalesArrangement(It.Is<int>(x => x == SalesArrangementIdCase3), It.IsAny<CancellationToken>()))
             .Returns(() => Task.FromResult(new SalesArrangementService.Contracts.SalesArrangement
             {
-                SalesArrangementId = SalesArrangementIdCase3
+                SalesArrangementId = SalesArrangementIdCase3,
+                Retention = new()
+                {
+                    ManagedByRC2 = true
+                }
             }));
 
         salesArrangementService
@@ -79,6 +86,40 @@ internal class MockDataSetupHelper
             {
                 SalesArrangementId = SalesArrangementIdCase3,
                 RiskBusinessCaseId = "123"
+            }));
+
+        salesArrangementService
+            .Setup(s => s.GetSalesArrangementList(It.Is<long>(x => x == 1), It.IsAny<CancellationToken>()))
+            .Returns(() => Task.FromResult(new SalesArrangementService.Contracts.GetSalesArrangementListResponse
+            {
+                SalesArrangements = 
+                {
+                    new SalesArrangementService.Contracts.SalesArrangement
+                    {
+                        SalesArrangementId = SalesArrangementIdCase1,
+                        State = (int)EnumSalesArrangementStates.InProgress,
+                        SalesArrangementTypeId = 1,
+                        CaseId = 1,
+                        ProcessId = 321,
+                    }
+                }
+            }));
+
+        salesArrangementService
+            .Setup(s => s.GetSalesArrangementList(It.Is<long>(x => x == 3), It.IsAny<CancellationToken>()))
+            .Returns(() => Task.FromResult(new SalesArrangementService.Contracts.GetSalesArrangementListResponse
+            {
+                SalesArrangements =
+                {
+                    new SalesArrangementService.Contracts.SalesArrangement
+                    {
+                        SalesArrangementId = SalesArrangementIdCase3,
+                        State = (int)EnumSalesArrangementStates.InProgress,
+                        SalesArrangementTypeId = 13,
+                        CaseId = 3,
+                        ProcessId = 321,
+                    }
+                }
             }));
 
         return salesArrangementService;

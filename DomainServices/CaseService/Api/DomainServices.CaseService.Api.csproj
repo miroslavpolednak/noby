@@ -36,9 +36,6 @@
 
 	<ItemGroup>
 		<InternalsVisibleTo Include="DomainServices.CaseService.Tests" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Messaging\LoanExtraPaymentProcessChanged\Dto\" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
 	</ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using KafkaFlow;
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
 internal class CollateralValuationProcessChangedHandler(
-	ActiveTasksService _activeTasksService,
+	IActiveTasksService _activeTasksService,
 	ILogger<CollateralValuationProcessChangedHandler> _logger) 
     : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.CollateralValuationProcessChanged>
 {

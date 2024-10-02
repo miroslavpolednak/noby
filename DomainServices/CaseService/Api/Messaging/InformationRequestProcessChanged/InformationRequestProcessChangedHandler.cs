@@ -4,7 +4,7 @@ using KafkaFlow;
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
 internal class InformationRequestProcessChangedHandler(
-	ActiveTasksService _activeTasksService,
+	IActiveTasksService _activeTasksService,
 	ILogger<InformationRequestProcessChangedHandler> _logger) 
     : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.InformationRequestProcessChanged>
 {

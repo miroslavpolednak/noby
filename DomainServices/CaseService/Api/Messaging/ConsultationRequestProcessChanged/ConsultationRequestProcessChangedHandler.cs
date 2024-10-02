@@ -4,7 +4,7 @@ using KafkaFlow;
 namespace DomainServices.CaseService.Api.Messaging.MessageHandlers;
 
 internal class ConsultationRequestProcessChangedHandler(
-	ActiveTasksService _activeTasksService,
+	IActiveTasksService _activeTasksService,
 	ILogger<ConsultationRequestProcessChangedHandler> _logger) 
     : IMessageHandler<cz.mpss.api.starbuild.mortgageworkflow.mortgageprocessevents.v1.ConsultationRequestProcessChanged>
 {

@@ -10,7 +10,7 @@ namespace DomainServices.CaseService.Api.Endpoints.v1.GetTaskList;
 internal sealed class GetTaskListHandler(
     CaseServiceDbContext _dbContext,
     ISbWebApiClient _sbWebApiClient,
-    ActiveTasksService _activeTasks,
+    IActiveTasksService _activeTasks,
     ICodebookServiceClient _codebookService)
         : IRequestHandler<GetTaskListRequest, GetTaskListResponse>
 {

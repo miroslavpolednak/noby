@@ -4,8 +4,9 @@ using DomainServices.CodebookService.Clients;
 
 namespace DomainServices.CaseService.Api.Services;
 
-[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.SelfService]
-internal sealed class ActiveTasksService
+[CIS.Core.Attributes.TransientService, CIS.Core.Attributes.AsImplementedInterfacesService]
+internal sealed class ActiveTasksService 
+    : IActiveTasksService
 {
     public async Task SyncActiveTasks(long caseId, List<WorkflowTask> tasks, CancellationToken cancellation)
     {
@@ -16,7 +17,7 @@ internal sealed class ActiveTasksService
 
         var entities = await _dbContext.ActiveTasks.Where(t => t.CaseId == caseId).ToListAsync(cancellation);
         var dictionary = entities.GroupBy(t => t.TaskId).ToDictionary(k => k.Key, v => v.ToList());
-        
+
         // kontrola zdvojenych tasku
         foreach (var entry in dictionary.Where(t => t.Value.Count > 2))
         {
@@ -58,43 +59,43 @@ internal sealed class ActiveTasksService
         await _dbContext.SaveChangesAsync(cancellation);
     }
 
-	public async Task UpdateActiveTaskByTaskIdSb(long caseId, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
+    public async Task UpdateActiveTaskByTaskIdSb(long caseId, GetTaskDetailResponse taskDetail, CancellationToken cancellationToken)
     {
-		_logger.UpdateActiveTaskStart(caseId, taskDetail.TaskObject.TaskIdSb);
+        _logger.UpdateActiveTaskStart(caseId, taskDetail.TaskObject.TaskIdSb);
 
-		var taskTypeId = taskDetail.TaskObject.TaskTypeId;
+        var taskTypeId = taskDetail.TaskObject.TaskTypeId;
 
-		var taskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
-		var isActive = taskDetail.TaskObject.IsActive(taskStates);
+        var taskStates = await _codebookService.WorkflowTaskStates(cancellationToken);
+        var isActive = taskDetail.TaskObject.IsActive(taskStates);
 
-		var entity = await _dbContext.ActiveTasks
-			.FirstOrDefaultAsync(t => t.TaskId == taskDetail.TaskObject.TaskId, cancellationToken);
+        var entity = await _dbContext.ActiveTasks
+            .FirstOrDefaultAsync(t => t.TaskId == taskDetail.TaskObject.TaskId, cancellationToken);
 
-		_logger.BeforeUpdateActiveTasks(isActive, entity is not null);
-		if (isActive && entity is null)
-		{
-			_dbContext.ActiveTasks.Add(new Database.Entities.ActiveTask
-			{
-				TaskIdSb = taskDetail.TaskObject.TaskIdSb,
-				CaseId = caseId,
-				TaskId = taskDetail.TaskObject.TaskId,
-				TaskTypeId = taskTypeId
-			});
-		}
+        _logger.BeforeUpdateActiveTasks(isActive, entity is not null);
+        if (isActive && entity is null)
+        {
+            _dbContext.ActiveTasks.Add(new Database.Entities.ActiveTask
+            {
+                TaskIdSb = taskDetail.TaskObject.TaskIdSb,
+                CaseId = caseId,
+                TaskId = taskDetail.TaskObject.TaskId,
+                TaskTypeId = taskTypeId
+            });
+        }
 
-		if (!isActive && entity is not null)
-		{
-			_dbContext.ActiveTasks.Remove(entity);
-		}
+        if (!isActive && entity is not null)
+        {
+            _dbContext.ActiveTasks.Remove(entity);
+        }
 
-		await _dbContext.SaveChangesAsync(cancellationToken);
-	}
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
 
-	public async Task UpdateActiveTaskByTaskIdSb(long caseId, int taskIdSb, CancellationToken cancellationToken)
+    public async Task UpdateActiveTaskByTaskIdSb(long caseId, int taskIdSb, CancellationToken cancellationToken)
     {
         var taskDetail = await _mediator.Send(new GetTaskDetailRequest { TaskIdSb = taskIdSb }, cancellationToken);
         await UpdateActiveTaskByTaskIdSb(caseId, taskDetail, cancellationToken);
-	}
+    }
 
     private readonly IMediator _mediator;
     private readonly CaseServiceDbContext _dbContext;
