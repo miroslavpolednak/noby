@@ -128,6 +128,7 @@ internal sealed class GetRealEstateValuationDetailHandler(
                 KatuzId = t.KatuzId,
                 KatuzTitle = t.KatuzTitle,
                 AddressPointId = t.AddressPointId,
+                FlatNumber = t.FlatNumber,
                 RealEstateIds = t.RealEstateIds?.Select(t => t).ToList() ?? []
             }
         })

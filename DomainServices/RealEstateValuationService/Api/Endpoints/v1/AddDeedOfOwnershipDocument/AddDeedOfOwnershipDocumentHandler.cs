@@ -26,6 +26,7 @@ internal sealed class AddDeedOfOwnershipDocumentHandler(RealEstateValuationServi
             KatuzId = request.KatuzId,
             KatuzTitle = request.KatuzTitle,
             AddressPointId = request.AddressPointId,
+            FlatNumber = request.FlatNumber,
             RealEstateIds = request.RealEstateIds?.Any() ?? false ? request.RealEstateIds.ToList() : null
         };
         _dbContext.DeedOfOwnershipDocuments.Add(entity);

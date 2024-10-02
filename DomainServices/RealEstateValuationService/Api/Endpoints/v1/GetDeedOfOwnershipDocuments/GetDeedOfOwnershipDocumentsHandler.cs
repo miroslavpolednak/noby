@@ -33,6 +33,7 @@ internal sealed class GetDeedOfOwnershipDocumentsHandler(RealEstateValuationServ
                 KatuzTitle = t.KatuzTitle,
                 KatuzId = t.KatuzId,
                 AddressPointId = t.AddressPointId,
+                FlatNumber = t.FlatNumber,
                 DeedOfOwnershipNumber = t.DeedOfOwnershipNumber
             };
             if (t.RealEstateIds is not null)

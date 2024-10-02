@@ -5245,6 +5245,13 @@ namespace NOBY.ApiContracts
         public string? KatuzTitle { get; set; } = default!;
 
         /// <summary>
+        /// Číslo bytu včetně čísla domu
+        /// </summary>
+
+        [System.Text.Json.Serialization.JsonPropertyName("flatNumber")]
+        public string? FlatNumber { get; set; } = default!;
+
+        /// <summary>
         /// ISKN ID listu vlastnictví (LV), technický identifikátor katastru
         /// </summary>
 

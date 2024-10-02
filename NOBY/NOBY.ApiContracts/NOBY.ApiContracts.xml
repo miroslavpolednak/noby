@@ -2593,6 +2593,11 @@
             KATUZ, název katastrálního území, RUIAN katastrální území - AddressWhispererBEService|cadastralArea
             </summary>
         </member>
+        <member name="P:NOBY.ApiContracts.RealEstateValuationSharedDeedOfOwnershipDocument.FlatNumber">
+            <summary>
+            Číslo bytu včetně čísla domu
+            </summary>
+        </member>
         <member name="P:NOBY.ApiContracts.RealEstateValuationSharedDeedOfOwnershipDocument.DeedOfOwnershipId">
             <summary>
             ISKN ID listu vlastnictví (LV), technický identifikátor katastru

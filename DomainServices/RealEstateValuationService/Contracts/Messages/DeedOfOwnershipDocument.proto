@@ -17,4 +17,5 @@ message DeedOfOwnershipDocument {
     google.protobuf.Int64Value AddressPointId = 9;
     int32 DeedOfOwnershipDocumentId = 10;
     cis.types.ModificationStamp Created = 11;
+    google.protobuf.StringValue FlatNumber = 12;
 }

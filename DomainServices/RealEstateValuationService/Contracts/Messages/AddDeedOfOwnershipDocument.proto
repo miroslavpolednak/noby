@@ -14,6 +14,7 @@ message AddDeedOfOwnershipDocumentRequest {
     google.protobuf.StringValue Address = 7;
     repeated int64 RealEstateIds = 8;
     google.protobuf.Int64Value AddressPointId = 9;
+    google.protobuf.StringValue FlatNumber = 10;
 }
 
 message AddDeedOfOwnershipDocumentResponse {
