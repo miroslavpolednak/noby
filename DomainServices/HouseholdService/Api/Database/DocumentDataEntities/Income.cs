@@ -14,6 +14,8 @@ internal sealed class Income
     public string? IncomeSource { get; set; }
     public bool HasProofOfIncome { get; set; }
 
+    public IEnumerable<string> IncomeDocumentsId { get; set; } = [];
+
     public IncomeEmployement? Employement { get; set; }
     public IncomeEntrepreneur? Entrepreneur { get; set; }
     public IncomeOther? Other { get; set; }

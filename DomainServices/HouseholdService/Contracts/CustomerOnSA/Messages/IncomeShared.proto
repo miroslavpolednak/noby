@@ -9,6 +9,7 @@ import "NullableGrpcDecimal.proto";
 message IncomeBaseData {
     cis.types.NullableGrpcDecimal Sum = 1;
     string CurrencyCode = 2;
+    repeated string IncomeDocumentsId = 3;
 }
 
 message EmployerData {

@@ -21,7 +21,8 @@ internal sealed class IncomeMapper
         {
             Sum = baseData?.Sum,
             CurrencyCode = baseData?.CurrencyCode,
-            IncomeTypeId = (EnumIncomeTypes)incomeTypeId
+            IncomeTypeId = (EnumIncomeTypes)incomeTypeId,
+            IncomeDocumentsId = baseData?.IncomeDocumentsId ?? []
         };
 
         model.HasProofOfIncome = (model.IncomeTypeId == EnumIncomeTypes.Employement ? dataEmployement?.HasProofOfIncome : null) ?? false;
@@ -76,7 +77,8 @@ internal sealed class IncomeMapper
             BaseData = new __Contracts.IncomeBaseData
             {
                 CurrencyCode = data.CurrencyCode,
-                Sum = data.Sum
+                Sum = data.Sum,
+                IncomeDocumentsId = { data.IncomeDocumentsId }
             }
         };
 
