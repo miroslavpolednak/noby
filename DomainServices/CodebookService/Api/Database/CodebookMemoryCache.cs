@@ -6,17 +6,21 @@ namespace DomainServices.CodebookService.Api.Database;
 
 internal sealed class CodebookMemoryCache
 {
-    private static MemoryCache _cache = new MemoryCache(new MemoryCacheOptions());
-    private static ConcurrentDictionary<object, SemaphoreSlim> _locks = new ConcurrentDictionary<object, SemaphoreSlim>();
-    private static CancellationTokenSource _changeTokenSource = new CancellationTokenSource();
+    private static readonly MemoryCache _cache = new(new MemoryCacheOptions());
+    private static readonly ConcurrentDictionary<object, SemaphoreSlim> _locks = new();
+    private static CancellationTokenSource _changeTokenSource = new();
 
     //TODO zatim se mi to nechce datavat do appsettings
-    public const int AbsoluteExpirationInMinutes = 30;
-    private static MemoryCacheEntryOptions _cacheOptions = (new MemoryCacheEntryOptions()
+    public const int AbsoluteExpirationInMinutes = 1;
+
+    private static MemoryCacheEntryOptions getCacheOptions()
+    {
+        return (new MemoryCacheEntryOptions()
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(AbsoluteExpirationInMinutes)
         })
-        .AddExpirationToken(new CancellationChangeToken((new CancellationTokenSource()).Token));
+        .AddExpirationToken(new CancellationChangeToken(_changeTokenSource.Token));
+    }
     
     public static void Reset()
     {
@@ -37,7 +41,7 @@ internal sealed class CodebookMemoryCache
                 if (!_cache.TryGetValue(key, out cacheEntry))
                 {
                     cacheEntry = createItems();
-                    _cache.Set(key, cacheEntry, _cacheOptions);
+                    _cache.Set(key, cacheEntry, getCacheOptions());
                 }
             }
             finally
@@ -61,7 +65,7 @@ internal sealed class CodebookMemoryCache
                 if (!_cache.TryGetValue(key, out cacheEntry))
                 {
                     cacheEntry = createItems(sqlQuery.ToString());
-                    _cache.Set(key, cacheEntry, _cacheOptions);
+                    _cache.Set(key, cacheEntry, getCacheOptions());
                 }
             }
             finally
