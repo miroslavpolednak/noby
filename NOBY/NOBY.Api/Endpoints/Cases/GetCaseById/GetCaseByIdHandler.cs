@@ -23,14 +23,19 @@ internal sealed class GetCaseByIdHandler(
         }
 
         var model = await _converter.FromContract(caseInstance!);
-        
+
         // case owner
-        var userInstance = await _userService.GetUser(caseInstance!.CaseOwner.UserId, cancellationToken);
-        model.CaseOwner = new CasesSharedCaseOwnerModel
+        try
         {
-            Cpm = userInstance.UserInfo.Cpm,
-            Icp = userInstance.UserInfo.Icp
-        };
+            var userInstance = await _userService.GetUser(caseInstance!.CaseOwner.UserId, cancellationToken);
+            model.CaseOwner = new CasesSharedCaseOwnerModel
+            {
+                Cpm = userInstance.UserInfo.Cpm,
+                Icp = userInstance.UserInfo.Icp
+            };
+        }
+        // nepotrebujeme ho
+        catch { }
 
         return model;
     }
