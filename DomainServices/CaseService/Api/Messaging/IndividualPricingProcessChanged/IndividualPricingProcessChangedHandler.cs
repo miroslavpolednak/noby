@@ -149,7 +149,7 @@ internal class IndividualPricingProcessChangedHandler(
                 _logger.KafkaIndividualPricingProcessChangedSkipped(_caseId, _taskIdSB, taskDetail.TaskObject.ProcessTypeId, 3);
                 return false;
             }
-            else if (p.SalesArrangementTypeId is 13 or 14)
+            else if ((SalesArrangementTypes)p.SalesArrangementTypeId is SalesArrangementTypes.MortgageRetention or SalesArrangementTypes.MortgageRefixation)
             {
                 var saToCheck = await _salesArrangementService.GetSalesArrangement(p.SalesArrangementId);
                 if (saToCheck.Retention?.ManagedByRC2.GetValueOrDefault() ?? saToCheck.Refixation?.ManagedByRC2.GetValueOrDefault() ?? false)
