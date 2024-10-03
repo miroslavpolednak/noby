@@ -24,7 +24,9 @@ internal sealed class CancelOfferHandler(IOfferServiceClient _offerService) : IR
                 RemoveIsCommunicatedFlag = true
             }, cancellationToken);
         }
-
-        await _offerService.CancelOffer(request.OfferId, cancellationToken);
+        else
+        {
+            await _offerService.CancelOffer(request.OfferId, cancellationToken);
+        }
     }
 }
