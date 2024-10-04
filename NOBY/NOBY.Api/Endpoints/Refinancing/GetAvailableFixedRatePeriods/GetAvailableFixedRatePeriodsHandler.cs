@@ -21,7 +21,7 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
         }
 
         // seznam jiz ulozenych offer
-        var offers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
+        var offers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken: cancellationToken);
 
         // periody pouzite v ulozenych offers
         List<int> usedPeriods = offers
@@ -32,7 +32,7 @@ internal sealed class GetAvailableFixedRatePeriodsHandler(
         // mozne periody pro dany produkt
         var availablePeriods = (await _codebookService.FixedRatePeriods(cancellationToken))
             .Where(t => t.IsValid && t.MandantId == (int)Mandants.Kb && t.ProductTypeId == productInstance.Mortgage.ProductTypeId && !t.IsNewProduct && t.InterestRateAlgorithm == 1)
-			.ToList();
+            .ToList();
 
         DateTime productFixedRateValidTo = (DateTime)productInstance.Mortgage.FixedRateValidTo;
         // prvni perioda fixace, ktera presahuje splatnost uveru

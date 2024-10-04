@@ -55,7 +55,7 @@ internal sealed class GetMortgageRefixationHandler(
 
     private async Task<List<GetOfferListResponse.Types.GetOfferListItem>> getOffers(long caseId, CancellationToken cancellationToken)
     {
-        return (await _offerService.GetOfferList(caseId, OfferTypes.MortgageRefixation, false, cancellationToken))
+        return (await _offerService.GetOfferList(caseId, OfferTypes.MortgageRefixation, false, cancellationToken: cancellationToken))
             .Where(t => !(t.Data.ValidTo < _timeProvider.GetLocalNow().Date))
             .ToList();
     }
@@ -73,9 +73,9 @@ internal sealed class GetMortgageRefixationHandler(
             LoanPaymentAmount = offer.MortgageRefixation.SimulationResults.LoanPaymentAmount,
             LoanPaymentAmountDiscounted = offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted != offer.MortgageRefixation.SimulationResults.LoanPaymentAmount ? offer.MortgageRefixation.SimulationResults.LoanPaymentAmountDiscounted : null
         };
-        
+
         setFlags(result, offer.Data.Flags);
-        
+
         return result;
     }
 

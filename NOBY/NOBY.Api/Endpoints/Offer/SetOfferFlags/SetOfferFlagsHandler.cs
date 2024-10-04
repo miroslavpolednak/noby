@@ -12,7 +12,7 @@ internal sealed class SetOfferFlagsHandler(IOfferServiceClient _offerService)
 
         // aktualni nastaveni flagu
         var flag = (EnumOfferFlagTypes)offerInstance.Data.Flags;
-        
+
         // nastavit flags nove
         foreach (var flagToSet in request.Flags!)
         {
@@ -42,7 +42,7 @@ internal sealed class SetOfferFlagsHandler(IOfferServiceClient _offerService)
 
     private async Task validateSelectedOffer(GetOfferResponse offerInstance, CancellationToken cancellationToken)
     {
-        var list = await _offerService.GetOfferList(offerInstance.Data.CaseId!.Value, offerInstance.Data.OfferType, true, cancellationToken);
+        var list = await _offerService.GetOfferList(offerInstance.Data.CaseId!.Value, offerInstance.Data.OfferType, true, cancellationToken: cancellationToken);
 
         if (list.Any(t => t.Data.OfferId != offerInstance.Data.OfferId
             && ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Selected)

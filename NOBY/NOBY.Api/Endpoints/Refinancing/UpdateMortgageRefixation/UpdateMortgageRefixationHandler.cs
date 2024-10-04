@@ -9,9 +9,9 @@ namespace NOBY.Api.Endpoints.Refinancing.UpdateMortgageRefixation;
 
 internal sealed class UpdateMortgageRefixationHandler(
     IOfferServiceClient _offerService,
-	ISalesArrangementServiceClient _salesArrangementService,
-	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementCreateService,
-	MortgageRefinancingWorkflowService _retentionWorkflowService)
+    ISalesArrangementServiceClient _salesArrangementService,
+    ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementCreateService,
+    MortgageRefinancingWorkflowService _retentionWorkflowService)
         : IRequestHandler<RefinancingUpdateMortgageRefixationRequest, RefinancingSharedOfferLinkResult>
 {
     public async Task<RefinancingSharedOfferLinkResult> Handle(RefinancingUpdateMortgageRefixationRequest request, CancellationToken cancellationToken)
@@ -20,10 +20,10 @@ internal sealed class UpdateMortgageRefixationHandler(
 
         _retentionWorkflowService.ValidateIndividualPriceExceptionComment(request.IndividualPriceCommentLastVersion, interestRateDiscount, default);
 
-		// ziskat existujici nebo zalozit novy SA
-		var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
+        // ziskat existujici nebo zalozit novy SA
+        var salesArrangement = await _salesArrangementCreateService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
 
-		var mortgageParameters = new MortgageRefinancingWorkflowParameters
+        var mortgageParameters = new MortgageRefinancingWorkflowParameters
         {
             CaseId = salesArrangement.CaseId,
             ProcessId = salesArrangement.ProcessId!.Value,
@@ -40,7 +40,7 @@ internal sealed class UpdateMortgageRefixationHandler(
         await updateOffers(request, interestRateDiscount, cancellationToken);
 
         return new()
-		{
+        {
             SalesArrangementId = salesArrangement.SalesArrangementId,
             ProcessId = salesArrangement.ProcessId!.Value
         };
@@ -48,7 +48,7 @@ internal sealed class UpdateMortgageRefixationHandler(
 
     private async Task updateOffers(RefinancingUpdateMortgageRefixationRequest request, decimal? interestRateDiscount, CancellationToken cancellationToken)
     {
-        var offers = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, false, cancellationToken);
+        var offers = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, false, cancellationToken: cancellationToken);
 
         foreach (var offer in offers)
         {

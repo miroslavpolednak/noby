@@ -8,14 +8,14 @@ namespace NOBY.Api.Endpoints.Offer.SimulateMortgageRefixation;
 internal sealed class SimulateMortgageRefixationHandler(
     IOfferServiceClient _offerService,
     MortgageRefinancingDataService _refinancingDataService,
-    ICodebookServiceClient _codebookService, 
+    ICodebookServiceClient _codebookService,
     IProductServiceClient _productService)
         : IRequestHandler<OfferSimulateMortgageRefixationRequest, List<OfferSimulateMortgageRefixationResponse>>
 {
     public async Task<List<OfferSimulateMortgageRefixationResponse>> Handle(OfferSimulateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         // validace zda na Case jiz neexistuje simulace se stejnou delkou fixace
-        var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken);
+        var existingOffers = await _offerService.GetOfferList(request.CaseId, DomainServices.OfferService.Contracts.OfferTypes.MortgageRefixation, false, cancellationToken: cancellationToken);
         if (existingOffers.Any(t => ((EnumOfferFlagTypes)t.Data.Flags).HasFlag(EnumOfferFlagTypes.Current) && request.FixedRatePeriods.Any(x => x == t.MortgageRefixation.SimulationInputs.FixedRatePeriod)))
         {
             throw new NobyValidationException("Offer with the same fixed period already exist");
@@ -27,7 +27,7 @@ internal sealed class SimulateMortgageRefixationHandler(
         // validace fixed period
         var periods = await _codebookService.FixedRatePeriods(cancellationToken);
         if (!request.FixedRatePeriods.All(t => periods.Any(x => x.IsValid && x.ProductTypeId == product.Mortgage.ProductTypeId && x.FixedRatePeriod == t && !x.IsNewProduct)))
-		{
+        {
             throw new NobyValidationException("FixedRatePeriod cant be validated");
         }
 
