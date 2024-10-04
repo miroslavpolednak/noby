@@ -12,5 +12,5 @@ message UpdateOfferRequest {
 	google.protobuf.Int32Value SalesArrangementId = 4;
 	google.protobuf.Int32Value Flags = 5;
 	cis.types.NullableGrpcDate ValidTo = 6;
-	bool RemoveIsCommunicatedFlag = 7;
+	bool RemoveCurrentFlag = 7;
 }

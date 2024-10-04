@@ -14,14 +14,14 @@ internal sealed class CancelOfferHandler(IOfferServiceClient _offerService) : IR
             throw new NobyValidationException(90032, "Incorrect offer type, offer type has to be MortgageRefixation");
         }
 
-        // Has communicated flag?
-        if ((offer.Data.Flags & (int)EnumOfferFlagTypes.Communicated) == (int)EnumOfferFlagTypes.Communicated)
+        // Has current flag?
+        if ((offer.Data.Flags & (int)EnumOfferFlagTypes.Current) == (int)EnumOfferFlagTypes.Current)
         {
             await _offerService.UpdateOffer(new()
             {
                 OfferId = request.OfferId,
                 CaseId = request.CaseId,
-                RemoveIsCommunicatedFlag = true
+                RemoveCurrentFlag = true
             }, cancellationToken);
         }
         else
