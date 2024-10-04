@@ -11,7 +11,7 @@ public interface IOfferServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetOfferResponse> GetOffer(int offerId, CancellationToken cancellationToken = default);
 
-    Task<List<Contracts.GetOfferListResponse.Types.GetOfferListItem>> GetOfferList(long caseId, OfferTypes OfferType, bool ommitParametersFromResponse = false, CancellationToken cancellationToken = default);
+    Task<List<Contracts.GetOfferListResponse.Types.GetOfferListItem>> GetOfferList(long caseId, OfferTypes OfferType, bool ommitParametersFromResponse = false, bool includeValidOnly = false, CancellationToken cancellationToken = default);
 
     Task<ValidateOfferIdResponse> ValidateOfferId(int offerId, bool throwExceptionIfNotFound = false, CancellationToken cancellationToken = default);
 
@@ -51,7 +51,7 @@ public interface IOfferServiceClient
     /// <exception cref="CIS.Core.Exceptions.CisArgumentException">Code: 10001; OfferId is not specified</exception>
     Task<GetMortgageOfferFPScheduleResponse> GetMortgageOfferFPSchedule(int offerId, CancellationToken cancellationToken = default);
 
-    Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken  = default);
+    Task<GetOfferDeveloperResponse> GetOfferDeveloper(int offerId, CancellationToken cancellationToken = default);
 
     Task UpdateOffer(UpdateOfferRequest request, CancellationToken cancellationToken = default);
 

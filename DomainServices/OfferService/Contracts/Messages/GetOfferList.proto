@@ -12,6 +12,7 @@ message GetOfferListRequest {
 	int64 CaseId = 1;
 	OfferTypes OfferType = 2;
 	bool OmmitParametersFromResponse = 3;
+	bool IncludeValidOnly = 4;
 }
 
 message GetOfferListResponse {

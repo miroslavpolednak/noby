@@ -5,16 +5,16 @@ using System.Globalization;
 namespace NOBY.Api.Endpoints.Refinancing.CommunicateMortgageRefixation;
 
 internal sealed class CommunicateMortgageRefixationHandler(
-	ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementService, 
-    IOfferServiceClient _offerService) 
+    ApiServices.MortgageRefinancingSalesArrangementCreateService _salesArrangementService,
+    IOfferServiceClient _offerService)
     : IRequestHandler<CommunicateMortgageRefixationRequest, RefinancingSharedOfferLinkResult>
 {
-	public async Task<RefinancingSharedOfferLinkResult> Handle(CommunicateMortgageRefixationRequest request, CancellationToken cancellationToken)
+    public async Task<RefinancingSharedOfferLinkResult> Handle(CommunicateMortgageRefixationRequest request, CancellationToken cancellationToken)
     {
         // ziskat existujici nebo zalozit novy SA
         var sa = await _salesArrangementService.GetOrCreateSalesArrangement(request.CaseId, SalesArrangementTypes.MortgageRefixation, cancellationToken);
 
-		var offerList = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, cancellationToken: cancellationToken);
+        var offerList = await _offerService.GetOfferList(request.CaseId, OfferTypes.MortgageRefixation, includeValidOnly: true, cancellationToken: cancellationToken);
 
         var currentOffers = offerList.Where(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Current)).ToList();
         var communicatedOffers = offerList.Where(o => ((EnumOfferFlagTypes)o.Data.Flags).HasFlag(EnumOfferFlagTypes.Communicated)).ToList();
@@ -39,7 +39,7 @@ internal sealed class CommunicateMortgageRefixationHandler(
         }
 
         return new()
-		{
+        {
             SalesArrangementId = sa.SalesArrangementId,
             ProcessId = sa.ProcessId
         };

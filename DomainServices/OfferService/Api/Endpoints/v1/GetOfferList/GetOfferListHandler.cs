@@ -6,21 +6,27 @@ using SharedComponents.DocumentDataStorage;
 namespace DomainServices.OfferService.Api.Endpoints.v1.GetOfferList;
 
 internal sealed class GetOfferListHandler(
-    OfferServiceDbContext _dbContext, 
-    IDocumentDataStorage _documentDataStorage, 
-    Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper, 
-    Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper, 
-    Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _refixationMapper, 
+    OfferServiceDbContext _dbContext,
+    TimeProvider _dateTime,
+    IDocumentDataStorage _documentDataStorage,
+    Database.DocumentDataEntities.Mappers.MortgageOfferDataMapper _offerMapper,
+    Database.DocumentDataEntities.Mappers.MortgageRetentionDataMapper _retentionMapper,
+    Database.DocumentDataEntities.Mappers.MortgageRefixationDataMapper _refixationMapper,
     Database.DocumentDataEntities.Mappers.MortgageExtraPaymentDataMapper _extraPaymentMapper)
         : IRequestHandler<GetOfferListRequest, GetOfferListResponse>
 {
     public async Task<GetOfferListResponse> Handle(GetOfferListRequest request, CancellationToken cancellationToken)
     {
-        var list = await _dbContext.Offers
+        var query = _dbContext.Offers
             .AsNoTracking()
-            .Where(t => t.CaseId == request.CaseId && t.OfferType == (int)request.OfferType)
-            .Select(DatabaseExpressions.CreateCommonOfferData())
-            .ToListAsync(cancellationToken);
+            .Where(t => t.CaseId == request.CaseId && t.OfferType == (int)request.OfferType);
+        
+        if (request.IncludeValidOnly)
+        {
+            query = query.Where(o => o.ValidTo >= _dateTime.GetLocalNow().Date);
+        }
+        
+        var list = await query.Select(DatabaseExpressions.CreateCommonOfferData()).ToListAsync(cancellationToken);
 
         // get json data
         int[] offerIds = list.Select(t => t.OfferId).ToArray();

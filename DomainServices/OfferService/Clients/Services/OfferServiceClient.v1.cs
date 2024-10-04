@@ -13,12 +13,13 @@ internal sealed class OfferServiceClient
             FixedRatePeriod = fixedRatePeriod,
         }, cancellationToken: cancellationToken)).LoanInterestRate;
 
-    public async Task<List<Contracts.GetOfferListResponse.Types.GetOfferListItem>> GetOfferList(long caseId, OfferTypes offerType, bool ommitParametersFromResponse = false, CancellationToken cancellationToken = default)
+    public async Task<List<Contracts.GetOfferListResponse.Types.GetOfferListItem>> GetOfferList(long caseId, OfferTypes offerType, bool ommitParametersFromResponse = false, bool includeValidOnly = false, CancellationToken cancellationToken = default)
         => (await _service.GetOfferListAsync(new GetOfferListRequest
         {
             CaseId = caseId,
             OfferType = offerType,
-            OmmitParametersFromResponse = ommitParametersFromResponse
+            OmmitParametersFromResponse = ommitParametersFromResponse,
+            IncludeValidOnly = includeValidOnly,
         }, cancellationToken: cancellationToken))
         .Offers
         .ToList();
